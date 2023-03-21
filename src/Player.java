@@ -1,10 +1,10 @@
-import poker.DeckOfCards;
-
 abstract class Player {
+    public static final int FIRST_HAND = 0;
+
     private int bank = 0;
     private int stake = 0;
     private String name = "Player";
-    private BlackjackHand hand = null;
+    protected BlackjackHand hand[] = null;
 
     private boolean outOfGame = false;
 
@@ -20,7 +20,7 @@ abstract class Player {
         stake  = 0;
     }
 
-    public BlackjackHand getHand() {
+    public BlackjackHand[] getHand() {
         return hand;
     }
 
@@ -47,7 +47,7 @@ abstract class Player {
     }
 
     public void dealTo(DeckOfCards deck) {
-        hand = deck.dealHand();
+        hand[FIRST_HAND] = deck.dealBlackJackHand();
     }
 
     public void surrender() {
@@ -57,8 +57,8 @@ abstract class Player {
         outOfGame = true;
     }
 
-    public void placeInitialBet(int minBet) {
-        if (bank - minBet >= 0) return;
+    public void placeBet(int bet) {
+        if (bank - bet >= 0) return;
 
         stake += bet;
         bank -= bet;
@@ -68,7 +68,12 @@ abstract class Player {
 
     abstract Action chooseAction();
 
-    public void nextAction() {
+    abstract boolean hit(BlackjackHand hand);
+    abstract boolean split(BlackjackHand hand);
+    abstract boolean stand(BlackjackHand hand);
+    abstract boolean doubleDown(BlackjackHand hand);
+
+    public void takeTurn() {
         if (isOutOfGame()) return;
 
         if (isBankrupt()) {
@@ -79,12 +84,26 @@ abstract class Player {
             return;
         }
 
-        switch (chooseAction()) {
-            case HIT -> hit(); break;
-            case SPLIT -> split(); break;
-            case STAND -> stand(); break;
-            case DOUBLE -> double(); break;
-            case SURRENDER -> surrender(); break;
+        for (BlackjackHand hand : hand) {
+            // TODO: action loop check if busted or stand
+            boolean actionCompleted = false;
+            while (!isOutOfGame() || !actionCompleted) {
+                switch (chooseAction()) {
+                    case HIT -> {
+                        actionCompleted = hit(hand);
+                    }
+                    case SPLIT -> {
+                        actionCompleted = split(hand);
+                    }
+                    case STAND -> {
+                        actionCompleted = stand(hand);
+                    }
+                    case DOUBLE -> {
+                        actionCompleted = doubleDown(hand);
+                    }
+                    case SURRENDER -> surrender();
+                }
+            }
         }
     }
 }

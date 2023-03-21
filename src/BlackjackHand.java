@@ -37,7 +37,7 @@ public class BlackjackHand {
 
     // Utility method to deal a card to hand
 
-    public void addCard(Card card) {
+    public void addCard() {
         if (numCardsInHand == 5) return;
         setCard(numCardsInHand, deck.dealNext());
         numCardsInHand++;
