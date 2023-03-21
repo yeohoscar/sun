@@ -52,7 +52,6 @@ public class GameOfBlackJack {
     }
     public int getNumPlayers() {
         return numPlayers;
-
     }
     public Player getPlayer(int num) {
         if (num >= 0 && num <= numPlayers)

@@ -6,15 +6,8 @@ public class Card
     private String suit		= "";	// "hearts", "clubs", "diamonds", "spades"
     private String name     = "";	// "Ace", "Deuce", "Three", ..., "Jack", "Queen", "King"
 
-    private int    rank     = 0;	// Ace=1, Deuce=2, ..., King=13
-    private int    value    = 0;    // Deuce=2, ..., King=13 but Ace=14
-
-
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    // Constructors
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
+    private int    rank     = 0;	// Ace=1 or 11, Deuce=2, ..., King=10
+    private int    value    = 0;    // Deuce=2, ..., King=10 but Ace=11
 
     public Card(String name, String suit, int rank) {
         this(name, suit, rank, rank);
@@ -27,18 +20,9 @@ public class Card
         this.value  = value;
     }
 
-
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    // Accessors
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
     public String getName() {
         return name;
     }
-
-
 
     public int getRank() {
         return rank;
@@ -65,12 +49,6 @@ public class Card
     }
 
 
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    // Useful predicates
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
     public boolean isFaceCard() {
         return this instanceof FaceCard;
     }
@@ -80,7 +58,7 @@ public class Card
         return this instanceof NumberCard;
     }
 
-    public boolean isAce() {
+   /* public boolean isAce() {
         return getName() == "Ace";
     }
 
@@ -98,7 +76,7 @@ public class Card
 
     public boolean isKing() {
         return getName() == "King";
-    }
+    }*/
 
 }
 
