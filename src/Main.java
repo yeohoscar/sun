@@ -1,5 +1,3 @@
-import poker.Card;
-import poker.GameOfPoker;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,7 +20,7 @@ public class Main {
 
         System.out.println("\nLet's play POKER ...\n\n");
 
-        GameOfPoker game = new GameOfPoker(names, startingBank);
+        GameOfBlackJack game = new GameOfBlackJack(names, startingBank);
 
         game.play();
     }

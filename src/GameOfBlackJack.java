@@ -21,7 +21,7 @@ public class GameOfBlackJack {
 
     public void play(){
         while (getNumSolventPlayers() > 1) {
-            RoundOfPoker round = new RoundOfPoker(deck, players);
+            RoundOfBlackJack round = new RoundOfBlackJack(deck, players);
 
             round.play();
 
