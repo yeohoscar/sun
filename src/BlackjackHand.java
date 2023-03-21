@@ -6,6 +6,9 @@ public class BlackjackHand {
     public static final int NUM_CARDS_DEALT = 2;
     private Card[] hand;
     private DeckOfCards deck;
+    private int numCardsInHand = NUM_CARDS_DEALT;
+
+    // Constructors
 
     public BlackjackHand(Card[] hand, DeckOfCards deck) {
         this.hand = hand;
@@ -19,5 +22,52 @@ public class BlackjackHand {
         for (int i = 0; i < NUM_CARDS_DEALT; i++) {
             setCard(i, deck.dealNext());
         }
+    }
+
+    // Display hand
+
+    public String toString() {
+        String desc = "";
+
+        for (int i = 0; i < numCardsInHand; i++)
+            desc = desc + "\n      " + i + ":  " + getCard(i).toString();
+
+        return desc + "\n";
+    }
+
+    // Utility method to deal a card to hand
+
+    public void addCard(Card card) {
+        if (numCardsInHand == 5) return;
+        setCard(numCardsInHand, deck.dealNext());
+        numCardsInHand++;
+    }
+
+    // Modifier
+
+    public void setCard(int num, Card card) {
+        if (num >= 0 && num < numCardsInHand)
+            hand[num] = card;
+    }
+
+
+    // Accessor
+
+    public Card getCard(int num) {
+        if (num >= 0 && num < numCardsInHand)
+            return hand[num];
+        else
+            return null;
+    }
+
+    // Calculates value of hand
+
+    public int getValue() {
+        int i = 0, total = 0;
+        while (hand[i] != null) {
+            total += hand[i].getValue();
+            i++;
+        }
+        return total;
     }
 }
