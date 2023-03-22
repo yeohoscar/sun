@@ -1,4 +1,4 @@
-abstract class Player {
+abstract class                                   Player {
     public static final int FIRST_HAND = 0;
 
     private int bank = 0;
