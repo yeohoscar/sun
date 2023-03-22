@@ -3,5 +3,5 @@ public enum Action {
     DOUBLE,
     STAND,
     SPLIT,
-    SURRENDER
+    FOLD
 }

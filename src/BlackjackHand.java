@@ -6,6 +6,8 @@ public class BlackjackHand {
     public static final int NUM_CARDS_DEALT = 2;
     private Card[] hand;
     private DeckOfCards deck;
+
+    private int stake = 0;
     private int numCardsInHand = NUM_CARDS_DEALT;
 
     // Constructors
@@ -22,6 +24,15 @@ public class BlackjackHand {
         for (int i = 0; i < NUM_CARDS_DEALT; i++) {
             setCard(i, deck.dealNext());
         }
+    }
+
+    public BlackjackHand(BlackjackHand hand) {
+        this.deck = hand.deck;
+        this.hand = new Card[MAX_NUM_CARDS];
+        this.stake = hand.stake;
+        this.numCardsInHand = hand.numCardsInHand - 1;
+        setCard(0, hand.getCard(0));
+        hand.setNumCardsInHand(numCardsInHand - 1);
     }
 
     // Display hand
@@ -50,6 +61,14 @@ public class BlackjackHand {
             hand[num] = card;
     }
 
+    public void setStake(int stake) {
+        this.stake = stake;
+    }
+
+    public void setNumCardsInHand(int numCards) {
+        numCardsInHand = numCards;
+    }
+
 
     // Accessor
 
@@ -58,6 +77,14 @@ public class BlackjackHand {
             return hand[num];
         else
             return null;
+    }
+
+    public int getStake() {
+        return stake;
+    }
+
+    public int getNumCardsInHand() {
+        return numCardsInHand;
     }
 
     // Calculates value of hand

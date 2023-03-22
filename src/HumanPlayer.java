@@ -25,8 +25,8 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    Action chooseAction() {
-        System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
+    Action chooseAction(BlackjackHand hand) {
+        System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold");
 
         byte[] input = new byte[100];
 
@@ -42,13 +42,15 @@ public class HumanPlayer extends Player {
                         return Action.STAND;
                     }
                     case '3' -> {
-                        return Action.DOUBLE;
+                        if (canDoubleDown(hand))
+                            return Action.DOUBLE;
                     }
                     case '4' -> {
-                        return Action.SPLIT;
+                        if (canSplit(hand))
+                            return Action.SPLIT;
                     }
                     case '5' -> {
-                        return Action.SURRENDER;
+                        return Action.FOLD;
                     }
                     default -> {
                     }
@@ -59,42 +61,26 @@ public class HumanPlayer extends Player {
         return null;
     }
 
-    @Override
-    boolean hit(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I hit!\n");
-        hand.addCard();
-        if (hand.getValue() > 21) {
-            surrender();
-            return true;
+    private boolean canDoubleDown(BlackjackHand hand) {
+        if (getBank() < hand.getStake()) {
+            notifyInvalidAction("double down", "insufficient chips");
+            return false;
         }
-        return false;
+        return true;
     }
 
-    @Override
-    boolean split(BlackjackHand hand) {
+    private boolean canSplit(BlackjackHand hand) {
+        if (hand.getNumCardsInHand() == 2) {
+            notifyInvalidAction("split", "can only split on opening hand");
+            return false;
+        }
         if (hand.getCard(0) != hand.getCard(1)) {
             notifyInvalidAction("split", "cards not the same");
             return false;
         }
-    }
-
-    @Override
-    boolean stand(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I stand!\n");
-        return true;
-    }
-
-    @Override
-    boolean doubleDown(BlackjackHand hand) {
-        if (getBank() < getStake()) {
-            notifyInvalidAction("double down", "insufficient chips");
+        if (getBank() < hand.getStake()) {
+            notifyInvalidAction("split", "insufficient chips");
             return false;
-        }
-        System.out.println("\n> " + getName() + " says: I double down!\n");
-        placeBet(getStake());
-        hand.addCard();
-        if (hand.getValue() > 21) {
-            surrender();
         }
         return true;
     }

@@ -1,4 +1,7 @@
 public class ComputerPlayer extends Player {
+    public ComputerPlayer(String name, int money) {
+        super(name, money);
+    }
 
     @Override
     Action chooseAction(BlackjackHand dealerHand) {

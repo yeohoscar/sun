@@ -6,15 +6,16 @@ public class GameOfBlackJack {
     private int numPlayers;
     public GameOfBlackJack(String[] names, int bank)
     {
-        numPlayers = names.length;
+        numPlayers = names.length+1;
 
         players = new Player[numPlayers];
-
-        for (int i = 0; i < numPlayers; i++)
+        players[numPlayers-1] = new DealerPlayer("Dealer", bank);
+        for (int i = 0; i < numPlayers-1; i++)
             if (i == 0)
                 players[i] = new HumanPlayer(names[i].trim(), bank);
             else
                 players[i] = new ComputerPlayer(names[i].trim(), bank);
+
 
         deck  = new DeckOfCards();
     }
