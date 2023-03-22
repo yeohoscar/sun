@@ -1,12 +1,17 @@
+import java.util.ArrayList;
+
 abstract class Player {
-    public static final int FIRST_HAND = 0;
+    private static final int FIRST_HAND = 0;
+    private static final int MAX_HAND_VALUE = 21;
 
     private int bank = 0;
-    private int stake = 0;
     private String name = "Player";
-    protected BlackjackHand hand[] = null;
+    protected ArrayList<BlackjackHand> hand = new ArrayList<>();
 
     private boolean outOfGame = false;
+
+    private boolean folded = false;
+    private boolean busted = false;
 
     public Player(String name, int money) {
         this.name = name;
@@ -15,21 +20,16 @@ abstract class Player {
     }
 
     public void reset() {
-        outOfGame = false;
-
-        stake  = 0;
+        folded = false;
+        busted = false;
     }
 
-    public BlackjackHand[] getHand() {
+    public ArrayList<BlackjackHand> getHand() {
         return hand;
     }
 
     public int getBank() {
         return bank;
-    }
-
-    public int getStake() {
-        return stake;
     }
 
     public String getName() {
@@ -46,41 +46,76 @@ abstract class Player {
         return outOfGame;
     }
 
-    public void dealTo(DeckOfCards deck) {
-        hand[FIRST_HAND] = deck.dealBlackJackHand();
+    public boolean hasFolded() {
+        return folded;
     }
 
-    public void surrender() {
-        if (!isOutOfGame()) {
-            System.out.println("\n> " + getName() + " says: I surrender!\n");
-        }
+    public boolean hasBusted() {
+        return busted;
+    }
+
+    public void dealTo(DeckOfCards deck) {
+        hand.set(FIRST_HAND, deck.dealBlackJackHand());
+    }
+
+    public void leaveGame() {
         outOfGame = true;
+    }
+
+    public boolean isBusted(BlackjackHand hand) {
+        if (hand.getValue() > MAX_HAND_VALUE) {
+            busted = true;
+        }
+        return false;
     }
 
     public void placeBet(int bet) {
         if (bank - bet >= 0) return;
 
-        stake += bet;
+        hand.get(FIRST_HAND).setStake(bet);
         bank -= bet;
 
         System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
 
-    abstract Action chooseAction();
+    abstract Action chooseAction(BlackjackHand hand);
 
-    abstract boolean hit(BlackjackHand hand);
-    abstract boolean split(BlackjackHand hand);
-    abstract boolean stand(BlackjackHand hand);
-    abstract boolean doubleDown(BlackjackHand hand);
+    boolean hit(BlackjackHand hand) {
+        System.out.println("\n> " + getName() + " says: I hit!\n");
+        hand.addCard();
+        return isBusted(hand);
+    }
+    boolean split(BlackjackHand hand) {
+        bank -= hand.getStake();
+        BlackjackHand splitHand = new BlackjackHand(hand);
+        hit(splitHand);
+        hit(hand);
+        getHand().add(splitHand);
+        return false;
+    }
+    boolean stand(BlackjackHand hand) {
+        System.out.println("\n> " + getName() + " says: I stand!\n");
+        return true;
+    }
+    boolean doubleDown(BlackjackHand hand) {
+        System.out.println("\n> " + getName() + " says: I double down!\n");
+        placeBet(hand.getStake());
+        hand.addCard();
+        isBusted(hand);
+        return true;
+    }
+
+    boolean fold() {
+        folded = true;
+        return true;
+    }
 
     public void takeTurn() {
         if (isOutOfGame()) return;
 
         if (isBankrupt()) {
             System.out.println("\n> " + getName() + " says: I'm out!\n");
-
-            surrender();
-
+            leaveGame();
             return;
         }
 
@@ -88,7 +123,7 @@ abstract class Player {
             // TODO: action loop check if busted or stand
             boolean actionCompleted = false;
             while (!isOutOfGame() || !actionCompleted) {
-                switch (chooseAction()) {
+                switch (chooseAction(hand)) {
                     case HIT -> {
                         actionCompleted = hit(hand);
                     }
@@ -101,7 +136,9 @@ abstract class Player {
                     case DOUBLE -> {
                         actionCompleted = doubleDown(hand);
                     }
-                    case SURRENDER -> surrender();
+                    case FOLD -> {
+                        actionCompleted = fold();
+                    }
                 }
             }
         }
