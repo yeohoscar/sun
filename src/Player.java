@@ -91,12 +91,19 @@ abstract class Player {
         System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
 
+
+
+
+
+
     public void winBet(int bet){
         bank+=bet;
     }
     public void lossBet(int bet){
         bank-=bet;
     }
+
+
 
 
     abstract Action chooseAction(BlackjackHand hand);

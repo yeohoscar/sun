@@ -1,3 +1,5 @@
+import poker.Card;
+
 public class RoundOfBlackJack {
     private DeckOfCards deck;
     private Player[] players;
@@ -10,35 +12,34 @@ public class RoundOfBlackJack {
     public void play() {
 
 
-        Player dealer = players[players.length - 1];
+        DealerPlayer dealer = (DealerPlayer) players[players.length - 1];
         dealer.dealTo(deck);
         dealer.takeTurn();
+        Card faceUpCard = dealer.showOneCard();
 
         for (Player player : players) {
            if(!player.isBankrupt()&&player.getClass().getSimpleName()!="DealerPlayer"){
                switch (player.getClass().getSimpleName()) {
                    case "HumanPlayer":
                         //TODO player.placeBet();
+                       player.placeBet(5);
                        break;
                    case "ComputerPlayer":
                        //TODO player.placeBet();
+                       player.placeBet(5);
                        break;
                    default:
                        break;
                }
                player.takeTurn();
-
-
-
                if(dealer.hasBusted()){
 
                }
 
-               for(BlackjackHand hand : player.getHand()){
-                   //TODO not sure when spilt
-                   if(player.hasBusted()){
+               for(BlackjackHand hand : player.getHand())
+                   if(hand.getValue()>21){
+                       //player busted
                        dealer.winBet(hand.getStake());
-
                    }else if(dealer.hasBusted()||hand.getValue()>dealer.getHand().get(0).getValue()){
                        //player win
                        player.winBet(hand.getStake()*2);
@@ -53,10 +54,10 @@ public class RoundOfBlackJack {
                    }
                }
            }
-        }
-
-
-
-
     }
+
+
+
+
+
 }
