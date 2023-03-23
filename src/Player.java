@@ -64,6 +64,7 @@ abstract class Player {
 
     public boolean isBusted(BlackjackHand hand) {
         if (hand.getValue() > MAX_HAND_VALUE) {
+            System.out.println("\n> " + getName() + " says: I bust!\n");
             busted = true;
         }
         return false;
