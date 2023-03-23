@@ -20,6 +20,12 @@ public class HumanPlayer extends Player {
         return false;
     }
 
+
+
+    public void placeBet(Card faceUpCard) {
+        System.out.println("The face up card of dealer is: "+faceUpCard.getSuit()+" "+faceUpCard.getName());
+    }
+
     public void notifyInvalidAction(String action, String reason) {
         System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">");
     }

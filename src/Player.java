@@ -1,3 +1,5 @@
+import poker.Card;
+
 import java.util.ArrayList;
 
 abstract class Player {
@@ -26,6 +28,17 @@ abstract class Player {
 
     public ArrayList<BlackjackHand> getHand() {
         return hand;
+    }
+
+    public void showHand(){
+        System.out.print(name+"'s hand: ");
+        for(BlackjackHand hand : getHand()){
+            for(Card card:hand.getHand()){
+                System.out.print(card.getSuit()+" "+card.getName()+";");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public int getBank() {
@@ -78,6 +91,21 @@ abstract class Player {
 
         System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
+
+
+
+
+
+
+    public void winBet(int bet){
+        bank+=bet;
+    }
+    public void lossBet(int bet){
+        bank-=bet;
+    }
+
+
+
 
     abstract Action chooseAction(BlackjackHand hand);
 

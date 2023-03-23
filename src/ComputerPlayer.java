@@ -36,5 +36,6 @@ public class ComputerPlayer extends Player {
          * else
          *
          */
+        return null;
     }
 }
