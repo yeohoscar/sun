@@ -36,7 +36,7 @@ public class ComputerPlayer extends Player {
          * If ace is in hand
          *      if rest_total == 2 || rest_total == 3
          *          if dealerHand.getFaceUp() == 5 || dealerHand.getFaceUp() == 6
-         *              double down
+         *           double down
          *          else hit
          *      else if rest_total == 4 || == 5
          *          if dealerHand.getFaceUp() >= 4 || dealerHand.getFaceUp() <= 6
