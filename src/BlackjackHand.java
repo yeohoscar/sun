@@ -97,7 +97,20 @@ public class BlackjackHand {
         return total;
     }
 
+    public boolean canSplit() {
+        return hand[0] == hand[1];
+    }
+
     public Card[] getHand(){
         return hand;
+    }
+
+    public boolean hasAce() {
+        for (int i = 0; i < numCardsInHand; i++) {
+            if (hand[i].isAce()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

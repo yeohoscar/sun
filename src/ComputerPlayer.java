@@ -1,10 +1,30 @@
+import poker.Card;
+
 public class ComputerPlayer extends Player {
+    private Card dealerCard;
     public ComputerPlayer(String name, int money) {
         super(name, money);
     }
 
     @Override
-    Action chooseAction(BlackjackHand dealerHand) {
+    Action chooseAction(BlackjackHand hand) {
+        if (hand.canSplit()) {
+            if (hand.getCard(0).isAce() || hand.getCard(0).getName() == "Eight") {
+                return Action.SPLIT;
+            } else if (hand.getCard(0).isFaceCard() || hand.getCard(0).isTen()) {
+                return Action.STAND;
+            } else if (hand.getCard(0).getValue() == 9) {
+                if (dealerCard.getValue() == 7 || dealerCard.getValue() == 10 || dealerCard.getValue() == 11) {
+                    return Action.STAND;
+                } else {
+                    return Action.SPLIT;
+                }
+            }
+        }
+        if (hand.hasAce()) {
+
+        }
+
         /**
          * If two cards equal
          *      if cards == ace or 8
@@ -37,5 +57,9 @@ public class ComputerPlayer extends Player {
          *
          */
         return null;
+    }
+
+    public void setDealerCard(Card dealerCard) {
+        this.dealerCard = dealerCard;
     }
 }

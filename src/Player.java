@@ -139,7 +139,7 @@ abstract class Player {
         return true;
     }
 
-    public void takeTurn() {
+    public void takeTurn(Card dealerFaceUpCard) {
         if (isOutOfGame()) return;
 
         if (isBankrupt()) {
@@ -151,7 +151,7 @@ abstract class Player {
         for (BlackjackHand hand : hand) {
             boolean actionCompleted = false;
             while (!hasBusted() && !actionCompleted) {
-                System.out.println(hand.toString());
+                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand.toString());
                 switch (chooseAction(hand)) {
                     case HIT -> {
                         actionCompleted = hit(hand);

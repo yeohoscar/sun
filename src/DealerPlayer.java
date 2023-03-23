@@ -1,6 +1,6 @@
 import poker.Card;
 
-public class DealerPlayer extends Player{
+public class DealerPlayer extends Player {
     private static final int DEALER_STAND_LIMIT = 17;
 
     public DealerPlayer(String name, int bank)

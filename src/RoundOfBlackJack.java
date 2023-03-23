@@ -17,8 +17,8 @@ public class RoundOfBlackJack {
 
         DealerPlayer dealer = (DealerPlayer) players[players.length - 1];
         dealer.dealTo(deck);
-        dealer.takeTurn();
         Card faceUpCard = dealer.showOneCard();
+        dealer.takeTurn(faceUpCard);
 
         for (Player player : players) {
            if(!player.isBankrupt()&&player.getClass().getSimpleName()!="DealerPlayer"){
@@ -39,12 +39,13 @@ public class RoundOfBlackJack {
                        break;
                    case "ComputerPlayer":
                        //TODO player.placeBet();
+                       ((ComputerPlayer) player).setDealerCard(faceUpCard);
                        player.placeBet(5);
                        break;
                    default:
                        break;
                }
-               player.takeTurn();
+               player.takeTurn(faceUpCard);
                if(dealer.hasBusted()){
 
                }
