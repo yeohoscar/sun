@@ -97,4 +97,8 @@ public class BlackjackHand {
         }
         return total;
     }
+
+    public Card[] getHand(){
+        return hand;
+    }
 }
