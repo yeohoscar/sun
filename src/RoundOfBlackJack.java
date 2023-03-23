@@ -1,5 +1,8 @@
 import poker.Card;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class RoundOfBlackJack {
     private DeckOfCards deck;
     private Player[] players;
@@ -22,7 +25,16 @@ public class RoundOfBlackJack {
                switch (player.getClass().getSimpleName()) {
                    case "HumanPlayer":
                         //TODO player.placeBet();
-                       player.placeBet(5);
+                       System.out.println("How many bets do you want to place?");
+                       Scanner scanner = new Scanner(System.in);
+
+                       int numOfBets = 0;
+                       try {
+                           numOfBets = scanner.nextInt();
+                       } catch (InputMismatchException e) {
+                           System.out.println("Invalid input. Please enter a valid integer value.");
+                       }
+                       player.placeBet(numOfBets);
                        break;
                    case "ComputerPlayer":
                        //TODO player.placeBet();
