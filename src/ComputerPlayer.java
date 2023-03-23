@@ -46,6 +46,14 @@ public class ComputerPlayer extends Player {
                     return Action.HIT;
                 }
             }
+            else if(value==11){
+                if(dealerCard.getName()=="A"){
+                    return Action.HIT;
+                }
+                else {
+                    return Action.DOUBLE;
+                }
+            }
             else {
                 return Action.STAND;
             }
