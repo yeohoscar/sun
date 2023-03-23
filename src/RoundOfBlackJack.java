@@ -27,17 +27,7 @@ public class RoundOfBlackJack {
                System.out.println("Dealer's card: ("+faceUpCard.getName()+" of "+faceUpCard.getSuit()+")");
                switch (player.getClass().getSimpleName()) {
                    case "HumanPlayer":
-                        //TODO player.placeBet();
-                       System.out.println("How many bets do you want to place?");
-                       Scanner scanner = new Scanner(System.in);
-
-                       int numOfBets = 0;
-                       try {
-                           numOfBets = scanner.nextInt();
-                       } catch (InputMismatchException e) {
-                           System.out.println("Invalid input. Please enter a valid integer value.");
-                       }
-                       player.placeBet(numOfBets);
+                       player.placeBet(-1);
                        break;
                    case "ComputerPlayer":
                        //TODO player.placeBet();

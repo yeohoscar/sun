@@ -89,13 +89,23 @@ public class BlackjackHand {
     // Calculates value of hand
 
     public int getValue() {
-        int i = 0, total = 0;
+        int i = 0, total = 0, aces = 0;
         while (i < 5 && hand[i] != null) {
             total += hand[i].getValue();
+            if (hand[i].isAce()) {
+                aces++;
+            }
             i++;
         }
+
+        while (total > 21 && aces > 0) {
+            total -= 10;
+            aces--;
+        }
+
         return total;
     }
+
 
     public boolean canSplit() {
         return hand[0] == hand[1];

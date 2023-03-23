@@ -1,6 +1,7 @@
 import poker.Card;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 abstract class Player {
     private static final int FIRST_HAND = 0;
@@ -30,16 +31,6 @@ abstract class Player {
         return hand;
     }
 
-    public void showHand(){
-        System.out.print(name+"'s hand: ");
-        for(BlackjackHand hand : getHand()){
-            for(Card card:hand.getHand()){
-                System.out.print(card.getSuit()+" "+card.getName()+";");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
 
     public int getBank() {
         return bank;
@@ -52,7 +43,7 @@ abstract class Player {
     public boolean isBankrupt() {
         // no more money left
 
-        return bank == 0;
+        return bank == 0&&hand.get(0).getStake()==0;
     }
 
     public boolean isOutOfGame() {
@@ -77,6 +68,7 @@ abstract class Player {
 
     public boolean isBusted(BlackjackHand hand) {
         if (hand.getValue() > MAX_HAND_VALUE) {
+            System.out.println(hand);
             System.out.println("\n> " + getName() + " says: I bust!\n");
             busted = true;
         }
@@ -84,7 +76,16 @@ abstract class Player {
     }
 
     public void placeBet(int bet) {
-        if (bank - bet <= 0) return;
+        Scanner input = new Scanner(System.in);
+        while (bet <= 0 || bet > bank) {
+            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
+            bet = input.nextInt();
+            if (bet <= 0) {
+                System.out.println("Invalid bet amount! Please enter a positive value.");
+            } else if (bet > bank) {
+                System.out.println("You don't have enough chips! Please enter a smaller value.");
+            }
+        }
 
         hand.get(FIRST_HAND).setStake(bet);
         bank -= bet;
@@ -127,11 +128,16 @@ abstract class Player {
         return true;
     }
     boolean doubleDown(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I double down!\n");
-        placeBet(hand.getStake());
-        hand.addCard();
-        isBusted(hand);
-        return true;
+        if(hand.getStake()>bank){
+            System.out.println("No enough bet for double!");
+            return false;
+        }else {
+            System.out.println("\n> " + getName() + " says: I double down!\n");
+            hand.setStake(hand.getStake()*2);
+            hand.addCard();
+            isBusted(hand);
+            return true;
+        }
     }
 
     boolean fold() {

@@ -41,33 +41,34 @@ public class HumanPlayer extends Player {
         try {
             System.in.read(input);
 
-            for (int i = 0; i < input.length; i++)
+            for (int i = 0; i < input.length; i++) {
                 switch (((char) input[i])) {
-                    case '1' -> {
+                    case '1':
                         return Action.HIT;
-                    }
-                    case '2' -> {
+                    case '2':
                         return Action.STAND;
-                    }
-                    case '3' -> {
-                        if (canDoubleDown(hand))
+                    case '3':
+                        if (canDoubleDown(hand)) {
                             return Action.DOUBLE;
-                    }
-                    case '4' -> {
-                        if (canSplit(hand))
+                        }
+                        break;
+                    case '4':
+                        if (canSplit(hand)) {
                             return Action.SPLIT;
-                    }
-                    case '5' -> {
+                        }
+                        break;
+                    case '5':
                         return Action.FOLD;
-                    }
-                    default -> {
-                    }
+                    default:
+                        break;
                 }
-
+            }
+        } catch (Exception e) {
+            // handle exception here
         }
-        catch (Exception e){};
         return null;
     }
+
 
     private boolean canDoubleDown(BlackjackHand hand) {
         if (getBank() < hand.getStake()) {
