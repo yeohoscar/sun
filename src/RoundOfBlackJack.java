@@ -22,6 +22,7 @@ public class RoundOfBlackJack {
 
         for (Player player : players) {
            if(!player.isBankrupt()&&player.getClass().getSimpleName()!="DealerPlayer"){
+               player.dealTo(deck);
                switch (player.getClass().getSimpleName()) {
                    case "HumanPlayer":
                         //TODO player.placeBet();

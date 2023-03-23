@@ -2,7 +2,13 @@ import poker.Card;
 import poker.FaceCard;
 import poker.NumberCard;
 
-public class DeckOfCards extends poker.DeckOfCards {
+import java.util.Random;
+
+public class DeckOfCards {
+    public static final String[] suits 	= {"hearts", "diamonds", "clubs", "spades"};
+
+    public static final int NUMCARDS 	= 52;  // number of cards in a deck
+    private Random dice     			= new Random(System.currentTimeMillis());
     private Card[] deck = new Card[NUMCARDS];
     private int next = 0;
     public DeckOfCards() {
@@ -23,6 +29,33 @@ public class DeckOfCards extends poker.DeckOfCards {
         }
 
         reset();
+    }
+
+    public void reset() {
+        next = 0;
+        shuffle();
+    }
+
+    public void shuffle() {
+        Card palm = null;
+
+        int alpha = 0, beta = 0;
+
+        for (int i = 0; i < NUMCARDS*NUMCARDS; i++) {
+            alpha       = Math.abs(dice.nextInt())%NUMCARDS;
+            beta        = Math.abs(dice.nextInt())%NUMCARDS;
+
+            palm        = deck[alpha];
+            deck[alpha] = deck[beta];
+            deck[beta]  = palm;
+        }
+    }
+
+    public Card dealNext() {
+        if (next >= NUMCARDS)
+            return new FaceCard("Joker", "no suit", 0);  // deck is empty
+        else
+            return deck[next++];
     }
 
     public BlackjackHand dealBlackJackHand() {

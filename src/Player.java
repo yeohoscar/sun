@@ -68,7 +68,7 @@ abstract class Player {
     }
 
     public void dealTo(DeckOfCards deck) {
-        hand.set(FIRST_HAND, deck.dealBlackJackHand());
+        hand.add(deck.dealBlackJackHand());
     }
 
     public void leaveGame() {
@@ -84,7 +84,7 @@ abstract class Player {
     }
 
     public void placeBet(int bet) {
-        if (bank - bet >= 0) return;
+        if (bank - bet <= 0) return;
 
         hand.get(FIRST_HAND).setStake(bet);
         bank -= bet;
@@ -149,9 +149,9 @@ abstract class Player {
         }
 
         for (BlackjackHand hand : hand) {
-            // TODO: action loop check if busted or stand
             boolean actionCompleted = false;
-            while (!isOutOfGame() || !actionCompleted) {
+            while (!hasBusted() && !actionCompleted) {
+                System.out.println(hand.toString());
                 switch (chooseAction(hand)) {
                     case HIT -> {
                         actionCompleted = hit(hand);

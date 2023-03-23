@@ -1,3 +1,5 @@
+import poker.Card;
+
 public class HumanPlayer extends Player {
     public HumanPlayer(String name, int bank) {
         super(name, bank);

@@ -1,5 +1,4 @@
 import poker.Card;
-import poker.DeckOfCards;
 
 public class BlackjackHand {
     public static final int MAX_NUM_CARDS = 5;
@@ -38,7 +37,7 @@ public class BlackjackHand {
     // Display hand
 
     public String toString() {
-        String desc = "";
+        String desc = "\n      Stake: " + stake;
 
         for (int i = 0; i < numCardsInHand; i++)
             desc = desc + "\n      " + i + ":  " + getCard(i).toString();
@@ -57,7 +56,7 @@ public class BlackjackHand {
     // Modifier
 
     public void setCard(int num, Card card) {
-        if (num >= 0 && num < numCardsInHand)
+        if (num >= 0 && num <= numCardsInHand)
             hand[num] = card;
     }
 
@@ -91,7 +90,7 @@ public class BlackjackHand {
 
     public int getValue() {
         int i = 0, total = 0;
-        while (hand[i] != null) {
+        while (i < 5 && hand[i] != null) {
             total += hand[i].getValue();
             i++;
         }
