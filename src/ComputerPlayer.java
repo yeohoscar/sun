@@ -173,7 +173,7 @@ public class ComputerPlayer extends Player {
         if (hand.getValue() <= 8) {
             return Action.HIT;
         }
-        return null;
+        return Action.INVALID;
     }
 
     public static void main(String[] args) {
