@@ -9,7 +9,7 @@ public class GameOfBlackJack {
         numPlayers = names.length+1;
 
         players = new Player[numPlayers];
-        players[numPlayers-1] = new DealerPlayer("Dealer", bank);
+        players[numPlayers-1] = new DealerPlayer("Dealer", -1);
         for (int i = 0; i < numPlayers-1; i++)
             if (i == 0)
                 players[i] = new HumanPlayer(names[i].trim(), bank);
