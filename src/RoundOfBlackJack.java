@@ -18,7 +18,7 @@ public class RoundOfBlackJack {
             if (player == null) {
                 continue;
             }
-            if (!(player instanceof DealerPlayer) && !player.isBankrupt()) {
+            if (!(player instanceof DealerPlayer)) {
 
                 switch (player.getClass().getSimpleName()) {
                     case "HumanPlayer":
