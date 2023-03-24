@@ -85,6 +85,10 @@ public class BlackjackHand {
         return numCardsInHand;
     }
 
+    public boolean hasSurrendered() {
+        return surrender;
+    }
+
     // Calculates value of hand
 
     public int getValue() {
@@ -111,10 +115,7 @@ public class BlackjackHand {
         return getValue() > MAX_HAND_VALUE;
     }
 
-
-    public Card[] getHand(){
-        return hand;
-    }
+    // Check if hand contains ace
 
     public boolean hasAce() {
         for (int i = 0; i < numCardsInHand; i++) {
@@ -129,7 +130,25 @@ public class BlackjackHand {
         surrender = true;
     }
 
-    public boolean hasSurrendered() {
-        return surrender;
+    // Actions that affect a player's hand
+
+    public boolean hit(String name) {
+        System.out.println("\n> " + name + " says: I hit!\n");
+        addCard();
+        return isBusted() || numCardsInHand == 5;
+    }
+
+    public boolean doubleDown(String name) {
+        System.out.println("\n> " + name + " says: I double down!\n");
+        stake += stake;
+        addCard();
+        isBusted();
+        return true;
+    }
+
+    public boolean surrender(String name) {
+        System.out.println("\n> " + name + " says: I surrender!\n");
+        surrender();
+        return true;
     }
 }

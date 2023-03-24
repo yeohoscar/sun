@@ -69,6 +69,8 @@ abstract class Player {
         }
     }
 
+    // Handle bet payouts
+
     public void winBet(int bet){
         bank+=bet;
     }
@@ -83,35 +85,16 @@ abstract class Player {
 
     // Actions a player can take
 
-    boolean hit(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I hit!\n");
-        hand.addCard();
-        return hand.isBusted() || hand.getNumCardsInHand() == 5;
-    }
     boolean split(BlackjackHand hand) {
         bank -= hand.getStake();
         BlackjackHand splitHand = new BlackjackHand(hand);
-        hit(splitHand);
-        hit(hand);
+        splitHand.hit(name);
+        hand.hit(name);
         getHands().add(splitHand);
         return false;
     }
     boolean stand() {
         System.out.println("\n> " + getName() + " says: I stand!\n");
-        return true;
-    }
-    boolean doubleDown(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I double down!\n");
-        bank-=hand.getStake();
-        hand.setStake(hand.getStake()*2);
-        hand.addCard();
-        hand.isBusted();
-        return true;
-    }
-
-    boolean surrender(BlackjackHand hand) {
-        System.out.println("\n> " + getName() + " says: I surrender!\n");
-        hand.surrender();
         return true;
     }
 
@@ -132,19 +115,21 @@ abstract class Player {
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> {
-                        actionCompleted = hit(hand);
+                        actionCompleted = hand.hit(name);
                     }
                     case SPLIT -> {
+                        bank -= hand.getStake();
                         actionCompleted = split(hand);
                     }
                     case STAND -> {
                         actionCompleted = stand();
                     }
                     case DOUBLE -> {
-                        actionCompleted = doubleDown(hand);
+                        bank-=hand.getStake();
+                        actionCompleted = hand.doubleDown(name);
                     }
                     case SURRENDER -> {
-                        actionCompleted = surrender(hand);
+                        actionCompleted = hand.surrender(name);
                     }
                 }
             }
