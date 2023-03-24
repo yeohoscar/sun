@@ -40,6 +40,7 @@ public class GameOfBlackJack {
             }
             catch (Exception e) {};
         }
+        System.out.println("GAME OVER!");
     }
     public int getNumSolventPlayers() {
         // how many players still have money left?
