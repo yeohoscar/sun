@@ -156,7 +156,7 @@ public class ComputerPlayer extends Player {
             return Action.HIT;
         }
         if (hand.getValue() == 10) {
-                if (dealerCard.getValue() != 10 && dealerCard.getValue() != 11) {
+            if (dealerCard.getValue() != 10 && dealerCard.getValue() != 11) {
                 if (canDoubleDown(hand)) {
                     return Action.DOUBLE;
                 }
@@ -165,13 +165,11 @@ public class ComputerPlayer extends Player {
         }
         if (hand.getValue() == 9) {
             if (dealerCard.getValue() >= 3 && dealerCard.getValue() <= 6) {
-                return Action.DOUBLE;
-            } else {
                 if (canDoubleDown(hand)) {
                     return Action.DOUBLE;
                 }
-                return Action.HIT;
             }
+            return Action.HIT;
         }
         if (hand.getValue() <= 8) {
             return Action.HIT;
