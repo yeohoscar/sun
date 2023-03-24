@@ -11,11 +11,6 @@ public class BlackjackHand {
 
     // Constructors
 
-    public BlackjackHand(Card[] hand, DeckOfCards deck) {
-        this.hand = hand;
-        this.deck = deck;
-    }
-
     public BlackjackHand(DeckOfCards deck) {
         this.deck = deck;
         hand = new Card[MAX_NUM_CARDS];
@@ -69,7 +64,7 @@ public class BlackjackHand {
     }
 
 
-    // Accessor
+    // Accessors
 
     public Card getCard(int num) {
         if (num >= 0 && num < numCardsInHand)

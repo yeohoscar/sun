@@ -73,6 +73,7 @@ abstract class Player {
     // Modifiers
 
     public void dealTo(DeckOfCards deck) {
+        hands = new ArrayList<>();
         hands.add(deck.dealBlackJackHand());
     }
 
@@ -131,14 +132,16 @@ abstract class Player {
     }
 
 
-
+    // Method for player to pick action to do
 
     abstract Action chooseAction(BlackjackHand hand);
+
+    // Actions a player can take
 
     boolean hit(BlackjackHand hand) {
         System.out.println("\n> " + getName() + " says: I hit!\n");
         hand.addCard();
-        return isBusted(hand);
+        return isBusted(hand) || hand.getNumCardsInHand() == 5;
     }
     boolean split(BlackjackHand hand) {
         bank -= hand.getStake();
@@ -153,23 +156,20 @@ abstract class Player {
         return true;
     }
     boolean doubleDown(BlackjackHand hand) {
-        if(hand.getStake()>bank){
-            System.out.println("No enough bet for double!");
-            return false;
-        }else {
-            System.out.println("\n> " + getName() + " says: I double down!\n");
-            bank-=hand.getStake();
-            hand.setStake(hand.getStake()*2);
-            hand.addCard();
-            isBusted(hand);
-            return true;
-        }
+        System.out.println("\n> " + getName() + " says: I double down!\n");
+        bank-=hand.getStake();
+        hand.setStake(hand.getStake()*2);
+        hand.addCard();
+        isBusted(hand);
+        return true;
     }
 
     boolean surrender() {
         surrendered = true;
         return true;
     }
+
+    // Schedule game actions
 
     public void takeTurn(Card dealerFaceUpCard) {
         if (isOutOfGame()) return;
