@@ -106,11 +106,6 @@ public class BlackjackHand {
         return total;
     }
 
-
-    public boolean canSplit() {
-        return hand[0] == hand[1];
-    }
-
     public Card[] getHand(){
         return hand;
     }

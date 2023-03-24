@@ -52,6 +52,10 @@ public class HumanPlayer extends Player {
 
 
     private boolean canDoubleDown(BlackjackHand hand) {
+        if (hand.getNumCardsInHand() != 2) {
+            notifyInvalidAction("double down", "can only double down on opening hand");
+            return false;
+        }
         if (getBank() < hand.getStake()) {
             notifyInvalidAction("double down", "insufficient chips");
             return false;
@@ -60,7 +64,7 @@ public class HumanPlayer extends Player {
     }
 
     private boolean canSplit(BlackjackHand hand) {
-        if (hand.getNumCardsInHand() == 2) {
+        if (hand.getNumCardsInHand() != 2) {
             notifyInvalidAction("split", "can only split on opening hand");
             return false;
         }
