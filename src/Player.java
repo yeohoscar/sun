@@ -35,14 +35,7 @@ abstract class Player {
 
     public boolean isBankrupt() {
         // no more money left
-        boolean noStake = true;
-        for (BlackjackHand hand : hands) {
-            if (hand.getStake() != 0) {
-                noStake = false;
-                break;
-            }
-        }
-        return bank == 0 && noStake;
+        return bank == 0;
     }
 
     public boolean isOutOfGame() {
@@ -102,12 +95,6 @@ abstract class Player {
 
     public void takeTurn(Card dealerFaceUpCard) {
         if (isOutOfGame()) return;
-
-        if (isBankrupt()) {
-            System.out.println("\n> " + getName() + " says: I'm out!\n");
-            leaveGame();
-            return;
-        }
 
         int numHand = 0;
         while (numHand != hands.size()) {

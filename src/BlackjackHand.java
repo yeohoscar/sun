@@ -29,17 +29,20 @@ public class BlackjackHand {
         this.stake = hand.stake;
         this.numCardsInHand = hand.numCardsInHand - 1;
         this.surrender = hand.surrender;
-        setCard(0, hand.getCard(0));
-        hand.setNumCardsInHand(numCardsInHand - 1);
+        setCard(0, hand.getCard(1));
+        hand.setNumCardsInHand(hand.numCardsInHand - 1);
     }
 
     // Display hand
 
     public String toString() {
-        String desc = "\n      Stake: " + stake;
+        String desc = "";
+        if (stake != 0) {
+            desc += "\n      Stake: " + stake;
+        }
 
         for (int i = 0; i < numCardsInHand; i++)
-            desc = desc + "\n      " + i + ":  " + getCard(i).toString();
+            desc += "\n      " + i + ":  " + getCard(i).toString();
 
         return desc + "\n";
     }
@@ -167,5 +170,14 @@ public class BlackjackHand {
         System.out.println("\n> " + name + " says: I surrender!\n");
         surrender();
         return true;
+    }
+
+    public static void main(String[] args) {
+        DeckOfCards deck = new DeckOfCards();
+        BlackjackHand hand1 = new BlackjackHand(deck);
+        BlackjackHand hand2 = new BlackjackHand(hand1);
+        hand1.addCard();
+        hand2.addCard();
+        System.out.println(hand1 + "\n\n" + hand2);
     }
 }
