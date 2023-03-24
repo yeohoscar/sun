@@ -96,7 +96,7 @@ abstract class Player {
         getHands().add(splitHand);
         return false;
     }
-    boolean stand(BlackjackHand hand) {
+    boolean stand() {
         System.out.println("\n> " + getName() + " says: I stand!\n");
         return true;
     }
@@ -129,7 +129,7 @@ abstract class Player {
         for (BlackjackHand hand : hands) {
             boolean actionCompleted = false;
             while (!(hand.isBusted() && actionCompleted) ) {
-                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand.toString());
+                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> {
                         actionCompleted = hit(hand);
@@ -138,7 +138,7 @@ abstract class Player {
                         actionCompleted = split(hand);
                     }
                     case STAND -> {
-                        actionCompleted = stand(hand);
+                        actionCompleted = stand();
                     }
                     case DOUBLE -> {
                         actionCompleted = doubleDown(hand);
