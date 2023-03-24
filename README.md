@@ -1,4 +1,8 @@
 # Blackjack
+## Created by sun_emoji
+Oscar Yeoh 20403662
+Haocheng Sun 19203637
+Yanhao Sun 19205434
 
 ## Instructions to Run
 1. Run jar package.
