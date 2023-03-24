@@ -28,7 +28,11 @@ public class RoundOfBlackJack {
                     case "ComputerPlayer":
                         //TODO player.placeBet();
                         ((ComputerPlayer) player).setDealerCard(faceUpCard);
-                        player.placeBet(5);
+                        if(player.getBank()<5){
+                            player.placeBet(player.getBank());
+                        }else {
+                            player.placeBet(5);
+                        }
                         break;
                     default:
                         break;
