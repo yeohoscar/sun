@@ -53,7 +53,7 @@ public class RoundOfBlackJack {
                         player.winBet(hand.getStake() / 2);
                         dealer.winBet(hand.getStake() / 2);
                         System.out.println(player.getName() + " surrendered, return " + hand.getStake() / 2 + " bet");
-                    } else if (dealer.getHand().isBusted() || hand.getValue() > dealer.getHand().getValue() || hand.getNumCardsInHand() == 5) {
+                    } else if (dealer.getHand().isBusted() || hand.getValue() > dealer.getHand().getValue() || dealer.getHand().getNumCardsInHand() == 5) {
                         //player win
                         player.winBet(hand.getStake() * 2);
                         dealer.lossBet(hand.getStake());
@@ -66,6 +66,7 @@ public class RoundOfBlackJack {
                         //dealer win
                         System.out.println(player.getName() + " loss " + hand.getStake() + " bet");
                         dealer.winBet(hand.getStake());
+                        hand.setStake(0);
                     }
                 }
                 System.out.println(player.getName() + "'s current bank: " + player.getBank() + " bet");
