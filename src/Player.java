@@ -1,20 +1,22 @@
 import poker.Card;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 abstract class Player {
-    private static final int FIRST_HAND = 0;
+    protected static final int FIRST_HAND = 0;
     private static final int MAX_HAND_VALUE = 21;
 
-    private int bank = 0;
+    protected int bank = 0;
     private String name = "Player";
-    protected ArrayList<BlackjackHand> hand = new ArrayList<>();
+    protected ArrayList<BlackjackHand> hands = new ArrayList<>();
 
     private boolean outOfGame = false;
 
     private boolean surrendered = false;
     private boolean busted = false;
+
+
+    // Constructor
 
     public Player(String name, int money) {
         this.name = name;
@@ -22,13 +24,17 @@ abstract class Player {
         reset();
     }
 
+    // Reset internal state for each round of Blackjack
+
     public void reset() {
         surrendered = false;
         busted = false;
     }
 
-    public ArrayList<BlackjackHand> getHand() {
-        return hand;
+    // Accessors
+
+    public ArrayList<BlackjackHand> getHands() {
+        return hands;
     }
 
 
@@ -42,8 +48,14 @@ abstract class Player {
 
     public boolean isBankrupt() {
         // no more money left
-
-        return bank == 0&&hand.get(0).getStake()==0;
+        boolean noStake = true;
+        for (BlackjackHand hand : hands) {
+            if (hand.getStake() != 0) {
+                noStake = false;
+                break;
+            }
+        }
+        return bank == 0 && noStake;
     }
 
     public boolean isOutOfGame() {
@@ -58,8 +70,10 @@ abstract class Player {
         return busted;
     }
 
+    // Modifiers
+
     public void dealTo(DeckOfCards deck) {
-        hand.add(deck.dealBlackJackHand());
+        hands.add(deck.dealBlackJackHand());
     }
 
     public void leaveGame() {
@@ -75,23 +89,34 @@ abstract class Player {
         return false;
     }
 
-    public void placeBet(int bet) {
-        Scanner input = new Scanner(System.in);
-        while (bet <= 0 || bet > bank) {
-            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
-            bet = input.nextInt();
-            if (bet <= 0) {
-                System.out.println("Invalid bet amount! Please enter a positive value.");
-            } else if (bet > bank) {
-                System.out.println("You don't have enough chips! Please enter a smaller value.");
-            }
+    public void placeBet(int bet){
+        if(bet<=bank){
+            hands.get(FIRST_HAND).setStake(bet);
+            bank -= bet;
+
+            System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
         }
-
-        hand.get(FIRST_HAND).setStake(bet);
-        bank -= bet;
-
-        System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
+//    public void placeBet(int bet) {
+//        Scanner input = new Scanner(System.in);
+//        while (bet <= 0 || bet > bank) {
+//            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
+//            bet = input.nextInt();
+//            if (bet <= 0) {
+//                System.out.println("Invalid bet amount! Please enter a positive value.");
+//            } else if (bet > bank) {
+//                System.out.println("You don't have enough chips! Please enter a smaller value.");
+//            }
+//            else {
+//                System.out.println("The bet must be a number!!");
+//            }
+//        }
+//
+//        hand.get(FIRST_HAND).setStake(bet);
+//        bank -= bet;
+//
+//        System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
+//    }
 
 
 
@@ -120,7 +145,7 @@ abstract class Player {
         BlackjackHand splitHand = new BlackjackHand(hand);
         hit(splitHand);
         hit(hand);
-        getHand().add(splitHand);
+        getHands().add(splitHand);
         return false;
     }
     boolean stand(BlackjackHand hand) {
@@ -154,7 +179,7 @@ abstract class Player {
             return;
         }
 
-        for (BlackjackHand hand : hand) {
+        for (BlackjackHand hand : hands) {
             boolean actionCompleted = false;
             while (!hasBusted() && !actionCompleted) {
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand.toString());

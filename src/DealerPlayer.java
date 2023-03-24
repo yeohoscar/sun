@@ -9,16 +9,16 @@ public class DealerPlayer extends Player {
     }
     public int getFaceUp()
     {
-        return this.getHand().get(0).getCard(0).getValue();
+        return this.getHands().get(0).getCard(0).getValue();
     }
     public Card showOneCard()
     {
-        return this.getHand().get(0).getCard(0);
+        return this.getHands().get(0).getCard(0);
     }
     @Override
     Action chooseAction(BlackjackHand hand){
         try{
-            if(this.getHand().get(0).getValue()<DEALER_STAND_LIMIT)
+            if(this.getHands().get(0).getValue()<DEALER_STAND_LIMIT)
             {
                 return Action.HIT;
             }
