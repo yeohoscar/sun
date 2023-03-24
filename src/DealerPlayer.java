@@ -11,6 +11,7 @@ public class DealerPlayer extends Player {
     {
         return this.getHands().get(0).getCard(0);
     }
+    //dealer always hit until the handValue is greater or equal to 17
     @Override
     Action chooseAction(BlackjackHand hand){
         try{
@@ -25,7 +26,7 @@ public class DealerPlayer extends Player {
         catch (Exception e){}
         return Action.INVALID;
     }
-
+    // dealer never spilt
     public BlackjackHand getHand() {
         return hands.get(0);
     }
