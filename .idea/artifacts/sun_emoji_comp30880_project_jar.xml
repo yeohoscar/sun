@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="sun_emoji_comp30880_project:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/sun_emoji_comp30880_project_jar</output-path>
-    <root id="archive" name="sun_emoji_comp30880_project.jar">
-      <element id="module-output" name="sun_emoji_comp30880_project" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../poker.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>
