@@ -128,7 +128,7 @@ abstract class Player {
 
         for (BlackjackHand hand : hands) {
             boolean actionCompleted = false;
-            while (!(hand.isBusted() && actionCompleted) ) {
+            while (!(hand.isBusted() || actionCompleted) ) {
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> {
