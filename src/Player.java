@@ -158,6 +158,7 @@ abstract class Player {
             return false;
         }else {
             System.out.println("\n> " + getName() + " says: I double down!\n");
+            bank-=hand.getStake();
             hand.setStake(hand.getStake()*2);
             hand.addCard();
             isBusted(hand);
