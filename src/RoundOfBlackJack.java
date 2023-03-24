@@ -69,7 +69,7 @@ public class RoundOfBlackJack {
         }
     }
 
-    /*----------------------------------------------*/
+    /*-----------Restart game and deal all remaining players cards--------------------------*/
 
     public void deal() {
         for (int i = 0; i < players.length; i++) {
@@ -82,6 +82,8 @@ public class RoundOfBlackJack {
             }
         }
     }
+
+    /*------------Modifier-------------------*/
 
     public void removePlayer(int num) {
         if (num >= 0 && num < players.length) {
