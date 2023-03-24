@@ -142,19 +142,23 @@ public class ComputerPlayer extends Player {
     }
 
     private boolean shouldSplit(BlackjackHand hand) {
-        if (hand.getCard(0).isAce() || hand.getCard(0).getValue() == 8) {
-            return true;
-        } else if (hand.getCard(0).getValue() == 10 || hand.getCard(0).getValue() == 5) {
-            return false;
-        } else if (hand.getCard(0).getValue() == 9) {
-            return dealerCard.getValue() != 7 && dealerCard.getValue() != 10 && dealerCard.getValue() != 11;
-        } else if (hand.getCard(0).getValue() == 7 || hand.getCard(0).getValue() == 3 || hand.getCard(0).getValue() == 2) {
-            return dealerCard.getValue() >= 2 && dealerCard.getValue() <= 7;
-        } else if (hand.getCard(0).getValue() == 6) {
-            return dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6;
-        } else {
-            return dealerCard.getValue() == 5 || dealerCard.getValue() == 6;
+        switch (hand.getCard(0).getValue()) {
+            case 10, 5:
+                return false;
+            case 2, 3, 6, 7:
+                if (dealerCard.getValue() >= 8 && dealerCard.getValue() <= 11 || hand.getValue() == 6 && dealerCard.getValue() == 7) {
+                    return false;
+                }
+            case 9:
+                if (dealerCard.getValue() == 7 || dealerCard.getValue() == 10 || dealerCard.getValue() == 11) {
+                    return false;
+                }
+            case 4:
+                if (dealerCard.getValue() < 5 && dealerCard.getValue() > 6) {
+                    return false;
+                }
         }
+        return true;
     }
 
     public void setDealerCard(Card dealerCard) {
