@@ -51,7 +51,7 @@ public class ComputerPlayer extends Player {
             }
         }
 
-        if (hand.getValue() == 17) {
+        if (hand.getValue() >= 17) {
             return Action.STAND;
         }
         if (hand.getValue() == 16) {
@@ -103,7 +103,7 @@ public class ComputerPlayer extends Player {
                 return Action.HIT;
             }
         }
-        if (hand.getValue() == 8) {
+        if (hand.getValue() <= 8) {
             return Action.HIT;
         }
 
