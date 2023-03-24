@@ -23,30 +23,24 @@ public class RoundOfBlackJack {
             }
             // player without dealer
             if (!(player instanceof DealerPlayer)) {
-
                 switch (player.getClass().getSimpleName()) {
                     case "HumanPlayer" -> {
                         System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
                         player.placeBet(-1);
                         break;
-                    case "ComputerPlayer":
+                    }
+                    case "ComputerPlayer"-> {
                         ((ComputerPlayer) player).setDealerCard(faceUpCard);
                         //all in if less than 5
-                        if(player.getBank()<5){
+                        if (player.getBank() < 5) {
                             player.placeBet(player.getBank());
-                        }else {
+                        } else {
                             player.placeBet(5);
                         }
                         break;
-                    default:
+                    }
+                    default-> {
                         break;
-                    }
-                    case "ComputerPlayer" -> {
-                        //TODO player.placeBet();
-                        ((ComputerPlayer) player).setDealerCard(faceUpCard);
-                        player.placeBet(Math.min(player.getBank(), 5));
-                    }
-                    default -> {
                     }
                 }
                 //player choose actions
@@ -88,7 +82,7 @@ public class RoundOfBlackJack {
 
         }
     }
-    
+
     //remove player from list who is Bankrupt
     /*----------------------------------------------*/
     public void deal() {
