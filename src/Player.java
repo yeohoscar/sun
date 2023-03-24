@@ -9,8 +9,6 @@ abstract class Player {
     private String name = "Player";
     protected ArrayList<BlackjackHand> hands = new ArrayList<>();
 
-    private boolean outOfGame = false;
-
     // Constructor
 
     public Player(String name, int money) {
@@ -39,19 +37,11 @@ abstract class Player {
         return bank == 0;
     }
 
-    public boolean isOutOfGame() {
-        return outOfGame;
-    }
-
     // Modifiers
 
     public void dealTo(DeckOfCards deck) {
         hands = new ArrayList<>();
         hands.add(deck.dealBlackJackHand());
-    }
-
-    public void leaveGame() {
-        outOfGame = true;
     }
 
     public void placeBet(int bet){
@@ -94,8 +84,6 @@ abstract class Player {
     // Schedule game actions
 
     public void takeTurn(Card dealerFaceUpCard) {
-        if (isOutOfGame()) return;
-
         int numHand = 0;
         while (numHand != hands.size()) {
             BlackjackHand hand = hands.get(numHand);
