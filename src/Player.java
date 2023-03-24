@@ -35,6 +35,7 @@ abstract class Player {
 
     public boolean isBankrupt() {
         // no more money left
+
         return bank == 0;
     }
 
