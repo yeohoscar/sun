@@ -175,6 +175,7 @@ public class BlackjackHand {
     public static void main(String[] args) {
         DeckOfCards deck = new DeckOfCards();
         BlackjackHand hand1 = new BlackjackHand(deck);
+        hand1.setStake(5);
         BlackjackHand hand2 = new BlackjackHand(hand1);
         hand1.addCard();
         hand2.addCard();

@@ -37,7 +37,7 @@ public class HumanPlayer extends Player {
     @Override
     Action chooseAction(BlackjackHand hand) {
 
-            System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold");
+            System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
 
             byte[] input = new byte[100];
 

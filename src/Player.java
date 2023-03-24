@@ -80,7 +80,6 @@ abstract class Player {
     // Actions a player can take
 
     boolean split(BlackjackHand hand) {
-        bank -= hand.getStake();
         BlackjackHand splitHand = new BlackjackHand(hand);
         splitHand.addCard();
         hand.addCard();
@@ -103,35 +102,29 @@ abstract class Player {
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
                 System.out.println(">> "+name+"'s turn!");
-                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
+                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + "\n      Bank: " + bank + hand);
                 switch (chooseAction(hand)) {
-                    case HIT -> {
-                        actionCompleted = hand.hit(name);
-                        if(hand.isBusted()){
-                            System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
-                            System.out.println("\n> " + name + " says: I busted!\n");
-                        }
-                    }
+                    case HIT -> actionCompleted = hand.hit(name);
                     case SPLIT -> {
                         bank -= hand.getStake();
                         actionCompleted = split(hand);
                     }
-                    case STAND -> {
-                        actionCompleted = stand();
-                    }
+                    case STAND -> actionCompleted = stand();
                     case DOUBLE -> {
-                        bank-=hand.getStake();
+                        bank -= hand.getStake();
                         actionCompleted = hand.doubleDown(name);
                     }
-                    case SURRENDER -> {
-                        actionCompleted = hand.surrender(name);
+                    case SURRENDER -> actionCompleted = hand.surrender(name);
+                    default -> {
                     }
-                    default -> {}
                 }
                 delay(500);
             }
             numHand++;
             System.out.println(hand);
+            if(hand.isBusted()){
+                System.out.println("\n> " + name + " says: I busted!\n");
+            }
         }
     }
 
