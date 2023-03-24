@@ -1,4 +1,5 @@
 import poker.Card;
+import poker.NumberCard;
 
 public class ComputerPlayer extends Player {
     private Card dealerCard;
@@ -68,7 +69,7 @@ public class ComputerPlayer extends Player {
     }
 
     private Action softTotalActions(BlackjackHand hand) {
-        if(hand.getValue()<=21) {
+        if(hand.isSoftTotal()) {
             switch (hand.getValue() - 11) {
                 case 9, 10 -> {
                     return Action.STAND;
@@ -106,10 +107,10 @@ public class ComputerPlayer extends Player {
                     return Action.HIT;
                 }
             }
-        }else {
+        } else {
             return Action.STAND;
         }
-        return null;
+        return Action.INVALID;
     }
 
     private Action hardTotalActions(BlackjackHand hand) {
@@ -176,5 +177,17 @@ public class ComputerPlayer extends Player {
             return Action.HIT;
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        DeckOfCards deck = new DeckOfCards();
+        ComputerPlayer p = new ComputerPlayer("jim", 5);
+        p.setDealerCard(new NumberCard("Ace", "Hearts", 1, 11));
+
+        p.dealTo(deck);
+        p.hands.get(0).setCard(0, new NumberCard("Ace", "Hearts", 1, 11));
+        p.hands.get(0).setCard(1, new NumberCard("King", "Hearts", 1, 2));
+        p.hands.get(0).addCard();
+        System.out.println(p.hands.get(0) + "\n\n" + p.chooseAction(p.hands.get(0)));
     }
 }

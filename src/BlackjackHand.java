@@ -109,6 +109,23 @@ public class BlackjackHand {
         return total;
     }
 
+    public boolean isSoftTotal() {
+        int i = 0, total = 0, aces = 0;
+        while (i < 5 && hand[i] != null) {
+            total += hand[i].getValue();
+            if (hand[i].isAce()) {
+                aces++;
+            }
+            i++;
+        }
+
+        while (total > 21 && aces > 0) {
+            total -= 10;
+            aces--;
+        }
+        return aces > 0;
+    }
+
     // Check if hand exceeds 21
 
     public boolean isBusted() {

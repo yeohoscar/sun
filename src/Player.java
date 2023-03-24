@@ -88,8 +88,8 @@ abstract class Player {
     boolean split(BlackjackHand hand) {
         bank -= hand.getStake();
         BlackjackHand splitHand = new BlackjackHand(hand);
-        splitHand.hit(name);
-        hand.hit(name);
+        splitHand.addCard();
+        hand.addCard();
         getHands().add(splitHand);
         return false;
     }
@@ -109,7 +109,9 @@ abstract class Player {
             return;
         }
 
-        for (BlackjackHand hand : hands) {
+        int numHand = 0;
+        while (numHand != hands.size()) {
+            BlackjackHand hand = hands.get(numHand);
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
@@ -135,6 +137,8 @@ abstract class Player {
                 }
                 delay(500);
             }
+            numHand++;
+            System.out.println(hand);
         }
     }
 
