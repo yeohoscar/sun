@@ -19,9 +19,10 @@ public class RoundOfBlackJack {
                 continue;
             }
             if (!(player instanceof DealerPlayer) && !player.isBankrupt()) {
-                System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
+
                 switch (player.getClass().getSimpleName()) {
                     case "HumanPlayer":
+                        System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
                         player.placeBet(-1);
                         break;
                     case "ComputerPlayer":
@@ -67,9 +68,9 @@ public class RoundOfBlackJack {
                         hand.setStake(0);
                     }
                 }
-                System.out.println(player.getName() + "'s current bank: " + player.getBank() + " bet");
+                System.out.println("> "+player.getName() + "'s current bank: " + player.getBank() + " bet");
             } else {
-                System.out.println("Dealer's current bank: " + player.getBank() + " bet");
+                System.out.println(">>> Dealer's current bank: " + player.getBank() + " bet");
             }
 
         }
