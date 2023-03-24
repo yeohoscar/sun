@@ -28,7 +28,7 @@ public class GameOfBlackJack {
             round.play();
 
             try {
-                System.out.print("\n\nPlay another round? Press 'q' to terminate this game ... ");
+                System.out.print("\n\nPlay another round? Press 'c' to continue and q' to terminate this game ... ");
 
                 byte[] input = new byte[100];
 
