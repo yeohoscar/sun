@@ -9,14 +9,14 @@ abstract class Player {
     private String name = "Player";
     protected ArrayList<BlackjackHand> hands = new ArrayList<>();
 
-    // Constructor
+    /*--------------------Constructor--------------------------*/
 
     public Player(String name, int money) {
         this.name = name;
         bank = money;
     }
 
-    // Accessors
+    /*--------------------Accessors--------------------------*/
 
     public ArrayList<BlackjackHand> getHands() {
         return hands;
@@ -37,7 +37,7 @@ abstract class Player {
         return bank == 0;
     }
 
-    // Modifiers
+    /*--------------------Modifiers--------------------------*/
 
     public void dealTo(DeckOfCards deck) {
         hands = new ArrayList<>();
@@ -53,7 +53,7 @@ abstract class Player {
         }
     }
 
-    // Handle bet payouts
+    /*------------------Handle bet payouts----------------------------*/
 
     public void winBet(int bet){
         bank+=bet;
@@ -63,11 +63,11 @@ abstract class Player {
     }
 
 
-    // Method for player to pick action to do
+    /*----------Method for player to pick action to do----------------*/
 
     abstract Action chooseAction(BlackjackHand hand);
 
-    // Actions a player can take
+    /*----------------Actions a player can take-----------------------*/
 
     boolean split(BlackjackHand hand) {
         BlackjackHand splitHand = new BlackjackHand(hand);
@@ -81,7 +81,7 @@ abstract class Player {
         return true;
     }
 
-    // Schedule game actions
+    /*----------------Schedule game actions----------------------------*/
 
     public void takeTurn(Card dealerFaceUpCard) {
         int numHand = 0;
@@ -89,12 +89,7 @@ abstract class Player {
             BlackjackHand hand = hands.get(numHand);
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
-                if(numHand!=0){
-                    System.out.println(">> "+name+"'s second hand turn!");
-                }else{
-                    System.out.println(">> "+name+"'s first hand turn!");
-                }
-//                System.out.println(">> "+name+"'s turn!");
+                System.out.println(">> " + name + ": hand " + (numHand+1) + " turn!");
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + "\n      Bank: " + bank + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> actionCompleted = hand.hit(name);
@@ -121,7 +116,8 @@ abstract class Player {
         }
     }
 
-    // Utility method to delay actions
+    /*-----------Utility method to delay actions--------------------*/
+
     private void delay(int numMilliseconds) {
         try {
             Thread.sleep(numMilliseconds);

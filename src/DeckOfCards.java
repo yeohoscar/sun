@@ -5,12 +5,14 @@ import poker.NumberCard;
 import java.util.Random;
 
 public class DeckOfCards {
-    public static final String[] suits 	= {"hearts", "diamonds", "clubs", "spades"};
+    public static final String[] suits = {"hearts", "diamonds", "clubs", "spades"};
 
-    public static final int NUMCARDS 	= 52;  // number of cards in a deck
-    private Random dice     			= new Random(System.currentTimeMillis());
-    private Card[] deck = new Card[NUMCARDS];
-    private int next = 0;
+    public static final int NUMCARDS = 52;  // number of cards in a deck
+    private Random dice = new Random(System.currentTimeMillis());
+    private Card[] deck = new Card[NUMCARDS]; // sequence of cards to be dealt
+    private int next = 0; //index of next card to be dealt
+
+    /*--------------------Constructor--------------------------*/
     public DeckOfCards() {
         for (int i = 0; i < suits.length; i++) {
             deck[next++] = new NumberCard("Ace", suits[i], 1, 11);
@@ -30,6 +32,8 @@ public class DeckOfCards {
 
         reset();
     }
+
+    /*---------------Reset internal deck state--------------------------*/
 
     public void reset() {
         next = 0;
@@ -51,12 +55,15 @@ public class DeckOfCards {
         }
     }
 
+    /*----------------Return next card in deck--------------------------*/
+
     public Card dealNext() {
         if (next >= NUMCARDS)
             return new FaceCard("Joker", "no suit", 0);  // deck is empty
         else
             return deck[next++];
     }
+
 
     public BlackjackHand dealBlackJackHand() {
         return new BlackjackHand(this);

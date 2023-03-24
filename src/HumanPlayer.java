@@ -1,10 +1,15 @@
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
+
+    /*--------------------Constructor--------------------------*/
     public HumanPlayer(String name, int bank) {
         super(name, bank);
     }
 
+    /*------------Facilitate human placing a bet---------------*/
+
+    @Override
     public void placeBet(int bet) {
         Scanner input = new Scanner(System.in);
         while (bet <= 0 || bet > bank) {
@@ -30,23 +35,24 @@ public class HumanPlayer extends Player {
         System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
 
+    /*-------------Utility function to notify user of wrong action-----------------*/
+
     public void notifyInvalidAction(String action, String reason) {
         System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">\n\n");
     }
 
+    /*----------------Get human player's action-----------------------*/
+
     @Override
     Action chooseAction(BlackjackHand hand) {
-
             System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
-
             byte[] input = new byte[100];
-
 
             try {
                 System.in.read(input);
 
-                for (int i = 0; i < input.length; i++) {
-                    switch (((char) input[i])) {
+                for (byte b : input) {
+                    switch (((char) b)) {
                         case '1':
                             return Action.HIT;
                         case '2':
@@ -69,13 +75,11 @@ public class HumanPlayer extends Player {
                             break;
                     }
                 }
-            } catch (Exception e) {
-                // handle exception here
-            }
-
+            } catch (Exception e) {}
         return Action.INVALID;
-
     }
+
+    /*--------------Methods to check if actions are allowed--------------------*/
 
     private boolean canSurrender(BlackjackHand hand) {
         if (hand.getNumCardsInHand() != 2) {

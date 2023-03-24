@@ -12,7 +12,7 @@ public class BlackjackHand {
 
     private boolean surrender = false;
 
-    // Constructors
+    /*--------------------Constructors--------------------------*/
 
     public BlackjackHand(DeckOfCards deck) {
         this.deck = deck;
@@ -33,7 +33,7 @@ public class BlackjackHand {
         hand.setNumCardsInHand(hand.numCardsInHand - 1);
     }
 
-    // Display hand
+    /*--------------------Display hand--------------------------*/
 
     public String toString() {
         String desc = "";
@@ -47,7 +47,7 @@ public class BlackjackHand {
         return desc + "\n";
     }
 
-    // Utility method to deal a card to hand
+    /*-----------------Deal card to hand-----------------------*/
 
     public void addCard() {
         if (numCardsInHand == 5) return;
@@ -55,7 +55,7 @@ public class BlackjackHand {
         numCardsInHand++;
     }
 
-    // Modifier
+    /*--------------------Mutators--------------------------*/
 
     public void setCard(int num, Card card) {
         if (num >= 0 && num <= numCardsInHand)
@@ -70,8 +70,11 @@ public class BlackjackHand {
         numCardsInHand = numCards;
     }
 
+    public void surrender() {
+        surrender = true;
+    }
 
-    // Accessors
+    /*--------------------Accessors--------------------------*/
 
     public Card getCard(int num) {
         if (num >= 0 && num < numCardsInHand)
@@ -92,7 +95,7 @@ public class BlackjackHand {
         return surrender;
     }
 
-    // Calculates value of hand
+    /*----------------Calculate worth of hand--------------------------*/
 
     public int getValue() {
         int i = 0, total = 0, aces = 0;
@@ -112,6 +115,8 @@ public class BlackjackHand {
         return total;
     }
 
+    /*--------------Check if hand has a soft total--------------------*/
+
     public boolean isSoftTotal() {
         int i = 0, total = 0, aces = 0;
         while (i < 5 && hand[i] != null) {
@@ -129,13 +134,13 @@ public class BlackjackHand {
         return aces > 0;
     }
 
-    // Check if hand exceeds 21
+    /*-----------Check if hand exceeds 21-----------------*/
 
     public boolean isBusted() {
         return getValue() > MAX_HAND_VALUE;
     }
 
-    // Check if hand contains ace
+    /*----------Check if hand as an Ace-------------------*/
 
     public boolean hasAce() {
         for (int i = 0; i < numCardsInHand; i++) {
@@ -146,11 +151,7 @@ public class BlackjackHand {
         return false;
     }
 
-    public void surrender() {
-        surrender = true;
-    }
-
-    // Actions that affect a player's hand
+    /*----------Player actions that affect hand------------------*/
 
     public boolean hit(String name) {
         System.out.println("\n> " + name + " says: I hit!\n");
@@ -170,15 +171,5 @@ public class BlackjackHand {
         System.out.println("\n> " + name + " says: I surrender!\n");
         surrender();
         return true;
-    }
-
-    public static void main(String[] args) {
-        DeckOfCards deck = new DeckOfCards();
-        BlackjackHand hand1 = new BlackjackHand(deck);
-        hand1.setStake(5);
-        BlackjackHand hand2 = new BlackjackHand(hand1);
-        hand1.addCard();
-        hand2.addCard();
-        System.out.println(hand1 + "\n\n" + hand2);
     }
 }

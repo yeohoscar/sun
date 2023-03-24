@@ -3,11 +3,14 @@ import poker.NumberCard;
 
 public class ComputerPlayer extends Player {
     private Card dealerCard;
+
+    /*--------------------Constructor--------------------------*/
+
     public ComputerPlayer(String name, int money) {
         super(name, money);
     }
 
-    // Determines what action Computer player will take
+    /*----------------Get computer player's action-----------------------*/
 
     @Override
     Action chooseAction(BlackjackHand hand) {
@@ -26,13 +29,13 @@ public class ComputerPlayer extends Player {
         return hardTotalActions(hand);
     }
 
-    // Mutator
+    /*---------------------Mutator-------------------------*/
 
     public void setDealerCard(Card dealerCard) {
         this.dealerCard = dealerCard;
     }
 
-    // Utility methods to check if action is allowed
+    /*--------------Methods to check if actions are allowed--------------------*/
 
     private boolean canSurrender(BlackjackHand hand) {
         return hand.getNumCardsInHand() == 2;
@@ -46,7 +49,7 @@ public class ComputerPlayer extends Player {
         return hand.getNumCardsInHand() == 2 && hand.getCard(0).getValue() == hand.getCard(1).getValue() && getBank() >= hand.getStake();
     }
 
-    // Methods to determine action using a Blackjack strategy table
+    /*--------------Methods to determine action using a Blackjack strategy table-----------------*/
 
     private boolean shouldSplit(BlackjackHand hand) {
         switch (hand.getCard(0).getValue()) {
