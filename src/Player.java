@@ -101,7 +101,12 @@ abstract class Player {
             BlackjackHand hand = hands.get(numHand);
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
-                System.out.println(">> "+name+"'s turn!");
+                if(numHand!=0){
+                    System.out.println(">> "+name+"'s second hand turn!");
+                }else{
+                    System.out.println(">> "+name+"'s first hand turn!");
+                }
+//                System.out.println(">> "+name+"'s turn!");
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + "\n      Bank: " + bank + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> actionCompleted = hand.hit(name);
