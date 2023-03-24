@@ -46,16 +46,13 @@ public class RoundOfBlackJack {
                 for (BlackjackHand hand : player.getHands()) {
                     if (hand.isBusted()) {
                         //player busted
-                        dealer.winBet(hand.getStake());
                         System.out.println(player.getName() + " loss " + hand.getStake() + " bet");
                     } else if (hand.hasSurrendered()) {
                         player.winBet(hand.getStake() / 2);
-                        dealer.winBet(hand.getStake() / 2);
                         System.out.println(player.getName() + " surrendered, return " + hand.getStake() / 2 + " bet");
                     } else if (dealer.getHand().isBusted() || hand.getValue() > dealer.getHand().getValue() || hand.getNumCardsInHand() == 5) {
                         //player win
                         player.winBet(hand.getStake() * 2);
-                        dealer.lossBet(hand.getStake());
                         System.out.println(player.getName() + " win " + hand.getStake() + " bet");
                     } else if (hand.getValue() == dealer.getHand().getValue()) {
                         //draw
@@ -64,13 +61,10 @@ public class RoundOfBlackJack {
                     } else {
                         //dealer win
                         System.out.println(player.getName() + " loss " + hand.getStake() + " bet");
-                        dealer.winBet(hand.getStake());
                         hand.setStake(0);
                     }
                 }
                 System.out.println("> "+player.getName() + "'s current bank: " + player.getBank() + " bet");
-            } else {
-                System.out.println(">>> Dealer's current bank: " + player.getBank() + " bet");
             }
 
         }
