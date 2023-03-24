@@ -9,16 +9,8 @@ public class ComputerPlayer extends Player {
     @Override
     Action chooseAction(BlackjackHand hand) {
         if (hand.canSplit()) {
-            if (hand.getCard(0).isAce() || hand.getCard(0).getName() == "Eight") {
+            if (shouldSplit(hand)) {
                 return Action.SPLIT;
-            } else if (hand.getCard(0).isFaceCard() || hand.getCard(0).isTen()) {
-                return Action.STAND;
-            } else if (hand.getCard(0).getValue() == 9) {
-                if (dealerCard.getValue() == 7 || dealerCard.getValue() == 10 || dealerCard.getValue() == 11) {
-                    return Action.STAND;
-                } else {
-                    return Action.SPLIT;
-                }
             }
         }
         if (hand.hasAce()) {
@@ -47,7 +39,7 @@ public class ComputerPlayer extends Player {
                 }
             }
             else if(value==11){
-                if(dealerCard.getName()=="A"){
+                if(dealerCard.getName()=="Ace"){
                     return Action.HIT;
                 }
                 else {
@@ -57,7 +49,62 @@ public class ComputerPlayer extends Player {
             else {
                 return Action.STAND;
             }
+        }
 
+        if (hand.getValue() == 17) {
+            return Action.STAND;
+        }
+        if (hand.getValue() == 16) {
+            if (dealerCard.getValue() == 9 || dealerCard.getValue() == 10 || dealerCard.getName() == "Ace") {
+                return Action.FOLD;
+            } else if (dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6) {
+                return Action.STAND;
+            } else {
+                return Action.HIT;
+            }
+        }
+        if (hand.getValue() == 15) {
+            if (dealerCard.getValue() == 10) {
+                return Action.FOLD;
+            } else if (dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6) {
+                return Action.STAND;
+            } else {
+                return Action.HIT;
+            }
+        }
+        if (hand.getValue() >= 13 && hand.getValue() <= 14) {
+            if (dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6) {
+                return Action.STAND;
+            } else {
+                return Action.HIT;
+            }
+        }
+        if (hand.getValue() == 12) {
+            if (dealerCard.getValue() >= 4 && dealerCard.getValue() <= 6) {
+                return Action.STAND;
+            } else {
+                return Action.HIT;
+            }
+        }
+        if (hand.getValue() == 11) {
+            return Action.DOUBLE;
+        }
+        if (hand.getValue() == 10) {
+            if (dealerCard.getValue() == 10 || dealerCard.getName() == "Ace") {
+                return Action.HIT;
+            } else {
+                return Action.DOUBLE;
+            }
+        }
+        if (hand.getValue() == 9) {
+            if (dealerCard.getValue() >= 3 && dealerCard.getValue() <= 6) {
+                return Action.DOUBLE;
+            } else {
+                return Action.HIT;
+            }
+        }
+        if (hand.getValue() == 8) {
+            return Action.HIT;
         }
 
         /**
@@ -92,6 +139,22 @@ public class ComputerPlayer extends Player {
          *
          */
         return null;
+    }
+
+    private boolean shouldSplit(BlackjackHand hand) {
+        if (hand.getCard(0).isAce() || hand.getCard(0).getValue() == 8) {
+            return true;
+        } else if (hand.getCard(0).getValue() == 10 || hand.getCard(0).getValue() == 5) {
+            return false;
+        } else if (hand.getCard(0).getValue() == 9) {
+            return dealerCard.getValue() != 7 && dealerCard.getValue() != 10 && dealerCard.getValue() != 11;
+        } else if (hand.getCard(0).getValue() == 7 || hand.getCard(0).getValue() == 3 || hand.getCard(0).getValue() == 2) {
+            return dealerCard.getValue() >= 2 && dealerCard.getValue() <= 7;
+        } else if (hand.getCard(0).getValue() == 6) {
+            return dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6;
+        } else {
+            return dealerCard.getValue() == 5 || dealerCard.getValue() == 6;
+        }
     }
 
     public void setDealerCard(Card dealerCard) {
