@@ -21,28 +21,23 @@ public class RoundOfBlackJack {
             if (!(player instanceof DealerPlayer)) {
 
                 switch (player.getClass().getSimpleName()) {
-                    case "HumanPlayer":
+                    case "HumanPlayer" -> {
                         System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
                         player.placeBet(-1);
-                        break;
-                    case "ComputerPlayer":
+                    }
+                    case "ComputerPlayer" -> {
                         //TODO player.placeBet();
                         ((ComputerPlayer) player).setDealerCard(faceUpCard);
-                        if(player.getBank()<5){
-                            player.placeBet(player.getBank());
-                        }else {
-                            player.placeBet(5);
-                        }
-                        break;
-                    default:
-                        break;
+                        player.placeBet(Math.min(player.getBank(), 5));
+                    }
+                    default -> {
+                    }
                 }
                 player.takeTurn(faceUpCard);
             }
         }
         dealer.takeTurn(faceUpCard);
         for (Player player : players) {
-//            System.out.println("dealer's stake = "+dealer.getHands().get(0).getStake());
             if (player == null) {
                 continue;
             }
@@ -73,6 +68,8 @@ public class RoundOfBlackJack {
 
         }
     }
+
+    /*----------------------------------------------*/
 
     public void deal() {
         for (int i = 0; i < players.length; i++) {
