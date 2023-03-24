@@ -112,10 +112,15 @@ abstract class Player {
         for (BlackjackHand hand : hands) {
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
+                System.out.println(">> "+name+"'s turn!");
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
                 switch (chooseAction(hand)) {
                     case HIT -> {
                         actionCompleted = hand.hit(name);
+                        if(hand.isBusted()){
+                            System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand);
+                            System.out.println("\n> " + name + " says: I busted!\n");
+                        }
                     }
                     case SPLIT -> {
                         bank -= hand.getStake();

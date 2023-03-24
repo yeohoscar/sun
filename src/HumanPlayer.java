@@ -36,41 +36,45 @@ public class HumanPlayer extends Player {
 
     @Override
     Action chooseAction(BlackjackHand hand) {
-        System.out.print("\n>> Pick an option by inputting number: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold  ");
 
-        byte[] input = new byte[100];
+            System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold");
 
-        try {
-            System.in.read(input);
+            byte[] input = new byte[100];
 
-            for (int i = 0; i < input.length; i++) {
-                switch (((char) input[i])) {
-                    case '1':
-                        return Action.HIT;
-                    case '2':
-                        return Action.STAND;
-                    case '3':
-                        if (canDoubleDown(hand)) {
-                            return Action.DOUBLE;
-                        }
-                        break;
-                    case '4':
-                        if (canSplit(hand)) {
-                            return Action.SPLIT;
-                        }
-                        break;
-                    case '5':
-                        if (canSurrender(hand)) {
-                            return Action.SURRENDER;
-                        }
-                    default:
-                        break;
+
+            try {
+                System.in.read(input);
+
+                for (int i = 0; i < input.length; i++) {
+                    switch (((char) input[i])) {
+                        case '1':
+                            return Action.HIT;
+                        case '2':
+                            return Action.STAND;
+                        case '3':
+                            if (canDoubleDown(hand)) {
+                                return Action.DOUBLE;
+                            }
+                            break;
+                        case '4':
+                            if (canSplit(hand)) {
+                                return Action.SPLIT;
+                            }
+                            break;
+                        case '5':
+                            if (canSurrender(hand)) {
+                                return Action.SURRENDER;
+                            }
+                        default:
+                            break;
+                    }
                 }
+            } catch (Exception e) {
+                // handle exception here
             }
-        } catch (Exception e) {
-            // handle exception here
-        }
+
         return Action.INVALID;
+
     }
 
     private boolean canSurrender(BlackjackHand hand) {
