@@ -3,11 +3,14 @@ import poker.Card;
 public class BlackjackHand {
     public static final int MAX_NUM_CARDS = 5;
     public static final int NUM_CARDS_DEALT = 2;
+    private static final int MAX_HAND_VALUE = 21;
     private Card[] hand;
     private DeckOfCards deck;
 
     private int stake = 0;
     private int numCardsInHand = NUM_CARDS_DEALT;
+
+    private boolean surrender = false;
 
     // Constructors
 
@@ -25,6 +28,7 @@ public class BlackjackHand {
         this.hand = new Card[MAX_NUM_CARDS];
         this.stake = hand.stake;
         this.numCardsInHand = hand.numCardsInHand - 1;
+        this.surrender = hand.surrender;
         setCard(0, hand.getCard(0));
         hand.setNumCardsInHand(numCardsInHand - 1);
     }
@@ -101,6 +105,13 @@ public class BlackjackHand {
         return total;
     }
 
+    // Check if hand exceeds 21
+
+    public boolean isBusted() {
+        return getValue() > MAX_HAND_VALUE;
+    }
+
+
     public Card[] getHand(){
         return hand;
     }
@@ -112,5 +123,13 @@ public class BlackjackHand {
             }
         }
         return false;
+    }
+
+    public void surrender() {
+        surrender = true;
+    }
+
+    public boolean hasSurrendered() {
+        return surrender;
     }
 }
