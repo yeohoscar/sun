@@ -5,25 +5,6 @@ public class HumanPlayer extends Player {
         super(name, bank);
     }
 
-    public boolean askQuestion(String question) 	{
-        System.out.print("\n>> " + question + " (y/n)?  ");
-
-        byte[] input = new byte[100];
-
-        try {
-            System.in.read(input);
-
-            for (int i = 0; i < input.length; i++)
-                if ((char)input[i] == 'y' || (char)input[i] == 'Y')
-                    return true;
-        }
-        catch (Exception e){};
-
-        return false;
-    }
-
-
-
     public void placeBet(Card faceUpCard) {
         System.out.println("The face up card of dealer is: "+faceUpCard.getSuit()+" "+faceUpCard.getName());
     }
