@@ -42,7 +42,7 @@ public class ComputerPlayer extends Player {
     }
 
     private boolean canSplit(BlackjackHand hand) {
-        return hand.getNumCardsInHand() == 2 && hand.getCard(0) == hand.getCard(1) && getBank() >= hand.getStake();
+        return hand.getNumCardsInHand() == 2 && hand.getCard(0).getValue() == hand.getCard(1).getValue() && getBank() >= hand.getStake();
     }
 
     // Methods to determine action using a Blackjack strategy table
@@ -155,7 +155,7 @@ public class ComputerPlayer extends Player {
             return Action.HIT;
         }
         if (hand.getValue() == 10) {
-            if (dealerCard.getValue() != 10 && dealerCard.getValue() != 11) {
+                if (dealerCard.getValue() != 10 && dealerCard.getValue() != 11) {
                 if (canDoubleDown(hand)) {
                     return Action.DOUBLE;
                 }

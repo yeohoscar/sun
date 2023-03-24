@@ -5,9 +5,6 @@ public class HumanPlayer extends Player {
         super(name, bank);
     }
 
-//    public void placeBet(Card faceUpCard) {
-//        System.out.println("The face up card of dealer is: "+faceUpCard.getSuit()+" "+faceUpCard.getName());
-//    }
     public void placeBet(int bet) {
         Scanner input = new Scanner(System.in);
         while (bet <= 0 || bet > bank) {
@@ -34,12 +31,12 @@ public class HumanPlayer extends Player {
     }
 
     public void notifyInvalidAction(String action, String reason) {
-        System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">");
+        System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">\n\n");
     }
 
     @Override
     Action chooseAction(BlackjackHand hand) {
-        System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold");
+        System.out.print("\n>> Pick an option by inputting number: 1. Hit  2. Stand  3. Double Down  4. Split  5. Fold  ");
 
         byte[] input = new byte[100];
 
@@ -73,7 +70,7 @@ public class HumanPlayer extends Player {
         } catch (Exception e) {
             // handle exception here
         }
-        return null;
+        return Action.INVALID;
     }
 
     private boolean canSurrender(BlackjackHand hand) {
@@ -101,7 +98,7 @@ public class HumanPlayer extends Player {
             notifyInvalidAction("split", "can only split on opening hand");
             return false;
         }
-        if (hand.getCard(0) != hand.getCard(1)) {
+        if (hand.getCard(0).getValue() != hand.getCard(1).getValue()) {
             notifyInvalidAction("split", "cards not the same");
             return false;
         }

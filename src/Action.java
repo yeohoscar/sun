@@ -3,5 +3,6 @@ public enum Action {
     DOUBLE,
     STAND,
     SPLIT,
-    SURRENDER
+    SURRENDER,
+    INVALID
 }

@@ -131,8 +131,16 @@ abstract class Player {
                     case SURRENDER -> {
                         actionCompleted = hand.surrender(name);
                     }
+                    default -> {}
                 }
+                delay(500);
             }
         }
+    }
+
+    private void delay(int numMilliseconds) {
+        try {
+            Thread.sleep(numMilliseconds);
+        } catch (Exception e) {}
     }
 }

@@ -7,10 +7,6 @@ public class DealerPlayer extends Player {
     {
         super(name, bank);
     }
-    public int getFaceUp()
-    {
-        return this.getHands().get(0).getCard(0).getValue();
-    }
     public Card showOneCard()
     {
         return this.getHands().get(0).getCard(0);
@@ -27,7 +23,7 @@ public class DealerPlayer extends Player {
             }
         }
         catch (Exception e){}
-        return null;
+        return Action.INVALID;
     }
 
     public BlackjackHand getHand() {
