@@ -13,7 +13,7 @@ abstract class Player {
 
     private boolean outOfGame = false;
 
-    private boolean folded = false;
+    private boolean surrendered = false;
     private boolean busted = false;
 
     public Player(String name, int money) {
@@ -23,7 +23,7 @@ abstract class Player {
     }
 
     public void reset() {
-        folded = false;
+        surrendered = false;
         busted = false;
     }
 
@@ -50,8 +50,8 @@ abstract class Player {
         return outOfGame;
     }
 
-    public boolean hasFolded() {
-        return folded;
+    public boolean hasSurrendered() {
+        return surrendered;
     }
 
     public boolean hasBusted() {
@@ -140,8 +140,8 @@ abstract class Player {
         }
     }
 
-    boolean fold() {
-        folded = true;
+    boolean surrender() {
+        surrendered = true;
         return true;
     }
 
@@ -171,8 +171,8 @@ abstract class Player {
                     case DOUBLE -> {
                         actionCompleted = doubleDown(hand);
                     }
-                    case FOLD -> {
-                        actionCompleted = fold();
+                    case SURRENDER -> {
+                        actionCompleted = surrender();
                     }
                 }
             }

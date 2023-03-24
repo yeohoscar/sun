@@ -39,7 +39,9 @@ public class HumanPlayer extends Player {
                         }
                         break;
                     case '5':
-                        return Action.FOLD;
+                        if (canSurrender(hand)) {
+                            return Action.SURRENDER;
+                        }
                     default:
                         break;
                 }
@@ -50,6 +52,13 @@ public class HumanPlayer extends Player {
         return null;
     }
 
+    private boolean canSurrender(BlackjackHand hand) {
+        if (hand.getNumCardsInHand() != 2) {
+            notifyInvalidAction("surrender", "can only double down on opening hand");
+            return false;
+        }
+        return true;
+    }
 
     private boolean canDoubleDown(BlackjackHand hand) {
         if (hand.getNumCardsInHand() != 2) {
