@@ -82,31 +82,6 @@ abstract class Player {
             System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
         }
     }
-//    public void placeBet(int bet) {
-//        Scanner input = new Scanner(System.in);
-//        while (bet <= 0 || bet > bank) {
-//            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
-//            bet = input.nextInt();
-//            if (bet <= 0) {
-//                System.out.println("Invalid bet amount! Please enter a positive value.");
-//            } else if (bet > bank) {
-//                System.out.println("You don't have enough chips! Please enter a smaller value.");
-//            }
-//            else {
-//                System.out.println("The bet must be a number!!");
-//            }
-//        }
-//
-//        hand.get(FIRST_HAND).setStake(bet);
-//        bank -= bet;
-//
-//        System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
-//    }
-
-
-
-
-
 
     public void winBet(int bet){
         bank+=bet;

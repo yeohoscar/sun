@@ -18,7 +18,7 @@ public class RoundOfBlackJack {
             if (player == null) {
                 continue;
             }
-            if (!(player instanceof DealerPlayer)) {
+            if (!(player instanceof DealerPlayer) && !player.isBankrupt()) {
                 System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
                 switch (player.getClass().getSimpleName()) {
                     case "HumanPlayer":
@@ -37,12 +37,18 @@ public class RoundOfBlackJack {
         }
         dealer.takeTurn(faceUpCard);
         for (Player player : players) {
+//            System.out.println("dealer's stake = "+dealer.getHands().get(0).getStake());
+            if (player == null) {
+                continue;
+            }
             if (!(player instanceof DealerPlayer) ) {
                 for (BlackjackHand hand : player.getHands()) { //TODO: MOVE BUSTED AND SURRENDERED TO HAND CLASS
                     if (hand.isBusted()) {
                         //player busted
                         dealer.winBet(hand.getStake());
                         System.out.println(player.getName() + " loss " + hand.getStake() + " bet");
+                        hand.setStake(0);
+
                     } else if (player.hasSurrendered()) {
                         player.winBet(hand.getStake() / 2);
                         dealer.winBet(hand.getStake() / 2);
