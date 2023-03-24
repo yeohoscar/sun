@@ -71,6 +71,7 @@ public class ComputerPlayer extends Player {
         return true;
     }
 
+    /*--------------------Method to determine what action computer player should take if there are Ace card on hand--------------------------*/
     private Action softTotalActions(BlackjackHand hand) {
         if(hand.isSoftTotal()) {
             switch (hand.getValue() - 11) {
@@ -116,6 +117,7 @@ public class ComputerPlayer extends Player {
         return Action.INVALID;
     }
 
+    /*--------------------Method to determine what action computer player should take if no Ace card on hand and no need to split hand--------------------------*/
     private Action hardTotalActions(BlackjackHand hand) {
         if (hand.getValue() >= 17) {
             return Action.STAND;

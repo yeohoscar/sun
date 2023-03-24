@@ -1,15 +1,21 @@
 public class GameOfBlackJack {
-    private Player[] players;
 
-    private DeckOfCards deck;
 
-    private int numPlayers;
+    private Player[] players;//list that contains all players
+
+    private DeckOfCards deck;//an instance of variable type of DeckOfCards
+
+    private int numPlayers;//the number of players
+
+    /*--------------------Constructor--------------------------*/
     public GameOfBlackJack(String[] names, int bank)
     {
-        numPlayers = names.length+1;
+        numPlayers = names.length+1;//the reason that adds extra one is for dealer
 
         players = new Player[numPlayers];
-        players[numPlayers-1] = new DealerPlayer("Dealer", -1);
+        players[numPlayers-1] = new DealerPlayer("Dealer", -1);//create an instance of Dealer
+
+        //initialise HumanPlayer and all ComputerPlayer
         for (int i = 0; i < numPlayers-1; i++)
             if (i == 0)
                 players[i] = new HumanPlayer(names[i].trim(), bank);
@@ -17,15 +23,16 @@ public class GameOfBlackJack {
                 players[i] = new ComputerPlayer(names[i].trim(), bank);
 
 
-        deck  = new DeckOfCards();
+        deck  = new DeckOfCards();//add 52 cards into deck of cards
     }
 
+    /*--------------------Game starts to play, game ends until all players have no money in bank---------------------*/
     public void play(){
         while (getNumSolventPlayers() > 1) {
-            deck.reset();
-            RoundOfBlackJack round = new RoundOfBlackJack(deck, players);
+            deck.reset();//before each round starts, shuffle the deck
+            RoundOfBlackJack round = new RoundOfBlackJack(deck, players);//create a new round
 
-            round.play();
+            round.play();//play with this round
 
             try {
                 System.out.print("\n\nPlay another round? Press 'c' to continue and q' to terminate this game ... ");
@@ -42,9 +49,9 @@ public class GameOfBlackJack {
         }
         System.out.println("GAME OVER!");
     }
-    public int getNumSolventPlayers() {
-        // how many players still have money left?
 
+    /*--------------------return the number of players that still have money--------------------------*/
+    public int getNumSolventPlayers() {
         int count = 0;
 
         for (int i = 0; i < getNumPlayers(); i++)
@@ -53,6 +60,8 @@ public class GameOfBlackJack {
 
         return count;
     }
+
+    /*--------------------Getter Methods--------------------------*/
     public int getNumPlayers() {
         return numPlayers;
     }
