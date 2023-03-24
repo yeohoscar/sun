@@ -51,4 +51,8 @@ public class DealerPlayer extends Player {
 //    {
 //            return true;
 //    }
+
+    public BlackjackHand getHand() {
+        return hands.get(0);
+    }
 }

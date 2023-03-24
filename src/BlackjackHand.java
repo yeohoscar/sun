@@ -3,6 +3,7 @@ import poker.Card;
 public class BlackjackHand {
     public static final int MAX_NUM_CARDS = 5;
     public static final int NUM_CARDS_DEALT = 2;
+    private static final int MAX_HAND_VALUE = 21;
     private Card[] hand;
     private DeckOfCards deck;
 
@@ -100,6 +101,13 @@ public class BlackjackHand {
 
         return total;
     }
+
+    // Check if hand exceeds 21
+
+    public boolean isBusted() {
+        return getValue() > MAX_HAND_VALUE;
+    }
+
 
     public Card[] getHand(){
         return hand;

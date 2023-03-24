@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 abstract class Player {
     protected static final int FIRST_HAND = 0;
-    private static final int MAX_HAND_VALUE = 21;
 
     protected int bank = 0;
     private String name = "Player";
@@ -13,7 +12,6 @@ abstract class Player {
     private boolean outOfGame = false;
 
     private boolean surrendered = false;
-    private boolean busted = false;
 
 
     // Constructor
@@ -28,7 +26,6 @@ abstract class Player {
 
     public void reset() {
         surrendered = false;
-        busted = false;
     }
 
     // Accessors
@@ -66,10 +63,6 @@ abstract class Player {
         return surrendered;
     }
 
-    public boolean hasBusted() {
-        return busted;
-    }
-
     // Modifiers
 
     public void dealTo(DeckOfCards deck) {
@@ -79,15 +72,6 @@ abstract class Player {
 
     public void leaveGame() {
         outOfGame = true;
-    }
-
-    public boolean isBusted(BlackjackHand hand) {
-        if (hand.getValue() > MAX_HAND_VALUE) {
-            System.out.println(hand);
-            System.out.println("\n> " + getName() + " says: I bust!\n");
-            busted = true;
-        }
-        return false;
     }
 
     public void placeBet(int bet){
@@ -141,7 +125,7 @@ abstract class Player {
     boolean hit(BlackjackHand hand) {
         System.out.println("\n> " + getName() + " says: I hit!\n");
         hand.addCard();
-        return isBusted(hand) || hand.getNumCardsInHand() == 5;
+        return hand.isBusted() || hand.getNumCardsInHand() == 5;
     }
     boolean split(BlackjackHand hand) {
         bank -= hand.getStake();
@@ -160,7 +144,7 @@ abstract class Player {
         bank-=hand.getStake();
         hand.setStake(hand.getStake()*2);
         hand.addCard();
-        isBusted(hand);
+        hand.isBusted();
         return true;
     }
 
@@ -182,7 +166,7 @@ abstract class Player {
 
         for (BlackjackHand hand : hands) {
             boolean actionCompleted = false;
-            while (!hasBusted() && !actionCompleted) {
+            while (!(hand.isBusted() && actionCompleted) ) {
                 System.out.println("\n      Dealer's card: " + dealerFaceUpCard + hand.toString());
                 switch (chooseAction(hand)) {
                     case HIT -> {

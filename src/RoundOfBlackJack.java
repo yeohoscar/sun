@@ -38,17 +38,21 @@ public class RoundOfBlackJack {
         dealer.takeTurn(faceUpCard);
         for (Player player : players) {
             if (!(player instanceof DealerPlayer) ) {
-                for (BlackjackHand hand : player.getHands()) {
-                    if (player.hasBusted()) {
+                for (BlackjackHand hand : player.getHands()) { //TODO: MOVE BUSTED AND SURRENDERED TO HAND CLASS
+                    if (hand.isBusted()) {
                         //player busted
                         dealer.winBet(hand.getStake());
                         System.out.println(player.getName() + " loss " + hand.getStake() + " bet");
-                    } else if (dealer.hasBusted() || hand.getValue() > dealer.getHands().get(0).getValue()) {
+                    } else if (player.hasSurrendered()) {
+                        player.winBet(hand.getStake() / 2);
+                        dealer.winBet(hand.getStake() / 2);
+                        System.out.println(player.getName() + " surrendered, return " + hand.getStake() / 2 + " bet");
+                    } else if (dealer.getHand().isBusted() || hand.getValue() > dealer.getHand().getValue() || hand.getNumCardsInHand() == 5) {
                         //player win
                         player.winBet(hand.getStake() * 2);
                         dealer.lossBet(hand.getStake());
                         System.out.println(player.getName() + " win " + hand.getStake() + " bet");
-                    } else if (hand.getValue() == dealer.getHands().get(0).getValue()) {
+                    } else if (hand.getValue() == dealer.getHand().getValue()) {
                         //draw
                         player.winBet(hand.getStake());
                         System.out.println(player.getName() + " return " + hand.getStake() + " bet back");
