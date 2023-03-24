@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 abstract class Player {
-    private static final int FIRST_HAND = 0;
+    protected static final int FIRST_HAND = 0;
     private static final int MAX_HAND_VALUE = 21;
 
-    private int bank = 0;
+    protected int bank = 0;
     private String name = "Player";
     protected ArrayList<BlackjackHand> hand = new ArrayList<>();
 
@@ -75,23 +75,34 @@ abstract class Player {
         return false;
     }
 
-    public void placeBet(int bet) {
-        Scanner input = new Scanner(System.in);
-        while (bet <= 0 || bet > bank) {
-            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
-            bet = input.nextInt();
-            if (bet <= 0) {
-                System.out.println("Invalid bet amount! Please enter a positive value.");
-            } else if (bet > bank) {
-                System.out.println("You don't have enough chips! Please enter a smaller value.");
-            }
+    public void placeBet(int bet){
+        if(bet<=bank){
+            hand.get(FIRST_HAND).setStake(bet);
+            bank -= bet;
+
+            System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
         }
-
-        hand.get(FIRST_HAND).setStake(bet);
-        bank -= bet;
-
-        System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
     }
+//    public void placeBet(int bet) {
+//        Scanner input = new Scanner(System.in);
+//        while (bet <= 0 || bet > bank) {
+//            System.out.print("Enter your bet amount (you have " + bank + " chips): ");
+//            bet = input.nextInt();
+//            if (bet <= 0) {
+//                System.out.println("Invalid bet amount! Please enter a positive value.");
+//            } else if (bet > bank) {
+//                System.out.println("You don't have enough chips! Please enter a smaller value.");
+//            }
+//            else {
+//                System.out.println("The bet must be a number!!");
+//            }
+//        }
+//
+//        hand.get(FIRST_HAND).setStake(bet);
+//        bank -= bet;
+//
+//        System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
+//    }
 
 
 
