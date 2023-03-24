@@ -90,7 +90,9 @@ abstract class Player {
             boolean actionCompleted = false;
             while (!(hand.isBusted() || actionCompleted) ) {
                 System.out.println(">> " + name + ": hand " + (numHand+1) + " turn!");
-                System.out.println("\n      Dealer's card: " + dealerFaceUpCard + "\n      Bank: " + bank + hand);
+                if (!(this instanceof DealerPlayer)) {
+                    System.out.println("\n      Dealer's card: " + dealerFaceUpCard + "\n      Bank: " + bank + hand);
+                }
                 switch (chooseAction(hand)) {
                     case HIT -> actionCompleted = hand.hit(name);
                     case SPLIT -> {

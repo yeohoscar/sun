@@ -16,15 +16,13 @@ public class ComputerPlayer extends Player {
     Action chooseAction(BlackjackHand hand) {
         if (canSplit(hand)) {
             if (shouldSplit(hand)) {
-                System.out.println("Total value = "+hand.getValue());
-                System.out.println("Enter split");
                 return Action.SPLIT;
             }
         }
         if (hand.hasAce()) {
-            System.out.println("Total value = "+hand.getValue());
-            System.out.println("Enter Ace");
-            return softTotalActions(hand);
+            if (hand.isSoftTotal()) {
+                return softTotalActions(hand);
+            }
         }
         return hardTotalActions(hand);
     }
@@ -73,46 +71,42 @@ public class ComputerPlayer extends Player {
 
     /*--------------------Method to determine what action computer player should take if there are Ace card on hand--------------------------*/
     private Action softTotalActions(BlackjackHand hand) {
-        if(hand.isSoftTotal()) {
-            switch (hand.getValue() - 11) {
-                case 9, 10 -> {
-                    return Action.STAND;
-                }
-                case 8 -> {
-                    if (dealerCard.getValue() == 6 && canDoubleDown(hand)) {
-                        return Action.DOUBLE;
-                    }
-                    return Action.STAND;
-                }
-                case 7 -> {
-                    if (dealerCard.getValue() <= 9) {
-                        return Action.HIT;
-                    } else if (dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
-                        return Action.DOUBLE;
-                    }
-                    return Action.STAND;
-                }
-                case 6 -> {
-                    if (dealerCard.getValue() >= 3 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
-                        return Action.DOUBLE;
-                    }
-                    return Action.HIT;
-                }
-                case 5, 4 -> {
-                    if (dealerCard.getValue() >= 4 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
-                        return Action.DOUBLE;
-                    }
-                    return Action.HIT;
-                }
-                case 3, 2 -> {
-                    if (dealerCard.getValue() >= 5 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
-                        return Action.DOUBLE;
-                    }
-                    return Action.HIT;
-                }
+        switch (hand.getValue() - 11) {
+            case 9, 10 -> {
+                return Action.STAND;
             }
-        } else {
-            return Action.STAND;
+            case 8 -> {
+                if (dealerCard.getValue() == 6 && canDoubleDown(hand)) {
+                    return Action.DOUBLE;
+                }
+                return Action.STAND;
+            }
+            case 7 -> {
+                if (dealerCard.getValue() <= 9) {
+                    return Action.HIT;
+                } else if (dealerCard.getValue() >= 2 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
+                    return Action.DOUBLE;
+                }
+                return Action.STAND;
+            }
+            case 6 -> {
+                if (dealerCard.getValue() >= 3 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
+                    return Action.DOUBLE;
+                }
+                return Action.HIT;
+            }
+            case 5, 4 -> {
+                if (dealerCard.getValue() >= 4 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
+                    return Action.DOUBLE;
+                }
+                return Action.HIT;
+            }
+            case 3, 2 -> {
+                if (dealerCard.getValue() >= 5 && dealerCard.getValue() <= 6 && canDoubleDown(hand)) {
+                    return Action.DOUBLE;
+                }
+                return Action.HIT;
+            }
         }
         return Action.INVALID;
     }
