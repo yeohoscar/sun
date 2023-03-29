@@ -42,6 +42,9 @@ abstract class Player {
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;
 	}
+	public boolean isDealer(){
+		return true;
+	}
 	public void smallBlind(){
 
 	}
@@ -118,7 +121,8 @@ abstract class Player {
 	public boolean hasFolded() {
 	    // has given up on the current hand
 	
-		return folded;	
+		//return folded;
+		return true;
 	}
 	
 	//--------------------------------------------------------------------//
