@@ -255,7 +255,9 @@ public class RoundOfTexas {
 		//				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
 		//				  else stakes of all players will be added to pot, and game continue.
 		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
-		PotOfMoney pot = new PotOfMoney();
+
+
+		/*PotOfMoney pot = new PotOfMoney();
 		
 		int numActive = getNumActivePlayers();
 		
@@ -292,7 +294,7 @@ public class RoundOfTexas {
 					numActive--;
 			}
 		}
-		
+
 		if (numActive == 0) {
 			// no player is left in the game
 			
@@ -303,7 +305,7 @@ public class RoundOfTexas {
 		Player bestPlayer = getPlayer(getNumBestPlayer(true));
 			
 		if (bestPlayer != null)
-			bestPlayer.takePot(pot);
+			bestPlayer.takePot(pot);*/
 	}
 	
 	
