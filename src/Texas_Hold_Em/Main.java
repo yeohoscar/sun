@@ -22,7 +22,7 @@ public class Main {
         int startingBank = 10;
 
         System.out.println("\nLet's play BLACKJACK ...\n\n");
-        GameOfTexas game = new GameOfTexas(names, startingBank);
+        TexasController game = new TexasController(names, startingBank);
 
         game.play();
     }

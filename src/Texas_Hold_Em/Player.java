@@ -37,6 +37,8 @@ abstract class Player {
 		
 		reset();
 	}
+
+	//every player can act as a dealer
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;
 	}
