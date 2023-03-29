@@ -9,10 +9,9 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
+import poker.PotOfMoney;
+
 abstract class Player {
-
-
-	private boolean dealer = false;
 	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
 	
@@ -20,9 +19,11 @@ abstract class Player {
 	
 	private String name    		= "Player";  // the unique identifying name given to the player
 	
-	private TexasHand hand 		= null;      // the hand dealt to this player
+	private Hand hand 		= null;      // the hand dealt to this player
 	
 	private boolean folded 		= false;     // set to true when the player folds (gives up)
+
+	private boolean dealer = false;
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -42,19 +43,13 @@ abstract class Player {
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;
 	}
+
 	public void smallBlind(){
 
 	}
 	public void bigBlind(){
 
 	}
-
-
-
-
-
-
-
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -89,7 +84,7 @@ abstract class Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public TexasHand getHand() {
+	public Hand getHand() {
 		return hand;
 	}
 	
@@ -131,27 +126,9 @@ abstract class Player {
 		hand = hand.categorize();
 	}
 	
-	
-	
-	public void dealTo(DeckOfCards deck) {
+	public void dealTo(Deck deck) {
 		hand = deck.dealHand();
 	}
-	
-	
-	public void throwaway(int cardPos, boolean recategorize) {
-		hand.throwaway(cardPos);
-		
-		if (recategorize)
-			reorganizeHand();
-	}
-	
-	
-	public void discard() {
-		hand = hand.discard();
-		
-		System.out.println(getName() + " discards " + addCount(hand.getNumDiscarded(), "card", "cards") + "\n");
-	}
-	
 	
 	public void takePot(PotOfMoney pot) {
 	    // when the winner of a hand takes the pot as his/her winnings

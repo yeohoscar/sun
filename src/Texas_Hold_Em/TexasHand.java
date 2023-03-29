@@ -3,10 +3,11 @@ package Texas_Hold_Em;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
+import poker.Card;
+
 import java.lang.reflect.*;
 
-public class TexasHand
-{
+public class TexasHand implements Hand {
 	public static final int DEFAULT_RISK  		= 20;
 	public static final int NUMCARDS      		= 5;  // number of cards in a hand of poker
 	
@@ -35,7 +36,7 @@ public class TexasHand
 	
 	private Card[] hand;  								// the actual sequence of cards
 	
-	private DeckOfCards deck; 							// the deck from which the hand is made
+	private Deck deck; 							// the deck from which the hand is made
 	
 	private int discarded 						= 0; 	// the number of cards already discarded and redealt in this hand
 	
@@ -45,14 +46,14 @@ public class TexasHand
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public TexasHand(Card[] hand, DeckOfCards deck) {
+	public TexasHand(Card[] hand, Deck deck) {
 		this.hand = hand;
 		
 		this.deck = deck;
 	}
 	
 	
-	public TexasHand(DeckOfCards deck) {
+	public TexasHand(Deck deck) {
 		this.deck = deck;
 		
 		hand      = new Card[NUMCARDS];
@@ -124,74 +125,6 @@ public class TexasHand
 	
 	public int getValue() {
 		return getCard(0).getValue(); // simply return the value of the higest card
-	}
-
-	
-	//--------------------------------------------------------------------//
-	// Discard and redeal some cards
-	//--------------------------------------------------------------------//
-	
-	protected void throwaway(int pos) {
-		if (pos < 0 || pos >= NUMCARDS) return;  // already discarded or out of bounds
-		
-		Card next = deck.dealNext();
-		
-		if (next != null) {
-			setCard(pos, next);
-			discarded++;
-		}
-	}
-
-		
-	public TexasHand discard() {
-		// discard some cards to try and make a better hand
-		
-		return this;  // by default do not discard anything
-	}
-		
-	
-	public TexasHand discard(int pos) {
-		if (discarded > 0) return this;  // already discarded
-		
-		throwaway(pos);
-		
-		return categorize();
-	}
-	
-	
-	public TexasHand discard(int pos1, int pos2) {
-		if (discarded > 0) return this;  // already discarded
-		
-		throwaway(pos1);
-		
-		throwaway(pos2);
-		
-		return categorize();
-	}
-
-	
-	
-	public TexasHand discard(int pos1, int pos2, int pos3) {
-		if (discarded > 0) return this;  // already discarded
-		
-		throwaway(pos1);
-		
-		throwaway(pos2);
-
-		throwaway(pos3);
-
-		return categorize();
-	}
-
-	
-	
-	public int getNumDiscarded() {
-		return discarded;
-	}
-	
-	
-	public void setNumDiscarded(int num) {
-		discarded = num;
 	}
 	
 	//--------------------------------------------------------------------//
@@ -353,7 +286,7 @@ public class TexasHand
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 		
-	public TexasHand categorize() {
+	public Hand categorize() {
 		sortHand();
 		
 		Method[] preds = TexasHand.class.getDeclaredMethods(); // all methods in PokerHand
@@ -415,9 +348,7 @@ public class TexasHand
 			for (int i = 0; i < builders.length; i++)
 				if (builders[i].getParameterTypes().length == 2) {
 					TexasHand category = (TexasHand)builders[i].newInstance(promotionArgs);
-					
-					category.setNumDiscarded(getNumDiscarded()); // track how many cards discarded
-					
+
 					return category;
 				}	
 		}
@@ -470,9 +401,6 @@ public class TexasHand
 			category = new Pair(hand, deck);
 		else
 			category = new High(hand, deck);
-		
-		category.setNumDiscarded(getNumDiscarded()); // track how many cards discarded
-		
 		return category;
 	}
 		

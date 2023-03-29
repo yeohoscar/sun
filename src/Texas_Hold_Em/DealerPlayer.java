@@ -1,6 +1,8 @@
 package Texas_Hold_Em;
 
 
+import poker.PotOfMoney;
+
 public class DealerPlayer extends Player {
     private static final int DEALER_STAND_LIMIT = 17;//Dealer must stand once dealer's card value is greater than or equal to 17
 

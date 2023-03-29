@@ -11,7 +11,7 @@ public class TexasController
 {	
 	private Player[] players;
 	
-	private DeckOfCards deck;
+	private Deck deck;
 	
 	private int numPlayers;
 	
@@ -32,7 +32,7 @@ public class TexasController
 			else
 				players[i] = new ComputerPlayer(names[i].trim(), bank);
 		
-		deck  = new DeckOfCards();
+		deck  = new DeckOfTexasCards();
 	}
 		
 

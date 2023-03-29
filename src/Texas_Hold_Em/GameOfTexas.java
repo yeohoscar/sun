@@ -7,12 +7,14 @@ package Texas_Hold_Em;
 // A PokerGame is a sequence of RoundOfPoker's
 
 
+import poker.High;
+
 public class GameOfTexas {
 	public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
 	
 	private Player[] players;
 	private int dealerIndex;
-	private DeckOfCards deck;
+	private Deck deck;
 	private int numPlayers;
 	private int smallIndex;
 	private int bigIndex;
@@ -24,7 +26,7 @@ public class GameOfTexas {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public GameOfTexas(DeckOfCards deck, Player[] players, int dealerIndex) {
+	public GameOfTexas(Deck deck, Player[] players, int dealerIndex) {
 		this.players = players;
 		
 		this.deck    = deck;
@@ -174,35 +176,6 @@ public class GameOfTexas {
 		}
 		
 		System.out.println("\n");
-	}
-
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Allow each player to discard some cards and receive new ones
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public void discard() {
-		for (int i = 0; i < getNumPlayers(); i++) {
-			if (getPlayer(i) != null)
-				getPlayer(i).discard();
-		}
-	}
-
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// See if we can open a round (at least one player must have at least
-	// a pair)
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public boolean canOpen() {
-		TexasHand hand = getPlayer(getNumBestPlayer(false)).getHand();
-		
-		if (hand instanceof High) // not good enough
-			return false;
-		else
-			return true;
 	}
 
 	//--------------------------------------------------------------------//
