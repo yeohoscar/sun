@@ -77,16 +77,17 @@ public class TexasController
 
 	public void play()	{
 		int dealerIndex=0;
+		int numSolventPlayers = players.length;
 		while (getNumSolventPlayers() > 1) {
 			deck.reset();//before each game starts, shuffle the deck
-
+			numSolventPlayers=getNumSolventPlayers();
 
 			//every player can act as dealer, dealer also needs to place bet, but dealer is the last one to place bet
 			players[dealerIndex] = new DealerPlayer(players[dealerIndex].getName(), players[dealerIndex].getBank());
 			players[dealerIndex].setDealer(true);
 
 			//start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
-			GameOfTexas round = new GameOfTexas(deck, players, dealerIndex);
+			RoundsOfTexas round = new RoundsOfTexas(deck, players, dealerIndex, numSolventPlayers);
 			round.play();
 			
 			try {

@@ -1,15 +1,12 @@
 
 package Texas_Hold_Em;
-
+import poker.*;
 // This package provides classes necessary for implementing a game system for playing poker
 
 // A RoundOfPoker is a single round/deal in a game
 // A PokerGame is a sequence of RoundOfPoker's
 
-
-import poker.High;
-
-public class GameOfTexas {
+public class RoundsOfTexas {
 	public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
 	
 	private Player[] players;
@@ -18,27 +15,29 @@ public class GameOfTexas {
 	private int numPlayers;
 	private int smallIndex;
 	private int bigIndex;
-	
+	private int numSolventPlayers;
+	private int currentMaxStake;
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-	
-	public GameOfTexas(Deck deck, Player[] players, int dealerIndex) {
-		this.players = players;
-		
+
+	public RoundsOfTexas(Deck deck, Player[] players, int dealerIndex, int numSolventPlayers) {
 		this.deck    = deck;
+		this.players = players;
 		this.dealerIndex = dealerIndex;
-		numPlayers   = players.length;
+		this.numSolventPlayers = numSolventPlayers;
+		numPlayers = players.length;
 
 		//in each game, there must have small blind and big blind
+		//and two players will make small blind and big blind
 		System.out.println("Small Blind and Big Blind: ");
 		blindBet(dealerIndex, players.length-1);
 
 		System.out.println("\n\nNew Deal:\n\n");
-		
+		//after small blind and big blind, deal two cards to each player
 		deal();
 		
 //		while (!canOpen()) deal();  // continue to redeal until some player can open
@@ -48,7 +47,7 @@ public class GameOfTexas {
 //		discard();
 	}
 
-	//determine the index of smallBlind and bigBlind
+	//determine the index of smallBlind and bigBlind, and two players will make small blind and big blind
 	public void blindBet(int dealerIndex, int sizeOfPlayers){
 		if(dealerIndex==(sizeOfPlayers-1)){
 			smallIndex = sizeOfPlayers;
@@ -201,7 +200,83 @@ public class GameOfTexas {
 				System.out.println("> " + player.getName() + " says: I can open.");
 		}
 	}
-	
+
+
+	public void preFlopRound(int currentIndex){
+		Player currentPlayer;
+		while(!players[currentIndex].isDealer()){
+			if(!players[currentIndex].isBankrupt() && players[currentIndex] != null){
+				currentPlayer = players[currentIndex];
+
+				//current player takes his own action
+				currentPlayer.takeTurn(currentMaxStake);
+
+				//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
+				//		each player can take four actions: call, raise, discard, stay, so we can call takeTurn only once
+				//				/*switch (currentPlayer.getClass().getSimpleName()){
+				//					case "HumanPlayer" -> {
+				//						currentPlayer.takeTurn(currentMaxStake);
+				//						break;
+				//					}
+				//					case "ComputerPlayer" -> {
+				//						currentPlayer.takeTurn(currentMaxStake);
+				//						break;
+				//					}
+				//					default -> {
+				//						break;
+				//					}
+				//				}
+
+			}
+			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
+			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
+			if(currentIndex!=players.length-1){
+				currentIndex++;
+			}else {
+				currentIndex=0;
+			}
+		}
+		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
+		//TODO:
+		// 		1-if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
+		//		  else stakes of all players will be added to pot, and game continue.
+		//		2-three public cards should be displayed on the table
+	}
+	public void subRoundHelper(int currentIndex){
+		Player currentPlayer;
+		while(!players[currentIndex].isDealer()){
+			if(!players[currentIndex].isBankrupt() && players[currentIndex] != null && !players[currentIndex].hasFolded()){
+				currentPlayer = players[currentIndex];
+
+				//current player takes his own action based on current max stake and all public cards
+				currentPlayer.takeTurn(currentMaxStake, publicCards);
+			}
+			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
+			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
+			if(currentIndex!=players.length-1){
+				currentIndex++;
+			}else {
+				currentIndex=0;
+			}
+		}
+		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
+		//TODO:
+		// 		1-if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
+		//		  else stakes of all players will be added to pot, and game continue.
+	}
+	public void flopRound(int currentIndex){
+		subRoundHelper(currentIndex);
+		//TODO:
+		//		1-turn card should be displayed on the table
+	}
+	public void turnRound(int currentIndex){
+		subRoundHelper(currentIndex);
+		//TODO:
+		// 		1-river card should be displayed on the table
+	}
+	public void riverRound(int currentIndex){
+		subRoundHelper(currentIndex);
+	}
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Play a round of poker
@@ -209,7 +284,7 @@ public class GameOfTexas {
 	//--------------------------------------------------------------------//
 
 	public void play() {
-		//TODO: 1-Enter Pre-flop round, this round should start from the first player after the bigBlind player,
+		//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
 		// 		  players should call, raise, fold or stay(dealer can't fold, but he can call, raise or stay).
 		// 		  After this round finished,
 		// 				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
@@ -233,7 +308,7 @@ public class GameOfTexas {
 		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
 
 
-		/*PotOfMoney pot = new PotOfMoney();
+		PotOfMoney pot = new PotOfMoney();
 		
 		int numActive = getNumActivePlayers();
 		
@@ -242,11 +317,44 @@ public class GameOfTexas {
 		Player currentPlayer = null;
 		
 		deck.reset();
-		
+
+		int indexOfFirstPlayerAfterDealer;
+		if(dealerIndex==players.length-1){
+			indexOfFirstPlayerAfterDealer=0;
+		}else {
+			indexOfFirstPlayerAfterDealer=dealerIndex+1;
+		}
+		int roundCounter = 1;
+		while(noWinnerProduced && roundCounter!=5){
+			switch (roundCounter){
+				case 1 ->{
+					preFlopRound(indexOfFirstPlayerAfterDealer);
+					roundCounter++;
+					break;
+				}
+				case 2 ->{
+					flopRound(indexOfFirstPlayerAfterDealer);
+					roundCounter++;
+					break;
+				}
+				case 3 ->{
+					turnRound(indexOfFirstPlayerAfterDealer);
+					roundCounter++;
+					break;
+				}
+				default -> {
+					riverRound(indexOfFirstPlayerAfterDealer);
+					roundCounter++;
+					break;
+				}
+			}
+		}
+
+
 		// while the stakes are getting bigger and there is at least one active player,
 		// then continue to go around the table and play
-		
-		while (stake < pot.getCurrentStake() && numActive > 0) {
+
+		/*while (stake < pot.getCurrentStake() && numActive > 0) {
 			stake = pot.getCurrentStake();
 			
 			for (int i = 0; i < getNumPlayers(); i++) {
