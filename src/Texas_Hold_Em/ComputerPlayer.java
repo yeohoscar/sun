@@ -59,7 +59,6 @@ public class ComputerPlayer extends Player {
         return true;
     }
 
-
     public boolean shouldSee(PotOfMoney pot) {
         if (getStake() == 0)
             return true;
@@ -68,9 +67,16 @@ public class ComputerPlayer extends Player {
                     getRiskTolerance();
     }
 
-
     public boolean shouldRaise(PotOfMoney pot) {
         return Math.abs(dice.nextInt())%80 < getHand().getRiskWorthiness() +
                 getRiskTolerance();
+    }
+
+    public boolean shouldCheck(PotOfMoney pot) {
+        //TODO: FIGURE OUT HOW THE RISK THING WORKS
+    }
+
+    public boolean shouldAllIn(PotOfMoney pot) {
+
     }
 }

@@ -97,4 +97,16 @@ public class HumanPlayer extends Player {
 	public boolean shouldRaise(PotOfMoney pot) {
 		return askQuestion("Do you want to raise the bet by 1 chip");
 	}
+
+	public boolean shouldAllIn(PotOfMoney pot) {
+		return false;
+	}
+
+	public boolean shouldCheck(PotOfMoney pot) {
+		if (pot.getCurrentStake() == 0) {
+			return askQuestion("Do you want to check?");
+		} else {
+			return false;
+		}
+	}
 }

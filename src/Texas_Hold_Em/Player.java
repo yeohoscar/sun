@@ -45,7 +45,7 @@ abstract class Player {
 	}
 
 	public boolean isDealer(){
-		return true;
+		return dealer;
 	}
 	public void smallBlind(){
 
@@ -200,6 +200,21 @@ abstract class Player {
 		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
 	}
 
+    public void allIn(PotOfMoney pot) {
+		if (getBank() == 0) return;
+
+		stake += bank;
+		bank = 0;
+
+		pot.raiseStake(stake);
+
+		System.out.println("\n> " + getName() + " says: and I all in!\n");
+	}
+
+	public void check(PotOfMoney pot) {
+		System.out.println("\n> " + getName() + " says: I check!\n");
+	}
+
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -212,7 +227,10 @@ abstract class Player {
 	abstract boolean shouldSee(PotOfMoney pot);
 
 	abstract boolean shouldRaise(PotOfMoney pot);
-	
+
+    abstract boolean shouldAllIn(PotOfMoney pot);
+
+    abstract boolean shouldCheck(PotOfMoney pot);
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -239,7 +257,11 @@ abstract class Player {
 			if (shouldOpen(pot))  // will this player open the betting?
 				openBetting(pot);	
 			else
-				fold();
+				if (shouldCheck(pot)) {
+					check(pot);
+				} else {
+					fold();
+				}
 		}
 		else {
 			if (pot.getCurrentStake() > getStake()) {
@@ -247,8 +269,10 @@ abstract class Player {
 			
 				if (shouldSee(pot)) {
 					seeBet(pot);
-					
-					if (shouldRaise(pot))
+
+					if (shouldAllIn(pot)) {
+						allIn(pot);
+					} else if (shouldRaise(pot))
 						raiseBet(pot);
 				}
 				else
