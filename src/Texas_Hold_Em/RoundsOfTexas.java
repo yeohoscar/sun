@@ -182,8 +182,7 @@ public class RoundsOfTexas {
 	// Open this round of poker
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-	
-	public void openRound()	{
+	/*public void openRound()	{
 		Player player = null;
 		
 		System.out.println("");
@@ -199,7 +198,7 @@ public class RoundsOfTexas {
 			else
 				System.out.println("> " + player.getName() + " says: I can open.");
 		}
-	}
+	}*/
 
 
 	public void preFlopRound(int currentIndex){
@@ -235,10 +234,7 @@ public class RoundsOfTexas {
 		}
 		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
 		//TODO:
-		// 		1-if only one player bet, then current player and previous players will continue to play next round.(we can use hasFold to filter)
-		// 		2-if only one player not fold, rest of players fold, then all stakes in the pot belongs to this player, and game ends
-		//		  else stakes of all players will be added to pot, and game continues.
-		//		2-three public cards should be displayed on the table.
+		//		1-three public cards should be displayed on the table.
 	}
 	public void subRoundHelper(int currentIndex){
 		Player currentPlayer;
@@ -349,6 +345,9 @@ public class RoundsOfTexas {
 					break;
 				}
 			}
+			if(onlyOnePlayerNotFold()){
+				break;
+			}
 		}
 		//TODO: after four rounds, all not folded players will show their cards and determine who will win the game
 
@@ -393,7 +392,15 @@ public class RoundsOfTexas {
 		if (bestPlayer != null)
 			bestPlayer.takePot(pot);*/
 	}
-	
+	public boolean onlyOnePlayerNotFold(){
+		int count=0;
+		for(Player player: players){
+			if(!player.hasFolded()){
+				count++;
+			}
+		}
+		return count == 1;
+	}
 	
 	
 	//--------------------------------------------------------------------//
