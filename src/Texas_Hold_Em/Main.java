@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         String[] names = {"Human", "Tom", "Dick", "Harry"};
 
-        System.out.println("\nWelcome to the Automated Blackjack Machine ...\n\n");
+        System.out.println("\nWelcome to the Automated Texas Hold'Em Machine ...\n\n");
 
         System.out.print("\nWhat is your name?  ");
 

@@ -207,12 +207,10 @@ public class RoundsOfTexas {
 		while(!players[currentIndex].isDealer()){
 			if(!players[currentIndex].isBankrupt() && players[currentIndex] != null){
 				currentPlayer = players[currentIndex];
-
 				//current player takes his own action
 				currentPlayer.takeTurn(currentMaxStake);
-
-				//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
-				//		each player can take four actions: call, raise, discard, stay, so we can call takeTurn only once
+				/*//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
+				//		each player can take four actions: check, bet, call, raise, fold, all-in, so we can call takeTurn only once
 				//				/*switch (currentPlayer.getClass().getSimpleName()){
 				//					case "HumanPlayer" -> {
 				//						currentPlayer.takeTurn(currentMaxStake);
@@ -225,8 +223,7 @@ public class RoundsOfTexas {
 				//					default -> {
 				//						break;
 				//					}
-				//				}
-
+				//				}*/
 			}
 			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
 			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
@@ -238,9 +235,10 @@ public class RoundsOfTexas {
 		}
 		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
 		//TODO:
-		// 		1-if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
-		//		  else stakes of all players will be added to pot, and game continue.
-		//		2-three public cards should be displayed on the table
+		// 		1-if only one player bet, then current player and previous players will continue to play next round.(we can use hasFold to filter)
+		// 		2-if only one player not fold, rest of players fold, then all stakes in the pot belongs to this player, and game ends
+		//		  else stakes of all players will be added to pot, and game continues.
+		//		2-three public cards should be displayed on the table.
 	}
 	public void subRoundHelper(int currentIndex){
 		Player currentPlayer;
@@ -267,7 +265,10 @@ public class RoundsOfTexas {
 	public void flopRound(int currentIndex){
 		subRoundHelper(currentIndex);
 		//TODO:
-		//		1-turn card should be displayed on the table
+		//		1-if only one player bet, then current player and previous players will continue to play next round.
+		//		2-if only one player not fold, rest of players fold, then all stakes in the pot belongs to this player, and game ends
+		//		  else stakes of all players will be added to pot, and game continues.
+		//		3-turn card should be displayed on the table
 	}
 	public void turnRound(int currentIndex){
 		subRoundHelper(currentIndex);
@@ -285,7 +286,7 @@ public class RoundsOfTexas {
 
 	public void play() {
 		//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
-		// 		  players should call, raise, fold or stay(dealer can't fold, but he can call, raise or stay).
+		// 		  players should check, bet, call, raise, fold, all-in(dealer can't fold, but he can check, bet, call, raise or all-in??? can dealer choose all actions???).
 		// 		  After this round finished,
 		// 				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
 		// 				  else stakes of all players will be added to pot, and game continue.
@@ -349,6 +350,7 @@ public class RoundsOfTexas {
 				}
 			}
 		}
+		//TODO: after four rounds, all not folded players will show their cards and determine who will win the game
 
 
 		// while the stakes are getting bigger and there is at least one active player,
