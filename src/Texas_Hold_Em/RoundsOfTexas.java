@@ -19,6 +19,7 @@ public class RoundsOfTexas {
 	private int bigIndex;
 	private int numSolventPlayers;
 	private int currentMaxStake;
+	private PotOfMoney pot = new PotOfMoney();
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -41,7 +42,7 @@ public class RoundsOfTexas {
 		System.out.println("\n\nNew Deal:\n\n");
 		//after small blind and big blind, deal two cards to each player
 		deal();
-		
+		printGame printGame = new printGame(players, deck, pot);
 //		while (!canOpen()) deal();  // continue to redeal until some player can open
 
 //		openRound();
@@ -296,8 +297,7 @@ public class RoundsOfTexas {
 		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
 
 
-		PotOfMoney pot = new PotOfMoney();
-		
+
 		int numActive = getNumActivePlayers();
 		
 		int stake = -1;
