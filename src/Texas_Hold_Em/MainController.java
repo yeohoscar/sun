@@ -38,8 +38,6 @@ public abstract class MainController {
         int dealerIndex=numPlayers;
         while (texasPlayers.size() > 1) {
             deck.reset();//before each game starts, shuffle the deck
-            //next player become a dealer
-            dealerIndex++;
             if(dealerIndex==numPlayers){dealerIndex=0;}
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
@@ -56,6 +54,7 @@ public abstract class MainController {
                 for (int i = 0; i < input.length; i++)
                     if ((char)input[i] == 'q' || (char)input[i] == 'Q')
                         return;
+                //next player become a dealer
                 dealerIndex += 1;
             }
             catch (Exception e) {};
