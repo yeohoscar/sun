@@ -7,12 +7,14 @@ package Texas_Hold_Em;
 // A GameOfPoker is a sequence of one or more RoundOfPoker's
 
 
+import poker.DeckOfCards;
+
 public class TexasController extends MainController
 {	
 
 	@Override
 	public void setUp(String[] names, int bank) {
 		super.setUp(names, bank);
-		deck  = new DeckOfTexasCards();
+		deck  = new DeckOfCards();
 	}
 }

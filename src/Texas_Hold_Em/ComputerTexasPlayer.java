@@ -14,7 +14,7 @@ import poker.PotOfMoney;
 import java.util.Random;
 
 
-public class ComputerPlayer extends Player {
+public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY		= 50;
 
     private int riskTolerance				= 0;  // willingness of a player to take risks and bluff
@@ -27,7 +27,7 @@ public class ComputerPlayer extends Player {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerPlayer(String name, int money){
+    public ComputerTexasPlayer(String name, int money){
         super(name, money);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY

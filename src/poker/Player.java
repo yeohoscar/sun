@@ -1,5 +1,5 @@
 
-package Texas_Hold_Em;
+package poker;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
@@ -9,9 +9,9 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import poker.PotOfMoney;
+import Texas_Hold_Em.Hand;
 
-abstract class Player {
+public abstract class Player {
 	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
 	
@@ -22,8 +22,6 @@ abstract class Player {
 	private Hand hand 		= null;      // the hand dealt to this player
 	
 	private boolean folded 		= false;     // set to true when the player folds (gives up)
-
-	private boolean dealer = false;
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -38,22 +36,7 @@ abstract class Player {
 		
 		reset();
 	}
-
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
-
-	public boolean isDealer(){
-		return dealer;
-	}
-	public void smallBlind(){
-
-	}
-	public void bigBlind(){
-
-	}
-
+		
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Reset internal state for start of new hand of poker  
@@ -116,8 +99,7 @@ abstract class Player {
 	public boolean hasFolded() {
 	    // has given up on the current hand
 	
-		return folded;
-		//return true;
+		return folded;	
 	}
 	
 	//--------------------------------------------------------------------//
@@ -130,9 +112,27 @@ abstract class Player {
 		hand = hand.categorize();
 	}
 	
-	public void dealTo(Deck deck) {
+	
+	
+	public void dealTo(DeckOfCards deck) {
 		hand = deck.dealHand();
 	}
+	
+	
+	public void throwaway(int cardPos, boolean recategorize) {
+		hand.throwaway(cardPos);
+		
+		if (recategorize)
+			reorganizeHand();
+	}
+	
+	
+	public void discard() {
+		hand = hand.discard();
+		
+		System.out.println(getName() + " discards " + addCount(hand.getNumDiscarded(), "card", "cards") + "\n");
+	}
+	
 	
 	public void takePot(PotOfMoney pot) {
 	    // when the winner of a hand takes the pot as his/her winnings
@@ -200,21 +200,6 @@ abstract class Player {
 		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
 	}
 
-    public void allIn(PotOfMoney pot) {
-		if (getBank() == 0) return;
-
-		stake += bank;
-		bank = 0;
-
-		pot.raiseStake(stake);
-
-		System.out.println("\n> " + getName() + " says: and I all in!\n");
-	}
-
-	public void check(PotOfMoney pot) {
-		System.out.println("\n> " + getName() + " says: I check!\n");
-	}
-
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -222,21 +207,18 @@ abstract class Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	abstract boolean shouldOpen(PotOfMoney pot);
+	protected abstract boolean shouldOpen(PotOfMoney pot);
 
-	abstract boolean shouldSee(PotOfMoney pot);
+	protected abstract boolean shouldSee(PotOfMoney pot);
 
-	abstract boolean shouldRaise(PotOfMoney pot);
-
-    abstract boolean shouldAllIn(PotOfMoney pot);
-
-    abstract boolean shouldCheck(PotOfMoney pot);
+	protected abstract boolean shouldRaise(PotOfMoney pot);
+	
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Game actions are scheduled here
 	//--------------------------------------------------------------------//
-	//------------------------2--------------------------------------------//
+	//--------------------------------------------------------------------//
 	
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
@@ -257,11 +239,7 @@ abstract class Player {
 			if (shouldOpen(pot))  // will this player open the betting?
 				openBetting(pot);	
 			else
-				if (shouldCheck(pot)) {
-					check(pot);
-				} else {
-					fold();
-				}
+				fold();
 		}
 		else {
 			if (pot.getCurrentStake() > getStake()) {
@@ -269,10 +247,8 @@ abstract class Player {
 			
 				if (shouldSee(pot)) {
 					seeBet(pot);
-
-					if (shouldAllIn(pot)) {
-						allIn(pot);
-					} else if (shouldRaise(pot))
+					
+					if (shouldRaise(pot))
 						raiseBet(pot);
 				}
 				else
