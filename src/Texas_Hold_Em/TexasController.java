@@ -11,7 +11,7 @@ public class TexasController
 {	
 	private Player[] players;
 	
-	private Deck deck;
+	private DeckOfTexasCards deck;
 	
 	private int numPlayers;
 	
@@ -83,7 +83,6 @@ public class TexasController
 			numSolventPlayers=getNumSolventPlayers();
 
 			//every player can act as dealer, dealer also needs to place bet, but dealer is the last one to place bet
-			players[dealerIndex] = new DealerPlayer(players[dealerIndex].getName(), players[dealerIndex].getBank());
 			players[dealerIndex].setDealer(true);
 
 			//start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.

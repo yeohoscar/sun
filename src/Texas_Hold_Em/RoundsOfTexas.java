@@ -11,7 +11,7 @@ public class RoundsOfTexas {
 	
 	private Player[] players;
 	private int dealerIndex;
-	private Deck deck;
+	private DeckOfTexasCards deck;
 	private int numPlayers;
 	private int smallIndex;
 	private int bigIndex;
@@ -24,7 +24,7 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public RoundsOfTexas(Deck deck, Player[] players, int dealerIndex, int numSolventPlayers) {
+	public RoundsOfTexas(DeckOfTexasCards deck, Player[] players, int dealerIndex, int numSolventPlayers) {
 		this.deck    = deck;
 		this.players = players;
 		this.dealerIndex = dealerIndex;
@@ -70,8 +70,7 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 
 	public int getNumPlayers() {
-		return numPlayers;	
-		
+		return numPlayers;
 	}
 	
 	
@@ -201,13 +200,13 @@ public class RoundsOfTexas {
 	}*/
 
 
-	public void preFlopRound(int currentIndex){
+	public void preFlopRound(int currentIndex, PotOfMoney pot){
 		Player currentPlayer;
 		while(!players[currentIndex].isDealer()){
 			if(!players[currentIndex].isBankrupt() && players[currentIndex] != null){
 				currentPlayer = players[currentIndex];
 				//current player takes his own action
-				currentPlayer.takeTurn(currentMaxStake);
+				currentPlayer.nextAction(pot);
 				/*//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
 				//		each player can take four actions: check, bet, call, raise, fold, all-in, so we can call takeTurn only once
 				//				/*switch (currentPlayer.getClass().getSimpleName()){
@@ -232,18 +231,18 @@ public class RoundsOfTexas {
 				currentIndex=0;
 			}
 		}
-		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
-		//TODO:
-		//		1-three public cards should be displayed on the table.
+		players[currentIndex].nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
+
 	}
-	public void subRoundHelper(int currentIndex){
+	public void subRoundHelper(int currentIndex, PotOfMoney pot){
 		Player currentPlayer;
 		while(!players[currentIndex].isDealer()){
 			if(!players[currentIndex].isBankrupt() && players[currentIndex] != null && !players[currentIndex].hasFolded()){
 				currentPlayer = players[currentIndex];
 
 				//current player takes his own action based on current max stake and all public cards
-				currentPlayer.takeTurn(currentMaxStake, publicCards);
+				//TODO: players' actions also depend on public cards
+				currentPlayer.nextAction(pot);
 			}
 			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
 			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
@@ -253,26 +252,17 @@ public class RoundsOfTexas {
 				currentIndex=0;
 			}
 		}
-		players[currentIndex].takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
-		//TODO:
-		// 		1-if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
-		//		  else stakes of all players will be added to pot, and game continue.
+		//TODO: dealer's actions also depend on public cards
+		players[currentIndex].nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
 	}
-	public void flopRound(int currentIndex){
-		subRoundHelper(currentIndex);
-		//TODO:
-		//		1-if only one player bet, then current player and previous players will continue to play next round.
-		//		2-if only one player not fold, rest of players fold, then all stakes in the pot belongs to this player, and game ends
-		//		  else stakes of all players will be added to pot, and game continues.
-		//		3-turn card should be displayed on the table
+	public void flopRound(int currentIndex, PotOfMoney pot){
+		subRoundHelper(currentIndex, pot);
 	}
-	public void turnRound(int currentIndex){
-		subRoundHelper(currentIndex);
-		//TODO:
-		// 		1-river card should be displayed on the table
+	public void turnRound(int currentIndex, PotOfMoney pot){
+		subRoundHelper(currentIndex, pot);
 	}
-	public void riverRound(int currentIndex){
-		subRoundHelper(currentIndex);
+	public void riverRound(int currentIndex, PotOfMoney pot){
+		subRoundHelper(currentIndex, pot);
 	}
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -312,8 +302,6 @@ public class RoundsOfTexas {
 		int stake = -1;
 		
 		Player currentPlayer = null;
-		
-		deck.reset();
 
 		int indexOfFirstPlayerAfterDealer;
 		if(dealerIndex==players.length-1){
@@ -325,22 +313,25 @@ public class RoundsOfTexas {
 		while(noWinnerProduced && roundCounter!=5){
 			switch (roundCounter){
 				case 1 ->{
-					preFlopRound(indexOfFirstPlayerAfterDealer);
+					preFlopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					//TODO: three public cards should be displayed on the table.
 					break;
 				}
 				case 2 ->{
-					flopRound(indexOfFirstPlayerAfterDealer);
+					flopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					//TODO: turn card should be displayed on the table
 					break;
 				}
 				case 3 ->{
-					turnRound(indexOfFirstPlayerAfterDealer);
+					turnRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					//TODO: river card should be displayed on the table
 					break;
 				}
 				default -> {
-					riverRound(indexOfFirstPlayerAfterDealer);
+					riverRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
 					break;
 				}
