@@ -7,7 +7,7 @@ public abstract class MainController {
 
     protected ArrayList<Player> players;
 
-    protected Deck deck;
+    protected DeckOfTexasCards deck;
 
     protected int numPlayers;
 

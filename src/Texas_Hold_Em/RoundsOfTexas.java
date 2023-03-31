@@ -1,6 +1,8 @@
 
 package Texas_Hold_Em;
 import poker.*;
+
+import java.util.ArrayList;
 // This package provides classes necessary for implementing a game system for playing poker
 
 // A RoundOfPoker is a single round/deal in a game
@@ -24,7 +26,7 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public RoundsOfTexas(Deck deck, ArrayList<Player> players, int dealerIndex) {
+	public RoundsOfTexas(DeckOfTexasCards deck, ArrayList<Player> players, int dealerIndex) {
 		this.deck    = deck;
 		this.players=players;
 		this.dealerIndex = dealerIndex;
@@ -206,7 +208,7 @@ public class RoundsOfTexas {
 			if(!players.get(currentIndex).isBankrupt() && players.get(currentIndex) != null){
 				currentPlayer = players.get(currentIndex);
 				//current player takes his own action
-				currentPlayer.nextAction(currentMaxStake);
+				currentPlayer.nextAction(pot);
 				/*//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
 				//		each player can take four actions: check, bet, call, raise, fold, all-in, so we can call takeTurn only once
 				//				/*switch (currentPlayer.getClass().getSimpleName()){
@@ -231,9 +233,7 @@ public class RoundsOfTexas {
 				currentIndex=0;
 			}
 		}
-		players.get(currentIndex).takeTurn(currentMaxStake);//this player is the dealer, which is the last one takes actions in this subround
-		//TODO:
-		//		1-three public cards should be displayed on the table.
+		players.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
 	}
 	public void subRoundHelper(int currentIndex, PotOfMoney pot){
 		Player currentPlayer;
@@ -253,8 +253,8 @@ public class RoundsOfTexas {
 				currentIndex=0;
 			}
 		}
-		//TODO: dealer's actions also depend on public cards
-		players[currentIndex].nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
+		//TODO: dealer's actions also depends on public cards
+		players.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
 	}
 	public void flopRound(int currentIndex, PotOfMoney pot){
 		subRoundHelper(currentIndex, pot);
