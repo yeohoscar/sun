@@ -6,4 +6,10 @@ public interface Hand {
     Hand categorize();
 
     int getRiskWorthiness();
+
+    void throwaway(int cardPos);
+
+    Hand discard();
+
+    int getNumDiscarded();
 }

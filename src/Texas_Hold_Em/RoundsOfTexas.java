@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class RoundsOfTexas {
 	public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
 	
-	private ArrayList<Player> players;
+	private ArrayList<TexasPlayer> texasPlayers;
 	private int dealerIndex;
-	private DeckOfTexasCards deck;
+	private DeckOfCards deck;
 	private int numPlayers;
 	private int smallIndex;
 	private int bigIndex;
@@ -26,17 +26,17 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public RoundsOfTexas(DeckOfTexasCards deck, ArrayList<Player> players, int dealerIndex) {
+	public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
 		this.deck    = deck;
-		this.players=players;
+		this.texasPlayers = texasPlayers;
 		this.dealerIndex = dealerIndex;
 		this.numSolventPlayers = numSolventPlayers;
-		numPlayers = players.size();
+		numPlayers = texasPlayers.size();
 
 		//in each game, there must have small blind and big blind
 		//and two players will make small blind and big blind
 		System.out.println("Small Blind and Big Blind: ");
-		blindBet(dealerIndex, players.size()-1);
+		blindBet(dealerIndex, texasPlayers.size()-1);
 
 		System.out.println("\n\nNew Deal:\n\n");
 		//after small blind and big blind, deal two cards to each player
@@ -61,8 +61,8 @@ public class RoundsOfTexas {
 			smallIndex = dealerIndex+1;
 			bigIndex = dealerIndex+2;
 		}
-		players.get(smallIndex).smallBlind();
-		players.get(bigIndex).bigBlind();
+		texasPlayers.get(smallIndex).smallBlind();
+		texasPlayers.get(bigIndex).bigBlind();
 	}
 
 	//--------------------------------------------------------------------//
@@ -76,9 +76,9 @@ public class RoundsOfTexas {
 	}
 	
 	
-	public Player getPlayer(int num) {
+	public TexasPlayer getPlayer(int num) {
 		if (num >= 0 && num <= numPlayers)
-			return players.get(num);
+			return texasPlayers.get(num);
 		else
 			return null;
 	}
@@ -106,9 +106,9 @@ public class RoundsOfTexas {
 	public void removePlayer(int num) {
 		if (num >= 0 && num < numPlayers)
 		{
-			System.out.println("\n> " + players.get(num).getName() + " leaves the game.\n");
+			System.out.println("\n> " + texasPlayers.get(num).getName() + " leaves the game.\n");
 			
-			players.set(num, null);
+			texasPlayers.set(num, null);
 		}
 	}	
 	
@@ -122,34 +122,34 @@ public class RoundsOfTexas {
 	public int getNumBestPlayer(boolean display) {
 		int bestHandScore = 0, score = 0, bestPos = 0;
 			
-		Player bestPlayer = null, currentPlayer = null;
+		TexasPlayer bestTexasPlayer = null, currentTexasPlayer = null;
 			
 		for (int i = 0; i < getNumPlayers(); i++) {
-			currentPlayer = getPlayer(i);
+			currentTexasPlayer = getPlayer(i);
 				
-			if (currentPlayer == null || currentPlayer.hasFolded())
+			if (currentTexasPlayer == null || currentTexasPlayer.hasFolded())
 				continue;
 				
-			score = currentPlayer.getHand().getValue();
+			score = currentTexasPlayer.getHand().getValue();
 				
 			if (score > bestHandScore) {
 				if (display) {
 					if (bestHandScore == 0)
-						System.out.println("> " + currentPlayer.getName() + " goes first:\n" + 
-											 currentPlayer.getHand());
+						System.out.println("> " + currentTexasPlayer.getName() + " goes first:\n" +
+											 currentTexasPlayer.getHand());
 					else
-						System.out.println("> " + currentPlayer.getName() + " says 'Read them and weep:'\n" + 
-											 currentPlayer.getHand());
+						System.out.println("> " + currentTexasPlayer.getName() + " says 'Read them and weep:'\n" +
+											 currentTexasPlayer.getHand());
 				}
 				
 				bestPos		  = i;
 				bestHandScore = score;
-				bestPlayer    = currentPlayer;
+				bestTexasPlayer = currentTexasPlayer;
 			}
 			else
 			if (display)
-				System.out.println("> " + currentPlayer.getName() + " says 'I lose':\n" + 
-										  currentPlayer.getHand());
+				System.out.println("> " + currentTexasPlayer.getName() + " says 'I lose':\n" +
+										  currentTexasPlayer.getHand());
 		}
 
 		return bestPos;
@@ -203,12 +203,12 @@ public class RoundsOfTexas {
 
 
 	public void preFlopRound(int currentIndex, PotOfMoney pot){
-		Player currentPlayer;
-		while(!players.get(currentIndex).isDealer()){
-			if(!players.get(currentIndex).isBankrupt() && players.get(currentIndex) != null){
-				currentPlayer = players.get(currentIndex);
+		TexasPlayer currentTexasPlayer;
+		while(!texasPlayers.get(currentIndex).isDealer()){
+			if(!texasPlayers.get(currentIndex).isBankrupt() && texasPlayers.get(currentIndex) != null){
+				currentTexasPlayer = texasPlayers.get(currentIndex);
 				//current player takes his own action
-				currentPlayer.nextAction(pot);
+				currentTexasPlayer.nextAction(pot);
 				/*//TODO: maybe we don't need to determine if currentPlayer is Human or Computer with switch?
 				//		each player can take four actions: check, bet, call, raise, fold, all-in, so we can call takeTurn only once
 				//				/*switch (currentPlayer.getClass().getSimpleName()){
@@ -227,34 +227,34 @@ public class RoundsOfTexas {
 			}
 			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
 			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
-			if(currentIndex!=players.size()-1){
+			if(currentIndex!= texasPlayers.size()-1){
 				currentIndex++;
 			}else {
 				currentIndex=0;
 			}
 		}
-		players.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
+		texasPlayers.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
 	}
 	public void subRoundHelper(int currentIndex, PotOfMoney pot){
-		Player currentPlayer;
-		while(!players.get(currentIndex).isDealer()){
-			if(!players.get(currentIndex).isBankrupt() && players.get(currentIndex) != null && !players.get(currentIndex).hasFolded()){
-				currentPlayer = players.get(currentIndex);
+		TexasPlayer currentTexasPlayer;
+		while(!texasPlayers.get(currentIndex).isDealer()){
+			if(!texasPlayers.get(currentIndex).isBankrupt() && texasPlayers.get(currentIndex) != null && !texasPlayers.get(currentIndex).hasFolded()){
+				currentTexasPlayer = texasPlayers.get(currentIndex);
 
 				//current player takes his own action based on current max stake and all public cards
 				//TODO: players' actions also depend on public cards
-				currentPlayer.nextAction(pot);
+				currentTexasPlayer.nextAction(pot);
 			}
 			//if the player next to dealer is not the last one, then after this player takes actions, currentIndex increases by one
 			//else, the player next to dealer is the last one in the array, currentIndex should be reassigned to zero
-			if(currentIndex!=players.size()-1){
+			if(currentIndex!= texasPlayers.size()-1){
 				currentIndex++;
 			}else {
 				currentIndex=0;
 			}
 		}
 		//TODO: dealer's actions also depends on public cards
-		players.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
+		texasPlayers.get(currentIndex).nextAction(pot);//this player is the dealer, which is the last one takes actions in this subround
 	}
 	public void flopRound(int currentIndex, PotOfMoney pot){
 		subRoundHelper(currentIndex, pot);
@@ -302,10 +302,10 @@ public class RoundsOfTexas {
 		
 		int stake = -1;
 		
-		Player currentPlayer = null;
+		TexasPlayer currentTexasPlayer = null;
 
 		int indexOfFirstPlayerAfterDealer;
-		if(dealerIndex==players.size()-1){
+		if(dealerIndex== texasPlayers.size()-1){
 			indexOfFirstPlayerAfterDealer=0;
 		}else {
 			indexOfFirstPlayerAfterDealer=dealerIndex+1;
@@ -386,8 +386,8 @@ public class RoundsOfTexas {
 	}
 	public boolean onlyOnePlayerNotFold(){
 		int count=0;
-		for(Player player: players){
-			if(!player.hasFolded()){
+		for(TexasPlayer texasPlayer : texasPlayers){
+			if(!texasPlayer.hasFolded()){
 				count++;
 			}
 		}

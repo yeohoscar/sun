@@ -12,7 +12,7 @@ import poker.PotOfMoney;
 
 import java.util.Scanner;
 
-public class HumanPlayer extends Player {
+public class HumanTexasPlayer extends TexasPlayer {
 	public static int MAX_DISCARD	=	3; // maximum number of cards a player can discard
 
 	//--------------------------------------------------------------------//
@@ -21,7 +21,7 @@ public class HumanPlayer extends Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public HumanPlayer(String name, int money) {
+	public HumanTexasPlayer(String name, int money) {
 		super(name, money);
 	}
 
