@@ -9,6 +9,8 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
+import poker.PotOfMoney;
+
 import java.util.Random;
 
 

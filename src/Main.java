@@ -1,4 +1,4 @@
-package Texas_Hold_Em;
+import Texas_Hold_Em.TexasController;
 
 public class Main {
     public static void main(String[] args) {

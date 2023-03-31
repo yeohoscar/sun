@@ -4,4 +4,6 @@ public interface Hand {
     int getValue();
 
     Hand categorize();
+
+    int getRiskWorthiness();
 }
