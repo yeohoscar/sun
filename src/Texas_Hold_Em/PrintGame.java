@@ -1,38 +1,39 @@
 package Texas_Hold_Em;
 
+import poker.DeckOfCards;
 import poker.PotOfMoney;
 
 import java.util.ArrayList;
 
-public class printGame {
-    private ArrayList<Player> players;
-    private DeckOfTexasCards deck;
+public class PrintGame {
+    private ArrayList<TexasPlayer> texasPlayers;
+    private DeckOfCards deck;
     private PotOfMoney pot;
 
-    public printGame(ArrayList<Player> players, DeckOfTexasCards deck, PotOfMoney pot){
-        this.players = players;
+    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, PotOfMoney pot){
+        this.texasPlayers = texasPlayers;
         this.deck = deck;
         this.pot = pot;
     }
-    private String printFaceDownCard(Player player){
-        if(player.hasFolded()){
-            return player.getName()+" has folded";
+    private String printFaceDownCard(TexasPlayer texasPlayer){
+        if(texasPlayer.hasFolded()){
+            return texasPlayer.getName()+" has folded";
         }else {
-            if(player.isDealer()){
-                return  "  Name:    "+player.getName()+
+            if(texasPlayer.isDealer()){
+                return  "  Name:    "+texasPlayer.getName()+
                         "╭───╮" +     "  ╭───╮\n"+
                         "│" + "   │"+"  │"+"   │\n"+
                         "│" + "   │"+"  │"+"   │\n"+
                         "╰───╯"     +"  ╰───╯\n"+
-                        "Dealer and Current Stake="+player.getStake();
+                        "Dealer and Current Stake="+texasPlayer.getStake();
             }
             else {
-                return  "  Name:    "+player.getName()+
+                return  "  Name:    "+texasPlayer.getName()+
                         "╭───╮" +     "  ╭───╮\n"+
                         "│" + "   │"+"  │"+"   │\n"+
                         "│" + "   │"+"  │"+"   │\n"+
                         "╰───╯"     +"  ╰───╯\n"+
-                        "Current Stake="+player.getStake();
+                        "Current Stake="+texasPlayer.getStake();
             }
         }
     }
@@ -74,7 +75,7 @@ public class printGame {
     }
     private void printTable(boolean showPublicCards){
         int count=0;
-        for(Player player: players){
+        for(TexasPlayer player: texasPlayers){
             if(count==2){
                 System.out.println(printFaceDownCard(player)+"\n");
                 if(showPublicCards){

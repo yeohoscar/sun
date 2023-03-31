@@ -20,7 +20,7 @@ public class RoundsOfTexas {
 	private int numSolventPlayers;
 	private int currentMaxStake;
 	private PotOfMoney pot = new PotOfMoney();
-	
+	private PrintGame printGame;
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -42,7 +42,8 @@ public class RoundsOfTexas {
 		System.out.println("\n\nNew Deal:\n\n");
 		//after small blind and big blind, deal two cards to each player
 		deal();
-		printGame printGame = new printGame(players, deck, pot);
+		this.printGame = new PrintGame(texasPlayers, deck, pot);
+		printGame.table("deal");
 //		while (!canOpen()) deal();  // continue to redeal until some player can open
 
 //		openRound();
@@ -316,27 +317,32 @@ public class RoundsOfTexas {
 				case 1 ->{
 					preFlopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("pre-flop");
 					//TODO: three public cards should be displayed on the table.
 					break;
 				}
 				case 2 ->{
 					flopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("flop");
 					//TODO: turn card should be displayed on the table
 					break;
 				}
 				case 3 ->{
 					turnRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("turn");
 					//TODO: river card should be displayed on the table
 					break;
 				}
 				default -> {
 					riverRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("river");
 					break;
 				}
 			}
+			printGame.table("showDown");
 			if(onlyOnePlayerNotFold()){
 				break;
 			}
