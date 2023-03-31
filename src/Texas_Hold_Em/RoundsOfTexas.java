@@ -63,6 +63,22 @@ public class RoundsOfTexas {
 			smallIndex = dealerIndex+1;
 			bigIndex = dealerIndex+2;
 		}
+		while((texasPlayers.get(smallIndex)==null && texasPlayers.get(smallIndex).hasFolded()) && (texasPlayers.get(bigIndex)==null && texasPlayers.get(bigIndex).hasFolded()) && smallIndex == bigIndex){
+			if(texasPlayers.get(smallIndex)==null || texasPlayers.get(smallIndex).hasFolded()){
+				smallIndex++;
+			}else if(texasPlayers.get(bigIndex)==null || texasPlayers.get(bigIndex).hasFolded()){
+				bigIndex++;
+			}else if(smallIndex==bigIndex){
+				bigIndex++;
+			}
+			if(smallIndex==texasPlayers.size()){
+				smallIndex=0;
+			}
+			if(bigIndex==texasPlayers.size()){
+				bigIndex=0;
+			}
+		}
+
 		texasPlayers.get(smallIndex).smallBlind();
 		texasPlayers.get(bigIndex).bigBlind();
 	}

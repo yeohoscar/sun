@@ -55,7 +55,10 @@ public abstract class MainController {
                     if ((char)input[i] == 'q' || (char)input[i] == 'Q')
                         return;
                 //next player become a dealer
-                dealerIndex += 1;
+                dealerIndex ++;
+                while(texasPlayers.get(dealerIndex)==null || texasPlayers.get(dealerIndex).hasFolded()){
+                    dealerIndex++;
+                }
             }
             catch (Exception e) {};
 
