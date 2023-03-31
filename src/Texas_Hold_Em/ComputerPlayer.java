@@ -1,5 +1,5 @@
 
-package poker;
+package Texas_Hold_Em;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
