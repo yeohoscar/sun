@@ -1,6 +1,8 @@
 
 package Texas_Hold_Em;
 import poker.*;
+
+import java.util.ArrayList;
 // This package provides classes necessary for implementing a game system for playing poker
 
 // A RoundOfPoker is a single round/deal in a game
@@ -9,7 +11,7 @@ import poker.*;
 public class RoundsOfTexas {
 	public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
 	
-	private Player[] players;
+	private ArrayList<Player> players;
 	private int dealerIndex;
 	private Deck deck;
 	private int numPlayers;
@@ -24,12 +26,12 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public RoundsOfTexas(Deck deck, Player[] players, int dealerIndex, int numSolventPlayers) {
+	public RoundsOfTexas(Deck deck, ArrayList<Player> players, int dealerIndex) {
 		this.deck    = deck;
-		this.players = players;
+		this.players=players;
 		this.dealerIndex = dealerIndex;
 		this.numSolventPlayers = numSolventPlayers;
-		numPlayers = players.length;
+		numPlayers = players.size();
 
 		//in each game, there must have small blind and big blind
 		//and two players will make small blind and big blind
