@@ -1,4 +1,4 @@
-package Texas_Hold_Em;
+import Texas_Hold_Em.TexasController;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,11 +19,11 @@ public class Main {
         }
         catch (Exception e){};
 
-        int startingBank = 10;
+        int startingBank = 100;
 
         System.out.println("\nLet's play BLACKJACK ...\n\n");
-        TexasController game = new TexasController(names, startingBank);
-
+        TexasController game = new TexasController();
+        game.setUp(names, startingBank);
         game.play();
     }
 }

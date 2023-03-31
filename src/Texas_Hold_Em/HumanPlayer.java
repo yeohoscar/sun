@@ -27,14 +27,14 @@ public class HumanPlayer extends Player {
 
 	public void placeBet(int bet) {
 		Scanner input = new Scanner(System.in);
-		while (bet <= 0 || bet > bank) {
-			System.out.print("Enter your bet amount (you have " + bank + " chips): ");
+		while (bet <= 0 || bet > getBank()) {
+			System.out.print("Enter your bet amount (you have " + getBank() + " chips): ");
 			try{
 				if (input.hasNextInt()) {
 					bet = input.nextInt();
 					if (bet <= 0) {
 						System.out.println("Invalid bet amount! Please enter a positive value.");
-					} else if (bet > bank) {
+					} else if (bet > getBank()) {
 						System.out.println("You don't have enough chips! Please enter a smaller value.");
 					}
 				}else{
@@ -44,8 +44,7 @@ public class HumanPlayer extends Player {
 			}catch (Exception e) {}
 		}
 
-		hand.setStake(bet);
-		bank -= bet;
+		getBank() -= bet;
 
 		System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
 	}
@@ -99,7 +98,7 @@ public class HumanPlayer extends Player {
 	}
 
 	public boolean shouldAllIn(PotOfMoney pot) {
-		return false;
+		return askQuestion("Do you want to all in?");
 	}
 
 	public boolean shouldCheck(PotOfMoney pot) {

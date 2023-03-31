@@ -1,5 +1,5 @@
 
-package poker;
+package Texas_Hold_Em;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
@@ -8,6 +8,8 @@ package poker;
 // There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
 //								and HumanPlayer, in which decisions are made using menus
 
+
+import poker.PotOfMoney;
 
 import java.util.Random;
 
