@@ -267,6 +267,9 @@ public class PokerHand implements Hand
 
 	
 	//皇家同花顺
+	public boolean isRoyalFlush() {
+		return isRoyalStraight() && isFlush();
+	}
 	public boolean isRoyalStraight() {
 		return (getCard(4).isAce() &&
 				getCard(0).isKing() &&
@@ -347,21 +350,6 @@ public class PokerHand implements Hand
 		return true;
 	}
 
-	public boolean isRoyalFlush() {
-		return isRoyalStraight() && isFlush();
-	}
-	
-	
-
-	
-	
-		
-
-	
-	
-
-	
-	
 
 
 	//--------------------------------------------------------------------//
