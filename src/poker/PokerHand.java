@@ -259,35 +259,14 @@ public class PokerHand implements Hand
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public boolean isFourOfAKind() 	{
-		return (getCard(0).getRank() == getCard(3).getRank() 	||
-				getCard(1).getRank() == getCard(4).getRank());
-	}
+
 
 	
-	public boolean isFullHouse() {
-		return ((getCard(0).getRank() == getCard(2).getRank()  &&   // triple + pair
-			     getCard(3).getRank() == getCard(4).getRank()) ||
-				(getCard(0).getRank() == getCard(1).getRank()  &&   // pair + triple
-				 getCard(2).getRank() == getCard(4).getRank()));    
-	}
+
+
 
 	
-	// A straight involving an ace can have two forms: ace-first (12345) or ace-last (10JQKA)
-	
-	public boolean isStraight() {
-		return (getCard(0).getRank() == getCard(1).getRank() + 1 && // ordered by rank
-				getCard(1).getRank() == getCard(2).getRank() + 1 &&
-				getCard(2).getRank() == getCard(3).getRank() + 1 &&	
-				getCard(3).getRank() == getCard(4).getRank() + 1)
-				||
-			   (getCard(0).getValue()  == getCard(1).getValue() - 1 &&  // ordered by game value
-				getCard(1).getValue()  == getCard(2).getValue() - 1 &&
-				getCard(2).getValue()  == getCard(3).getValue() - 1 &&	
-				getCard(3).getValue()  == getCard(4).getValue() - 1);
-	}
-	
-	
+	//皇家同花顺
 	public boolean isRoyalStraight() {
 		return (getCard(4).isAce() &&
 				getCard(0).isKing() &&
@@ -296,55 +275,94 @@ public class PokerHand implements Hand
 				getCard(3).isTen());
 	}
 
-	
+	//同花顺
+	public boolean isStraightFlush() {
+		return isFlush() && isStraight();
+	}
+
+	//四条
+	public boolean isFourOfAKind() 	{
+		return (getCard(0).getRank() == getCard(3).getRank() 	||
+				getCard(1).getRank() == getCard(4).getRank());
+	}
+
+	//葫芦
+	public boolean isFullHouse() {
+		return ((getCard(0).getRank() == getCard(2).getRank()  &&   // triple + pair
+				getCard(3).getRank() == getCard(4).getRank()) ||
+				(getCard(0).getRank() == getCard(1).getRank()  &&   // pair + triple
+						getCard(2).getRank() == getCard(4).getRank()));
+	}
+
+	//同花
 	public boolean isFlush() {
 		return (getCard(0).getSuit() == getCard(1).getSuit() &&
 				getCard(1).getSuit() == getCard(2).getSuit() &&
 				getCard(2).getSuit() == getCard(3).getSuit() &&
 				getCard(3).getSuit() == getCard(4).getSuit());
 	}
-		
-	
-	
-	public boolean isStraightFlush() {
-		return isFlush() && isStraight();
+
+
+	//顺子
+	// A straight involving an ace can have two forms: ace-first (12345) or ace-last (10JQKA)
+	public boolean isStraight() {
+		return (getCard(0).getRank() == getCard(1).getRank() + 1 && // ordered by rank
+				getCard(1).getRank() == getCard(2).getRank() + 1 &&
+				getCard(2).getRank() == getCard(3).getRank() + 1 &&
+				getCard(3).getRank() == getCard(4).getRank() + 1)
+				||
+				(getCard(0).getValue()  == getCard(1).getValue() - 1 &&  // ordered by game value
+						getCard(1).getValue()  == getCard(2).getValue() - 1 &&
+						getCard(2).getValue()  == getCard(3).getValue() - 1 &&
+						getCard(3).getValue()  == getCard(4).getValue() - 1);
 	}
-	
-	
-	public boolean isRoyalFlush() {
-		return isRoyalStraight() && isFlush();
-	}
-	
-	
+
+	//三条
 	public boolean isThreeOfAKind() {
 		return (getCard(0).getRank() == getCard(2).getRank() ||
 				getCard(1).getRank() == getCard(3).getRank() ||
 				getCard(2).getRank() == getCard(4).getRank());
 	}
-	
-	
-		
+
+	//两对
 	public boolean isTwoPair() {
-		return ((getCard(0).getRank() == getCard(1).getRank() && 
-				 getCard(2).getRank() == getCard(3).getRank()) ||
-				(getCard(0).getRank() == getCard(1).getRank() && 
-				 getCard(3).getRank() == getCard(4).getRank()) ||
-				(getCard(1).getRank() == getCard(2).getRank() && 
-				 getCard(3).getRank() == getCard(4).getRank()));
+		return ((getCard(0).getRank() == getCard(1).getRank() &&
+				getCard(2).getRank() == getCard(3).getRank()) ||
+				(getCard(0).getRank() == getCard(1).getRank() &&
+						getCard(3).getRank() == getCard(4).getRank()) ||
+				(getCard(1).getRank() == getCard(2).getRank() &&
+						getCard(3).getRank() == getCard(4).getRank()));
 	}
-	
-	
+
+	//对子
 	public boolean isPair() {
-		return (getCard(0).getRank() == getCard(1).getRank() || 
+		return (getCard(0).getRank() == getCard(1).getRank() ||
 				getCard(1).getRank() == getCard(2).getRank() ||
 				getCard(2).getRank() == getCard(3).getRank() ||
 				getCard(3).getRank() == getCard(4).getRank());
 	}
-	
-	
+
+	//乌龙/高牌
 	public boolean isHigh() {
 		return true;
 	}
+
+	public boolean isRoyalFlush() {
+		return isRoyalStraight() && isFlush();
+	}
+	
+	
+
+	
+	
+		
+
+	
+	
+
+	
+	
+
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
