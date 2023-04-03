@@ -9,19 +9,11 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
+import poker.DeckOfCards;
 import poker.PotOfMoney;
 
 abstract class TexasPlayer extends poker.Player {
-	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
-									    	 // stake in the pot
-	
-	private int stake      		= 0;		 // the amount of money the player has thrown into the current pot 
-	
-	private String name    		= "Player";  // the unique identifying name given to the player
-	
-	private Hand hand 		= null;      // the hand dealt to this player
-	
-	private boolean folded 		= false;     // set to true when the player folds (gives up)
+	public final int NUM_CARDS_DEALT = 2;
 
 	private boolean dealer = false;
 	
@@ -102,7 +94,17 @@ abstract class TexasPlayer extends poker.Player {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}
 
-	
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Modifiers
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	@Override
+	public void dealTo(DeckOfCards deck) {
+		hand = deck.dealHand(NUM_CARDS_DEALT);
+	}
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Key decisions a player must make

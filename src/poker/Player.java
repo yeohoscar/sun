@@ -12,16 +12,16 @@ package poker;
 import Texas_Hold_Em.Hand;
 
 public abstract class Player {
-	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
+	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
 	
-	private int stake      		= 0;		 // the amount of money the player has thrown into the current pot 
+	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
 	
 	private String name    		= "Player";  // the unique identifying name given to the player
 	
-	private Hand hand 		= null;      // the hand dealt to this player
+	protected Hand hand 		= null;      // the hand dealt to this player
 	
-	private boolean folded 		= false;     // set to true when the player folds (gives up)
+	protected boolean folded 		= false;     // set to true when the player folds (gives up)
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -132,7 +132,6 @@ public abstract class Player {
 		
 		System.out.println(getName() + " discards " + addCount(hand.getNumDiscarded(), "card", "cards") + "\n");
 	}
-	
 	
 	public void takePot(PotOfMoney pot) {
 	    // when the winner of a hand takes the pot as his/her winnings

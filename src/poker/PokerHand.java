@@ -53,16 +53,20 @@ public class PokerHand implements Hand
 		this.deck = deck;
 	}
 	
-	
-	public PokerHand(DeckOfCards deck) {
+	public PokerHand(DeckOfCards deck, int numCardsToBeDealt) {
 		this.deck = deck;
-		
-		hand      = new Card[NUMCARDS];
-		
-		for (int i = 0; i < NUMCARDS; i++)
+
+		hand = new Card[numCardsToBeDealt];
+
+		for (int i = 0; i < numCardsToBeDealt; i++) {
 			setCard(i, deck.dealNext());
-		
+		}
+
 		sortHand();
+	}
+
+	public PokerHand(DeckOfCards deck) {
+		this(deck, NUMCARDS);
 	}
 
 	//--------------------------------------------------------------------//
@@ -133,7 +137,7 @@ public class PokerHand implements Hand
 	// Discard and redeal some cards
 	//--------------------------------------------------------------------//
 	
-	protected void throwaway(int pos) {
+	public void throwaway(int pos) {
 		if (pos < 0 || pos >= NUMCARDS) return;  // already discarded or out of bounds
 		
 		Card next = deck.dealNext();
