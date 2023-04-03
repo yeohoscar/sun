@@ -63,7 +63,7 @@ public class RoundsOfTexas {
 			smallIndex = dealerIndex+1;
 			bigIndex = dealerIndex+2;
 		}
-		while((texasPlayers.get(smallIndex)==null && texasPlayers.get(smallIndex).hasFolded()) && (texasPlayers.get(bigIndex)==null && texasPlayers.get(bigIndex).hasFolded()) && smallIndex == bigIndex){
+		while((texasPlayers.get(smallIndex)==null || texasPlayers.get(smallIndex).hasFolded()) || (texasPlayers.get(bigIndex)==null || texasPlayers.get(bigIndex).hasFolded()) || smallIndex == bigIndex){
 			if(texasPlayers.get(smallIndex)==null || texasPlayers.get(smallIndex).hasFolded()){
 				smallIndex++;
 			}else if(texasPlayers.get(bigIndex)==null || texasPlayers.get(bigIndex).hasFolded()){
@@ -290,7 +290,7 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 
 	public void play() {
-		//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
+		/*//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
 		// 		  players should check, bet, call, raise, fold, all-in(dealer can't fold, but he can check, bet, call, raise or all-in??? can dealer choose all actions???).
 		// 		  After this round finished,
 		// 				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
@@ -311,7 +311,7 @@ public class RoundsOfTexas {
 		//		After this round finished,
 		//				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
 		//				  else stakes of all players will be added to pot, and game continue.
-		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
+		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.*/
 
 
 
