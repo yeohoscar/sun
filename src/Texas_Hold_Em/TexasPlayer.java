@@ -42,10 +42,12 @@ abstract class TexasPlayer extends poker.Player {
 		return dealer;
 	}
 	public void smallBlind(){
-
+		stake += 5;
+		bank -= 5;
 	}
 	public void bigBlind(){
-
+		stake += 10;
+		bank -= 10;
 	}
 
 	//--------------------------------------------------------------------//

@@ -19,7 +19,8 @@ public class RoundsOfTexas {
 	private int bigIndex;
 	private int numSolventPlayers;
 	private int currentMaxStake;
-	
+	private PotOfMoney pot = new PotOfMoney();
+	private PrintGame printGame;
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -41,7 +42,8 @@ public class RoundsOfTexas {
 		System.out.println("\n\nNew Deal:\n\n");
 		//after small blind and big blind, deal two cards to each player
 		deal();
-		
+		this.printGame = new PrintGame(texasPlayers, deck, pot);
+		printGame.table("deal");
 //		while (!canOpen()) deal();  // continue to redeal until some player can open
 
 //		openRound();
@@ -61,6 +63,22 @@ public class RoundsOfTexas {
 			smallIndex = dealerIndex+1;
 			bigIndex = dealerIndex+2;
 		}
+		while((texasPlayers.get(smallIndex)==null || texasPlayers.get(smallIndex).hasFolded()) || (texasPlayers.get(bigIndex)==null || texasPlayers.get(bigIndex).hasFolded()) || smallIndex == bigIndex){
+			if(texasPlayers.get(smallIndex)==null || texasPlayers.get(smallIndex).hasFolded()){
+				smallIndex++;
+			}else if(texasPlayers.get(bigIndex)==null || texasPlayers.get(bigIndex).hasFolded()){
+				bigIndex++;
+			}else if(smallIndex==bigIndex){
+				bigIndex++;
+			}
+			if(smallIndex==texasPlayers.size()){
+				smallIndex=0;
+			}
+			if(bigIndex==texasPlayers.size()){
+				bigIndex=0;
+			}
+		}
+
 		texasPlayers.get(smallIndex).smallBlind();
 		texasPlayers.get(bigIndex).bigBlind();
 	}
@@ -272,7 +290,7 @@ public class RoundsOfTexas {
 	//--------------------------------------------------------------------//
 
 	public void play() {
-		//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
+		/*//TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
 		// 		  players should check, bet, call, raise, fold, all-in(dealer can't fold, but he can check, bet, call, raise or all-in??? can dealer choose all actions???).
 		// 		  After this round finished,
 		// 				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
@@ -293,11 +311,10 @@ public class RoundsOfTexas {
 		//		After this round finished,
 		//				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
 		//				  else stakes of all players will be added to pot, and game continue.
-		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
+		//		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.*/
 
 
-		PotOfMoney pot = new PotOfMoney();
-		
+
 		int numActive = getNumActivePlayers();
 		
 		int stake = -1;
@@ -317,27 +334,32 @@ public class RoundsOfTexas {
 				case 1 ->{
 					preFlopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("pre-flop");
 					//TODO: three public cards should be displayed on the table.
 					break;
 				}
 				case 2 ->{
 					flopRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("flop");
 					//TODO: turn card should be displayed on the table
 					break;
 				}
 				case 3 ->{
 					turnRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("turn");
 					//TODO: river card should be displayed on the table
 					break;
 				}
 				default -> {
 					riverRound(indexOfFirstPlayerAfterDealer, pot);
 					roundCounter++;
+					printGame.table("river");
 					break;
 				}
 			}
+			printGame.table("showDown");
 			if(onlyOnePlayerNotFold()){
 				break;
 			}
