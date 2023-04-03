@@ -311,6 +311,7 @@ public class RoundsOfTexas {
 			indexOfFirstPlayerAfterDealer=dealerIndex+1;
 		}
 		int roundCounter = 1;
+		boolean noWinnerProduced = true;
 		while(noWinnerProduced && roundCounter!=5){
 			switch (roundCounter){
 				case 1 ->{

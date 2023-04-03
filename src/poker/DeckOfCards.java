@@ -103,9 +103,7 @@ public class DeckOfCards implements Deck {
 	}
 
 	public PokerHand dealHand(int numCardsToBeDealt) {
-		PokerHand hand = new PokerHand(this, numCardsToBeDealt);
-
-		return hand.categorize();
+		return new PokerHand(this, numCardsToBeDealt);
 	}
 
 	//--------------------------------------------------------------------//

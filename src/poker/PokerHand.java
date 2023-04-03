@@ -51,6 +51,8 @@ public class PokerHand implements Hand
 		this.hand = hand;
 		
 		this.deck = deck;
+
+		sortHand();
 	}
 	
 	public PokerHand(DeckOfCards deck, int numCardsToBeDealt) {
@@ -61,8 +63,6 @@ public class PokerHand implements Hand
 		for (int i = 0; i < numCardsToBeDealt; i++) {
 			setCard(i, deck.dealNext());
 		}
-
-		sortHand();
 	}
 
 	public PokerHand(DeckOfCards deck) {
@@ -91,7 +91,7 @@ public class PokerHand implements Hand
 	public String toString() {
 		String desc = "";
 		
-		for (int i = 0; i < NUMCARDS; i++)
+		for (int i = 0; i < hand.length; i++)
 			desc = desc + "\n      " + i + ":  " + getCard(i).toString();
 		
 		return desc + "\n";
@@ -121,6 +121,10 @@ public class PokerHand implements Hand
 			return hand[num];
 		else
 			return null;
+	}
+
+	public Card[] getHand() {
+		return hand;
 	}
 	
 		
@@ -215,13 +219,13 @@ public class PokerHand implements Hand
 		
 		// consider every position in the hand
 		
-		for (int i = 0; i < NUMCARDS; i++) {
+		for (int i = 0; i < hand.length; i++) {
 			maxPosition = i;
 			maxValue    = getCard(i).getValue();
 					
 			// consider every other position to the left of this position
 			
-			for (int j = i+1; j < NUMCARDS; j++)  { // is there a higher card to the left?
+			for (int j = i+1; j < hand.length; j++)  { // is there a higher card to the left?
 				if (getCard(j).getValue() > maxValue) {
 					maxPosition = j;					// yes, so remember where
 					maxValue    = getCard(j).getValue();
@@ -236,8 +240,8 @@ public class PokerHand implements Hand
 				setCard(maxPosition, palm);
 			}
 		}
-		
-		if (getCard(4).getName() == "Ace") reorderStraight();
+
+		if (hand.length == 5 && getCard(4).getName() == "Ace") reorderStraight();
 	}
 
 	

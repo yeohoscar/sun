@@ -9,11 +9,17 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import poker.DeckOfCards;
-import poker.PotOfMoney;
+import poker.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
+	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
+
+	private Hand currentBestHand = null;
 
 	private boolean dealer = false;
 	
@@ -90,6 +96,10 @@ abstract class TexasPlayer extends poker.Player {
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
 
+	public Hand getCurrentBestHand() {
+		return currentBestHand;
+	}
+
 	public void check(PotOfMoney pot) {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}
@@ -103,6 +113,56 @@ abstract class TexasPlayer extends poker.Player {
 	@Override
 	public void dealTo(DeckOfCards deck) {
 		hand = deck.dealHand(NUM_CARDS_DEALT);
+	}
+
+	// Computes best hand using player's hole cards and the public cards
+
+	public void findBestHand(Card[] publicCards, DeckOfCards deck) {
+		if (publicCards.length < NUM_CARDS_REQUIRED_FOR_FULL_HAND) {
+			return;
+		}
+
+		Card[] data = new Card[5];
+
+		int aLen = hand.getHand().length;
+		int bLen = publicCards.length;
+
+		Card[] result = new Card[aLen + bLen];
+		System.arraycopy(hand.getHand(), 0, result, 0, aLen);
+		System.arraycopy(publicCards, 0, result, aLen, bLen);
+
+		List<Hand> hands = new ArrayList<>();
+		combinationUtil(result, data, 0, result.length - 1, 0, 5, hands, deck);
+
+		Hand bestHand = hands.get(0);
+		for (Hand hand : hands) {
+			if (bestHand.getValue() < hand.getValue()) {
+				bestHand = hand;
+			}
+		}
+
+		currentBestHand = bestHand;
+	}
+
+	// Utility recursive function for generating all combinations of cards and adding to list
+
+	private void combinationUtil(Card[] arr, Card[] data, int start, int end, int index, int r, List<Hand> hands, DeckOfCards deck) {
+		// data combines hand with 5 cards
+		if (index == r) {
+			Hand newHand = new PokerHand(Arrays.copyOf(data, data.length), deck);
+			newHand = newHand.categorize();
+			hands.add(newHand);
+			return;
+		}
+
+		// replace index with all possible elements. The condition
+		// "end-i+1 >= r-index" makes sure that including one element
+		// at index will make a combination with remaining elements
+		// at remaining positions
+		for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
+			data[index] = arr[i];
+			combinationUtil(arr, data, i+1, end, index+1, r, hands, deck);
+		}
 	}
 
 	//--------------------------------------------------------------------//
@@ -123,33 +183,31 @@ abstract class TexasPlayer extends poker.Player {
 	
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
-		
+
 		if (isBankrupt() || pot.getCurrentStake() - getStake() > getBank()) {
 			// not enough money to cover the bet
-		
-			System.out.println("\n> " + getName() + " says: I'm out!\n"); 	
-			
+
+			System.out.println("\n> " + getName() + " says: I'm out!\n");
+
 			fold();
-			
+
 			return;
 		}
-		
+
 		if (pot.getCurrentStake() == 0) {
 			// first mover of the game
-		
+
 			if (shouldOpen(pot))  // will this player open the betting?
-				openBetting(pot);	
-			else
-				if (shouldCheck(pot)) {
-					check(pot);
-				} else {
-					fold();
-				}
-		}
-		else {
+				openBetting(pot);
+			else if (shouldCheck(pot)) {
+				check(pot);
+			} else {
+				fold();
+			}
+		} else {
 			if (pot.getCurrentStake() > getStake()) {
 				// existing bet must be covered	
-			
+
 				if (shouldSee(pot)) {
 					seeBet(pot);
 
@@ -157,8 +215,7 @@ abstract class TexasPlayer extends poker.Player {
 						allIn(pot);
 					} else if (shouldRaise(pot))
 						raiseBet(pot);
-				}
-				else
+				} else
 					fold();
 			}
 		}
