@@ -17,4 +17,11 @@ public class TexasController extends MainController
 		super.setUp(names, bank);
 		deck  = new DeckOfCards();
 	}
+	public TexasPlayer getPlayer(int num) {
+		if (num >= 0 && num <= numPlayers)
+			return texasPlayers.get(num);
+		else
+			return null;
+	}
+	\
 }

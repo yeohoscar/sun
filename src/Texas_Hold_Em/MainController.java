@@ -13,12 +13,7 @@ public abstract class MainController {
     protected int numPlayers;
 
 
-    public TexasPlayer getPlayer(int num) {
-        if (num >= 0 && num <= numPlayers)
-            return texasPlayers.get(num);
-        else
-            return null;
-    }
+
 
 
     public void setUp(String[] names, int bank) {

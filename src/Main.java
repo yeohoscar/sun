@@ -21,7 +21,7 @@ public class Main {
 
         int startingBank = 100;
 
-        System.out.println("\nLet's play BLACKJACK ...\n\n");
+        System.out.println("\nLet's play Texas Hold'Em ...\n\n");
         TexasController game = new TexasController();
         game.setUp(names, startingBank);
         game.play();

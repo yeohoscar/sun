@@ -14,7 +14,9 @@ import poker.PotOfMoney;
 abstract class TexasPlayer extends poker.Player {
 	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
-	
+	private int smallBlind = 5;
+
+	private int bigBlind = 2*smallBlind;
 	private int stake      		= 0;		 // the amount of money the player has thrown into the current pot 
 	
 	private String name    		= "Player";  // the unique identifying name given to the player
