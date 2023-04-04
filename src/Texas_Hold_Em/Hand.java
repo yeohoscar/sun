@@ -1,5 +1,7 @@
 package Texas_Hold_Em;
 
+import poker.Card;
+
 public interface Hand {
     int getValue();
 
@@ -12,4 +14,6 @@ public interface Hand {
     Hand discard();
 
     int getNumDiscarded();
+
+    Card[] getHand();
 }

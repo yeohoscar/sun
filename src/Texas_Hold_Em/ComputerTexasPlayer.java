@@ -76,9 +76,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     public boolean shouldCheck(PotOfMoney pot) {
         //TODO: FIGURE OUT HOW THE RISK THING WORKS
+        return Math.abs(dice.nextInt())%80 < getHand().getRiskWorthiness() +
+                getRiskTolerance();
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-
+        return Math.abs(dice.nextInt())%50 < getHand().getRiskWorthiness() +
+                getRiskTolerance();
     }
 }
