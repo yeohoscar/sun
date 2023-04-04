@@ -102,6 +102,10 @@ public class DeckOfCards implements Deck {
 		return hand.categorize();
 	}
 
+	public PokerHand dealHand(int numCardsToBeDealt) {
+		return new PokerHand(this, numCardsToBeDealt);
+	}
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Test Harness
