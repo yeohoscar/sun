@@ -95,12 +95,12 @@ public abstract class RoundController {
     public int getNumBestPlayer(boolean display) {
         int bestHandScore = 0, score = 0, bestPos = 0;
 
-        Player bestPlayer = null, currentPlayer = null;
+        Player bestTexasPlayer = null, currentPlayer = null;
 
-        for (int i = 0; i < getNumPlayers(); i++) {
+        for (int i = 0; i < numPlayers; i++) {
             currentPlayer = roundPlayers.get(i);
 
-            if (currentPlayer.hasFolded())
+            if (currentPlayer == null || currentPlayer.hasFolded())
                 continue;
 
             score = currentPlayer.getHand().getValue();
@@ -113,21 +113,13 @@ public abstract class RoundController {
                     else
                         System.out.println("> " + currentPlayer.getName() + " says 'Read them and weep:'\n" +
                                 currentPlayer.getHand());
+
                 }
-
-                bestPos		  = i;
-                bestHandScore = score;
-                bestPlayer = currentPlayer;
+                //printGame.table("showDown");
             }
-            else
-            if (display)
-                System.out.println("> " + currentPlayer.getName() + " says 'I lose':\n" +
-                        currentPlayer.getHand());
+
         }
-
-        return bestPos;
     }
-
     public int getNumPlayers() {
         return numPlayers;
     }
