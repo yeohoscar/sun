@@ -11,18 +11,18 @@ import java.util.ArrayList;
 
 public class RoundsOfTexas extends RoundController {
     private PrintGame printGame;
-    private PotOfMoney pot;
+    private int BigBlindAmount = 10;
 
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck, texasPlayers, dealerIndex);
-        this.printGame = new PrintGame(texasPlayers, deck, getPot());
-        this.pot = getPot();
+        this.printGame = new PrintGame(texasPlayers, deck, pot);
+
     }
 
 
     @Override
-    public void blindBet(int dealerIndex, int sizeOfPlayers) {
-        super.blindBet(dealerIndex, sizeOfPlayers);
+    public void blindBet() {
+        super.blindBet();
         printGame.table("deal");
     }
 
@@ -64,6 +64,14 @@ public class RoundsOfTexas extends RoundController {
 
 
 
+            }
+        }
+    }
+    @Override
+    public void removePlayer() {
+        for(int i=0;i<numPlayers;i++){
+            if(roundPlayers.get(i).getBank()<BigBlindAmount){
+                roundPlayers.remove(i);
             }
         }
     }

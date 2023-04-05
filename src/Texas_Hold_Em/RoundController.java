@@ -8,29 +8,23 @@ import java.util.HashMap;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
-
-
-    private ArrayList<? extends Player> roundPlayers;
-
-
+    protected ArrayList<? extends Player> roundPlayers;
     private int dealerIndex;
     private DeckOfCards deck;
-    private int numPlayers;
+    protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
-    private PotOfMoney pot = new PotOfMoney();
+
+    protected PotOfMoney pot = new PotOfMoney();
 
 
-    public RoundController(DeckOfCards deck, ArrayList<? extends Player> players, int dealerIndex)  {
-        this.deck    = deck;
-        roundPlayers = new ArrayList<>(players);
+    public RoundController(DeckOfCards deck, ArrayList<? extends Player> players, int dealerIndex) {
+        this.deck = deck;
+        this.roundPlayers = players;
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
     }
 
-    public PotOfMoney getPot() {
-        return pot;
-    }
 
     public void play() {
         //TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
@@ -57,7 +51,6 @@ public abstract class RoundController {
         //		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
 
 
-        blindBet(dealerIndex, roundPlayers.size()-1);
         roundCounter(1);
 
 
@@ -65,22 +58,18 @@ public abstract class RoundController {
         //TODO decided who win
 
         //TODO remove player who all-in and loss or has less than big blind chips
+        removePlayer();
     }
 
 
-    public void blindBet(int dealerIndex, int sizeOfPlayers){
+    public void blindBet(){
         System.out.println("Small Blind and Big Blind: ");
-
         System.out.println("\n\nNew Deal:\n\n");
-        //after small blind and big blind, deal two cards to each player
-        for(Player player : roundPlayers){
-            player.dealTo(deck);
-            System.out.println(player);
-        }
-        if(dealerIndex==(sizeOfPlayers-1)){
-            smallIndex = sizeOfPlayers;
+
+        if(dealerIndex==(numPlayers-2)){
+            smallIndex = numPlayers-1;
             bigIndex = 0;
-        }else if(dealerIndex==sizeOfPlayers){
+        }else if(dealerIndex==numPlayers-1){
             smallIndex = 0;
             bigIndex = 1;
         }else {
@@ -143,7 +132,7 @@ public abstract class RoundController {
         while (noWinnerProduced() && roundCounter != 5) {
             switch (roundCounter) {
                 case 1 -> {
-                    preFlopRound(firstMovePlayerIndex(), pot);
+                    preFlopRound();
                     roundCounter++;
                     //printGame.table("pre-flop");
                     //TODO: three public cards should be displayed on the table.
@@ -174,6 +163,19 @@ public abstract class RoundController {
         }
     }
 
+    public void preFlopRound(){
+        blindBet();
+        //after small blind and big blind, deal two cards to each player
+        for(Player player : roundPlayers){
+            player.dealTo(deck);
+            System.out.println(player);
+        }
+        while(noWinnerProduced()){
+
+        }
+
+    }
+
     public int firstMovePlayerIndex() {
         int index = dealerIndex+1;
         if(dealerIndex==(numPlayers)){
@@ -188,12 +190,11 @@ public abstract class RoundController {
         return index;
     }
 
-    public void removePlayer(int num) {
-        if (num >= 0 && num < numPlayers)
-        {
-            System.out.println("\n> " + roundPlayers.get(num).getName() + " leaves the game.\n");
-
-           roundPlayers.remove(num);
+    public void removePlayer() {
+        for(int i=0;i<numPlayers;i++){
+            if(roundPlayers.get(i).isBankrupt()){
+                roundPlayers.remove(i);
+            }
         }
     }
 
