@@ -602,13 +602,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of High--------------------------*/
-    private Integer oddsOfHigh(Card[] allCards, Rounds currentRound){
-
-    }
-
-
-
 
 
 
