@@ -129,22 +129,30 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //we sort all cards from left to right, card with highest value is on right
         sortCards(allCards);
         if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
-
-            //TODO: 依次判断 allCards 现在可以组成什么牌型，计算概率并选出概率最大的
-            // 判断顺子: 看里面现在缺什么牌, 然后每次放两张进去，直到可以组成顺子或者放完了都不能组成顺子
+            //TODO:1-when in Turn or River round, see if public cards can direct form some card type, this will impact the actions of computer player
+            //     2-I think we do not need check pre-flop round and river round in each card type prediction
+            //     3-if odds of all card types are zero, then it must be High card type
         }
     }
-//    public int combination(int n, int k) {
-//        if (k == 0 || n == k) {
-//            return 1;
-//        }
-//        return combination(n - 1, k - 1) + combination(n - 1, k);
-//    }
-
-
+    //this method returns the quantity of cards that appear n times in allCards(hand card +  public card)
+    private int countContains(Map<String, Integer> names, int n){
+        int count = 0;
+        for(int value: names.values()){
+            if(value==n){
+                count ++;
+            }
+        }
+        return count;
+    }
+    public int combination(int n, int k) {
+        if (k == 0 || n == k) {
+            return 1;
+        }
+        return combination(n - 1, k - 1) + combination(n - 1, k);
+    }
     /*--------------------predicate the odds of Royal Straight Flush--------------------------*/
     private Integer oddsOfRoyalStraightFlush(Card[] allCards, Rounds currentRound){
-        Integer odds=0;
+        int odds=0;
         String[] cards = {"Ace", "King", "Queen", "Jack", "Ten"};
         //hashMap stores the number of occurrence of each suit, key is the suit, and Integer is the number of occurrence of the suit
         Map<String, Integer> suits = new HashMap<>();
@@ -174,8 +182,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 //then this player has Royal Straight Flush
                     odds=100;
                     break;
-                }else {
-                    continue;
                 }
             }
         }
@@ -191,8 +197,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 }else if(count==5){
                     odds=100;
                     break;
-                }else {
-                    continue;
                 }
             }
         }
@@ -201,14 +205,164 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     /*--------------------predicate the odds of Straight Flush--------------------------*/
     private Integer oddsOfStraightFlush(Card[] allCards, Rounds currentRound){
+        double oddsOfStraight = oddsOfStraight(allCards, currentRound)*0.01;
+        double oddsOfFlush = oddsOfFlush(allCards, currentRound)*0.01;
+        double oddsOfStraightFlush = 0.0;
+        if(oddsOfStraight!=0 && oddsOfFlush!=0){
+            oddsOfStraightFlush = (oddsOfStraight*oddsOfFlush)*100;
+        }
+        return (int) oddsOfStraightFlush;
+    }
 
+    /*--------------------predicate the odds of Four of a kind--------------------------*/
+    private Integer oddsOfFourOfAKind(Card[] allCards, Rounds currentRound){
+        //if there are more than 2 identical cards, then it is possible to form four of a kind in flop round
+        int odds=0;
+        Map<String, Integer> names = new HashMap<>();
+        for(Card card: allCards){
+            String name = card.getName();
+            names.put(name, names.getOrDefault(name, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP){
+            int outs = 0;
+            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+                outs = 1;
+                odds = outs*4;
+            }
+            if(countContains(names, 2)==2){
+                outs=2;
+                odds=outs*4;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 1)==2){
+                outs=1;
+                odds=outs*4;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 2)==1){
+                outs=2;
+                odds=outs*4;
+            }
+            if(countContains(names, 4)==1){
+                odds=100;
+            }
+        }
+        //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
+        if(currentRound==Rounds.TURN){
+            int outs = 0;
+            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+                outs=1;
+                odds=outs*2;
+            }
+            if(countContains(names, 3)==2){
+                outs=2;
+                odds=outs*2;
+            }
+            if(countContains(names, 4)==1){
+                odds=100;
+            }
+        }
+        return odds;
+    }
+
+    /*--------------------predicate the odds of Full House--------------------------*/
+    private Integer oddsOfFullHouse(Card[] allCards, Rounds currentRound){
+        //if there are more than 2 identical cards, then it is possible to form full house in flop round
+        int odds=0;
+        Map<String, Integer> names = new HashMap<>();
+        for(Card card: allCards){
+            String name = card.getName();
+            names.put(name, names.getOrDefault(name, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP){
+            int outs = 0;
+            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+                outs = 11;
+                odds = outs*4-(outs-8);
+            }
+            if(countContains(names, 2)==2){
+                outs=4;
+                odds = outs*4;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 1)==2){
+                outs = 6;
+                odds = outs*4;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 2)==1){
+                odds = 100;
+            }
+        }
+        //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
+        if(currentRound==Rounds.TURN){
+            int outs = 0;
+            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+                outs=9;
+                odds = outs*2-(outs-8);
+            }
+            if(countContains(names, 2)==2){
+                outs=4;
+                odds = outs*2;
+            }
+            if(countContains(names, 2)==3){
+                outs=6;
+                odds = outs*2;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 2)==1){
+                odds=100;
+            }
+        }
+        return odds;
     }
 
     /*--------------------predicate the odds of Flush--------------------------*/
     private Integer oddsOfFlush(Card[] allCards, Rounds currentRound){
-        //TODO: if there are more than 3 cards with same suits, then it is possible to form flush, no matter in flop round or turn round
-    }
+        //if there are more than 3 cards with same suits, then it is possible to form flush in flop round
+        int odds=0;
+        Map<String, Integer> suits = new HashMap<>();
+        for(Card card: allCards){
+            String suit = card.getSuit();
+            suits.put(suit, suits.getOrDefault(suit, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP){
+            int outs = 0;
+            for(int count: suits.values()){
+                if(count>=3 && count<5){
+                    outs = combination(13-count, 5-count);
+                    if(outs>8){
+                        odds = outs*4-(outs-8);
+                    }
+                    else {
+                        odds = outs*4;
+                    }
+                    break;
+                }
+                if(count==5){
+                    odds=100;
+                    break;
+                }
+            }
+        }
+        //if there are more than 4 cards with same suits, then it is possible to form flush in turn round
 
+        if(currentRound==Rounds.TURN){
+            int outs = 0;
+            for(int count: suits.values()){
+                if(count==4){
+                    outs = combination(13-count, 5-count);
+                    if(outs>8){
+                        odds = outs*2-(outs-8);
+                    }
+                    else {
+                        odds = outs*2;
+                    }
+                    break;
+                }
+                if(count==5){
+                    odds=100;
+                    break;
+                }
+            }
+        }
+        return odds;
+    }
 
     /*--------------------predicate the odds of Straight--------------------------*/
     private Integer oddsOfStraight(Card[] allCards, Rounds currentRound){
@@ -253,7 +407,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             Set<Integer> set = new HashSet<>(record);
             record.clear();
             record.addAll(set);
-            outs = record.size()*4;
+            outs = record.size()*4;//because there are four different suits
             if(currentRound==Rounds.FLOP){
                 if(outs>8){
                     odds = (outs*4)-(outs-8);
@@ -275,7 +429,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     private boolean canFormAStraight(ArrayList<Integer> temp){
         int count = 0;
         for(int i=0; i<temp.size()-1; i++){
-            if(temp.get(i).equals(temp.get(i+1))){
+            if(temp.get(i).equals(temp.get(i)+1)){
                 count++;
             }else {
                 count=0;
@@ -311,10 +465,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
         return combinations1;
     }
-    //this method finds cards that are not in one suit of cards:
-    //for example: allCards = {3, 6, 7, 9, A},
-    //             one suit of cards = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
-    //             cards that not in one suit of cards: difference = {2, 4, 5, 8, 10, 11, 12, 13}
+    /*this method finds cards that are not in one suit of cards:
+             for example: allCards = {3, 6, 7, 9, A},
+                 one suit of cards = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
+                 cards that not in one suit of cards: difference = {2, 4, 5, 8, 10, 11, 12, 13}*/
     private ArrayList<Integer> findCardsThatNotInOneSuitOfCards(Card[] allCards, int fastIndex, int slowIndex, Integer[] oneSuitOfCards){
         ArrayList<Integer> difference = new ArrayList<>();
         for(;fastIndex<oneSuitOfCards.length; fastIndex++){
@@ -331,14 +485,127 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
 
+    /*--------------------predicate the odds of Three of a kind--------------------------*/
+    private Integer oddsOfThreeOfAKind(Card[] allCards, Rounds currentRound){
+        int odds=0;
+        Map<String, Integer> names = new HashMap<>();
+        for(Card card: allCards){
+            String name = card.getName();
+            names.put(name, names.getOrDefault(name, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP){
+            int outs = 0;
+            //if there are only two cards are same, no three cards are same
+            if(countContains(names, 2)==1 && countContains(names, 3)==0){
+                outs=2;
+                odds = outs*4;
+            }
+            //must be Three of a kind
+            if(countContains(names, 3)==1 && countContains(names, 2)==0){
+                odds=100;
+            }
+/*            //player must select Full House instead of Three of a kind
+//            if(countContains(names, 3) && countContains(names, 2)){
+//                odds = 0;
+//            }
+            //it must be Four of a kind instead of Three of a kind
+//            if(countContains(names, 4)){
+//                odds = 0;
+//            }*/
+            if(countContains(names, 1)==5){
+                outs = 15;
+                odds = outs*4-(outs-8);
+            }
+        }
+        //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
+        if(currentRound==Rounds.TURN){
+            int outs = 0;
+            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+                outs = 2;
+                odds = outs*2;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+                outs = 1;
+                odds = outs*2;
+            }
+        }
+        return odds;
+    }
 
+    /*--------------------predicate the odds of Two Pair--------------------------*/
+    private Integer oddsOfTwoPair(Card[] allCards, Rounds currentRound){
+        int odds=0;
+        Map<String, Integer> names = new HashMap<>();
+        for(Card card: allCards){
+            String name = card.getName();
+            names.put(name, names.getOrDefault(name, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP) {
+            int outs = 0;
+            //if there are only two cards are same, no three cards are same
+            if(countContains(names, 1)==5){
+                outs=15;
+                odds = outs*4-(outs-8);
+            }
+            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+                outs=9;
+                odds=outs*4-(outs-8);
+            }
+            if(countContains(names, 2)==2){
+                odds=100;
+            }
+        }
+        if(currentRound==Rounds.TURN) {
+            int outs = 0;
+            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+                outs=12;
+                odds=outs*2-(outs-8);
+            }
+            if(countContains(names, 2)==2 || countContains(names, 2)==3){
+                odds=100;
+            }
+        }
+        return odds;
+    }
 
+    /*--------------------predicate the odds of Pair--------------------------*/
+    private Integer oddsOfPair(Card[] allCards, Rounds currentRound){
+        int odds=0;
+        Map<String, Integer> names = new HashMap<>();
+        for(Card card: allCards){
+            String name = card.getName();
+            names.put(name, names.getOrDefault(name, 0)+1);
+        }
+        if(currentRound==Rounds.FLOP) {
+            int outs = 0;
+            if(countContains(names, 1)==5){
+                outs=15;
+                odds = outs*4-(outs-8);
+            }
+            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+                odds=100;
+            }
+        }
+        if(currentRound==Rounds.TURN){
+            int outs = 0;
+            if(countContains(names, 1)==6){
+                outs=18;
+                odds = outs*2-(outs-8);
+            }
+            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+                odds=100;
+            }
+            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+                odds=100;
+            }
+        }
+        return odds;
+    }
 
+    /*--------------------predicate the odds of High--------------------------*/
+    private Integer oddsOfHigh(Card[] allCards, Rounds currentRound){
 
-
-
-
-
+    }
 
 
 
