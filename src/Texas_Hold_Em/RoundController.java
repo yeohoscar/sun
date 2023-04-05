@@ -2,9 +2,6 @@ package Texas_Hold_Em;
 import poker.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
@@ -14,6 +11,8 @@ public abstract class RoundController {
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
+    private int bigBlindAmount;
+    private Hand communityCards;
 
     protected PotOfMoney pot = new PotOfMoney();
 
@@ -23,6 +22,7 @@ public abstract class RoundController {
         this.roundPlayers = players;
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
+        this.bigBlindAmount=10;
     }
 
 
@@ -56,7 +56,7 @@ public abstract class RoundController {
 
 
         //TODO decided who win
-
+        showDown();
         //TODO remove player who all-in and loss or has less than big blind chips
         removePlayer();
     }
@@ -76,8 +76,8 @@ public abstract class RoundController {
             smallIndex = dealerIndex+1;
             bigIndex = dealerIndex+2;
         }
-        roundPlayers.get(smallIndex).smallBlind();
-        roundPlayers.get(bigIndex).bigBlind();
+        roundPlayers.get(smallIndex).smallBlind(bigBlindAmount/2,pot);
+        roundPlayers.get(bigIndex).bigBlind(bigBlindAmount,pot);
     }
 
 
@@ -113,7 +113,7 @@ public abstract class RoundController {
         return numPlayers;
     }
 
-    public boolean noWinnerProduced(){
+    public boolean onePlayerLeft(){
         int counter=0;
         for(Player player : roundPlayers){
             if(player.hasFolded()){
@@ -121,15 +121,15 @@ public abstract class RoundController {
             }
         }
         if(counter==numPlayers-1){
-            return false;
-        }else {
             return true;
+        }else {
+            return false;
         }
     }
 
     public void roundCounter(int counter){
         int roundCounter=counter;
-        while (noWinnerProduced() && roundCounter != 5) {
+        while (!onePlayerLeft() && roundCounter != 5) {
             switch (roundCounter) {
                 case 1 -> {
                     preFlopRound();
@@ -139,27 +139,37 @@ public abstract class RoundController {
                     break;
                 }
                 case 2 -> {
-                    flopRound(firstMovePlayerIndex(), pot);
+                    flopRound();
                     roundCounter++;
                     //printGame.table("flop");
                     //TODO: turn card should be displayed on the table
                     break;
                 }
                 case 3 -> {
-                    turnRound(firstMovePlayerIndex(), pot);
+                    turnRound();
                     roundCounter++;
                     //printGame.table("turn");
                     //TODO: river card should be displayed on the table
                     break;
                 }
                 default -> {
-                    riverRound(firstMovePlayerIndex(), pot);
+                    riverRound();
                     roundCounter++;
                     //printGame.table("river");
                     break;
                 }
             }
             //printGame.table("showDown");
+        }
+    }
+    public void roundMove(){
+        int currentIndex=firstMovePlayerIndex();
+        while(!onePlayerLeft()||!ActionClosed()){
+            roundPlayers.get(currentIndex).nextAction(pot);
+            currentIndex++;
+            if(currentIndex==numPlayers){
+                currentIndex=0;
+            }
         }
     }
 
@@ -170,8 +180,27 @@ public abstract class RoundController {
             player.dealTo(deck);
             System.out.println(player);
         }
-        while(noWinnerProduced()){
-
+        roundMove();
+    }
+    public void flopRound(){
+        communityCards=deck.dealHand(3);
+        roundMove();
+    }
+    public void turnRound(){
+        communityCards=deck.dealHand(1);
+        roundMove();
+    }
+    public void riverRound(){
+        communityCards=deck.dealHand(1);
+        roundMove();
+    }
+    public void showDown(){
+        if(onePlayerLeft()){
+            for(Player player : roundPlayers){
+                if(!player.hasFolded()){
+                    player.getStake();
+                }
+            }
         }
 
     }
@@ -188,6 +217,23 @@ public abstract class RoundController {
             }
         }
         return index;
+    }
+    public Boolean ActionClosed(){
+        int foldCounter =0;
+        int callCounter = 0;
+        for(Player player : roundPlayers){
+            if(player.hasFolded()){
+                foldCounter++;
+            }
+            if(player.getStake()==pot.getCurrentStake()){
+                callCounter++;
+            }
+        }
+        if(foldCounter+callCounter==numPlayers){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public void removePlayer() {

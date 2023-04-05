@@ -31,31 +31,31 @@ public class RoundsOfTexas extends RoundController {
     @Override
     public void roundCounter(int counter) {
         int roundCounter = counter;
-        while (noWinnerProduced() && roundCounter != 5) {
+        while (onePlayerLeft() && roundCounter != 5) {
             switch (roundCounter) {
                 case 1 -> {
-                    preFlopRound(firstMovePlayerIndex(), pot);
+                    preFlopRound();
                     roundCounter++;
                     printGame.table("pre-flop");
                     //TODO: three public cards should be displayed on the table.
                     break;
                 }
                 case 2 -> {
-                    flopRound(firstMovePlayerIndex(), pot);
+                    flopRound();
                     roundCounter++;
                     printGame.table("flop");
                     //TODO: turn card should be displayed on the table
                     break;
                 }
                 case 3 -> {
-                    turnRound(firstMovePlayerIndex(), pot);
+                    turnRound();
                     roundCounter++;
                     printGame.table("turn");
                     //TODO: river card should be displayed on the table
                     break;
                 }
                 default -> {
-                    riverRound(firstMovePlayerIndex(), pot);
+                    riverRound();
                     roundCounter++;
                     printGame.table("river");
                     break;

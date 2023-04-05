@@ -14,10 +14,6 @@ import Texas_Hold_Em.Hand;
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
-	private int smallBlind = 0;
-
-	private int bigBlind = 2*smallBlind;
-
 	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
 	
 	private String name    		= "Player";  // the unique identifying name given to the player
@@ -25,7 +21,8 @@ public abstract class Player {
 	protected Hand hand 		= null;      // the hand dealt to this player
 	
 	protected boolean folded 		= false;     // set to true when the player folds (gives up)
-	
+
+	protected boolean allin = false;
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -96,6 +93,9 @@ public abstract class Player {
 		// no more money left
 	
 		return bank == 0;
+	}
+	public boolean hasAllin(){
+		return allin;
 	}
 	
 	
@@ -273,7 +273,14 @@ public abstract class Player {
 	}
 
 
-	public void smallBlind(){
-
+	public void smallBlind(int smallBlind,PotOfMoney pot){
+		stake+=smallBlind;
+		bank-=smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+	public void bigBlind(int bigBlind,PotOfMoney pot){
+		stake+=bigBlind;
+		bank-=bigBlind;
+		pot.raiseStake(bigBlind);
 	}
 }
