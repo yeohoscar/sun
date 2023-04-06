@@ -14,6 +14,7 @@ import poker.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 abstract class TexasPlayer extends poker.Player {
 	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
@@ -62,6 +63,9 @@ abstract class TexasPlayer extends poker.Player {
 	public void bigBlind(){
 		stake += 10;
 		bank -= 10;
+	}
+	public boolean suitsOnHandAreSame(Card[] hand){
+		return hand[0].getSuit().equals(hand[1].getSuit());
 	}
 
 	//--------------------------------------------------------------------//

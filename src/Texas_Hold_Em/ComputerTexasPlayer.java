@@ -11,6 +11,7 @@ package Texas_Hold_Em;
 
 import poker.Card;
 import poker.DeckOfCards;
+import poker.Player;
 import poker.PotOfMoney;
 
 import java.util.*;
@@ -120,8 +121,46 @@ public class ComputerTexasPlayer extends TexasPlayer {
             allCards[0] = ace;
         }
     }
+    public int preFlopRiskToleranceHelper(Card[] hand){
 
-    private void predicateBestHandType(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
+        //the most advantage hand card
+        if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
+            //TODO: change the riskTolerance
+        }
+        //these hand cards maybe can form strong straight
+        else if((isContained(hand, "Ace") && isContained(hand, "King")) ||
+                (isContained(hand, "Queen") && isContained(hand, "King")) ||
+                (isContained(hand, "Queen") && isContained(hand, "Ace")) ||
+                (isContained(hand, "Jack") && isContained(hand, "Queen")) ||
+                (isContained(hand, "Jack") && isContained(hand, "King")) ||
+                (isContained(hand, "Jack") && isContained(hand, "Ace"))){
+            //TODO: change the riskTolerance
+        }
+        //these hand cards maybe can form strong straightFlush
+        else if((isContained(hand, "Ace") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "Ace") && super.suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Queen") && super.suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Ace")) && super.suitsOnHandAreSame(hand)){
+            //TODO: change the riskTolerance
+        }
+        else if(){
+
+        }
+    }
+    public void predicateRiskTolerance(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
+        if(currentRound==Rounds.PRE_FLOP){
+            riskTolerance += preFlopRiskToleranceHelper(super.getHand().getHand());
+        }
+        if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
+            //TODO: determine the riskTolerance based on the returned bestHandType
+        }
+        if(currentRound==Rounds.RIVER){
+            //TODO: How riskTolerance varies in river round?
+        }
+    }
+    public void predicateBestHandType(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
         int length = publicCards.length+2;
         Card[] allCards = new Card[length];
         System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
@@ -129,10 +168,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //we sort all cards from left to right, card with highest value is on right
         sortCards(allCards);
         if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
-            //TODO:1-when in Turn or River round, see if public cards can direct form some card type, this will impact the actions of computer player
-            //     2-I think we do not need check pre-flop round and river round in each card type prediction
-            //     3-if odds of all card types are zero, then it must be High card type
+            //TODO:1-when in Turn or River round, see if public cards can form some card type, for example: four of a kind, full house, straight or flush, this will impact the actions of computer player
+            //     2-if odds of all card types are zero, then it must be High card type
         }
+        //TODO: based on the calculated odds of each predicted card type, return the best predicted card type
     }
     //this method returns the quantity of cards that appear n times in allCards(hand card +  public card)
     private int countContains(Map<String, Integer> names, int n){
@@ -658,5 +697,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public boolean shouldAllIn(PotOfMoney pot) {
         return Math.abs(dice.nextInt())%50 < getHand().getRiskWorthiness() +
                 getRiskTolerance();
+    }
+    public boolean shouldCall(PotOfMoney pot){
+
+    }
+    public boolean shouldFold(PotOfMoney pot){
+
     }
 }
