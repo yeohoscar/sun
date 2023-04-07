@@ -4,6 +4,8 @@ package Texas_Hold_Em;
 import poker.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 // This package provides classes necessary for implementing a game system for playing poker
 
 // A RoundOfPoker is a single round/deal in a game
@@ -11,11 +13,13 @@ import java.util.ArrayList;
 
 public class RoundsOfTexas extends RoundController {
     private PrintGame printGame;
-    private int BigBlindAmount = 10;
-
+    private int BigBlindAmount = 2;
+    private ArrayList<TexasPlayer> roundPlayers;
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
-        super(deck, texasPlayers, dealerIndex);
-        this.printGame = new PrintGame(texasPlayers, deck, pot);
+        super(deck,texasPlayers,dealerIndex);
+        this.roundPlayers = texasPlayers;
+        //this.printGame = new PrintGame(texasPlayers, deck, pot);
+
 
     }
 
@@ -67,6 +71,61 @@ public class RoundsOfTexas extends RoundController {
             }
         }
     }
+
+    @Override
+    public void showDown() {
+        if (onePlayerLeft()) {
+            for (TexasPlayer player : roundPlayers) {
+                if (!player.hasFolded()) {
+                    player.takePot(pot);
+                }
+            }
+        } else {
+            HashMap<Integer, Integer> valueRank = new HashMap<>();
+            int maxValue = 0;
+            ArrayList<Integer> winners = new ArrayList<>();
+            // calculate handValue for each player
+            for (int i = 0 ;i<roundPlayers.size();i++) {
+                TexasPlayer player =roundPlayers.get(i);
+                if (!player.hasFolded()) {
+                    player.findBestHand(communityCards.getHand(), deck);
+                    int handValue = player.getCurrentBestHand().getValue();
+                    valueRank.put(i, handValue);
+                }
+            }
+            // find who has the largest handValue
+            for (Map.Entry<Integer, Integer> entry : valueRank.entrySet()) {
+                if (entry.getValue() > maxValue) {
+                    winners.clear();
+                    winners.add(entry.getKey());
+                    maxValue = entry.getValue();
+                } else if (entry.getValue() == maxValue) {
+                    winners.add(entry.getKey());
+                }
+            }
+
+            boolean allinPlayer = false;
+            for(int i :winners){
+                if(roundPlayers.get(i).hasAllin()){
+                    allinPlayer=true;
+                }
+            }
+            //no allin player
+            if(!allinPlayer){
+                for(int i :winners){
+                    roundPlayers.get(i).takePot(pot,winners.size());
+                }
+            }else {
+                
+            }
+
+
+        }
+
+
+    }
+
+
     @Override
     public void removePlayer() {
         for(int i=0;i<numPlayers;i++){

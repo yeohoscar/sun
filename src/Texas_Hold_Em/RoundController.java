@@ -7,14 +7,14 @@ public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
     protected ArrayList<? extends Player> roundPlayers;
     private int dealerIndex;
-    private DeckOfCards deck;
+    protected DeckOfCards deck;
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
     private int bigBlindAmount;
-    private Hand communityCards;
+    protected Hand communityCards;
 
-    protected PotOfMoney pot = new PotOfMoney();
+    protected PotOfMoney pot;
 
 
     public RoundController(DeckOfCards deck, ArrayList<? extends Player> players, int dealerIndex) {
@@ -80,35 +80,6 @@ public abstract class RoundController {
         roundPlayers.get(bigIndex).bigBlind(bigBlindAmount,pot);
     }
 
-
-    public int getNumBestPlayer(boolean display) {
-        int bestHandScore = 0, score = 0, bestPos = 0;
-
-        Player bestTexasPlayer = null, currentPlayer = null;
-
-        for (int i = 0; i < numPlayers; i++) {
-            currentPlayer = roundPlayers.get(i);
-
-            if (currentPlayer == null || currentPlayer.hasFolded())
-                continue;
-
-            score = currentPlayer.getHand().getValue();
-
-            if (score > bestHandScore) {
-                if (display) {
-                    if (bestHandScore == 0)
-                        System.out.println("> " + currentPlayer.getName() + " goes first:\n" +
-                                currentPlayer.getHand());
-                    else
-                        System.out.println("> " + currentPlayer.getName() + " says 'Read them and weep:'\n" +
-                                currentPlayer.getHand());
-
-                }
-                //printGame.table("showDown");
-            }
-
-        }
-    }
     public int getNumPlayers() {
         return numPlayers;
     }
@@ -198,11 +169,10 @@ public abstract class RoundController {
         if(onePlayerLeft()){
             for(Player player : roundPlayers){
                 if(!player.hasFolded()){
-                    player.getStake();
+                        player.takePot(pot);
                 }
             }
         }
-
     }
 
     public int firstMovePlayerIndex() {
@@ -225,7 +195,7 @@ public abstract class RoundController {
             if(player.hasFolded()){
                 foldCounter++;
             }
-            if(player.getStake()==pot.getCurrentStake()){
+            if(player.getStake()==pot.getCurrentStake()||player.hasAllin()){
                 callCounter++;
             }
         }

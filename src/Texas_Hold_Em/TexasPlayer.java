@@ -19,7 +19,7 @@ import java.util.Objects;
 abstract class TexasPlayer extends poker.Player {
 	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
-	private int smallBlind = 5;
+	private int smallBlind = 1;
 
 	private int bigBlind = 2*smallBlind;
 	private int stake      		= 0;		 // the amount of money the player has thrown into the current pot 
@@ -34,7 +34,6 @@ abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 
 	private Hand currentBestHand = null;
-
 
 	private boolean dealer = false;
 	
@@ -107,13 +106,16 @@ abstract class TexasPlayer extends poker.Player {
 
     public void allIn(PotOfMoney pot) {
 		if (getBank() == 0) return;
-
+		if(bank<=pot.getCurrentStake()){
+			pot.addToPot(stake);
+		}else{
+			pot.raiseStake(bank-pot.getCurrentStake());
+		}
 		stake += bank;
 		bank = 0;
-
-		pot.raiseStake(stake);
-
+		allin=true;
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
+
 	}
 
 	public Hand getCurrentBestHand() {

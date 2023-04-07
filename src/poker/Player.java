@@ -11,6 +11,8 @@ package poker;
 
 import Texas_Hold_Em.Hand;
 
+import java.util.Scanner;
+
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
@@ -146,6 +148,17 @@ public abstract class Player {
 		
 		System.out.println(this);
 	}
+
+	public void takePot(PotOfMoney pot,int numberOfWinner) {
+		// when the winner of a hand takes the pot as his/her winnings
+
+		System.out.println("\n> " + getName() + " says: I WIN " + addCount(pot.getTotal()/numberOfWinner, "chip", "chips") + "!\n");
+		System.out.println(hand.toString());
+
+		bank += pot.takePot()/numberOfWinner;
+
+		System.out.println(this);
+	}
 	
 
 	//--------------------------------------------------------------------//
@@ -192,14 +205,35 @@ public abstract class Player {
 
 	
 	public void raiseBet(PotOfMoney pot) {
-		if (getBank() == 0) return;
-		
-		stake++;
-		bank--; 
-		
-		pot.raiseStake(1);
-		
+		if (getBank() == 0||pot.getCurrentStake()>bank*2) {
+			System.out.println("No enough chips");
+			return;
+		}
+		Scanner scanner = new Scanner(System.in);
+		int raiseAmount = -1;
+
+		while (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
+			System.out.print("\n>> How many chips do you want to raise? ");
+			try {
+				raiseAmount = scanner.nextInt();
+				if (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
+					System.out.println("Invalid input.");
+				}
+			} catch (Exception e) {
+				System.out.println("Invalid input.");
+				scanner.nextLine(); // Clear the scanner buffer
+			}
+		}
+
+		System.out.println("You want to raise " + raiseAmount + " chips.");
+		stake+=raiseAmount;
+		bank-=raiseAmount;
+		pot.raiseStake(raiseAmount- pot.getCurrentStake());
 		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
+
+		if(bank==0){
+			allin=true;
+		}
 	}
 
 	
