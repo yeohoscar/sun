@@ -25,6 +25,9 @@ abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 
 	private Hand currentBestHand = null;
+
+	private boolean allin;
+
 	protected boolean dealer = false;
 
 	//--------------------------------------------------------------------//
@@ -35,6 +38,7 @@ abstract class TexasPlayer extends poker.Player {
 	
 	public TexasPlayer(String name, int money)	{
 		super(name, money);
+		allin = false;
 	}
 
 	public void smallBlind(int smallBlind,PotOfMoney pot){
@@ -71,7 +75,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void reset() {
 		folded = false;
-		
+		allin = false;
 		stake  = 0;
 	}
 	
@@ -104,6 +108,10 @@ abstract class TexasPlayer extends poker.Player {
 		return currentBestHand;
 	}
 
+	public boolean isAllin() {
+		return allin;
+	}
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Actions a player can make
@@ -123,7 +131,7 @@ abstract class TexasPlayer extends poker.Player {
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
 
-	public void check(PotOfMoney pot) {
+	public void check() {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}
 
@@ -136,6 +144,10 @@ abstract class TexasPlayer extends poker.Player {
 	@Override
 	public void dealTo(DeckOfCards deck) {
 		hand = deck.dealHand(NUM_CARDS_DEALT);
+	}
+
+	public void allIn() {
+		allin = true;
 	}
 
 	// Computes best hand using player's hole cards and the public cards
@@ -223,7 +235,7 @@ abstract class TexasPlayer extends poker.Player {
 			if (shouldOpen(pot))  // will this player open the betting?
 				openBetting(pot);
 			else if (shouldCheck(pot)) {
-				check(pot);
+				check();
 			} else {
 				fold();
 			}

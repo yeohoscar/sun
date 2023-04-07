@@ -115,7 +115,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
 
 		if(bank==0){
-			allin=true;
+			allIn();
 		}
 	}
 }
