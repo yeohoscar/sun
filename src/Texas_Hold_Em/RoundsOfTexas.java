@@ -24,15 +24,13 @@ public class RoundsOfTexas extends RoundController {
     }
 
 
-    @Override
-    public void blindBet() {
-        super.blindBet();
-        printGame.table("deal");
-    }
+//    @Override
+//    public void blindBet() {
+//        super.blindBet();
+//        printGame.table("deal");
+//    }
 
-
-
-    @Override
+    /*@Override
     public void roundCounter(int counter) {
         int roundCounter = counter;
         while (onePlayerLeft() && roundCounter != 5) {
@@ -70,7 +68,7 @@ public class RoundsOfTexas extends RoundController {
 
             }
         }
-    }
+    }*/
 
     @Override
     public void showDown() {

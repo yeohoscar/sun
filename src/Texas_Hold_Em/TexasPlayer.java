@@ -35,8 +35,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	private Hand currentBestHand = null;
 
-	private boolean dealer = false;
-	
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -47,22 +46,10 @@ abstract class TexasPlayer extends poker.Player {
 		super(name, money);
 	}
 
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
 
-	public boolean isDealer(){
-		return dealer;
-	}
-	public void smallBlind(){
-		stake += 5;
-		bank -= 5;
-	}
-	public void bigBlind(){
-		stake += 10;
-		bank -= 10;
-	}
+
+
+
 	public boolean suitsOnHandAreSame(Card[] hand){
 		return hand[0].getSuit().equals(hand[1].getSuit());
 	}
