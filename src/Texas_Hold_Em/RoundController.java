@@ -5,56 +5,34 @@ import java.util.ArrayList;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
-    protected ArrayList<? extends Player> roundPlayers;
+    protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
-    private DeckOfCards deck;
+    protected DeckOfCards deck;
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
     private int bigBlindAmount;
-    private Hand communityCards;
+    protected Hand communityCards;
 
-    protected PotOfMoney pot = new PotOfMoney();
+    protected PotOfMoney pot;
+    private PrintGame printGame;
 
 
-    public RoundController(DeckOfCards deck, ArrayList<? extends Player> players, int dealerIndex) {
+    public RoundController(DeckOfCards deck, ArrayList<TexasPlayer> players, int dealerIndex) {
         this.deck = deck;
         this.roundPlayers = players;
+        roundPlayers.get(dealerIndex).setDealer(true);
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
         this.bigBlindAmount=10;
+        this.printGame = new PrintGame(roundPlayers, deck, pot, communityCards);
+
     }
 
 
     public void play() {
-        //TODO: 1-Enter Pre-flop round, this round should start from the first player after the Dealer,
-        // 		  players should check, bet, call, raise, fold, all-in.
-        // 		  After this round finished,
-        // 				  if only one player call or raise, then all stakes in the pot belongs to this player, and round finish
-        // 				  else stakes of all players will be added to pot, and game continue.
-        // 		 **three public cards should be displayed on the table, all players need to combine cards on their hands
-        // 	       with these three public cards.
-        // 		2-Enter Flop round, this round should start from the first player that not fold after dealer.
-        // 		  After this round finished,
-        //				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
-        //				  else stakes of all players will be added to pot, and game continue.
-        // 		 **another public card is displayed, this is called 'Turn Card'.
-        // 		3-Enter Turn round, this round should start from the first player that not fold after dealer.
-        // 		After this round finished,
-        //				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
-        //				  else stakes of all players will be added to pot, and game continue.
-        //		 **another public card is displayed, this is called 'River Card'.
-        //		4-Enter River round, this round should start from the first player that not fold after dealer.
-        //		After this round finished,
-        //				  if only one player call or raise, then all stakes in the pot belongs to this player, and game continue
-        //				  else stakes of all players will be added to pot, and game continue.
-        //		5-Finally, if there are more than one unfolded players in the game, they have to showdown to determine the winner.
-
-
+        //TODO: if there are more than one unfolded players in the game, they have to showdown to determine the winner.
         roundCounter(1);
-
-
-
         //TODO decided who win
         showDown();
         //TODO remove player who all-in and loss or has less than big blind chips
@@ -80,35 +58,6 @@ public abstract class RoundController {
         roundPlayers.get(bigIndex).bigBlind(bigBlindAmount,pot);
     }
 
-
-    public int getNumBestPlayer(boolean display) {
-        int bestHandScore = 0, score = 0, bestPos = 0;
-
-        Player bestTexasPlayer = null, currentPlayer = null;
-
-        for (int i = 0; i < numPlayers; i++) {
-            currentPlayer = roundPlayers.get(i);
-
-            if (currentPlayer == null || currentPlayer.hasFolded())
-                continue;
-
-            score = currentPlayer.getHand().getValue();
-
-            if (score > bestHandScore) {
-                if (display) {
-                    if (bestHandScore == 0)
-                        System.out.println("> " + currentPlayer.getName() + " goes first:\n" +
-                                currentPlayer.getHand());
-                    else
-                        System.out.println("> " + currentPlayer.getName() + " says 'Read them and weep:'\n" +
-                                currentPlayer.getHand());
-
-                }
-                //printGame.table("showDown");
-            }
-
-        }
-    }
     public int getNumPlayers() {
         return numPlayers;
     }
@@ -134,13 +83,15 @@ public abstract class RoundController {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
-                    //printGame.table("pre-flop");
+                    communityCards=deck.dealHand(3);
+//                    printGame.table("pre-flop");
                     //TODO: three public cards should be displayed on the table.
                     break;
                 }
                 case 2 -> {
                     flopRound();
                     roundCounter++;
+                    communityCards=deck.dealHand(1);
                     //printGame.table("flop");
                     //TODO: turn card should be displayed on the table
                     break;
@@ -148,6 +99,7 @@ public abstract class RoundController {
                 case 3 -> {
                     turnRound();
                     roundCounter++;
+                    communityCards=deck.dealHand(1);
                     //printGame.table("turn");
                     //TODO: river card should be displayed on the table
                     break;
@@ -162,10 +114,13 @@ public abstract class RoundController {
             //printGame.table("showDown");
         }
     }
-    public void roundMove(){
+    public void roundMove(Rounds currentRound){
         int currentIndex=firstMovePlayerIndex();
         while(!onePlayerLeft()||!ActionClosed()){
             roundPlayers.get(currentIndex).nextAction(pot);
+
+            printGame.table(currentRound);
+
             currentIndex++;
             if(currentIndex==numPlayers){
                 currentIndex=0;
@@ -180,29 +135,25 @@ public abstract class RoundController {
             player.dealTo(deck);
             System.out.println(player);
         }
-        roundMove();
+        roundMove(Rounds.PRE_FLOP);
     }
     public void flopRound(){
-        communityCards=deck.dealHand(3);
-        roundMove();
+        roundMove(Rounds.FLOP);
     }
     public void turnRound(){
-        communityCards=deck.dealHand(1);
-        roundMove();
+        roundMove(Rounds.TURN);
     }
     public void riverRound(){
-        communityCards=deck.dealHand(1);
-        roundMove();
+        roundMove(Rounds.RIVER);
     }
     public void showDown(){
         if(onePlayerLeft()){
             for(Player player : roundPlayers){
                 if(!player.hasFolded()){
-                    player.getStake();
+                        player.takePot(pot);
                 }
             }
         }
-
     }
 
     public int firstMovePlayerIndex() {
@@ -225,7 +176,8 @@ public abstract class RoundController {
             if(player.hasFolded()){
                 foldCounter++;
             }
-            if(player.getStake()==pot.getCurrentStake()){
+            //TODO: should player.getStake()==pot.getCurrentStake() ?
+            if(player.getStake()==pot.getCurrentStake()||player.hasAllin()){
                 callCounter++;
             }
         }

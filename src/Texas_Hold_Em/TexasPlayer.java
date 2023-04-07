@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 abstract class TexasPlayer extends poker.Player {
-	private int smallBlind = 5;
+	private int smallBlind = 1;
 
 	private int bigBlind = 2*smallBlind;
 
@@ -25,9 +25,8 @@ abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 
 	private Hand currentBestHand = null;
+	protected boolean dealer = false;
 
-	private boolean dealer = false;
-	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -38,11 +37,20 @@ abstract class TexasPlayer extends poker.Player {
 		super(name, money);
 	}
 
+	public void smallBlind(int smallBlind,PotOfMoney pot){
+		stake+=smallBlind;
+		bank-=smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+	public void bigBlind(int bigBlind,PotOfMoney pot){
+		stake+=bigBlind;
+		bank-=bigBlind;
+		pot.raiseStake(bigBlind);
+	}
 	//every player can act as a dealer
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;
 	}
-
 	public boolean isDealer(){
 		return dealer;
 	}
@@ -92,19 +100,27 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
-    public void allIn(PotOfMoney pot) {
-		if (getBank() == 0) return;
-
-		stake += bank;
-		bank = 0;
-
-		pot.raiseStake(stake);
-
-		System.out.println("\n> " + getName() + " says: and I all in!\n");
-	}
-
 	public Hand getCurrentBestHand() {
 		return currentBestHand;
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Actions a player can make
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	public void allIn(PotOfMoney pot) {
+		if (getBank() == 0) return;
+		if(bank<=pot.getCurrentStake()){
+			pot.addToPot(stake);
+		}else{
+			pot.raiseStake(bank-pot.getCurrentStake());
+		}
+		stake += bank;
+		bank = 0;
+		allin=true;
+		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
 
 	public void check(PotOfMoney pot) {

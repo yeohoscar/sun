@@ -11,13 +11,11 @@ package poker;
 
 import Texas_Hold_Em.Hand;
 
+import java.util.Scanner;
+
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
-	private int smallBlind = 0;
-
-	private int bigBlind = 2*smallBlind;
-
 	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
 	
 	private String name    		= "Player";  // the unique identifying name given to the player
@@ -146,6 +144,17 @@ public abstract class Player {
 		
 		System.out.println(this);
 	}
+
+	public void takePot(PotOfMoney pot,int numberOfWinner) {
+		// when the winner of a hand takes the pot as his/her winnings
+
+		System.out.println("\n> " + getName() + " says: I WIN " + addCount(pot.getTotal()/numberOfWinner, "chip", "chips") + "!\n");
+		System.out.println(hand.toString());
+
+		bank += pot.takePot()/numberOfWinner;
+
+		System.out.println(this);
+	}
 	
 
 	//--------------------------------------------------------------------//
@@ -175,7 +184,7 @@ public abstract class Player {
 		System.out.println("\n> " + getName() + " says: I open with one chip!\n");
 	}
 
-	
+
 	public void seeBet(PotOfMoney pot) {
 		int needed  = pot.getCurrentStake() - getStake();
 		
@@ -190,18 +199,16 @@ public abstract class Player {
 		System.out.println("\n> " + getName() + " says: I see that " + addCount(needed, "chip", "chips") + "!\n");
 	}
 
-	
 	public void raiseBet(PotOfMoney pot) {
 		if (getBank() == 0) return;
-		
+
 		stake++;
-		bank--; 
-		
+		bank--;
+
 		pot.raiseStake(1);
-		
+
 		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
 	}
-
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -270,10 +277,5 @@ public abstract class Player {
 			return count + " " + singular;
 		else
 			return count + " " + plural;
-	}
-
-
-	public void smallBlind(){
-
 	}
 }

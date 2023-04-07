@@ -26,30 +26,6 @@ public class HumanTexasPlayer extends TexasPlayer {
 		super(name, money);
 	}
 
-	public void placeBet(int bet) {
-		Scanner input = new Scanner(System.in);
-		while (bet <= 0 || bet > getBank()) {
-			System.out.print("Enter your bet amount (you have " + getBank() + " chips): ");
-			try{
-				if (input.hasNextInt()) {
-					bet = input.nextInt();
-					if (bet <= 0) {
-						System.out.println("Invalid bet amount! Please enter a positive value.");
-					} else if (bet > getBank()) {
-						System.out.println("You don't have enough chips! Please enter a smaller value.");
-					}
-				}else{
-					input.next();
-					System.out.println("Invalid input! Please enter a valid number.");
-				}
-			}catch (Exception e) {}
-		}
-
-		bank -= bet;
-
-		System.out.println("\n> " + getName() + " says: I bet with " + bet + " chip!\n");
-	}
-
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// User Interface
@@ -95,7 +71,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public boolean shouldRaise(PotOfMoney pot) {
-		return askQuestion("Do you want to raise the bet by 1 chip");
+		return askQuestion("Do you want to raise the bet?");
 	}
 
 	public boolean shouldAllIn(PotOfMoney pot) {
@@ -107,6 +83,39 @@ public class HumanTexasPlayer extends TexasPlayer {
 			return askQuestion("Do you want to check?");
 		} else {
 			return false;
+		}
+	}
+
+	@Override
+	public void raiseBet(PotOfMoney pot) {
+		if (getBank() == 0||pot.getCurrentStake()>bank*2) {
+			System.out.println("No enough chips");
+			return;
+		}
+		Scanner scanner = new Scanner(System.in);
+		int raiseAmount = -1;
+
+		while (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
+			System.out.print("\n>> How many chips do you want to raise? ");
+			try {
+				raiseAmount = scanner.nextInt();
+				if (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
+					System.out.println("Invalid input.");
+				}
+			} catch (Exception e) {
+				System.out.println("Invalid input.");
+				scanner.nextLine(); // Clear the scanner buffer
+			}
+		}
+
+		System.out.println("You want to raise " + raiseAmount + " chips.");
+		stake+=raiseAmount;
+		bank-=raiseAmount;
+		pot.raiseStake(raiseAmount- pot.getCurrentStake());
+		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
+
+		if(bank==0){
+			allin=true;
 		}
 	}
 }

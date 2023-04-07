@@ -19,7 +19,7 @@ public class PotOfMoney
 	
 	public PotOfMoney() {}
 
-		
+	public PotOfMoney(PotOfMoney other) {this.stake = other.stake;}
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Display Behaviour 
@@ -54,7 +54,7 @@ public class PotOfMoney
 	public void raiseStake(int addition) {
 		stake += addition;
 		
-		addToPot(addition);
+		addToPot(stake);
 	}
 	
 	
