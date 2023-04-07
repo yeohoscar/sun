@@ -8,19 +8,19 @@ import poker.PotOfMoney;
 import java.util.ArrayList;
 
 public class PrintGame {
-    private ArrayList<? extends Player> texasPlayers;
+    private ArrayList<TexasPlayer> texasPlayers;
     private DeckOfCards deck;
     private PotOfMoney pot;
     private Hand communityCards;
 
 
-    public PrintGame(ArrayList<? extends Player> texasPlayers, DeckOfCards deck, PotOfMoney pot, Hand communityCards){
+    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, PotOfMoney pot, Hand communityCards){
         this.texasPlayers = texasPlayers;
         this.deck = deck;
         this.pot = pot;
         this.communityCards = communityCards;
     }
-    private String printFaceDownCard(Player texasPlayer){
+    private String printFaceDownCard(TexasPlayer texasPlayer){
 
         if(texasPlayer.hasFolded()){
             return texasPlayer.getName()+" has folded";
@@ -104,7 +104,7 @@ public class PrintGame {
 
         }
     }
-    private void printFaceUpCard(Player texasPlayer){
+    private void printFaceUpCard(TexasPlayer texasPlayer){
         Hand hand = texasPlayer.getHand();
         int suitIndex;
         int rankIndex;
@@ -164,7 +164,7 @@ public class PrintGame {
 
         int count=0;
         if(showFaceDownCards){
-            for(Player player: texasPlayers){
+            for(TexasPlayer player: texasPlayers){
                 if(count==2){
                     if(showPublicCards){
                         System.out.println();
@@ -180,7 +180,7 @@ public class PrintGame {
             }
         }
         else {
-            for(Player player: texasPlayers){
+            for(TexasPlayer player: texasPlayers){
                 if(count==2){
                     if(showPublicCards){
                         System.out.println();

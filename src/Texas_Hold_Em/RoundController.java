@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
-    protected ArrayList<? extends Player> roundPlayers;
+    protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
     protected DeckOfCards deck;
     protected int numPlayers;
@@ -18,7 +18,7 @@ public abstract class RoundController {
     private PrintGame printGame;
 
 
-    public RoundController(DeckOfCards deck, ArrayList<? extends Player> players, int dealerIndex) {
+    public RoundController(DeckOfCards deck, ArrayList<TexasPlayer> players, int dealerIndex) {
         this.deck = deck;
         this.roundPlayers = players;
         roundPlayers.get(dealerIndex).setDealer(true);

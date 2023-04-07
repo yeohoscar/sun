@@ -23,7 +23,6 @@ public abstract class Player {
 	protected Hand hand 		= null;      // the hand dealt to this player
 	
 	protected boolean folded 		= false;     // set to true when the player folds (gives up)
-	protected boolean dealer = false;
 
 	protected boolean allin = false;
 	//--------------------------------------------------------------------//
@@ -308,21 +307,4 @@ public abstract class Player {
 	}
 
 
-	public void smallBlind(int smallBlind,PotOfMoney pot){
-		stake+=smallBlind;
-		bank-=smallBlind;
-		pot.raiseStake(smallBlind);
-	}
-	public void bigBlind(int bigBlind,PotOfMoney pot){
-		stake+=bigBlind;
-		bank-=bigBlind;
-		pot.raiseStake(bigBlind);
-	}
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
-	public boolean isDealer(){
-		return dealer;
-	}
 }
