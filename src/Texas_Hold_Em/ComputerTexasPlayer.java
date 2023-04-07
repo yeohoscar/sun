@@ -9,18 +9,16 @@ package Texas_Hold_Em;
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import poker.Card;
-import poker.DeckOfCards;
-import poker.Player;
-import poker.PotOfMoney;
+import poker.*;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 
 public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY		= 50;
 
-    private int riskTolerance				= 0;  // willingness of a player to take risks and bluff
+    private int riskTolerance;  // willingness of a player to take risks and bluff
     public int HANDANDPUBLIC      		= 0;  // number of cards in a hand of poker plus public cards
 
     private Random dice						= new Random(System.currentTimeMillis());
@@ -63,7 +61,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
     public void sortCards(Card[] allCards) {
         int minPosition = 0;
-        Card[] hand = allCards;
         Card palm = null;
 
         // consider every position in allCards
@@ -75,7 +72,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             // consider every other position to the left of this position
 
             for (int j = i+1; j < allCards.length; j++)  { // is there a higher card to the left?
-                if (getCard(minPosition, hand).getValue() > getCard(j, hand).getValue()) {
+                if (getCard(minPosition, allCards).getValue() > getCard(j, allCards).getValue()) {
                     minPosition = j;					// yes, so remember where
                    // maxValue    = getCard(j).getValue();
                 }
@@ -86,13 +83,13 @@ public class ComputerTexasPlayer extends TexasPlayer {
             allCards[minPosition] = palm;
         }
 
-        if (allCards.length == 5 && getCard(4, allCards).getName() == "Ace") reorderStraight(allCards);
-        else if(allCards.length == 6 && getCard(5, allCards).getName() == "Ace") reorderStraight(allCards);
+        if (allCards.length == 5 && Objects.equals(getCard(4, allCards).getName(), "Ace")) reorderStraight(allCards);
+        else if(allCards.length == 6 && Objects.equals(getCard(5, allCards).getName(), "Ace")) reorderStraight(allCards);
     }
 
     private boolean isContained(Card[] allCards, String name){
         for(Card c: allCards){
-            if(c.getName()==name){
+            if(Objects.equals(c.getName(), name)){
                 return true;
             }
         }
@@ -122,7 +119,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
     }
     public int preFlopRiskToleranceHelper(Card[] hand){
-
         //the most advantage hand card
         if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
             //TODO: change the riskTolerance
@@ -137,12 +133,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //TODO: change the riskTolerance
         }
         //these hand cards maybe can form strong straightFlush
-        else if((isContained(hand, "Ace") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "Ace") && super.suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Queen") && super.suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "King") && super.suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace")) && super.suitsOnHandAreSame(hand)){
+        else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "Ace") && suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsOnHandAreSame(hand)){
             //TODO: change the riskTolerance
         }
         else if(){
@@ -160,19 +156,72 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //TODO: How riskTolerance varies in river round?
         }
     }
-    public void predicateBestHandType(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
+    public int predicateBestHandType(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
         int length = publicCards.length+2;
         Card[] allCards = new Card[length];
         System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
         System.arraycopy(super.getHand().getHand(), 0, allCards, publicCards.length, super.getHand().getHand().length);
         //we sort all cards from left to right, card with highest value is on right
         sortCards(allCards);
-        if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
-            //TODO:1-when in Turn or River round, see if public cards can form some card type, for example: four of a kind, full house, straight or flush, this will impact the actions of computer player
-            //     2-if odds of all card types are zero, then it must be High card type
+
+        String handType = "";
+
+        Method[] preds = PokerHand.class.getDeclaredMethods();
+        int bestOdd = 0;
+
+        for (Method pred : preds) {
+            try {
+                if (pred.getName().startsWith("odd") && pred.getParameterTypes().length == 0 &&
+                        pred.getReturnType() == Integer.class) {
+                    Integer test = (Integer) pred.invoke(this, publicCards, currentRound);
+
+                    if (bestOdd <= test) {
+                        bestOdd = test;
+                        handType = pred.getName().substring(6);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        //TODO: based on the calculated odds of each predicted card type, return the best predicted card type
+        return getHandValue(handType);
     }
+
+    private int getHandValue(String handType) {
+        switch (handType) {
+            case "RoyalFlush" -> {
+                return PokerHand.ROYALFLUSH_RISK;
+            }
+            case "StraightFlush" -> {
+                return PokerHand.STRAIGHTFLUSH_RISK;
+            }
+            case "Straight" -> {
+                return PokerHand.STRAIGHT_RISK;
+            }
+            case "FourOfAKind" -> {
+                return PokerHand.FOURS_RISK;
+            }
+            case "Flush" -> {
+                return PokerHand.FLUSH_RISK;
+            }
+            case "FullHouse" -> {
+                return PokerHand.FULLHOUSE_RISK;
+            }
+            case "ThreeOfAKind" -> {
+                return PokerHand.THREES_RISK;
+            }
+            case "TwoPair" -> {
+                return PokerHand.TWOPAIR_RISK;
+            }
+            case "Pair" -> {
+                return PokerHand.PAIR_RISK;
+            }
+            case "High" -> {
+                return PokerHand.HIGHCARD_RISK;
+            }
+        }
+    }
+
     //this method returns the quantity of cards that appear n times in allCards(hand card +  public card)
     private int countContains(Map<String, Integer> names, int n){
         int count = 0;
@@ -181,6 +230,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 count ++;
             }
         }
+
         return count;
     }
     public int combination(int n, int k) {
@@ -679,29 +729,26 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (getStake() == 0)
             return true;
         else
-            return Math.abs(dice.nextInt())%100 < getHand().getRiskWorthiness() +
+            return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
-        return Math.abs(dice.nextInt())%80 < getHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
 
     public boolean shouldCheck(PotOfMoney pot) {
-        //TODO: FIGURE OUT HOW THE RISK THING WORKS
-        return Math.abs(dice.nextInt())%80 < getHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-        return Math.abs(dice.nextInt())%50 < getHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt())%50 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
-    public boolean shouldCall(PotOfMoney pot){
 
-    }
-    public boolean shouldFold(PotOfMoney pot){
-
+     private boolean suitsOnHandAreSame(Card[] hand){
+        return hand[0].getSuit().equals(hand[1].getSuit());
     }
 }

@@ -17,24 +17,14 @@ import java.util.List;
 import java.util.Objects;
 
 abstract class TexasPlayer extends poker.Player {
-	private int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
-									    	 // stake in the pot
 	private int smallBlind = 5;
 
 	private int bigBlind = 2*smallBlind;
-	private int stake      		= 0;		 // the amount of money the player has thrown into the current pot 
-	
-	private String name    		= "Player";  // the unique identifying name given to the player
-	
-	private Hand hand 		= null;      // the hand dealt to this player
-	
-	private boolean folded 		= false;     // set to true when the player folds (gives up)
 
 	public final int NUM_CARDS_DEALT = 2;
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 
 	private Hand currentBestHand = null;
-
 
 	private boolean dealer = false;
 	
@@ -60,12 +50,9 @@ abstract class TexasPlayer extends poker.Player {
 		stake += 5;
 		bank -= 5;
 	}
-	public void bigBlind(){
+	public void bigBlind() {
 		stake += 10;
 		bank -= 10;
-	}
-	public boolean suitsOnHandAreSame(Card[] hand){
-		return hand[0].getSuit().equals(hand[1].getSuit());
 	}
 
 	//--------------------------------------------------------------------//
