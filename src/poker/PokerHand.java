@@ -25,10 +25,10 @@ public class PokerHand implements Hand
 	
 	public static final int ROYALFLUSH_RISK  	= 0;
 	public static final int STRAIGHTFLUSH_RISK  = 5;
-	public static final int STRAIGHT_RISK       = 10;
-	public static final int FOURS_RISK          = 15;
+	public static final int FOURS_RISK          = 10;
+	public static final int FULLHOUSE_RISK      = 15;
 	public static final int FLUSH_RISK		  	= 20;
-	public static final int FULLHOUSE_RISK      = 25;
+	public static final int STRAIGHT_RISK       = 25;
 	public static final int THREES_RISK			= 30;
 	public static final int TWOPAIR_RISK		= 35;
 	public static final int PAIR_RISK		  	= 40;

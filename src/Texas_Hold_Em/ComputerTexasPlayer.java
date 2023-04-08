@@ -13,6 +13,7 @@ import poker.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class ComputerTexasPlayer extends TexasPlayer {
@@ -121,7 +122,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public int preFlopRiskToleranceHelper(Card[] hand){
         //the most advantage hand card
         if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
-            //TODO: change the riskTolerance
+            //TODO: affect the riskTolerance
         }
         //these hand cards maybe can form strong straight
         else if((isContained(hand, "Ace") && isContained(hand, "King")) ||
@@ -130,7 +131,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "Queen")) ||
                 (isContained(hand, "Jack") && isContained(hand, "King")) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace"))){
-            //TODO: change the riskTolerance
+            //TODO: affect the riskTolerance
         }
         //these hand cards maybe can form strong straightFlush
         else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
@@ -139,7 +140,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsOnHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsOnHandAreSame(hand)){
-            //TODO: change the riskTolerance
+            //TODO: affect the riskTolerance
         }
         else if(){
 
@@ -150,13 +151,65 @@ public class ComputerTexasPlayer extends TexasPlayer {
             riskTolerance += preFlopRiskToleranceHelper(super.getHand().getHand());
         }
         if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
-            //TODO: determine the riskTolerance based on the returned bestHandType
+            //TODO: make returned best hand type to affect the riskTolerance
+            riskTolerance += predicateBestHandTypeAndRisk(publicCards, deck, currentRound);
         }
         if(currentRound==Rounds.RIVER){
-            //TODO: How riskTolerance varies in river round?
+            //TODO: 1-see if public cards can form some hand type,
+            //      2-compare the hand type A from public cards with the best hand type of all cards B,
+            //      3-if A is higher than B, we need to consider the cards on hand, it will affect the riskTolerance
+            //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
         }
     }
-    public int predicateBestHandType(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
+
+    //this will return the finally returned hand type(with use of random value)
+    private String findHandHigherThanCurrentHand(Map<String, Integer> predictedHandType, String currentHandType){
+        boolean isHigh = true;
+        Map<String, Integer> higherHandType = new HashMap<>();
+        String[] handTypeMap = new String[]{"RoyalStraightFlush", "StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "Pair"};
+        //see if hand type should be High or not
+        for(Integer odds: predictedHandType.values()){
+            if(odds!=0){
+                isHigh=  false;
+            }
+        }
+        if(isHigh){
+            return "High";
+        }
+
+        //find those hand type higher than currentHandType in predictedHandType, and add those hand type with its odds to a hashMap
+        for(String hand: handTypeMap){
+            if(!hand.equals(currentHandType)){
+                for(Map.Entry<String, Integer> entry1: predictedHandType.entrySet()){
+                    if(Objects.equals(entry1.getKey(), hand)){
+                        higherHandType.put(entry1.getKey(), entry1.getValue());
+                    }
+                }
+            }else {
+                break;
+            }
+        }
+        //find those hand types that odds are greater than 30
+        ArrayList<String> hands = new ArrayList<>();
+        for(Map.Entry<String, Integer> entry1: higherHandType.entrySet()){
+            if(entry1.getValue()>30){
+                hands.add(entry1.getKey());
+            }
+        }
+        //if there are no hands that odds are greater than 30, just return current hand type
+        if(hands.isEmpty()) {
+            return currentHandType;
+        }
+        //if yes, randomly find one and return it
+        else {
+            Random random = new Random();
+            int index = random.nextInt(hands.size());
+            return hands.get(index);
+        }
+    }
+
+    //this method will predict the best hand type and return the risk affected by this best hand type
+    public int predicateBestHandTypeAndRisk(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
         int length = publicCards.length+2;
         Card[] allCards = new Card[length];
         System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
@@ -165,26 +218,35 @@ public class ComputerTexasPlayer extends TexasPlayer {
         sortCards(allCards);
 
         String handType = "";
+        this.findBestHand(publicCards, deck);
 
+        //TODO: this one may have errors, because dont know if "this.getCurrentBestHand().getClass().getSimpleName()"
+        //      and "handType = pred.getName().substring(6)" has same String format
+        Map<String, Integer> handsHigherThanCurrentHand = new HashMap<>();
+        String currentHandType = this.getCurrentBestHand().getClass().getSimpleName();
+        Map<String, Integer> predictedHandType = new HashMap<>();
         Method[] preds = PokerHand.class.getDeclaredMethods();
-        int bestOdd = 0;
-
+//        int bestOdd = 0;
         for (Method pred : preds) {
             try {
                 if (pred.getName().startsWith("odd") && pred.getParameterTypes().length == 0 &&
                         pred.getReturnType() == Integer.class) {
                     Integer test = (Integer) pred.invoke(this, publicCards, currentRound);
-
-                    if (bestOdd <= test) {
-                        bestOdd = test;
-                        handType = pred.getName().substring(6);
-                    }
+                    handType = pred.getName().substring(6);
+                    predictedHandType.put(handType, test);
+//                    if (bestOdd <= test) {
+//                        bestOdd = test;
+//                        handType = pred.getName().substring(6);
+//                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return getHandValue(handType);
+        //find those predicted hand type that are higher than current hand type
+        //if the odds of predicted hand(higher than current hand) is greater than 40,
+        return getHandValue(findHandHigherThanCurrentHand(predictedHandType, currentHandType));
+//        return getHandValue(handType);
     }
 
     private int getHandValue(String handType) {
@@ -216,9 +278,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
             case "Pair" -> {
                 return PokerHand.PAIR_RISK;
             }
-            case "High" -> {
+            default ->{
                 return PokerHand.HIGHCARD_RISK;
             }
+//            case "High" -> {
+//            }
         }
     }
 
