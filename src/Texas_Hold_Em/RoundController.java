@@ -14,7 +14,7 @@ public abstract class RoundController {
     private int bigBlindAmount;
     protected Hand communityCards;
 
-    protected PotOfMoney pot;
+    protected PotOfMoney pot = new PotOfMoney();
     private PrintGame printGame;
 
 
