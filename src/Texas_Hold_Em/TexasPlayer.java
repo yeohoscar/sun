@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 abstract class TexasPlayer extends poker.Player {
-	private int smallBlind = 1;
-
-	private int bigBlind = 2*smallBlind;
-
 	public final int NUM_CARDS_DEALT = 2;
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 

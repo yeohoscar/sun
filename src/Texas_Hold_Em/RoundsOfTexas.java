@@ -13,7 +13,9 @@ import java.util.Map;
 
 public class RoundsOfTexas extends RoundController {
     private PrintGame printGame;
-    private int BigBlindAmount = 2;
+    public static final int SMALL_BLIND_AMOUNT = 1;
+
+    public static final int BIG_BLIND_AMOUNT = 2*SMALL_BLIND_AMOUNT;
     private ArrayList<TexasPlayer> roundPlayers;
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck,texasPlayers,dealerIndex);
@@ -104,7 +106,7 @@ public class RoundsOfTexas extends RoundController {
 
             boolean allinPlayer = false;
             for(int i :winners){
-                if(roundPlayers.get(i).hasAllin()){
+                if(roundPlayers.get(i).isAllin()){
                     allinPlayer=true;
                 }
             }
@@ -127,7 +129,7 @@ public class RoundsOfTexas extends RoundController {
     @Override
     public void removePlayer() {
         for(int i=0;i<numPlayers;i++){
-            if(roundPlayers.get(i).getBank()<BigBlindAmount){
+            if(roundPlayers.get(i).getBank()<BIG_BLIND_AMOUNT){
                 roundPlayers.remove(i);
             }
         }
