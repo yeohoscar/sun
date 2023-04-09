@@ -172,12 +172,12 @@ public abstract class RoundController {
     public Boolean ActionClosed(){
         int foldCounter =0;
         int callCounter = 0;
-        for(Player player : roundPlayers){
+        for(TexasPlayer player : roundPlayers){
             if(player.hasFolded()){
                 foldCounter++;
             }
             //TODO: should player.getStake()==pot.getCurrentStake() ?
-            if(player.getStake()==pot.getCurrentStake()||player.hasAllin()){
+            if(player.getStake()==pot.getCurrentStake()||player.isAllin()){
                 callCounter++;
             }
         }
