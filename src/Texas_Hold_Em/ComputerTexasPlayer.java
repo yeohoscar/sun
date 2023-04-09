@@ -16,11 +16,11 @@ import java.util.*;
 
 
 public class ComputerTexasPlayer extends TexasPlayer {
-    public static final int VARIABILITY		= 50;
+    public static final int VARIABILITY = 50;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
 
-    private Random dice						= new Random(System.currentTimeMillis());
+    private Random dice	= new Random(System.currentTimeMillis());
 
     private List<Card> communityCards;
 
@@ -49,13 +49,14 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a negative risk tolerance means the player is averse to risk (nervous)
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
+    public int getRiskTolerance() {
+        return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
+    }
 
     public List<Card> getCommunityCards(){
         return communityCards;
     }
-    public int getRiskTolerance() {
-        return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
-    }
+
     public Rounds getCurrentRound(){
             switch (communityCards.size()){
                 case 3->{
@@ -249,7 +250,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return 0;
     }
     public int predicateRiskTolerance(){
-        DeckOfCards deck = getDeckOfCards();
+        DeckOfCards deck = getDeck();
         Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
@@ -412,7 +413,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return combination(n - 1, k - 1) + combination(n - 1, k);
     }
     /*--------------------predicate the odds of Royal Straight Flush--------------------------*/
-    public Integer oddsOfRoyalStraightFlush(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfRoyalFlush(Card[] allCards, Rounds currentRound){
         int odds=0;
         String[] cards = {"Ace", "King", "Queen", "Jack", "Ten"};
         //hashMap stores the number of occurrence of each suit, key is the suit, and Integer is the number of occurrence of the suit

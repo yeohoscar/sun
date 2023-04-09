@@ -14,7 +14,6 @@ import poker.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
@@ -22,7 +21,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	private Hand currentBestHand = null;
 
-	private boolean allin;
+	private boolean allIn;
 
 	protected boolean dealer = false;
 	public DeckOfCards deckOfCards;
@@ -34,7 +33,7 @@ abstract class TexasPlayer extends poker.Player {
 	
 	public TexasPlayer(String name, int money)	{
 		super(name, money);
-		allin = false;
+		allIn = false;
 	}
 	public void setDeck(DeckOfCards deck){
 		deckOfCards=deck;
@@ -60,14 +59,6 @@ abstract class TexasPlayer extends poker.Player {
 	public boolean isDealer(){
 		return dealer;
 	}
-	public void smallBlind(){
-		stake += 5;
-		bank -= 5;
-	}
-	public void bigBlind() {
-		stake += 10;
-		bank -= 10;
-	}
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -77,7 +68,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void reset() {
 		folded = false;
-		allin = false;
+		allIn = false;
 		stake  = 0;
 	}
 	
@@ -113,8 +104,8 @@ abstract class TexasPlayer extends poker.Player {
 		return currentBestHand;
 	}
 
-	public boolean isAllin() {
-		return allin;
+	public boolean isAllIn() {
+		return allIn;
 	}
 
 	//--------------------------------------------------------------------//
@@ -132,7 +123,7 @@ abstract class TexasPlayer extends poker.Player {
 		}
 		stake += bank;
 		bank = 0;
-		allin=true;
+		allIn =true;
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
 
@@ -152,7 +143,7 @@ abstract class TexasPlayer extends poker.Player {
 	}
 
 	public void allIn() {
-		allin = true;
+		allIn = true;
 	}
 
 	// Computes best hand using player's hole cards and the public cards

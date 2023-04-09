@@ -116,7 +116,7 @@ public class RoundsOfTexas extends RoundController {
 
             boolean allinPlayer = false;
             for(int i :winners){
-                if(roundPlayers.get(i).isAllin()){
+                if(roundPlayers.get(i).isAllIn()){
                     allinPlayer=true;
                 }
             }
