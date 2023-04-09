@@ -19,9 +19,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY		= 50;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
-    public int HANDANDPUBLIC      		= 0;  // number of cards in a hand of poker plus public cards
 
     private Random dice						= new Random(System.currentTimeMillis());
+
+    private List<Card> communityCards;
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
@@ -49,14 +50,14 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
 
-    public ArrayList<Card> getPublicCards(){
-        return publicCards;
+    public List<Card> getCommunityCards(){
+        return communityCards;
     }
     public int getRiskTolerance() {
         return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
     }
     public Rounds getCurrentRound(){
-            switch (publicCards.size()){
+            switch (communityCards.size()){
                 case 3->{
                     return Rounds.FLOP;
                 }
@@ -79,6 +80,17 @@ public class ComputerTexasPlayer extends TexasPlayer {
             return null;
         }
     }
+
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+    // Mutators
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+
+    public void setCommunityCards(List<Card> communityCards) {
+        this.communityCards = communityCards;
+    }
+
     public void sortCards(Card[] allCards) {
         int minPosition = 0;
         Card palm = null;
@@ -238,7 +250,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
     public int predicateRiskTolerance(){
         DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = getPublicCards().toArray(new Card[getPublicCards().size()]);
+        Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if(currentRound==Rounds.PRE_FLOP){

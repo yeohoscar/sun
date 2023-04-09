@@ -5,6 +5,7 @@ import poker.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 // This package provides classes necessary for implementing a game system for playing poker
 
@@ -17,12 +18,20 @@ public class RoundsOfTexas extends RoundController {
 
     public static final int BIG_BLIND_AMOUNT = 2*SMALL_BLIND_AMOUNT;
     private ArrayList<TexasPlayer> roundPlayers;
-    public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
-        super(deck,texasPlayers,dealerIndex);
+    public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, List<Card> communityCards, int dealerIndex) {
+        super(deck, texasPlayers, communityCards, dealerIndex);
         this.roundPlayers = texasPlayers;
         //this.printGame = new PrintGame(texasPlayers, deck, pot);
 
+        initComputerPlayerWithCommunityCards(communityCards);
+    }
 
+    private void initComputerPlayerWithCommunityCards(List<Card> communityCards) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof ComputerTexasPlayer) {
+                ((ComputerTexasPlayer) player).setCommunityCards(communityCards);
+            }
+        }
     }
 
 
@@ -88,7 +97,8 @@ public class RoundsOfTexas extends RoundController {
             for (int i = 0 ;i<roundPlayers.size();i++) {
                 TexasPlayer player =roundPlayers.get(i);
                 if (!player.hasFolded()) {
-                    player.findBestHand(communityCards.getHand(), deck);
+                    Card[] communityCardsArr = new Card[communityCards.size()];
+                    player.findBestHand(communityCards.toArray(communityCardsArr), deck);
                     int handValue = player.getCurrentBestHand().getValue();
                     valueRank.put(i, handValue);
                 }

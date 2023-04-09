@@ -2,23 +2,25 @@ package Texas_Hold_Em;
 import poker.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
     protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
+
     protected DeckOfCards deck;
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
     private int bigBlindAmount;
-    protected Hand communityCards;
+    protected List<Card> communityCards;
 
     protected PotOfMoney pot = new PotOfMoney();
     private PrintGame printGame;
 
 
-    public RoundController(DeckOfCards deck, ArrayList<TexasPlayer> players, int dealerIndex) {
+    public RoundController(DeckOfCards deck, ArrayList<TexasPlayer> players, List<Card> communityCards, int dealerIndex) {
         this.deck = deck;
         this.roundPlayers = players;
         roundPlayers.get(dealerIndex).setDealer(true);
@@ -26,7 +28,6 @@ public abstract class RoundController {
         numPlayers = roundPlayers.size();
         this.bigBlindAmount=10;
         this.printGame = new PrintGame(roundPlayers, deck, pot, communityCards);
-
     }
 
 
@@ -83,7 +84,7 @@ public abstract class RoundController {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
-                    communityCards=deck.dealHand(3);
+                    dealCommunityCards(3);
 
 //                    printGame.table("pre-flop");
                     //TODO: three public cards should be displayed on the table.
@@ -92,7 +93,7 @@ public abstract class RoundController {
                 case 2 -> {
                     flopRound();
                     roundCounter++;
-                    communityCards=deck.dealHand(1);
+                    dealCommunityCards(1);
                     //printGame.table("flop");
                     //TODO: turn card should be displayed on the table
                     break;
@@ -100,7 +101,7 @@ public abstract class RoundController {
                 case 3 -> {
                     turnRound();
                     roundCounter++;
-                    communityCards=deck.dealHand(1);
+                    dealCommunityCards(1);
                     //printGame.table("turn");
                     //TODO: river card should be displayed on the table
                     break;
@@ -118,9 +119,6 @@ public abstract class RoundController {
     public void roundMove(Rounds currentRound){
         int currentIndex=firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
-        if(currentRound!=Rounds.PRE_FLOP){
-            roundPlayers.get(currentIndex).updatePublicCards(communityCards.getHand());
-        }
         System.out.println("pot.getCurrentStake() in RoundController = "+pot.getCurrentStake());
         while(!onePlayerLeft()||!ActionClosed()){
             System.out.println("currentRound = "+currentRound);
@@ -204,11 +202,15 @@ public abstract class RoundController {
         }
     }
 
+    public void dealCommunityCards(int numCardsToBeDealt) {
+        for (int i = 0; i < numCardsToBeDealt; i++) {
+            communityCards.add(deck.dealNext());
+        }
+    }
+
     private void delay(int numMilliseconds) {
         try {
             Thread.sleep(numMilliseconds);
         } catch (Exception e) {}
     }
-
-
 }

@@ -1,20 +1,17 @@
 package Texas_Hold_Em;
 
+import poker.Card;
 import poker.DeckOfCards;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MainController {
-
     protected ArrayList<TexasPlayer> texasPlayers;
 
     protected DeckOfCards deck;
 
     protected int numPlayers;
-
-
-
-
 
     public void setUp(String[] names, int bank) {
         texasPlayers = new ArrayList<>();
@@ -28,15 +25,15 @@ public abstract class MainController {
                 texasPlayers.add(new ComputerTexasPlayer(names[i].trim(), bank));
     }
 
-
     public void play()	{
         int dealerIndex=numPlayers;
         while (texasPlayers.size() > 1) {
             deck.reset();//before each game starts, shuffle the deck
             if(dealerIndex==numPlayers){dealerIndex=0;}
+            List<Card> communityCards = new ArrayList<>();
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
-            RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, dealerIndex);
+            RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, communityCards, dealerIndex);
             round.play();
 
             try {

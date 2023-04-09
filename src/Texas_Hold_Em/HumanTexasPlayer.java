@@ -14,8 +14,6 @@ import poker.PotOfMoney;
 import java.util.Scanner;
 
 public class HumanTexasPlayer extends TexasPlayer {
-	public static int MAX_DISCARD	=	3; // maximum number of cards a player can discard
-
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor

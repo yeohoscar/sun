@@ -25,7 +25,6 @@ abstract class TexasPlayer extends poker.Player {
 	private boolean allin;
 
 	protected boolean dealer = false;
-	public ArrayList<Card> publicCards;
 	public DeckOfCards deckOfCards;
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -43,9 +42,7 @@ abstract class TexasPlayer extends poker.Player {
 	public DeckOfCards getDeckOfCards(){
 		return deckOfCards;
 	}
-	public void updatePublicCards(Card[] publicCard){
-		publicCards.addAll(Arrays.asList(publicCard));
-	}
+
 	public void smallBlind(int smallBlind,PotOfMoney pot){
 		stake+=smallBlind;
 		bank-=smallBlind;
@@ -110,6 +107,9 @@ abstract class TexasPlayer extends poker.Player {
 	}
 
 	public Hand getCurrentBestHand() {
+		if (currentBestHand == null) {
+			return hand;
+		}
 		return currentBestHand;
 	}
 
@@ -159,7 +159,6 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void findBestHand(Card[] publicCards, DeckOfCards deck) {
 		if (publicCards.length < NUM_CARDS_REQUIRED_FOR_FULL_HAND) {
-			currentBestHand = getHand();
 			return;
 		}
 

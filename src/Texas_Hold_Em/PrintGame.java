@@ -5,16 +5,18 @@ import poker.DeckOfCards;
 import poker.Player;
 import poker.PotOfMoney;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrintGame {
     private ArrayList<TexasPlayer> texasPlayers;
     private DeckOfCards deck;
     private PotOfMoney pot;
-    private Hand communityCards;
+    private List<Card> communityCards;
 
 
-    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, PotOfMoney pot, Hand communityCards){
+    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, PotOfMoney pot, List<Card> communityCards){
         this.texasPlayers = texasPlayers;
         this.deck = deck;
         this.pot = pot;
@@ -76,13 +78,13 @@ public class PrintGame {
         result[1] = rankIndex;
         return result;
     }
-    private void printPublicCard(Hand hand){
+    private void printPublicCard(List<Card> publicCards){
         int suitIndex;
         int rankIndex;
         String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
         //String[] suits = {"♠", "♥", "♦", "♣"};
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        for(Card card: hand.getHand()){
+        for(Card card: publicCards){
             int[] index = getIndex(card, suits, ranks);
             suitIndex = index[0];
             rankIndex = index[1];
