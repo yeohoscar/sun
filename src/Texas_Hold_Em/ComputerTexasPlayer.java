@@ -889,6 +889,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (getStake() == 0)
             return true;
         else
+            System.out.println("Stuck here");
             return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
     }

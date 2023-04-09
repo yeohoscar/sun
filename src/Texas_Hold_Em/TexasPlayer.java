@@ -248,8 +248,9 @@ abstract class TexasPlayer extends poker.Player {
 		} else {
 			if (pot.getCurrentStake() > getStake()) {
 				// existing bet must be covered	
-
+				System.out.println("pot.getCurrentStake() in TexasPlayer = "+pot.getCurrentStake());
 				if (shouldSee(pot)) {
+
 					seeBet(pot);
 
 					if (shouldAllIn(pot)) {

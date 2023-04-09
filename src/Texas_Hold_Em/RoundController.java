@@ -121,8 +121,10 @@ public abstract class RoundController {
         if(currentRound!=Rounds.PRE_FLOP){
             roundPlayers.get(currentIndex).updatePublicCards(communityCards.getHand());
         }
+        System.out.println("pot.getCurrentStake() in RoundController = "+pot.getCurrentStake());
         while(!onePlayerLeft()||!ActionClosed()){
-
+            System.out.println("currentRound = "+currentRound);
+            System.out.println("Name of player: "+roundPlayers.get(currentIndex).getName());
             roundPlayers.get(currentIndex).nextAction(pot);
 
             printGame.table(currentRound);
