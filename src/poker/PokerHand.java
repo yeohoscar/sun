@@ -275,10 +275,10 @@ public class PokerHand implements Hand
 
 	
 	//皇家同花顺
-	public boolean isRoyalFlush() {
-		return isRoyalStraight() && isFlush();
+	public boolean isRoyalStraightFlush() {
+		return canBeRoyalStraight() && isFlush();
 	}
-	public boolean isRoyalStraight() {
+	public boolean canBeRoyalStraight() {
 		return (getCard(4).isAce() &&
 				getCard(0).isKing() &&
 				getCard(1).isQueen() &&
@@ -458,7 +458,7 @@ public class PokerHand implements Hand
 		
 		PokerHand category = this;
 		
-		if (isRoyalFlush())
+		if (isRoyalStraightFlush())
 			category = new RoyalFlush(hand, deck);
 		else
 		if (isStraightFlush())

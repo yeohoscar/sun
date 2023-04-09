@@ -13,7 +13,6 @@ import poker.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class ComputerTexasPlayer extends TexasPlayer {
@@ -123,6 +122,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //the most advantage hand card
         if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
             //TODO: affect the riskTolerance
+            return 5;
         }
         //these hand cards maybe can form strong straight
         else if((isContained(hand, "Ace") && isContained(hand, "King")) ||
@@ -132,6 +132,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "King")) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace"))){
             //TODO: affect the riskTolerance
+            return 15;
         }
         //these hand cards maybe can form strong straightFlush
         else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
@@ -141,10 +142,79 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsOnHandAreSame(hand)){
             //TODO: affect the riskTolerance
+            return 10;
         }
-        else if(){
+        //TODO: may need to do some modify
+        else{
+            return 20;
+        }
+    }
+    public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck){
+        PokerHand publicHand = new PokerHand(publicCards, deck);
+        PokerHand playerHand = new PokerHand(handCards, deck);
+        String[] nameOrder = new String[]{"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
+        int length = publicCards.length+2;
+        Card[] allCards = new Card[length];
+        System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
+        System.arraycopy(super.getHand().getHand(), 0, allCards, publicCards.length, super.getHand().getHand().length);
+        //we sort all cards from left to right, card with highest value is on right
+        sortCards(allCards);
+        sortCards(publicCards);
+        Method[] preds = PokerHand.class.getDeclaredMethods();
+//        int bestOdd = 0;
+        for (Method pred : preds) {
+            try {
+                if (pred.getName().startsWith("is") && pred.getParameterTypes().length == 0 &&
+                        pred.getReturnType() == Boolean.class) {
+                    if((Boolean) pred.invoke(publicHand, new Object[0])){
+                        String handType = pred.getName().substring(2);
+                        if(handType.equals("RoyalStraightFlush") || handType.equals("StraightFlush") || handType.equals("FullHouse") || handType.equals("Flush") || handType.equals("Straight")){
+                            return getHandValue(handType);
+                        }else if(handType.equals("FourOfAKind")){
+                            int count=0;
+                            //cardNames store those cards that are not FourOfAKind
+                            ArrayList<String> cardNames = new ArrayList<>();
+                            String tem = allCards[0].getName();
+                            for(int i=1; i<allCards.length; i++){
+                                if(Objects.equals(allCards[i].getName(), tem)){
+                                    count++;
+                                }else if(count!=3){
+                                    cardNames.add(tem);
+                                    tem = allCards[i].getName();
+                                    count=0;
+                                }
+                                if(count==3 && !Objects.equals(allCards[i].getName(), tem)){
+                                    cardNames.add(allCards[i].getName());
+                                    tem = allCards[i].getName();
+                                }
+                            }
+                            //TODO: 这个riskTolerance也许需要修改
+                            int risk=0;
+                            String cardName = cardNames.get(cardNames.size()-1);
+                            for(int i=0; i<nameOrder.length; i++){
+                                if(nameOrder[i].equals(cardName)){
+                                    if(i>=10){
+                                        risk=5;
+                                    }
+                                    else if(i>6){
+                                        risk=10;
+                                    }else {
+                                        risk=20;
+                                    }
+                                }
+                            }
+                            return risk;
+                        }else {
+                            return getHandValue(handType);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return 0;
     }
     public void predicateRiskTolerance(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
         if(currentRound==Rounds.PRE_FLOP){
@@ -159,6 +229,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //      2-compare the hand type A from public cards with the best hand type of all cards B,
             //      3-if A is higher than B, we need to consider the cards on hand, it will affect the riskTolerance
             //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
+            riskTolerance += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
         }
     }
 
@@ -225,11 +296,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
         Map<String, Integer> handsHigherThanCurrentHand = new HashMap<>();
         String currentHandType = this.getCurrentBestHand().getClass().getSimpleName();
         Map<String, Integer> predictedHandType = new HashMap<>();
-        Method[] preds = PokerHand.class.getDeclaredMethods();
+        Method[] preds = ComputerTexasPlayer.class.getDeclaredMethods();
 //        int bestOdd = 0;
         for (Method pred : preds) {
             try {
-                if (pred.getName().startsWith("odd") && pred.getParameterTypes().length == 0 &&
+                if (pred.getName().startsWith("odd") && pred.getParameterTypes().length != 0 &&
                         pred.getReturnType() == Integer.class) {
                     Integer test = (Integer) pred.invoke(this, publicCards, currentRound);
                     handType = pred.getName().substring(6);
@@ -251,7 +322,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     private int getHandValue(String handType) {
         switch (handType) {
-            case "RoyalFlush" -> {
+            case "RoyalStraightFlush" -> {
                 return PokerHand.ROYALFLUSH_RISK;
             }
             case "StraightFlush" -> {
