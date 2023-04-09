@@ -117,6 +117,10 @@ public abstract class RoundController {
     public void roundMove(Rounds currentRound){
         int currentIndex=firstMovePlayerIndex();
         while(!onePlayerLeft()||!ActionClosed()){
+            if(roundPlayers.get(currentIndex) instanceof ComputerTexasPlayer){
+                ((ComputerTexasPlayer) roundPlayers.get(currentIndex)).predicateRiskTolerance(communityCards.getHand(), deck, currentRound);
+            }
+
             roundPlayers.get(currentIndex).nextAction(pot);
 
             printGame.table(currentRound);
