@@ -25,7 +25,8 @@ abstract class TexasPlayer extends poker.Player {
 	private boolean allin;
 
 	protected boolean dealer = false;
-
+	public ArrayList<Card> publicCards;
+	public DeckOfCards deckOfCards;
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -36,7 +37,15 @@ abstract class TexasPlayer extends poker.Player {
 		super(name, money);
 		allin = false;
 	}
-
+	public void setDeck(DeckOfCards deck){
+		deckOfCards=deck;
+	}
+	public DeckOfCards getDeckOfCards(){
+		return deckOfCards;
+	}
+	public void updatePublicCards(Card[] publicCard){
+		publicCards.addAll(Arrays.asList(publicCard));
+	}
 	public void smallBlind(int smallBlind,PotOfMoney pot){
 		stake+=smallBlind;
 		bank-=smallBlind;

@@ -48,8 +48,28 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a negative risk tolerance means the player is averse to risk (nervous)
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
+
+    public ArrayList<Card> getPublicCards(){
+        return publicCards;
+    }
     public int getRiskTolerance() {
-        return riskTolerance - getStake(); // tolerance drops as stake increases
+        return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
+    }
+    public Rounds getCurrentRound(){
+            switch (publicCards.size()){
+                case 3->{
+                    return Rounds.FLOP;
+                }
+                case 4->{
+                    return Rounds.TURN;
+                }
+                case 5->{
+                    return Rounds.RIVER;
+                }
+                default -> {
+                    return Rounds.PRE_FLOP;
+                }
+            }
     }
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
@@ -216,21 +236,26 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
         return 0;
     }
-    public void predicateRiskTolerance(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
+    public int predicateRiskTolerance(){
+        DeckOfCards deck = getDeckOfCards();
+        Card[] publicCards = getPublicCards().toArray(new Card[getPublicCards().size()]);
+        Rounds currentRound = getCurrentRound();
+        int risk = 0;
         if(currentRound==Rounds.PRE_FLOP){
-            riskTolerance += preFlopRiskToleranceHelper(super.getHand().getHand());
+            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
         }
         if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
             //TODO: make returned best hand type to affect the riskTolerance
-            riskTolerance += predicateBestHandTypeAndRisk(publicCards, deck, currentRound);
+            risk += predicateBestHandTypeAndRisk(publicCards, deck, currentRound);
         }
         if(currentRound==Rounds.RIVER){
             //TODO: 1-see if public cards can form some hand type,
             //      2-compare the hand type A from public cards with the best hand type of all cards B,
             //      3-if A is higher than B, we need to consider the cards on hand, it will affect the riskTolerance
             //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
-            riskTolerance += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
+            risk += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
         }
+        return risk;
     }
 
     //this will return the finally returned hand type(with use of random value)
