@@ -150,6 +150,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void findBestHand(Card[] publicCards, DeckOfCards deck) {
 		if (publicCards.length < NUM_CARDS_REQUIRED_FOR_FULL_HAND) {
+			currentBestHand = getHand();
 			return;
 		}
 
