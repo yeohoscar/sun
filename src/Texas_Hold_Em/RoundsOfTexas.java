@@ -150,6 +150,8 @@ public class RoundsOfTexas extends RoundController {
         for(int i=0;i<numPlayers;i++){
             if(roundPlayers.get(i).getBank()<BIG_BLIND_AMOUNT){
                 roundPlayers.remove(i);
+                numPlayers--;
+                i--;
             }
         }
     }
