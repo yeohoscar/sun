@@ -51,12 +51,16 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
     public int getRiskTolerance() {
+        int risk = 0;
         System.out.println("Original RiskTolerance = "+riskTolerance);
+        System.out.println("stake of computerPlayer = "+getStake());
 //        System.out.println("\n\nriskTolerance = "+riskTolerance);
 //        System.out.println("getStake() = "+getStake() );
 //        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
 //        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
-        return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
+        risk = riskTolerance - getStake() - predicateRiskTolerance();
+        System.out.println("risk = "+risk);
+        return risk; // tolerance drops as stake increases
     }
 
     public List<Card> getCommunityCards(){
@@ -185,7 +189,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
         //TODO: may need to do some modify
         else{
-            return 14;
+            return 20;
         }
     }
     public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck){
@@ -274,6 +278,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
             risk += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
         }
+        System.out.println("predicated risk = "+risk);
         return risk;
     }
 
@@ -928,16 +933,26 @@ public class ComputerTexasPlayer extends TexasPlayer {
             return true;
         }
         else {
-//            System.out.println("Return: " + (Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
-//                    getRiskTolerance() + 10000000));
-            return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
+            int value = getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance() + 10000000;
+            int value2 = Math.abs(dice.nextInt())%100;
+            System.out.println("shouldSee value = "+value);
+            System.out.println("shouldSee value2 = "+value2);
+            return value2 < value;
+//            return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
+//                    getRiskTolerance() + 10000000;
         }
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
-        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
+        int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
+        int value2 = Math.abs(dice.nextInt())%80;
+        System.out.println("shouldRaise value = "+value);
+        System.out.println("shouldRaise value2 = "+value2);
+        return value2 < value;
+//        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
+//                getRiskTolerance();
     }
 
     public boolean shouldCheck(PotOfMoney pot) {
@@ -953,8 +968,15 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-        return Math.abs(dice.nextInt())%50 < getCurrentBestHand().getRiskWorthiness() +
+        int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
+        int value2 = Math.abs(dice.nextInt())%50;
+        System.out.println("shouldAllIn value = "+value);
+        System.out.println("shouldAllIn value2 = "+value2);
+        return value2 < value;
+
+//        return Math.abs(dice.nextInt())%50 < getCurrentBestHand().getRiskWorthiness() +
+//                getRiskTolerance();
     }
 
      private boolean suitsOnHandAreSame(Card[] hand){
