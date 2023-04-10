@@ -170,12 +170,12 @@ public class RoundsOfTexas extends RoundController {
     @Override
     public boolean needCreateSidePot(TexasPlayer player) {
 
-        if(!pots.get(pots.size()-1).getPlayerIds().contains(player.getId())){
+        if(!getActivePot().getPlayerIds().contains(player.getId())){
             return false;
         }
-        int activePlayer = pots.get(pots.size()-1).getPlayerIds().size();
+        int activePlayer = getActivePot().getPlayerIds().size();
         if(!player.hasFolded()&&player.isAllIn()){
-            if(player.getStake()*activePlayer<=pots.get(pots.size()-1).getTotal()){
+            if(player.getStake()*activePlayer<=getActivePot().getTotal()){
                 return true;
             }
         }

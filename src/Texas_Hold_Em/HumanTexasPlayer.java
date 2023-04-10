@@ -61,10 +61,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public boolean shouldSee(PotOfMoney pot) {
-		if (getStake() == 0)
-			return true;
-		else
-			return askQuestion("Do you want to see the bet of " +
+		return askQuestion("Do you want to see the bet of " +
 					addCount(pot.getCurrentStake() - getStake(), "chip", "chips"));
 	}
 

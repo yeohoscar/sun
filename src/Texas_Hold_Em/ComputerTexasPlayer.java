@@ -926,7 +926,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         else
             //System.out.println("Stuck here");
             return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
-                    getRiskTolerance();
+                    getRiskTolerance() + 10000000;
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
@@ -941,8 +941,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //        System.out.println("getRiskTolerance() = "+getRiskTolerance());
 //        System.out.println("value = "+value);
 //        System.out.println("dice.nextInt())%80 = "+Math.abs(dice.nextInt())%80);
-        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
+        return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
+                getRiskTolerance() + 100000000;
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {

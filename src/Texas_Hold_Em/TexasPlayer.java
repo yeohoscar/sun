@@ -71,7 +71,10 @@ abstract class TexasPlayer extends poker.Player {
 		allIn = false;
 		stake  = 0;
 	}
-	
+
+	public void resetStake() {
+		stake = -1;
+	}
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -247,10 +250,13 @@ abstract class TexasPlayer extends poker.Player {
 			// first mover of the round
 
 			if (shouldCheck(pot)) {
+				stake = 0;
 				check();
 			} else if (shouldRaise(pot)) {
+				stake = 0;
 				raiseBet(pot);
 			} else if (shouldAllIn(pot)) {
+				stake = 0;
 				allIn(pot);
 			} else {
 				fold();

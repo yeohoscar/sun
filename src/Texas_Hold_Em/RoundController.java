@@ -39,7 +39,7 @@ public abstract class RoundController {
             playersID.add(i);
         }
         pots.get(0).setPlayerIds(playersID);
-        this.printGame = new PrintGame(roundPlayers, deck, pots.get(pots.size()-1), communityCards);
+        this.printGame = new PrintGame(roundPlayers, deck, getActivePot(), communityCards);
         this.communityCards = communityCards;
     }
 
@@ -102,36 +102,35 @@ public abstract class RoundController {
                     flopRound();
                     roundCounter++;
                     dealCommunityCards(1);
-                    //printGame.table("flop");
-                    //TODO: turn card should be displayed on the table
-                    break;
+
+                    printGame.table(Rounds.FLOP);
                 }
                 case 3 -> {
                     turnRound();
                     roundCounter++;
                     dealCommunityCards(1);
-                    //printGame.table("turn");
-                    //TODO: river card should be displayed on the table
-                    break;
+
+                    printGame.table(Rounds.TURN);
                 }
                 default -> {
                     riverRound();
                     roundCounter++;
-                    //printGame.table("river");
-                    break;
+
+                    printGame.table(Rounds.RIVER);
                 }
             }
+            resetStakes();
             //printGame.table("showDown");
         }
     }
     public void roundMove(Rounds currentRound){
         int currentIndex=firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
-        System.out.println("\npot.getCurrentStake() in RoundController = "+pots.get(pots.size()-1).getCurrentStake());
+        System.out.println("\npot.getCurrentStake() in RoundController = "+getActivePot().getCurrentStake());
         while(!onePlayerLeft() && !ActionClosed()){
             System.out.println("currentRound = "+currentRound);
             System.out.println("Current player: "+roundPlayers.get(currentIndex).getName());
-            roundPlayers.get(currentIndex).nextAction(pots.get(pots.size()-1));
+            roundPlayers.get(currentIndex).nextAction(getActivePot());
 
             if(needCreateSidePot(roundPlayers.get(currentIndex))){
                 createSidePot(roundPlayers.get(currentIndex));
@@ -147,12 +146,12 @@ public abstract class RoundController {
 
     public boolean needCreateSidePot(Player player) {
 
-        if(!pots.get(pots.size()-1).getPlayerIds().contains(player.getId())){
+        if(!getActivePot().getPlayerIds().contains(player.getId())){
             return false;
         }
-        int activePlayer = pots.get(pots.size()-1).getPlayerIds().size();
+        int activePlayer = getActivePot().getPlayerIds().size();
         if(!player.hasFolded()){
-            if(player.getStake()*activePlayer<=pots.get(pots.size()-1).getTotal()){
+            if(player.getStake()*activePlayer<=getActivePot().getTotal()){
                 return true;
             }
         }
@@ -161,10 +160,10 @@ public abstract class RoundController {
 
     public void createSidePot(Player player) {
         PotOfMoney sidePot = new PotOfMoney();
-        PotOfMoney lastPot = pots.get(pots.size()-1);
+        PotOfMoney lastPot = getActivePot();
         ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
         newPlayerIds.removeIf(id -> id == player.getId());
-        int activePlayer = pots.get(pots.size()-1).getPlayerIds().size();
+        int activePlayer = getActivePot().getPlayerIds().size();
         sidePot.setStake(lastPot.getCurrentStake());
         sidePot.setStake(lastPot.getTotal()-player.getStake()*activePlayer);
         sidePot.setPlayerIds(newPlayerIds);
@@ -194,7 +193,7 @@ public abstract class RoundController {
         if(onePlayerLeft()){
             for(Player player : roundPlayers){
                 if(!player.hasFolded()){
-                        player.takePot(pots.get(pots.size()-1));
+                        player.takePot(getActivePot());
                 }
             }
         }
@@ -221,7 +220,7 @@ public abstract class RoundController {
                 foldCounter++;
             }
             //TODO: should player.getStake()==pot.getCurrentStake() ?
-            if(player.getStake()==pots.get(pots.size()-1).getCurrentStake()||player.isAllIn()){
+            if(player.getStake()==getActivePot().getCurrentStake()||player.isAllIn()){
                 callCounter++;
             }
         }
@@ -241,6 +240,18 @@ public abstract class RoundController {
     public void dealCommunityCards(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
             communityCards.add(deck.dealNext());
+        }
+    }
+
+    public PotOfMoney getActivePot() {
+        return pots.get(pots.size() - 1);
+    }
+
+    public void resetStakes() {
+        getActivePot().setStake(0);
+
+        for (TexasPlayer player : roundPlayers) {
+            player.resetStake();
         }
     }
 
