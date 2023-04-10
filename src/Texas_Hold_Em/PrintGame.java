@@ -122,6 +122,23 @@ public class PrintGame {
                 }
                 sb.append("\n");
 
+                //print bank of players
+                for (int j = 0; j < texasPlayers.size(); j++) {
+                    if (j < halfPlayers && sb != sb1) {
+                        sb = sb1;
+
+                    } else if (j >= halfPlayers && sb != sb2){
+                        sb1.append("\n");
+                        sb = sb2;
+                    }
+
+                    if (j==0 || j==halfPlayers) {
+                        sb.append("| ");
+                    }
+                    sb.append(String.format("%14s","Bank="+texasPlayers.get(j).getBank())).append(" | ");
+                }
+                sb.append("\n");
+
                 //print Dealer
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     if (j < halfPlayers && sb != sb1) {
