@@ -17,9 +17,6 @@ import java.util.*;
 
 public class RoundsOfTexas extends RoundController {
     private PrintGame printGame;
-    public static final int SMALL_BLIND_AMOUNT = 1;
-
-    public static final int BIG_BLIND_AMOUNT = 2*SMALL_BLIND_AMOUNT;
     private ArrayList<TexasPlayer> roundPlayers;
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, List<Card> communityCards, int dealerIndex) {
         super(deck, texasPlayers, communityCards, dealerIndex);

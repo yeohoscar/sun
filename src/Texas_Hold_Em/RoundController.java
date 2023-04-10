@@ -6,6 +6,10 @@ import java.util.List;
 
 public abstract class RoundController {
     public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
+
+    public static final int SMALL_BLIND_AMOUNT = 1;
+
+    public static final int BIG_BLIND_AMOUNT = 2*SMALL_BLIND_AMOUNT;
     protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
 

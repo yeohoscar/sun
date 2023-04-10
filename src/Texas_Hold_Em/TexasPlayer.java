@@ -243,8 +243,8 @@ abstract class TexasPlayer extends poker.Player {
 			return;
 		}
 
-		if (pot.getCurrentStake() == 15) {
-			// first mover of the game
+		if (pot.getCurrentStake() == RoundController.BIG_BLIND_AMOUNT) {
+			// first mover of the round
 
 			if (shouldCheck(pot)) {
 				check();
