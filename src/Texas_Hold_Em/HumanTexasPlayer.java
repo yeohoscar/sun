@@ -1,15 +1,6 @@
-
 package Texas_Hold_Em;
 
-// This package provides classes necessary for implementing a game system for playing poker
-
-// A Player is an object that can make decisions in a game of poker
-
-// There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
-//								and HumanPlayer, in which decisions are made using menus
-
 import poker.PotOfMoney;
-
 import java.util.Scanner;
 
 public class HumanTexasPlayer extends TexasPlayer {
@@ -20,8 +11,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
 
 	public HumanTexasPlayer(String name, int money,int id) {
-		super(name, money,id);
-
+		super(name, money, id);
 	}
 
 	//--------------------------------------------------------------------//
@@ -50,36 +40,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 		return false;
 	}
 
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Key decisions a player must make
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public boolean shouldOpen(PotOfMoney pot) {
-		return true;
-	}
-
-	public boolean shouldSee(PotOfMoney pot) {
-		return askQuestion("Do you want to see the bet of " +
-					addCount(pot.getCurrentStake() - getStake(), "chip", "chips"));
-	}
-
-	public boolean shouldRaise(PotOfMoney pot) {
-		return askQuestion("Do you want to raise the bet?");
-	}
-
-	public boolean shouldAllIn(PotOfMoney pot) {
-		return askQuestion("Do you want to all in?");
-	}
-
-	public boolean shouldCheck(PotOfMoney pot) {
-		if (pot.getCurrentStake() == 0) {
-			return askQuestion("Do you want to check?");
-		} else {
-			return false;
-		}
-	}
+	// Prompts user to input number of chips to raise by
 
 	@Override
 	public void raiseBet(PotOfMoney pot) {
@@ -117,6 +78,37 @@ public class HumanTexasPlayer extends TexasPlayer {
 
 		if(bank==0){
 			allIn();
+		}
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Key decisions a player must make
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	public boolean shouldOpen(PotOfMoney pot) {
+		return true;
+	}
+
+	public boolean shouldSee(PotOfMoney pot) {
+		return askQuestion("Do you want to see the bet of " +
+					addCount(pot.getCurrentStake() - getStake(), "chip", "chips"));
+	}
+
+	public boolean shouldRaise(PotOfMoney pot) {
+		return askQuestion("Do you want to raise the bet?");
+	}
+
+	public boolean shouldAllIn(PotOfMoney pot) {
+		return askQuestion("Do you want to all in?");
+	}
+
+	public boolean shouldCheck(PotOfMoney pot) {
+		if (pot.getCurrentStake() == 0) {
+			return askQuestion("Do you want to check?");
+		} else {
+			return false;
 		}
 	}
 }

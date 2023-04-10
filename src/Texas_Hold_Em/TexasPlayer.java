@@ -1,13 +1,4 @@
-
 package Texas_Hold_Em;
-
-// This package provides classes necessary for implementing a game system for playing poker
-
-// A Player is an object that can make decisions in a game of poker
-
-// There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
-//								and HumanPlayer, in which decisions are made using menus
-
 
 import poker.*;
 
@@ -17,6 +8,7 @@ import java.util.List;
 
 abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
+
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;
 
 	private int id;
@@ -26,7 +18,9 @@ abstract class TexasPlayer extends poker.Player {
 	private boolean allIn;
 
 	protected boolean dealer = false;
+
 	public DeckOfCards deckOfCards;
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -37,30 +31,6 @@ abstract class TexasPlayer extends poker.Player {
 		super(name, money);
 		this.id = id;
 		allIn = false;
-	}
-	public void setDeck(DeckOfCards deck){
-		deckOfCards=deck;
-	}
-	public DeckOfCards getDeckOfCards(){
-		return deckOfCards;
-	}
-
-	public void smallBlind(int smallBlind,PotOfMoney pot){
-		stake+=smallBlind;
-		bank-=smallBlind;
-		pot.raiseStake(smallBlind);
-	}
-	public void bigBlind(int bigBlind,PotOfMoney pot){
-		stake+=bigBlind;
-		bank-=bigBlind;
-		pot.raiseStake(bigBlind);
-	}
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
-	public boolean isDealer(){
-		return dealer;
 	}
 
 	//--------------------------------------------------------------------//
@@ -103,6 +73,14 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
+	public DeckOfCards getDeckOfCards(){
+		return deckOfCards;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public Hand getCurrentBestHand() {
 		if (currentBestHand == null) {
 			return hand;
@@ -114,45 +92,8 @@ abstract class TexasPlayer extends poker.Player {
 		return allIn;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Actions a player can make
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public void allIn(PotOfMoney pot) {
-		if (getBank() == 0) return;
-
-		stake += bank;
-		bank = 0;
-
-		if (stake <= pot.getCurrentStake()*2){
-			pot.addToPot(stake);
-		} else {
-			pot.raiseStake(stake - pot.getCurrentStake());
-		}
-
-		allIn =true;
-
-		System.out.println("\n> " + getName() + " says: and I all in!\n");
-	}
-
-	public void winFromPot(int chips,PotOfMoney pot) {
-		// when the winner of a hand takes the pot as his/her winnings
-
-		System.out.println("\n> " + getName() + " says: I WIN " + addCount(chips, "chip", "chips") + "!\n");
-		System.out.println(hand.toString());
-
-		bank += chips;
-		pot.takeFromPot(chips);
-		System.out.println(this);
-	}
-	public void check() {
-		System.out.println("\n> " + getName() + " says: I check!\n");
+	public boolean isDealer(){
+		return dealer;
 	}
 
 	//--------------------------------------------------------------------//
@@ -172,6 +113,15 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public void setDeck(DeckOfCards deck){
+		deckOfCards=deck;
+	}
+
+	//every player can act as a dealer
+	public void setDealer(boolean dealer) {
+		this.dealer = dealer;
 	}
 
 	// Computes best hand using player's hole cards and the public cards
@@ -222,6 +172,60 @@ abstract class TexasPlayer extends poker.Player {
 			data[index] = arr[i];
 			combinationUtil(arr, data, i+1, end, index+1, r, hands, deck);
 		}
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Actions a player can make
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	public void allIn(PotOfMoney pot) {
+		if (getBank() == 0) return;
+
+		stake += bank;
+		bank = 0;
+
+		if (stake <= pot.getCurrentStake()*2){
+			pot.addToPot(stake);
+		} else {
+			pot.raiseStake(stake - pot.getCurrentStake());
+		}
+
+		allIn =true;
+
+		System.out.println("\n> " + getName() + " says: and I all in!\n");
+	}
+
+	public void winFromPot(int chips,PotOfMoney pot) {
+		// when the winner of a hand takes the pot as his/her winnings
+
+		System.out.println("\n> " + getName() + " says: I WIN " + addCount(chips, "chip", "chips") + "!\n");
+		System.out.println(hand.toString());
+
+		bank += chips;
+		pot.takeFromPot(chips);
+		System.out.println(this);
+	}
+	public void check() {
+		System.out.println("\n> " + getName() + " says: I check!\n");
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Handles small and big blinds
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	public void smallBlind(int smallBlind,PotOfMoney pot){
+		stake+=smallBlind;
+		bank-=smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+	public void bigBlind(int bigBlind,PotOfMoney pot){
+		stake+=bigBlind;
+		bank-=bigBlind;
+		pot.raiseStake(bigBlind);
 	}
 
 	//--------------------------------------------------------------------//
