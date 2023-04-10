@@ -16,12 +16,13 @@ import java.util.*;
 
 
 public class ComputerTexasPlayer extends TexasPlayer {
-    public static final int VARIABILITY		= 50;
+    public static final int VARIABILITY = 50;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
-    public int HANDANDPUBLIC      		= 0;  // number of cards in a hand of poker plus public cards
 
-    private Random dice						= new Random(System.currentTimeMillis());
+    private Random dice	= new Random(System.currentTimeMillis());
+
+    private List<Card> communityCards;
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
@@ -29,8 +30,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerTexasPlayer(String name, int money){
-        super(name, money);
+    public ComputerTexasPlayer(String name, int money,int id){
+        super(name, money,id);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
                 - VARIABILITY/2;
@@ -48,15 +49,16 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a negative risk tolerance means the player is averse to risk (nervous)
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
-
-    public ArrayList<Card> getPublicCards(){
-        return publicCards;
-    }
     public int getRiskTolerance() {
         return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
     }
+
+    public List<Card> getCommunityCards(){
+        return communityCards;
+    }
+
     public Rounds getCurrentRound(){
-            switch (publicCards.size()){
+            switch (communityCards.size()){
                 case 3->{
                     return Rounds.FLOP;
                 }
@@ -79,6 +81,17 @@ public class ComputerTexasPlayer extends TexasPlayer {
             return null;
         }
     }
+
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+    // Mutators
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+
+    public void setCommunityCards(List<Card> communityCards) {
+        this.communityCards = communityCards;
+    }
+
     public void sortCards(Card[] allCards) {
         int minPosition = 0;
         Card palm = null;
@@ -237,8 +250,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return 0;
     }
     public int predicateRiskTolerance(){
-        DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = getPublicCards().toArray(new Card[getPublicCards().size()]);
+        DeckOfCards deck = getDeck();
+        Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if(currentRound==Rounds.PRE_FLOP){
@@ -400,7 +413,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return combination(n - 1, k - 1) + combination(n - 1, k);
     }
     /*--------------------predicate the odds of Royal Straight Flush--------------------------*/
-    public Integer oddsOfRoyalStraightFlush(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfRoyalFlush(Card[] allCards, Rounds currentRound){
         int odds=0;
         String[] cards = {"Ace", "King", "Queen", "Jack", "Ten"};
         //hashMap stores the number of occurrence of each suit, key is the suit, and Integer is the number of occurrence of the suit

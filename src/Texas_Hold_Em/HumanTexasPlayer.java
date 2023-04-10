@@ -8,22 +8,20 @@ package Texas_Hold_Em;
 // There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
 //								and HumanPlayer, in which decisions are made using menus
 
-import poker.Player;
 import poker.PotOfMoney;
 
 import java.util.Scanner;
 
 public class HumanTexasPlayer extends TexasPlayer {
-	public static int MAX_DISCARD	=	3; // maximum number of cards a player can discard
-
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public HumanTexasPlayer(String name, int money) {
-		super(name, money);
+	public HumanTexasPlayer(String name, int money,int id) {
+		super(name, money,id);
+
 	}
 
 	//--------------------------------------------------------------------//

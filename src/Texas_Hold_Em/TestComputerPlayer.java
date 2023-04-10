@@ -18,7 +18,7 @@ public class TestComputerPlayer {
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
         ComputerTexasPlayer RoyalStraightFlush = new ComputerTexasPlayer("Tom", 50);
-        int oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards1, Rounds.FLOP);
+        int oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush: "+oddsOfRoyalStraightFlush);
 
@@ -30,7 +30,7 @@ public class TestComputerPlayer {
                 new NumberCard("Queen", "hearts", 12),
                 new NumberCard("King", "spades", 13),
                 new NumberCard("Ace", "clubs", 1, 14)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards2, Rounds.FLOP);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards2, Rounds.FLOP);
         assertEquals(0, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush: "+oddsOfRoyalStraightFlush);
 
@@ -42,7 +42,7 @@ public class TestComputerPlayer {
                 new NumberCard("Queen", "diamonds", 12),
                 new NumberCard("King", "hearts", 13),
                 new NumberCard("Ace", "spades", 1, 14)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards3, Rounds.FLOP);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards3, Rounds.FLOP);
         assertEquals(4, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 3: "+oddsOfRoyalStraightFlush);
 
@@ -53,7 +53,7 @@ public class TestComputerPlayer {
                 new NumberCard("Queen", "diamonds", 12),
                 new NumberCard("King", "diamonds", 13),
                 new NumberCard("Deuce", "diamonds", 1, 14)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards4, Rounds.FLOP);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards4, Rounds.FLOP);
         assertEquals(2, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 4: "+oddsOfRoyalStraightFlush);
 
@@ -64,7 +64,7 @@ public class TestComputerPlayer {
                 new NumberCard("Queen", "diamonds", 12),
                 new NumberCard("King", "diamonds", 13),
                 new NumberCard("Ace", "diamonds", 1, 14)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards5, Rounds.FLOP);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards5, Rounds.FLOP);
         assertEquals(100, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 5: "+oddsOfRoyalStraightFlush);
 
@@ -77,7 +77,7 @@ public class TestComputerPlayer {
                 new NumberCard("King", "hearts", 13),
                 new NumberCard("Ace", "spades", 1, 14),
                 new NumberCard("Three", "hearts", 3)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards6, Rounds.TURN);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards6, Rounds.TURN);
         assertEquals(0, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 3: "+oddsOfRoyalStraightFlush);
 
@@ -89,7 +89,7 @@ public class TestComputerPlayer {
                 new NumberCard("King", "diamonds", 13),
                 new NumberCard("Deuce", "diamonds", 1, 14),
                 new NumberCard("Three", "hearts", 3)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards7, Rounds.TURN);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards7, Rounds.TURN);
         assertEquals(2, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 4: "+oddsOfRoyalStraightFlush);
 
@@ -101,7 +101,7 @@ public class TestComputerPlayer {
                 new NumberCard("King", "diamonds", 13),
                 new NumberCard("Ace", "diamonds", 1, 14),
                 new NumberCard("Three", "hearts", 3)};
-        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalStraightFlush(allCards8, Rounds.TURN);
+        oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards8, Rounds.TURN);
         assertEquals(100, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush when count is 5: "+oddsOfRoyalStraightFlush);
     }

@@ -14,6 +14,8 @@ import Texas_Hold_Em.Hand;
 import java.util.Scanner;
 
 public abstract class Player {
+	private int id;
+
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
 	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
@@ -30,11 +32,11 @@ public abstract class Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public Player(String name, int money)	{
+	public Player(String name, int money,int id)	{
 		this.name = name;
 		
 		bank      = money;
-		
+		this.id = id;
 		reset();
 	}
 		
@@ -70,7 +72,15 @@ public abstract class Player {
 	// Accessors
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Hand getHand() {
 		return hand;
 	}
@@ -151,10 +161,12 @@ public abstract class Player {
 		System.out.println("\n> " + getName() + " says: I WIN " + addCount(pot.getTotal()/numberOfWinner, "chip", "chips") + "!\n");
 		System.out.println(hand.toString());
 
-		bank += pot.takePot()/numberOfWinner;
+		bank += pot.takePot(numberOfWinner);
 
 		System.out.println(this);
 	}
+
+
 	
 
 	//--------------------------------------------------------------------//
