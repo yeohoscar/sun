@@ -250,7 +250,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return 0;
     }
     public int predicateRiskTolerance(){
-        DeckOfCards deck = getDeck();
+        DeckOfCards deck = getDeckOfCards();
         Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;

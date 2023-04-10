@@ -1,9 +1,11 @@
 package Texas_Hold_Em;
 
-import org.junit.Test;
+//import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import poker.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestPrintGame {
     @Test
@@ -14,14 +16,15 @@ public class TestPrintGame {
         ArrayList<TexasPlayer> texasPlayers = new ArrayList<>();
         PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(3);
+        List<Card> cards = List.of(communityCards.getHand());
 //        Hand community = new PokerHand();
 ////        DeckOfCards deck;
 //        ArrayList<Card> communityCards = new ArrayList<>();
 //        communityCards.add(new NumberCard("Ace", "hearts", 1, 14));
 //        communityCards.add(new NumberCard("Deuce", "diamonds", 2));
 //        communityCards.add(new NumberCard("Three", "clubs", 3));
-        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, communityCards);
-        printPublic.printPublicCard(communityCards);
+        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, cards);
+        printPublic.printPublicCard(cards);
 
     }
     @Test
@@ -40,9 +43,11 @@ public class TestPrintGame {
         Hand communityCards;
         PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(0);
-        ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0);
+        List<Card> cards = List.of(communityCards.getHand());
 
-        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, communityCards);
+        ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
+
+        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, cards);
         printPublic.cardPrinter(false);
 
     }
