@@ -126,12 +126,12 @@ public abstract class RoundController {
     public void roundMove (Rounds currentRound) {
         int currentIndex = firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
-        System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
+        //System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
         while (!onePlayerLeft() && !ActionClosed()) {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
 
-            System.out.println("currentRound = " + currentRound);
-            System.out.println("Current player: " + currentPlayer.getName());
+            //System.out.println("currentRound = " + currentRound);
+            //System.out.println("Current player: " + currentPlayer.getName());
 
             currentPlayer.nextAction(getActivePot());
 

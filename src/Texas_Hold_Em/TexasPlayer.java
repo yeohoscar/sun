@@ -252,7 +252,7 @@ abstract class TexasPlayer extends poker.Player {
 
 			return;
 		}
-
+		System.out.println("current stake in pot = "+pot.getCurrentStake());
 		if (pot.getCurrentStake() == 0) {
 			// first mover of the round
 

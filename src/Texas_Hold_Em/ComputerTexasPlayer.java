@@ -33,9 +33,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public ComputerTexasPlayer(String name, int money,int id){
         super(name, money,id);
 
-        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
-                - VARIABILITY/2;
-        System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
+//        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
+//                - VARIABILITY/2;
+        riskTolerance = 50;
+        //System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -50,10 +51,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
     public int getRiskTolerance() {
-        System.out.println("\n\nriskTolerance = "+riskTolerance);
-        System.out.println("getStake() = "+getStake() );
-        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
-        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
+        System.out.println("Original RiskTolerance = "+riskTolerance);
+//        System.out.println("\n\nriskTolerance = "+riskTolerance);
+//        System.out.println("getStake() = "+getStake() );
+//        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
+//        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
         return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
     }
 
@@ -921,12 +923,16 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldSee(PotOfMoney pot) {
-        if (getStake() == 0)
+        if (getStake() == 0) {
+            System.out.println("getStake() in computer player = "+getStake());
             return true;
-        else
-            //System.out.println("Stuck here");
-            return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
+        }
+        else {
+//            System.out.println("Return: " + (Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
+//                    getRiskTolerance() + 10000000));
+            return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance() + 10000000;
+        }
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
@@ -942,7 +948,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //        System.out.println("value = "+value);
 //        System.out.println("dice.nextInt())%80 = "+Math.abs(dice.nextInt())%80);
         return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance() + 100000000;
+                getRiskTolerance();
+        // + 100000000
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
