@@ -46,7 +46,7 @@ public class PrintGame {
                         sb = sb2;
                     }
 
-                    if (j==0) {
+                    if (j==0 || j==halfPlayers) {
                         sb.append("| ");
                     }
                     String temp = String.format("%14s","Name = "+texasPlayers.get(j).getName());
