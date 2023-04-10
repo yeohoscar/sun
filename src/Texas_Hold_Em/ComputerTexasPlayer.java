@@ -30,8 +30,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerTexasPlayer(String name, int money){
-        super(name, money);
+    public ComputerTexasPlayer(String name, int money,int id){
+        super(name, money,id);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
                 - VARIABILITY/2;

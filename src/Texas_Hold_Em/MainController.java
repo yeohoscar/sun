@@ -20,9 +20,9 @@ public abstract class MainController {
 
         for (int i = 0; i < numPlayers; i++)
             if (i == 0)
-                texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank));
+                texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank,i));
             else
-                texasPlayers.add(new ComputerTexasPlayer(names[i].trim(), bank));
+                texasPlayers.add(new ComputerTexasPlayer(names[i].trim(), bank,i));
     }
 
     public void play()	{

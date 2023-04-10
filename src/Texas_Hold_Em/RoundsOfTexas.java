@@ -3,10 +3,13 @@ package Texas_Hold_Em;
 
 import poker.*;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
+
 // This package provides classes necessary for implementing a game system for playing poker
 
 // A RoundOfPoker is a single round/deal in a game
@@ -86,13 +89,13 @@ public class RoundsOfTexas extends RoundController {
         if (onePlayerLeft()) {
             for (TexasPlayer player : roundPlayers) {
                 if (!player.hasFolded()) {
-                    player.takePot(pot);
+                    for(PotOfMoney pot:pots){
+                        player.takePot(pot);
+                    }
                 }
             }
         } else {
             HashMap<Integer, Integer> valueRank = new HashMap<>();
-            int maxValue = 0;
-            ArrayList<Integer> winners = new ArrayList<>();
             // calculate handValue for each player
             for (int i = 0 ;i<roundPlayers.size();i++) {
                 TexasPlayer player =roundPlayers.get(i);
@@ -104,29 +107,36 @@ public class RoundsOfTexas extends RoundController {
                 }
             }
             // find who has the largest handValue
-            for (Map.Entry<Integer, Integer> entry : valueRank.entrySet()) {
-                if (entry.getValue() > maxValue) {
-                    winners.clear();
-                    winners.add(entry.getKey());
-                    maxValue = entry.getValue();
-                } else if (entry.getValue() == maxValue) {
-                    winners.add(entry.getKey());
-                }
-            }
 
-            boolean allinPlayer = false;
-            for(int i :winners){
-                if(roundPlayers.get(i).isAllIn()){
-                    allinPlayer=true;
+
+            for (int i = pots.size() - 1; i >= 0; i--) {
+                PotOfMoney pot = pots.get(i);
+                int potAmount = pot.getTotal();
+                HashMap<Integer, Integer> winners = new HashMap<>();
+                int highestHandValue=-1;
+                // Find the eligible winners for this pot based on hand value
+                for (int playerId : valueRank.keySet()) {
+                    if (pot.getPlayerIds().contains(playerId)) {
+                        int handValue = valueRank.get(playerId);
+                        if (handValue > highestHandValue) {
+                            highestHandValue = handValue;
+                            winners.clear();
+                            winners.put(playerId, handValue);
+                        } else if (handValue == highestHandValue) {
+                            winners.put(playerId, handValue);
+                        }
+                    }
                 }
-            }
-            //no allin player
-            if(!allinPlayer){
-                for(int i :winners){
-                    roundPlayers.get(i).takePot(pot,winners.size());
+
+                // Divide the pot amount equally among the winners
+                if (!winners.isEmpty()) {
+                    int splitAmount = potAmount / winners.size();
+                    for (int winnerId : winners.keySet()) {
+                        TexasPlayer winner = getPlayerById(roundPlayers,winnerId);
+                        winner.winFromPot(splitAmount,pot);
+
+                    }
                 }
-            }else {
-                
             }
 
 
@@ -134,8 +144,46 @@ public class RoundsOfTexas extends RoundController {
 
 
     }
+    public TexasPlayer getPlayerById(List<TexasPlayer> roundPlayers, int playerId) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player.getId() == playerId) {
+                return player;
+            }
+        }
+        return null; // Player with the given ID was not found
+    }
+    public ArrayList<Integer> highestHandValue( HashMap<Integer, Integer> valueRank){
+        int maxValue =0;
+        ArrayList<Integer> winners=new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : valueRank.entrySet()) {
+            if (entry.getValue() > maxValue) {
+                winners.clear();
+                winners.add(entry.getKey());
+                maxValue = entry.getValue();
+            } else if (entry.getValue() == maxValue) {
+                winners.add(entry.getKey());
+            }
+        }
+        // Define a custom Comparator that compares players based on their stake
+        Comparator<Player> compareByStake = Comparator.comparing(Player::getStake);
+        // Sort the 'winners' list based on player stake, using the custom Comparator
+        Collections.sort(winners, (id1, id2) -> compareByStake.compare(roundPlayers.get(id1), roundPlayers.get(id2)));
+        return winners;
+    }
+    @Override
+    public boolean needCreateSidePot(TexasPlayer player) {
 
-
+        if(!pots.get(pots.size()-1).getPlayerIds().contains(player.getId())){
+            return false;
+        }
+        int activePlayer = pots.get(pots.size()-1).getPlayerIds().size();
+        if(!player.hasFolded()&&player.isAllIn()){
+            if(player.getStake()*activePlayer<=pots.get(pots.size()-1).getTotal()){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void removePlayer() {
         for(int i=0;i<numPlayers;i++){

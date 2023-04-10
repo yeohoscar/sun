@@ -31,8 +31,8 @@ abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public TexasPlayer(String name, int money)	{
-		super(name, money);
+	public TexasPlayer(String name, int money,int id)	{
+		super(name, money,id);
 		allIn = false;
 	}
 	public void setDeck(DeckOfCards deck){
@@ -108,6 +108,8 @@ abstract class TexasPlayer extends poker.Player {
 		return allIn;
 	}
 
+
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Actions a player can make
@@ -115,18 +117,34 @@ abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 
 	public void allIn(PotOfMoney pot) {
+
 		if (getBank() == 0) return;
-		if(bank<=pot.getCurrentStake()){
-			pot.addToPot(stake);
-		}else{
-			pot.raiseStake(bank-pot.getCurrentStake());
-		}
 		stake += bank;
 		bank = 0;
+		if(stake<=pot.getCurrentStake()*2){
+			pot.addToPot(stake);
+		}else {
+			pot.raiseStake(stake- pot.getCurrentStake());
+		}
+
+
+
 		allIn =true;
+
+
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
 
+	public void winFromPot(int chips,PotOfMoney pot) {
+		// when the winner of a hand takes the pot as his/her winnings
+
+		System.out.println("\n> " + getName() + " says: I WIN " + addCount(chips, "chip", "chips") + "!\n");
+		System.out.println(hand.toString());
+
+		bank += chips;
+		pot.takeFromPot(chips);
+		System.out.println(this);
+	}
 	public void check() {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}

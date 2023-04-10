@@ -19,8 +19,9 @@ public class HumanTexasPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public HumanTexasPlayer(String name, int money) {
-		super(name, money);
+	public HumanTexasPlayer(String name, int money,int id) {
+		super(name, money,id);
+
 	}
 
 	//--------------------------------------------------------------------//
