@@ -40,6 +40,7 @@ public abstract class RoundController {
         }
         pots.get(0).setPlayerIds(playersID);
         this.printGame = new PrintGame(roundPlayers, deck, pots.get(pots.size()-1), communityCards);
+        this.communityCards = communityCards;
     }
 
 
@@ -83,11 +84,7 @@ public abstract class RoundController {
                 counter++;
             }
         }
-        if(counter==numPlayers-1){
-            return true;
-        }else {
-            return false;
-        }
+        return counter == numPlayers - 1;
     }
 
     public void roundCounter(int counter){
@@ -99,9 +96,7 @@ public abstract class RoundController {
                     roundCounter++;
                     dealCommunityCards(3);
 
-//                    printGame.table("pre-flop");
-                    //TODO: three public cards should be displayed on the table.
-                    break;
+                    printGame.table(Rounds.PRE_FLOP);
                 }
                 case 2 -> {
                     flopRound();
@@ -133,7 +128,7 @@ public abstract class RoundController {
         int currentIndex=firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
         System.out.println("\npot.getCurrentStake() in RoundController = "+pots.get(pots.size()-1).getCurrentStake());
-        while(!onePlayerLeft()||!ActionClosed()){
+        while(!onePlayerLeft() && !ActionClosed()){
             System.out.println("currentRound = "+currentRound);
             System.out.println("Current player: "+roundPlayers.get(currentIndex).getName());
             roundPlayers.get(currentIndex).nextAction(pots.get(pots.size()-1));
@@ -230,11 +225,7 @@ public abstract class RoundController {
                 callCounter++;
             }
         }
-        if(foldCounter+callCounter==numPlayers){
-            return true;
-        }else {
-            return false;
-        }
+        return foldCounter + callCounter == numPlayers;
     }
 
     protected abstract boolean needCreateSidePot(TexasPlayer player);
