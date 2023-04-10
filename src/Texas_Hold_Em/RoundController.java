@@ -135,10 +135,6 @@ public abstract class RoundController {
 
             currentPlayer.nextAction(getActivePot());
 
-            if (needCreateSidePot(currentPlayer)){
-                createSidePot(currentPlayer);
-            }
-
             printGame.table(currentRound);
 
             currentIndex++;
@@ -147,20 +143,11 @@ public abstract class RoundController {
                 currentIndex = 0;
             }
         }
+        createSidePot();
+
     }
 
-    public void createSidePot(TexasPlayer player) {
-        PotOfMoney sidePot = new PotOfMoney();
-        PotOfMoney lastPot = getActivePot();
-        ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
-        newPlayerIds.removeIf(id -> id == player.getId());
-        int activePlayer = getActivePot().getPlayerIds().size();
-        sidePot.setStake(lastPot.getCurrentStake());
-        sidePot.setStake(lastPot.getTotal()-player.getStake()*activePlayer);
-        sidePot.setPlayerIds(newPlayerIds);
-        lastPot.setTotal(player.getStake()*activePlayer);
-        pots.add(sidePot);
-    }
+    abstract public void createSidePot();
 
     public void preFlopRound(){
         blindBet();
@@ -218,7 +205,7 @@ public abstract class RoundController {
         return foldCounter + callCounter == numPlayers;
     }
 
-    protected abstract boolean needCreateSidePot(TexasPlayer player);
+
 
     public void removePlayer() {
         for(int i=0;i<numPlayers;i++){

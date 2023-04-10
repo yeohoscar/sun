@@ -4,10 +4,6 @@ package Texas_Hold_Em;
 import poker.*;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.*;
 
 // This package provides classes necessary for implementing a game system for playing poker
@@ -148,38 +144,7 @@ public class RoundsOfTexas extends RoundController {
         }
         return null; // Player with the given ID was not found
     }
-    public ArrayList<Integer> highestHandValue( HashMap<Integer, Integer> valueRank){
-        int maxValue =0;
-        ArrayList<Integer> winners=new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : valueRank.entrySet()) {
-            if (entry.getValue() > maxValue) {
-                winners.clear();
-                winners.add(entry.getKey());
-                maxValue = entry.getValue();
-            } else if (entry.getValue() == maxValue) {
-                winners.add(entry.getKey());
-            }
-        }
-        // Define a custom Comparator that compares players based on their stake
-        Comparator<Player> compareByStake = Comparator.comparing(Player::getStake);
-        // Sort the 'winners' list based on player stake, using the custom Comparator
-        Collections.sort(winners, (id1, id2) -> compareByStake.compare(roundPlayers.get(id1), roundPlayers.get(id2)));
-        return winners;
-    }
-    @Override
-    public boolean needCreateSidePot(TexasPlayer player) {
 
-        if(!getActivePot().getPlayerIds().contains(player.getId())){
-            return false;
-        }
-        int activePlayer = getActivePot().getPlayerIds().size();
-        if(!player.hasFolded()&&player.isAllIn()){
-            if(player.getStake()*activePlayer<=getActivePot().getTotal()){
-                return true;
-            }
-        }
-        return false;
-    }
     @Override
     public void removePlayer() {
         for(int i=0;i<numPlayers;i++){
@@ -188,4 +153,46 @@ public class RoundsOfTexas extends RoundController {
             }
         }
     }
+
+    @Override
+    public void createSidePot() {
+        ArrayList<Integer> playerList = getActivePot().getPlayerIds();
+        ArrayList<Integer> allInPlayer = new ArrayList<>();
+        for(int id : playerList){
+            if(getPlayerById(roundPlayers,id).isAllIn()){
+                allInPlayer.add(id);
+            }
+        }
+        if (allInPlayer.size()==0){return;}
+
+        Collections.sort(allInPlayer, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer playerId1, Integer playerId2) {
+                Player player1 = getPlayerById(roundPlayers, playerId1);
+                Player player2 = getPlayerById(roundPlayers, playerId2);
+                return Integer.compare(player1.getStake(), player2.getStake());
+            }
+        });
+
+        for(int ID : allInPlayer){
+            TexasPlayer player = getPlayerById(roundPlayers,ID);
+            PotOfMoney sidePot = new PotOfMoney();
+            PotOfMoney lastPot = getActivePot();
+            ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
+            newPlayerIds.removeIf(id -> id == player.getId());
+            int activePlayer = getActivePot().getPlayerIds().size();
+            int previousStake = 0;
+            for(PotOfMoney pot :pots){
+                previousStake+=pot.getCurrentStake();
+            }
+            sidePot.setStake(lastPot.getCurrentStake());
+            sidePot.setTotal(previousStake-player.getStake()*activePlayer);
+            sidePot.setPlayerIds(newPlayerIds);
+            lastPot.setTotal(player.getStake()*activePlayer);
+            pots.add(sidePot);
+        }
+
+    }
+
+
 }
