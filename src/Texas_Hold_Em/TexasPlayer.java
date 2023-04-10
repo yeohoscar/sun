@@ -130,9 +130,13 @@ abstract class TexasPlayer extends poker.Player {
 		stake += bank;
 		bank = 0;
 
-		pot.addToPot(stake);
+		if (stake <= pot.getCurrentStake()*2){
+			pot.addToPot(stake);
+		} else {
+			pot.raiseStake(stake - pot.getCurrentStake());
+		}
 
-		allIn = true;
+		allIn =true;
 
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
