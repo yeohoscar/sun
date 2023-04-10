@@ -889,8 +889,26 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
+    @Override
+    public void raiseBet(PotOfMoney pot) {
+        // pot current stake is either 0 or greater than big blind amount
+        if (pot.getCurrentStake() > bank || RoundController.BIG_BLIND_AMOUNT > bank) return;
 
+        int raiseAmount;
 
+        if (pot.getCurrentStake() == 0) {
+            raiseAmount = RoundController.BIG_BLIND_AMOUNT;
+        } else {
+            raiseAmount = pot.getCurrentStake();
+        }
+
+        stake += raiseAmount;
+        bank -= raiseAmount;
+
+        pot.raiseStake(raiseAmount);
+
+        System.out.println("\n> " + getName() + " says: I raise by " + raiseAmount + " chips!\n");
+    }
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//

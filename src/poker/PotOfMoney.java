@@ -63,6 +63,7 @@ public class PotOfMoney
 	public void setPlayerIds(ArrayList<Integer> playerIds){
 		this.playerIds=playerIds;
 	}
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Modifiers

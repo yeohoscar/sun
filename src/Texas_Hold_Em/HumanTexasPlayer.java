@@ -97,8 +97,14 @@ public class HumanTexasPlayer extends TexasPlayer {
 			System.out.print("\n>> How many chips do you want to raise? ");
 			try {
 				raiseAmount = scanner.nextInt();
-				if (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
-					System.out.println("Invalid input.");
+				if (pot.getCurrentStake() == 0) {
+					if (raiseAmount < RoundController.BIG_BLIND_AMOUNT) {
+						System.out.println("Raise amount must be at least the big blind amount.");
+					}
+				} else {
+					if (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
+						System.out.println("Invalid input.");
+					}
 				}
 			} catch (Exception e) {
 				System.out.println("Invalid input.");
@@ -109,8 +115,8 @@ public class HumanTexasPlayer extends TexasPlayer {
 		System.out.println("You want to raise " + raiseAmount + " chips.");
 		stake+=raiseAmount;
 		bank-=raiseAmount;
-		pot.raiseStake(raiseAmount- pot.getCurrentStake());
-		System.out.println("\n> " + getName() + " says: and I raise you 1 chip!\n");
+		pot.raiseStake(raiseAmount);
+		System.out.println("\n> " + getName() + " says: I raise by " + raiseAmount + " chip!\n");
 
 		if(bank==0){
 			allIn();
