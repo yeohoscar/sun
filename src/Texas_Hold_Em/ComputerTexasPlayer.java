@@ -35,7 +35,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
                 - VARIABILITY/2;
-
+        System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -50,6 +50,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a positive risk tolerance means the player is open to risk   (adventurous)
 
     public int getRiskTolerance() {
+        System.out.println("\n\nriskTolerance = "+riskTolerance);
+        System.out.println("getStake() = "+getStake() );
+        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
+        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
         return riskTolerance - getStake() - predicateRiskTolerance(); // tolerance drops as stake increases
     }
 
@@ -155,7 +159,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //the most advantage hand card
         if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
             //TODO: affect the riskTolerance
-            return 5;
+            return 2;
         }
         //these hand cards maybe can form strong straight
         else if((isContained(hand, "Ace") && isContained(hand, "King")) ||
@@ -165,7 +169,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "King")) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace"))){
             //TODO: affect the riskTolerance
-            return 15;
+            return 12;
         }
         //these hand cards maybe can form strong straightFlush
         else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
@@ -175,11 +179,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsOnHandAreSame(hand)){
             //TODO: affect the riskTolerance
-            return 10;
+            return 7;
         }
         //TODO: may need to do some modify
         else{
-            return 20;
+            return 14;
         }
     }
     public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck){
@@ -913,6 +917,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldCheck(PotOfMoney pot) {
+        int value = getCurrentBestHand().getRiskWorthiness() +
+                getRiskTolerance();
+//        System.out.println("getCurrentBestHand().getRiskWorthiness() = "+getCurrentBestHand().getRiskWorthiness());
+//        System.out.println("getRiskTolerance() = "+getRiskTolerance());
+//        System.out.println("value = "+value);
+//        System.out.println("dice.nextInt())%80 = "+Math.abs(dice.nextInt())%80);
         return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
