@@ -128,10 +128,10 @@ public abstract class RoundController {
     public void roundMove(Rounds currentRound){
         int currentIndex=firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
-        System.out.println("pot.getCurrentStake() in RoundController = "+pots.get(pots.size()-1).getCurrentStake());
+        System.out.println("\npot.getCurrentStake() in RoundController = "+pots.get(pots.size()-1).getCurrentStake());
         while(!onePlayerLeft()||!ActionClosed()){
             System.out.println("currentRound = "+currentRound);
-            System.out.println("Name of player: "+roundPlayers.get(currentIndex).getName());
+            System.out.println("Current player: "+roundPlayers.get(currentIndex).getName());
             roundPlayers.get(currentIndex).nextAction(pots.get(pots.size()-1));
 
             if(needCreateSidePot(roundPlayers.get(currentIndex))){

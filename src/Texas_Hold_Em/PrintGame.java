@@ -30,6 +30,7 @@ public class PrintGame {
     }
 
     public void cardPrinter(boolean showDown){
+        showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
