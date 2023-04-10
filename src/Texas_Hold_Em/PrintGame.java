@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrintGame {
+    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
+    //String[] suits = {"♠", "♥", "♦", "♣"};
+    private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private String[] cardEdge = {"╭────╮", "╰────╯"};
+
+    final int cardHeight = 3; //counting from 0
+
     private ArrayList<TexasPlayer> texasPlayers;
     private DeckOfCards deck;
     private PotOfMoney pot;
@@ -21,14 +28,13 @@ public class PrintGame {
         this.pot = pot;
         this.communityCards = communityCards;
     }
+
     public void cardPrinter(boolean showDown){
-        String[] showCard1 = {"╭────╮","|    |", "|    |","╰────╯"};
-        String[] showCard2 = {"╭────╮","|    |", "|    |","╰────╯"};
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         int halfPlayers = texasPlayers.size()/2;
-        for (int i = 0; i < showCard1.length; i++) {
+        for (int i = 0; i <= cardHeight; i++) {
             if (i==0) {
                 //print name of players
                 for (int j = 0; j < texasPlayers.size(); j++) {
@@ -50,22 +56,54 @@ public class PrintGame {
             }
             //print cards of players
             for (int j = 0; j < texasPlayers.size(); j++) {
+                int[] index1, index2;
                 if (j < halfPlayers && sb != sb1) {
                     sb = sb1;
-
                 } else if (j >= halfPlayers && sb != sb2){
                     sb1.append("\n");
                     sb = sb2;
                 }
 
-                if (j==0) {
+                if (j==0 || j==halfPlayers) {
                     sb.append("| ");
                 }
-                sb.append(showCard1[i]).append("  ").append(showCard2[i]).append(" | ");
+
+                if (texasPlayers.get(j).hasFolded()) {
+                    if (i == cardHeight-1) {
+                        String tmp = String.format("%14s", " Folded ");
+                        sb.append(tmp).append(" | ");
+                    } else {
+                        String tmp = String.format("%14s", " ");
+                        sb.append(tmp).append(" | ");
+                    }
+                } else {
+
+                    if (i == 0) {
+                        sb.append(cardEdge[0]).append("  ").append(cardEdge[0]).append(" | ");
+                    } else if (i == cardHeight) {
+                        sb.append(cardEdge[1]).append("  ").append(cardEdge[1]).append(" | ");
+                    } else {
+                        if (showDown) {
+                            index1 = getIndex(texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
+                            index2 = getIndex(texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
+                            if (i == 1) {
+                                String tmp = String.format("%2s", ranks[index1[1]]);
+                                String tmp1 = String.format("%2s", ranks[index2[1]]);
+                                sb.append("│").append(tmp).append("  │").append("  ").append("│").append(tmp1).append("  │").append(" | ");
+                            } else if (i == 2) {
+                                sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" | ");
+                            }
+                        } else {
+                            sb.append("│    │").append("  ").append("│    │").append(" | ");
+                        }
+                    }
+                }
+
+
             }
             sb.append("\n");
 
-            if (i == showCard1.length-1) {
+            if (i == cardHeight) {
                 //print stakes of players
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     if (j < halfPlayers && sb != sb1) {
@@ -76,7 +114,7 @@ public class PrintGame {
                         sb = sb2;
                     }
 
-                    if (j==0) {
+                    if (j==0 || j==halfPlayers) {
                         sb.append("| ");
                     }
                     sb.append(String.format("%14s","Stake="+texasPlayers.get(j).getStake())).append(" | ");
@@ -93,7 +131,7 @@ public class PrintGame {
                         sb = sb2;
                     }
 
-                    if (j==0) {
+                    if (j==0 || j==halfPlayers) {
                         sb.append("| ");
                     }
                     if(texasPlayers.get(j).isDealer()){
@@ -110,49 +148,6 @@ public class PrintGame {
         System.out.println("\n"+sb2);
 
     }
-//    private String printFaceDownCard(TexasPlayer texasPlayer){
-//        String[] showCard1 = {"╭───╮" ,"│   │", "│   │", "╰───╯"};
-//        String[] showCard2 = {"╭───╮", "│   │", "│   │", "╰───╯"};
-//        if(texasPlayer.hasFolded()){
-//            return texasPlayer.getName()+" has folded";
-//        }else {
-////            if(texasPlayer.isDealer()){
-//                cardPrinter(showCard1, showCard2, texasPlayer);
-////                String showCard =
-////                        "Name:    "+texasPlayer.getName()+"\n"+
-////                                "╭───╮" +     "  ╭───╮\n"+
-////                                "│" + "   │"+"  │"+"   │\n"+
-////                                "│" + "   │"+"  │"+"   │\n"+
-////                                "╰───╯"     +"  ╰───╯\n"+
-////                                "Dealer and Current Stake="+texasPlayer.getStake();
-////                System.out.print(showCard);
-//
-////                return  "Name:    "+texasPlayer.getName()+"\n"+
-////                        "╭───╮" +     "  ╭───╮\n"+
-////                        "│" + "   │"+"  │"+"   │\n"+
-////                        "│" + "   │"+"  │"+"   │\n"+
-////                        "╰───╯"     +"  ╰───╯\n"+
-////                        "Dealer and Current Stake="+texasPlayer.getStake()+"\n";
-////            }
-////            else {
-////                cardPrinter(showCard1, showCard2, texasPlayer);
-//                /*String showCard =
-//                        "Name:    "+texasPlayer.getName()+"\n"+
-//                                "╭───╮" +     "  ╭───╮\n"+
-//                                "│" + "   │"+"  │"+"   │\n"+
-//                                "│" + "   │"+"  │"+"   │\n"+
-//                                "╰───╯"     +"  ╰───╯\n"+
-//                                "Current Stake="+texasPlayer.getStake()+"\n";
-//                System.out.print(showCard);*/
-////                return  "Name:    "+texasPlayer.getName()+"\n"+
-////                        "╭───╮" +     "  ╭───╮\n"+
-////                        "│" + "   │"+"  │"+"   │\n"+
-////                        "│" + "   │"+"  │"+"   │\n"+
-////                        "╰───╯"     +"  ╰───╯\n"+
-////                        "Current Stake="+texasPlayer.getStake()+"\n";
-//            }
-//        return null;
-//    }
 
     public int[] getIndex(Card card, String[] suits, String[] ranks){
         int[] result = new int[2];
@@ -188,15 +183,9 @@ public class PrintGame {
         return result;
     }
     public void printPublicCard(List<Card> communityCards){
-        final int cardHeight = 3; //counting from 0
         StringBuilder sb = new StringBuilder();
         int suitIndex;
         int rankIndex;
-        String[] showCard1 = {"╭────╮", "╰────╯"};
-        String[] showCard2 = {"╭────╮", "╰────╯"};
-        String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
-        //String[] suits = {"♠", "♥", "♦", "♣"};
-        String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         for (int j = 0; j <= cardHeight; j++) {
             for(int i=0; i < communityCards.size(); i++) {
                 int[] index = getIndex(communityCards.get(i), suits, ranks);
@@ -205,14 +194,14 @@ public class PrintGame {
 
                 switch (j) {
                     case 0:
-                        sb.append(showCard1[0]).append("  ");
+                        sb.append(cardEdge[0]).append("  ");
                         break;
                     case 1:
                         String tmp = String.format("%2s",ranks[rankIndex]);
                         sb.append("│").append(tmp).append("  │").append("  ");
                         break;
                     case cardHeight:
-                        sb.append(showCard1[showCard1.length-1]).append("  ");
+                        sb.append(cardEdge[cardEdge.length-1]).append("  ");
                         break;
                     default:
                         sb.append("│   ").append(suits[suitIndex]).append("│").append("  ");

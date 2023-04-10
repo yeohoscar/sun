@@ -31,18 +31,25 @@ public class TestPrintGame {
     public void testCardPrinter() {
         DeckOfCards deck = new DeckOfCards();
         deck.reset();
-        String[] showCard1 = {"╭────╮","|    |", "|    |","╰────╯"};
-        String[] showCard2 = {"╭────╮","|    |", "|    |","╰────╯"};
-        String[] names = {"Human", "Tom", "Dick", "Harry"};
+        String[] names = {"Human", "Tom", "Dick", "Harry", "Yan", "wang"};
         TexasController controller = new TexasController();
-        controller.setUp(names, 0);
+        controller.setUp(names, 5);
         ArrayList<TexasPlayer> texasPlayers = controller.texasPlayers;
+        texasPlayers.get(1).setDealer(true);
         for(Player player : texasPlayers){
             player.dealTo(deck);
         }
+//        texasPlayers.get(1).fold();
+//        texasPlayers.get(2).fold();
+//        for(Player player : texasPlayers){
+//            System.out.println("Player name = "+player.getName());
+//            for(Card card: player.getHand().getHand()){
+//                System.out.println("Card name = "+card.getName());
+//            }
+//        }
         Hand communityCards;
         PotOfMoney pot = new PotOfMoney();
-        communityCards=deck.dealHand(0);
+        communityCards=deck.dealHand(4);
         List<Card> cards = List.of(communityCards.getHand());
 
         ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
