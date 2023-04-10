@@ -78,7 +78,7 @@ public abstract class RoundController {
 
     public boolean onePlayerLeft(){
         int counter=0;
-        for(Player player:roundPlayers) {
+        for(TexasPlayer player:roundPlayers) {
             if(player.hasFolded()) {
                 pots.get(pots.size() - 1).getPlayerIds().removeIf(id -> id == player.getId());
                 counter++;
@@ -123,42 +123,33 @@ public abstract class RoundController {
             //printGame.table("showDown");
         }
     }
-    public void roundMove(Rounds currentRound){
-        int currentIndex=firstMovePlayerIndex();
+    public void roundMove (Rounds currentRound) {
+        int currentIndex = firstMovePlayerIndex();
         roundPlayers.get(currentIndex).setDeck(deck);
-        System.out.println("\npot.getCurrentStake() in RoundController = "+getActivePot().getCurrentStake());
-        while(!onePlayerLeft() && !ActionClosed()){
-            System.out.println("currentRound = "+currentRound);
-            System.out.println("Current player: "+roundPlayers.get(currentIndex).getName());
-            roundPlayers.get(currentIndex).nextAction(getActivePot());
+        System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
+        while (!onePlayerLeft() && !ActionClosed()) {
+            TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
 
-            if(needCreateSidePot(roundPlayers.get(currentIndex))){
-                createSidePot(roundPlayers.get(currentIndex));
+            System.out.println("currentRound = " + currentRound);
+            System.out.println("Current player: " + currentPlayer.getName());
+
+            currentPlayer.nextAction(getActivePot());
+
+            if (needCreateSidePot(currentPlayer)){
+                createSidePot(currentPlayer);
             }
+
             printGame.table(currentRound);
 
             currentIndex++;
-            if(currentIndex==numPlayers){
-                currentIndex=0;
+
+            if (currentIndex == numPlayers){
+                currentIndex = 0;
             }
         }
     }
 
-    public boolean needCreateSidePot(Player player) {
-
-        if(!getActivePot().getPlayerIds().contains(player.getId())){
-            return false;
-        }
-        int activePlayer = getActivePot().getPlayerIds().size();
-        if(!player.hasFolded()){
-            if(player.getStake()*activePlayer<=getActivePot().getTotal()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void createSidePot(Player player) {
+    public void createSidePot(TexasPlayer player) {
         PotOfMoney sidePot = new PotOfMoney();
         PotOfMoney lastPot = getActivePot();
         ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());

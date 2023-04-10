@@ -138,9 +138,8 @@ public class RoundsOfTexas extends RoundController {
 
 
         }
-
-
     }
+
     public TexasPlayer getPlayerById(List<TexasPlayer> roundPlayers, int playerId) {
         for (TexasPlayer player : roundPlayers) {
             if (player.getId() == playerId) {

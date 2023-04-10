@@ -14,8 +14,6 @@ import Texas_Hold_Em.Hand;
 import java.util.Scanner;
 
 public abstract class Player {
-	private int id;
-
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
 	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
@@ -32,11 +30,10 @@ public abstract class Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
-	public Player(String name, int money,int id)	{
+	public Player(String name, int money)	{
 		this.name = name;
 		
 		bank      = money;
-		this.id = id;
 		reset();
 	}
 		
@@ -72,14 +69,6 @@ public abstract class Player {
 	// Accessors
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public Hand getHand() {
 		return hand;
@@ -183,16 +172,16 @@ public abstract class Player {
 		
 		folded = true;
 	}
-	
-	
+
+
 	public void openBetting(PotOfMoney pot) {
 		if (bank == 0) return;
-		
+
 		stake++;
-		bank--; 
-		
+		bank--;
+
 		pot.raiseStake(1);
-		
+
 		System.out.println("\n> " + getName() + " says: I open with one chip!\n");
 	}
 
@@ -256,9 +245,9 @@ public abstract class Player {
 		
 		if (pot.getCurrentStake() == 0) {
 			// first mover of the game
-		
+
 			if (shouldOpen(pot))  // will this player open the betting?
-				openBetting(pot);	
+				openBetting(pot);
 			else
 				fold();
 		}
