@@ -83,9 +83,10 @@ public abstract class RoundController {
                 counter++;
             }
         }
-        if(counter==numPlayers-1){
+        if(counter==numPlayers){
             return true;
         }else {
+            System.out.println("counter!!! = "+counter);
             return false;
         }
     }
