@@ -95,21 +95,21 @@ public abstract class RoundController {
                     preFlopRound();
                     roundCounter++;
                     dealCommunityCards(3);
-
+                    System.out.println("\n\nThree Public Cards are released\n");
                     printGame.table(Rounds.PRE_FLOP);
                 }
                 case 2 -> {
                     flopRound();
                     roundCounter++;
                     dealCommunityCards(1);
-
+                    System.out.println("\n\nTurn Card is released\n");
                     printGame.table(Rounds.FLOP);
                 }
                 case 3 -> {
                     turnRound();
                     roundCounter++;
                     dealCommunityCards(1);
-
+                    System.out.println("\n\nRiver Card is released\n");
                     printGame.table(Rounds.TURN);
                 }
                 default -> {
@@ -156,6 +156,9 @@ public abstract class RoundController {
             player.dealTo(deck);
             System.out.println(player);
         }
+        //print the table before the game starts
+        System.out.println();
+        printGame.table(Rounds.PRE_FLOP);
         roundMove(Rounds.PRE_FLOP);
     }
     public void flopRound(){
