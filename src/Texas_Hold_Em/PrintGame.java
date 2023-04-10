@@ -162,6 +162,11 @@ public class PrintGame {
             }
         }
         System.out.println(sb1);
+        if(communityCards.isEmpty()){
+            System.out.println("Public cards not shown yet");
+        }else {
+            System.out.println("Public cards: ");
+        }
         printPublicCard(communityCards);
         System.out.println("\n"+sb2);
 
