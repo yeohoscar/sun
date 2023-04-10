@@ -183,12 +183,14 @@ public class RoundsOfTexas extends RoundController {
             int activePlayer = getActivePot().getPlayerIds().size();
             int previousStake = 0;
             for(PotOfMoney pot :pots){
-                previousStake+=pot.getCurrentStake();
+                previousStake+=pot.getTotal();
             }
+
             sidePot.setStake(lastPot.getCurrentStake());
             sidePot.setTotal(previousStake-player.getStake()*activePlayer);
             sidePot.setPlayerIds(newPlayerIds);
             lastPot.setTotal(player.getStake()*activePlayer);
+           
             pots.add(sidePot);
         }
 

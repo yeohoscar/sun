@@ -137,6 +137,12 @@ public abstract class RoundController {
 
             printGame.table(currentRound);
 
+
+            for(PotOfMoney pot : pots){
+                System.out.println("CurrentStake="+pot.getCurrentStake()+"     Total="+pot.getTotal());
+            }
+
+
             currentIndex++;
 
             if (currentIndex == numPlayers){
