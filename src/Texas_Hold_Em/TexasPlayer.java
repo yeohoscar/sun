@@ -235,7 +235,7 @@ abstract class TexasPlayer extends poker.Player {
 			return;
 		}
 
-		if (pot.getCurrentStake() == 0) {
+		if (pot.getCurrentStake() == 15) {
 			// first mover of the game
 
 			if (shouldOpen(pot))  // will this player open the betting?
