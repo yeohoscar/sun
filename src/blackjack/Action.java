@@ -1,5 +1,5 @@
 /*----------Represents the actions a player can take-------------------*/
-package BlackJack;
+package blackjack;
 public enum Action {
     HIT,
     DOUBLE,

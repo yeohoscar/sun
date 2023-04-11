@@ -1,8 +1,7 @@
-package Texas_Hold_Em;
+package texas_hold_em;
 
 import poker.Card;
 import poker.DeckOfCards;
-import poker.Player;
 import poker.PotOfMoney;
 
 import java.util.ArrayList;

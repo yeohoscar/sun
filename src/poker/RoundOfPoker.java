@@ -7,7 +7,7 @@ package poker;
 // A PokerGame is a sequence of RoundOfPoker's
 
 
-import Texas_Hold_Em.Hand;
+import texas_hold_em.Hand;
 
 public class RoundOfPoker {
 	public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions

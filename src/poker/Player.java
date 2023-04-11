@@ -9,9 +9,7 @@ package poker;
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import Texas_Hold_Em.Hand;
-
-import java.util.Scanner;
+import texas_hold_em.Hand;
 
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her

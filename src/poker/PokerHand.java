@@ -3,7 +3,7 @@ package poker;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
-import Texas_Hold_Em.Hand;
+import texas_hold_em.Hand;
 
 import java.lang.reflect.*;
 

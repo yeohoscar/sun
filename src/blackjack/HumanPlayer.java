@@ -1,4 +1,4 @@
-package BlackJack;
+package blackjack;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {

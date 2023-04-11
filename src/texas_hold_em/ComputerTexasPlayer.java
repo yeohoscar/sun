@@ -1,5 +1,5 @@
 
-package Texas_Hold_Em;
+package texas_hold_em;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
@@ -14,7 +14,7 @@ import poker.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static Texas_Hold_Em.Action.*;
+import static texas_hold_em.Action.*;
 
 public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY = 50;

@@ -1,4 +1,4 @@
-package Texas_Hold_Em;
+package texas_hold_em;
 
 //Represents the actions a player can take
 

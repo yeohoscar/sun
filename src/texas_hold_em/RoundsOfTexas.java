@@ -1,5 +1,5 @@
 
-package Texas_Hold_Em;
+package texas_hold_em;
 
 import poker.*;
 

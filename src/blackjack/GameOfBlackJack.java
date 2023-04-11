@@ -1,4 +1,4 @@
-package BlackJack;
+package blackjack;
 
 public class GameOfBlackJack {
 

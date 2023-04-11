@@ -1,9 +1,9 @@
-package Texas_Hold_Em;
+package texas_hold_em;
 
 import poker.PotOfMoney;
 import java.util.Scanner;
 
-import static Texas_Hold_Em.Action.*;
+import static texas_hold_em.Action.*;
 
 public class HumanTexasPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
