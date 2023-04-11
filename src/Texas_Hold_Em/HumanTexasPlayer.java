@@ -33,13 +33,15 @@ public class HumanTexasPlayer extends TexasPlayer {
 		try {
 			System.in.read(input);
 
-			for (int i = 0; i < input.length; i++){
-				if ((char)input[i] == 'y' || (char)input[i] == 'Y'){
+			for (byte b : input) {
+				if ((char) b == 'y' || (char) b == 'Y') {
 					return true;
 				}
 			}
 		}
-		catch (Exception e){};
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return false;
 	}
@@ -89,9 +91,8 @@ public class HumanTexasPlayer extends TexasPlayer {
 	public Action chooseAction(PotOfMoney pot) {
 		byte[] input = new byte[100];
 		Action chosenAction = null;
-		try {
-			while (chosenAction == null) {
-
+		while (chosenAction == null) {
+			try {
 				System.out.print("\n>> Pick an option: 1. Call/Check  2. Raise  3. All In  4. Fold  ");
 
 				System.in.read(input);
@@ -114,9 +115,9 @@ public class HumanTexasPlayer extends TexasPlayer {
 						}
 					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return chosenAction;
 	}

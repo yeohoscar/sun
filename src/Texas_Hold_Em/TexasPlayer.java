@@ -17,7 +17,6 @@ abstract class TexasPlayer extends poker.Player {
 
 	private boolean allIn;
 
-
 	protected boolean dealer = false;
 
 	public DeckOfCards deckOfCards;
@@ -33,32 +32,6 @@ abstract class TexasPlayer extends poker.Player {
 		this.id = id;
 		allIn = false;
 	}
-
-	public void setDeck(DeckOfCards deck){
-		deckOfCards=deck;
-	}
-	public DeckOfCards getDeckOfCards(){
-		return deckOfCards;
-	}
-
-	public void smallBlind(int smallBlind,PotOfMoney pot){
-		stake+=smallBlind;
-		bank-=smallBlind;
-		pot.raiseStake(smallBlind);
-	}
-	public void bigBlind(int bigBlind,PotOfMoney pot){
-		stake+=bigBlind*2;
-		bank-=bigBlind*2;
-		pot.raiseStake(bigBlind);
-	}
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
-	public boolean isDealer(){
-		return dealer;
-	}
-
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -103,6 +76,10 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
+	public boolean isDealer(){
+		return dealer;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -112,6 +89,10 @@ abstract class TexasPlayer extends poker.Player {
 			return hand;
 		}
 		return currentBestHand;
+	}
+
+	public DeckOfCards getDeckOfCards(){
+		return deckOfCards;
 	}
 
 	public boolean isAllIn() {
@@ -134,6 +115,15 @@ abstract class TexasPlayer extends poker.Player {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	//every player can act as a dealer
+	public void setDealer(boolean dealer) {
+		this.dealer = dealer;
+	}
+
+	public void setDeck(DeckOfCards deck){
+		deckOfCards = deck;
 	}
 
 	@Override
@@ -195,6 +185,24 @@ abstract class TexasPlayer extends poker.Player {
 			data[index] = arr[i];
 			combinationUtil(arr, data, i+1, end, index+1, r, hands, deck);
 		}
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Methods to handle blinds
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+	public void smallBlind(int smallBlind, PotOfMoney pot) {
+		stake += smallBlind;
+		bank -= smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+
+	public void bigBlind(int bigBlind, PotOfMoney pot) {
+		stake += bigBlind * 2;
+		bank -= bigBlind * 2;
+		pot.raiseStake(bigBlind);
 	}
 
 	//--------------------------------------------------------------------//
@@ -270,27 +278,11 @@ abstract class TexasPlayer extends poker.Player {
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
 
-
-		if(isAllIn()){
-			return;
-		}
-//		if (isBankrupt()) {
-//			// not enough money to cover the bet
-//
-//			System.out.println("\n> " + getName() + " says: I'm out!\n");
-//
-//			fold();
-//
-//			return;
-//		}
-
-		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
-
+		if (isAllIn()) return; // cannot make anymore actions due to all inning
 
 		if (stake==-1) {
 			stake = 0;
 		}
-
 
 		switch (chooseAction(pot)) {
 			case SEE -> seeBet(pot);
@@ -299,6 +291,5 @@ abstract class TexasPlayer extends poker.Player {
 			case FOLD -> fold();
 			default -> {}
 		}
-
 	}
 }

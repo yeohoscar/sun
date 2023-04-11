@@ -31,7 +31,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerTexasPlayer(String name, int money,int id){
+    public ComputerTexasPlayer(String name, int money,int id) {
         super(name, money,id);
 
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
@@ -64,19 +64,19 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return risk; // tolerance drops as stake increases
     }
 
-    public List<Card> getCommunityCards(){
+    public List<Card> getCommunityCards() {
         return communityCards;
     }
 
-    public Rounds getCurrentRound(){
-            switch (communityCards.size()){
-                case 3->{
+    public Rounds getCurrentRound() {
+            switch (communityCards.size()) {
+                case 3 -> {
                     return Rounds.FLOP;
                 }
-                case 4->{
+                case 4 -> {
                     return Rounds.TURN;
                 }
-                case 5->{
+                case 5 -> {
                     return Rounds.RIVER;
                 }
                 default -> {
@@ -87,8 +87,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
             return hand[num];
-        }
-        else{
+        } else {
             return null;
         }
     }
@@ -128,20 +127,23 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
 
         if (allCards.length == 5 && Objects.equals(getCard(4, allCards).getName(), "Ace")) reorderStraight(allCards);
-        else if(allCards.length == 6 && Objects.equals(getCard(5, allCards).getName(), "Ace")) reorderStraight(allCards);
+        else if (allCards.length == 6 && Objects.equals(getCard(5, allCards).getName(), "Ace")) reorderStraight(allCards);
     }
 
-    private boolean isContained(Card[] allCards, String name){
-        for(Card c: allCards){
-            if(Objects.equals(c.getName(), name)){
+    private boolean isContained(Card[] allCards, String name) {
+        for (Card c: allCards) {
+            if (Objects.equals(c.getName(), name)) {
                 return true;
             }
         }
         return false;
     }
+
     private void reorderStraight(Card[] allCards) {
         // Check to see if ace should be sorted as a low value (1) rather than a high value (14)
-        if (allCards.length==5 && !(allCards[4].isAce() && (isContained(allCards, "Jack") || isContained(allCards, "Queen") || isContained(allCards, "King")) && isContained(allCards, "Ten"))) {
+        if (allCards.length==5 && !(allCards[4].isAce()
+                && (isContained(allCards, "Jack") || isContained(allCards, "Queen") || isContained(allCards, "King"))
+                && isContained(allCards, "Ten"))) {
 
             Card ace = allCards[4];
 
@@ -151,7 +153,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
             allCards[1] = allCards[0];
             allCards[0] = ace;
         }
-        if (allCards.length==6 && !(allCards[5].isAce() && (isContained(allCards, "Jack") || isContained(allCards, "Queen") || isContained(allCards, "King")) && isContained(allCards, "Ten"))) {
+        if (allCards.length==6 && !(allCards[5].isAce()
+                && (isContained(allCards, "Jack") || isContained(allCards, "Queen") || isContained(allCards, "King"))
+                && isContained(allCards, "Ten"))) {
+
             Card ace = allCards[5];
 
             allCards[5] = allCards[4];
@@ -162,43 +167,42 @@ public class ComputerTexasPlayer extends TexasPlayer {
             allCards[0] = ace;
         }
     }
-    public int preFlopRiskToleranceHelper(Card[] hand){
+
+    public int preFlopRiskToleranceHelper(Card[] hand) {
         //the most advantage hand card
-        if((hand[0].isAce() && hand[1].isAce()) || (hand[0].isKing() && hand[1].isKing()) || (hand[0].isQueen() && hand[1].isQueen()) || (hand[0].isJack() && hand[1].isJack())){
-            //TODO: affect the riskTolerance
+        if ((hand[0].isAce() && hand[1].isAce())
+                || (hand[0].isKing() && hand[1].isKing())
+                || (hand[0].isQueen() && hand[1].isQueen())
+                || (hand[0].isJack() && hand[1].isJack())) {
             return 2;
         }
         //these hand cards maybe can form strong straight
-        else if((isContained(hand, "Ace") && isContained(hand, "King")) ||
+        else if ((isContained(hand, "Ace") && isContained(hand, "King")) ||
                 (isContained(hand, "Queen") && isContained(hand, "King")) ||
                 (isContained(hand, "Queen") && isContained(hand, "Ace")) ||
                 (isContained(hand, "Jack") && isContained(hand, "Queen")) ||
                 (isContained(hand, "Jack") && isContained(hand, "King")) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace"))){
-            //TODO: affect the riskTolerance
+                (isContained(hand, "Jack") && isContained(hand, "Ace"))) {
             return 12;
         }
         //these hand cards maybe can form strong straightFlush
-        else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
+        else if ((isContained(hand, "Ace") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
                 (isContained(hand, "Queen") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
                 (isContained(hand, "Queen") && isContained(hand, "Ace") && suitsInHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsInHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)){
-            //TODO: affect the riskTolerance
+                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)) {
             return 7;
-        }
-        //TODO: may need to do some modify
-        else{
+        } else {
             return 29;
         }
     }
-    public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck){
-        PokerHand publicHand = new PokerHand(publicCards, deck);
-        PokerHand playerHand = new PokerHand(handCards, deck);
-        String[] nameOrder = new String[]{"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
-        int length = publicCards.length+2;
+    public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck) {
+        PokerHand publicHand = new PokerHand(publicCards, deck);
+        String[] nameOrder = new String[] {"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
+
+        int length = publicCards.length + 2;
         Card[] allCards = new Card[length];
         System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
         System.arraycopy(super.getHand().getHand(), 0, allCards, publicCards.length, super.getHand().getHand().length);
@@ -211,45 +215,48 @@ public class ComputerTexasPlayer extends TexasPlayer {
             try {
                 if (pred.getName().startsWith("is") && pred.getParameterTypes().length == 0 &&
                         pred.getReturnType() == Boolean.class) {
-                    if((Boolean) pred.invoke(publicHand, new Object[0])){
+                    if ((Boolean) pred.invoke(publicHand, new Object[0])) {
                         String handType = pred.getName().substring(2);
-                        if(handType.equals("RoyalStraightFlush") || handType.equals("StraightFlush") || handType.equals("FullHouse") || handType.equals("Flush") || handType.equals("Straight")){
+
+                        if (handType.equals("RoyalStraightFlush") || handType.equals("StraightFlush") || handType.equals("FullHouse") || handType.equals("Flush") || handType.equals("Straight")) {
                             return getHandValue(handType);
-                        }else if(handType.equals("FourOfAKind")){
-                            int count=0;
+                        } else if (handType.equals("FourOfAKind")) {
+                            int count = 0;
                             //cardNames store those cards that are not FourOfAKind
                             ArrayList<String> cardNames = new ArrayList<>();
                             String tem = allCards[0].getName();
-                            for(int i=1; i<allCards.length; i++){
-                                if(Objects.equals(allCards[i].getName(), tem)){
+
+                            for (int i = 1; i < allCards.length; i++) {
+                                if (Objects.equals(allCards[i].getName(), tem)) {
                                     count++;
-                                }else if(count!=3){
+                                } else if (count != 3) {
                                     cardNames.add(tem);
                                     tem = allCards[i].getName();
-                                    count=0;
+                                    count = 0;
                                 }
-                                if(count==3 && !Objects.equals(allCards[i].getName(), tem)){
+
+                                if (count == 3 && !Objects.equals(allCards[i].getName(), tem)) {
                                     cardNames.add(allCards[i].getName());
                                     tem = allCards[i].getName();
                                 }
                             }
-                            //TODO: 这个riskTolerance也许需要修改
-                            int risk=0;
-                            String cardName = cardNames.get(cardNames.size()-1);
-                            for(int i=0; i<nameOrder.length; i++){
-                                if(nameOrder[i].equals(cardName)){
-                                    if(i>=10){
-                                        risk=5;
+
+                            int risk = 0;
+                            String cardName = cardNames.get(cardNames.size() - 1);
+                            for (int i = 0; i < nameOrder.length; i++) {
+                                if (nameOrder[i].equals(cardName)) {
+                                    if (i >= 10) {
+                                        risk = 5;
                                     }
-                                    else if(i>6){
-                                        risk=10;
-                                    }else {
-                                        risk=20;
+                                    else if (i > 6) {
+                                        risk = 10;
+                                    } else {
+                                        risk = 20;
                                     }
                                 }
                             }
                             return risk;
-                        }else {
+                        } else {
                             return getHandValue(handType);
                         }
                     }
@@ -260,69 +267,66 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
         return 0;
     }
-    public int predicateRiskTolerance(){
+
+    public int predicateRiskTolerance() {
         DeckOfCards deck = getDeckOfCards();
         Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
-        if(currentRound==Rounds.PRE_FLOP){
+        if (currentRound == Rounds.PRE_FLOP) {
             risk += preFlopRiskToleranceHelper(super.getHand().getHand());
         }
-        if(currentRound==Rounds.FLOP || currentRound==Rounds.TURN){
-            //TODO: make returned best hand type to affect the riskTolerance
+
+        if (currentRound == Rounds.FLOP || currentRound == Rounds.TURN) {
             risk += predicateBestHandTypeAndRisk(publicCards, deck, currentRound);
         }
-        if(currentRound==Rounds.RIVER){
-            //TODO: 1-see if public cards can form some hand type,
-            //      2-compare the hand type A from public cards with the best hand type of all cards B,
-            //      3-if A is higher than B, we need to consider the cards on hand, it will affect the riskTolerance
-            //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
+
+        if (currentRound == Rounds.RIVER) {
             risk += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
         }
-        //System.out.println("predicated risk = "+risk);
         return risk;
     }
 
     //this will return the finally returned hand type(with use of random value)
-    private String findHandHigherThanCurrentHand(Map<String, Integer> predictedHandType, String currentHandType){
+    private String findHandHigherThanCurrentHand(Map<String, Integer> predictedHandType, String currentHandType) {
         boolean isHigh = true;
         Map<String, Integer> higherHandType = new HashMap<>();
-        String[] handTypeMap = new String[]{"RoyalStraightFlush", "StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "Pair"};
+        String[] handTypeMap = new String[] {"RoyalStraightFlush", "StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "Pair"};
         //see if hand type should be High or not
-        for(Integer odds: predictedHandType.values()){
-            if(odds!=0){
-                isHigh=  false;
+        for (Integer odds : predictedHandType.values()) {
+            if (odds != 0) {
+                isHigh = false;
+                break;
             }
         }
-        if(isHigh){
+
+        if (isHigh) {
             return "High";
         }
 
         //find those hand type higher than currentHandType in predictedHandType, and add those hand type with its odds to a hashMap
-        for(String hand: handTypeMap){
-            if(!hand.equals(currentHandType)){
-                for(Map.Entry<String, Integer> entry1: predictedHandType.entrySet()){
-                    if(Objects.equals(entry1.getKey(), hand)){
+        for (String hand : handTypeMap) {
+            if (!hand.equals(currentHandType)) {
+                for (Map.Entry<String, Integer> entry1 : predictedHandType.entrySet()) {
+                    if (Objects.equals(entry1.getKey(), hand)) {
                         higherHandType.put(entry1.getKey(), entry1.getValue());
                     }
                 }
-            }else {
+            } else {
                 break;
             }
         }
         //find those hand types that odds are greater than 30
         ArrayList<String> hands = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry1: higherHandType.entrySet()){
-            if(entry1.getValue()>30){
+        for (Map.Entry<String, Integer> entry1 : higherHandType.entrySet()) {
+            if (entry1.getValue() > 30) {
                 hands.add(entry1.getKey());
             }
         }
         //if there are no hands that odds are greater than 30, just return current hand type
-        if(hands.isEmpty()) {
+        if (hands.isEmpty()) {
             return currentHandType;
-        }
-        //if yes, randomly find one and return it
-        else {
+        } else { //if yes, randomly find one and return it
             Random random = new Random();
             int index = random.nextInt(hands.size());
             return hands.get(index);
@@ -330,8 +334,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     //this method will predict the best hand type and return the risk affected by this best hand type
-    public int predicateBestHandTypeAndRisk(Card[] publicCards, DeckOfCards deck, Rounds currentRound){
-        int length = publicCards.length+2;
+    public int predicateBestHandTypeAndRisk(Card[] publicCards, DeckOfCards deck, Rounds currentRound) {
+        int length = publicCards.length + 2;
         Card[] allCards = new Card[length];
         System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
         System.arraycopy(super.getHand().getHand(), 0, allCards, publicCards.length, super.getHand().getHand().length);
@@ -341,13 +345,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
         String handType = "";
         this.findBestHand(publicCards, deck);
 
-        //TODO: this one may have errors, because dont know if "this.getCurrentBestHand().getClass().getSimpleName()"
-        //      and "handType = pred.getName().substring(6)" has same String format
-        Map<String, Integer> handsHigherThanCurrentHand = new HashMap<>();
         String currentHandType = this.getCurrentBestHand().getClass().getSimpleName();
         Map<String, Integer> predictedHandType = new HashMap<>();
         Method[] preds = ComputerTexasPlayer.class.getDeclaredMethods();
-//        int bestOdd = 0;
+
         for (Method pred : preds) {
             try {
                 if (pred.getName().startsWith("odd") && pred.getParameterTypes().length != 0 &&
@@ -355,10 +356,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
                     Integer test = (Integer) pred.invoke(this, publicCards, currentRound);
                     handType = pred.getName().substring(6);
                     predictedHandType.put(handType, test);
-//                    if (bestOdd <= test) {
-//                        bestOdd = test;
-//                        handType = pred.getName().substring(6);
-//                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -367,7 +364,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //find those predicted hand type that are higher than current hand type
         //if the odds of predicted hand(higher than current hand) is greater than 40,
         return getHandValue(findHandHigherThanCurrentHand(predictedHandType, currentHandType));
-//        return getHandValue(handType);
     }
 
     private int getHandValue(String handType) {
@@ -402,74 +398,72 @@ public class ComputerTexasPlayer extends TexasPlayer {
             default ->{
                 return PokerHand.HIGHCARD_RISK;
             }
-//            case "High" -> {
-//            }
         }
     }
 
     //this method returns the quantity of cards that appear n times in allCards(hand card +  public card)
-    private int countContains(Map<String, Integer> names, int n){
+    private int countContains(Map<String, Integer> names, int n) {
         int count = 0;
-        for(int value: names.values()){
-            if(value==n){
+        for (int value : names.values()) {
+            if (value == n) {
                 count ++;
             }
         }
-
         return count;
     }
+
     public int combination(int n, int k) {
         if (k == 0 || n == k) {
             return 1;
         }
         return combination(n - 1, k - 1) + combination(n - 1, k);
     }
+
     /*--------------------predicate the odds of Royal Straight Flush--------------------------*/
-    public Integer oddsOfRoyalFlush(Card[] allCards, Rounds currentRound){
-        int odds=0;
-        String[] cards = {"Ace", "King", "Queen", "Jack", "Ten"};
+    public Integer oddsOfRoyalFlush(Card[] allCards, Rounds currentRound) {
+        int odds = 0;
         //hashMap stores the number of occurrence of each suit, key is the suit, and Integer is the number of occurrence of the suit
         Map<String, Integer> suits = new HashMap<>();
         //if one of the "Ace", "King", "Queen", "Jack", "Ten" appears in public cards and player's hand
         //we store the suit and the number of occurrence of this suit increases by one
-        for(Card card: allCards){
-            if(card.isAce() || card.isTen() || card.isJack() || card.isQueen() || card.isKing()){
+        for (Card card : allCards) {
+            if (card.isAce() || card.isTen() || card.isJack() || card.isQueen() || card.isKing()) {
                 String suit = card.getSuit();
-                suits.put(suit, suits.getOrDefault(suit, 0)+1);
+                suits.put(suit, suits.getOrDefault(suit, 0) + 1);
             }
         }
         //if current round is flop round, there at least needs 3 cards which are in "Ace", "King", "Queen", "Jack", "Ten",
         //and also have same suit.
-        if(currentRound==Rounds.FLOP){
+        if (currentRound == Rounds.FLOP) {
             int outs;
             for (int count : suits.values()) {
                 if (count == 3) {
-                    outs=2;
-                    odds=outs*2;
+                    outs = 2;
+                    odds = outs * 2;
                     break;
-                }else if(count==4){
-                    outs=1;
-                    odds=outs*2;
+                } else if (count == 4) {
+                    outs = 1;
+                    odds = outs * 2;
                     break;
-                }else if(count==5){
+                } else if (count == 5) {
                 //if there are five cards from "Ace", "King", "Queen", "Jack", "Ten" and have same suit,
                 //then this player has Royal Straight Flush
-                    odds=100;
+                    odds = 100;
                     break;
                 }
             }
         }
         //if current round is turn round, there at least needs 4 cards which are in "Ace", "King", "Queen", "Jack", "Ten",
         //and also have same suit.
-        if(currentRound==Rounds.TURN){
+        if (currentRound == Rounds.TURN) {
             int outs;
             for (int count : suits.values()) {
-                if(count==4){
-                    outs=1;
-                    odds=outs*2;
+                if (count == 4) {
+                    outs = 1;
+                    odds = outs * 2;
                     break;
-                }else if(count==5){
-                    odds=100;
+                } else if (count == 5) {
+                    odds = 100;
                     break;
                 }
             }
@@ -478,108 +472,109 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /*--------------------predicate the odds of Straight Flush--------------------------*/
-    public Integer oddsOfStraightFlush(Card[] allCards, Rounds currentRound){
-        double oddsOfStraight = oddsOfStraight(allCards, currentRound)*0.01;
-        double oddsOfFlush = oddsOfFlush(allCards, currentRound)*0.01;
+    public Integer oddsOfStraightFlush(Card[] allCards, Rounds currentRound) {
+        double oddsOfStraight = oddsOfStraight(allCards, currentRound) * 0.01;
+        double oddsOfFlush = oddsOfFlush(allCards, currentRound) * 0.01;
         double oddsOfStraightFlush = 0.0;
-        if(oddsOfStraight!=0 && oddsOfFlush!=0){
-            oddsOfStraightFlush = (oddsOfStraight*oddsOfFlush)*100;
+        if (oddsOfStraight != 0 && oddsOfFlush != 0) {
+            oddsOfStraightFlush = oddsOfStraight * oddsOfFlush * 100;
         }
         return (int) oddsOfStraightFlush;
     }
 
     /*--------------------predicate the odds of Four of a kind--------------------------*/
-    public Integer oddsOfFourOfAKind(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfFourOfAKind(Card[] allCards, Rounds currentRound) {
         //if there are more than 2 identical cards, then it is possible to form four of a kind in flop round
-        int odds=0;
+        int odds = 0;
         Map<String, Integer> names = new HashMap<>();
-        for(Card card: allCards){
+        for (Card card : allCards) {
             String name = card.getName();
-            names.put(name, names.getOrDefault(name, 0)+1);
+            names.put(name, names.getOrDefault(name, 0) + 1);
         }
-        if(currentRound==Rounds.FLOP){
-            int outs = 0;
-            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+
+        if (currentRound == Rounds.FLOP) {
+            int outs;
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 3) {
                 outs = 1;
-                odds = outs*2;
+                odds = outs * 2;
             }
-            if(countContains(names, 2)==2){
-                outs=2;
-                odds=outs*2;
+            if (countContains(names, 2) == 2) {
+                outs = 2;
+                odds = outs * 2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 1)==2){
-                outs=1;
-                odds=outs*2;
+            if (countContains(names, 3) == 1 && countContains(names, 1) == 2) {
+                outs = 1;
+                odds = outs * 2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 2)==1){
-                outs=2;
-                odds=outs*2;
+            if (countContains(names, 3) == 1 && countContains(names, 2) == 1) {
+                outs = 2;
+                odds = outs * 2;
             }
-            if(countContains(names, 4)==1){
-                odds=100;
+            if (countContains(names, 4) == 1) {
+                odds = 100;
             }
         }
         //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
-        if(currentRound==Rounds.TURN){
-            int outs = 0;
-            if(countContains(names, 3)==1){
-                outs=1;
-                odds=outs*2;
+        if (currentRound == Rounds.TURN) {
+            int outs;
+            if (countContains(names, 3) == 1) {
+                outs = 1;
+                odds = outs * 2;
             }
-            if(countContains(names, 3)==2){
-                outs=2;
-                odds=outs*2;
+            if (countContains(names, 3) == 2) {
+                outs = 2;
+                odds = outs * 2;
             }
-            if(countContains(names, 4)==1){
-                odds=100;
+            if (countContains(names, 4) == 1) {
+                odds = 100;
             }
         }
         return odds;
     }
 
     /*--------------------predicate the odds of Full House--------------------------*/
-    public Integer oddsOfFullHouse(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfFullHouse(Card[] allCards, Rounds currentRound) {
         //if there are more than 2 identical cards, then it is possible to form full house in flop round
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
-        for(Card card: allCards){
+        for(Card card: allCards) {
             String name = card.getName();
             names.put(name, names.getOrDefault(name, 0)+1);
         }
-        if(currentRound==Rounds.FLOP){
-            int outs = 0;
-            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+        if (currentRound==Rounds.FLOP) {
+            int outs;
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 3) {
                 outs = 20;
                 odds = outs*2-(outs-8);
             }
-            if(countContains(names, 2)==2){
+            if (countContains(names, 2) == 2) {
                 outs=4;
                 odds = outs*2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 1)==2){
+            if (countContains(names, 3) == 1 && countContains(names, 1) == 2) {
                 outs = 6;
                 odds = outs*2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 2)==1){
+            if (countContains(names, 3) == 1 && countContains(names, 2) == 1) {
                 odds = 100;
             }
         }
         //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
-        if(currentRound==Rounds.TURN){
+        if (currentRound==Rounds.TURN) {
             int outs = 0;
-            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+            if (countContains(names, 3) == 1 && countContains(names, 1) == 3) {
                 outs=9;
                 odds = outs*2-(outs-8);
             }
-            if(countContains(names, 2)==2){
+            if (countContains(names, 2) == 2) {
                 outs=4;
                 odds = outs*2;
             }
-            if(countContains(names, 2)==3){
+            if (countContains(names, 2) == 3) {
                 outs=6;
                 odds = outs*2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 2)==1){
+            if (countContains(names, 3) == 1 && countContains(names, 2) == 1) {
                 odds=100;
             }
         }
@@ -587,21 +582,21 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /*--------------------predicate the odds of Flush--------------------------*/
-    public Integer oddsOfFlush(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfFlush(Card[] allCards, Rounds currentRound) {
         //if there are more than 3 cards with same suits, then it is possible to form flush in flop round
         int odds=0;
         Map<String, Integer> suits = new HashMap<>();
-        for(Card card: allCards){
+        for(Card card: allCards) {
             String suit = card.getSuit();
             suits.put(suit, suits.getOrDefault(suit, 0)+1);
         }
         //from flop to turn
-        if(currentRound==Rounds.FLOP){
+        if (currentRound==Rounds.FLOP) {
             int outs = 0;
-            for(int count: suits.values()){
-                if(count>=3 && count<5){
+            for(int count: suits.values()) {
+                if (count>=3 && count<5) {
                     outs = combination(13-count, 5-count);
-                    if(outs>8){
+                    if (outs>8) {
                         odds = outs*2-(outs-8);
                     }
                     else {
@@ -609,7 +604,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                     }
                     break;
                 }
-                if(count==5){
+                if (count==5) {
                     odds=100;
                     break;
                 }
@@ -618,12 +613,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //if there are more than 4 cards with same suits, then it is possible to form flush in turn round
 
         //from turn to river
-        if(currentRound==Rounds.TURN){
+        if (currentRound==Rounds.TURN) {
             int outs = 0;
-            for(int count: suits.values()){
-                if(count==4){
+            for(int count: suits.values()) {
+                if (count==4) {
                     outs = combination(13-count, 5-count);
-                    if(outs>8){
+                    if (outs>8) {
                         odds = outs*2-(outs-8);
                     }
                     else {
@@ -631,7 +626,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                     }
                     break;
                 }
-                if(count>=5){
+                if (count>=5) {
                     odds=100;
                     break;
                 }
@@ -641,7 +636,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /*--------------------predicate the odds of Straight--------------------------*/
-    public Integer oddsOfStraight(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfStraight(Card[] allCards, Rounds currentRound) {
         ArrayList<Integer> difference = new ArrayList<>();
         ArrayList<Integer> allCardsValue = new ArrayList<>();
         int outs;
@@ -649,20 +644,20 @@ public class ComputerTexasPlayer extends TexasPlayer {
         Integer[] oneSuitOfCards;
         int fastIndex = 0;
         int slowIndex = 0;
-        if(allCards[allCards.length-1].isAce()){
+        if (allCards[allCards.length-1].isAce()) {
             oneSuitOfCards = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
             difference = findCardsThatNotInOneSuitOfCards(allCards, fastIndex, slowIndex, oneSuitOfCards);
             //if the last card is Ace, we need to call getValue
-            for(int i=0; i<allCards.length; i++){
+            for(int i=0; i<allCards.length; i++) {
                 allCardsValue.add(allCards[i].getValue());
             }
-        }else if(allCards[0].isAce()){
+        }else if (allCards[0].isAce()) {
             fastIndex=1;
             slowIndex=1;
             oneSuitOfCards = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
             difference = findCardsThatNotInOneSuitOfCards(allCards, fastIndex, slowIndex, oneSuitOfCards);
             //if the last card is Ace, we need to call getRank
-            for(int i=0; i<allCards.length; i++){
+            for(int i=0; i<allCards.length; i++) {
                 allCardsValue.add(allCards[i].getRank());
             }
         }else {
@@ -673,22 +668,22 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //int[] difference = diff.stream().mapToInt(Integer::intValue).toArray();
 
         //if allCards already contains straight, just return 100
-        if(canFormAStraight(allCardsValue)){
+        if (canFormAStraight(allCardsValue)) {
             return 100;
         }
         ArrayList<Integer> record = new ArrayList<>();//this will record those combinations that can form a straight with allCards(hand cards + public cards)
-        for(ArrayList<Integer> integer: generateCombinations(difference, currentRound)){
+        for(ArrayList<Integer> integer: generateCombinations(difference, currentRound)) {
             ArrayList<Integer> temp = new ArrayList<>(allCardsValue);
             temp.addAll(integer);
             Collections.sort(temp);//after we add the combination value to allCardsValue, we need to sort it again
 //            System.out.println("temp = "+temp);
-            if(canFormAStraight(temp)){//if the combination can form a straight with allCards(hand cards + public cards)
+            if (canFormAStraight(temp)) {//if the combination can form a straight with allCards(hand cards + public cards)
 //                System.out.println("temp = "+temp);
 //                System.out.println("true");
                 record.addAll(integer);
             }
         }
-        if(record.size()==0){//if all combinations can not form a straight, then the odds of straight is zero
+        if (record.size() == 0) {//if all combinations can not form a straight, then the odds of straight is zero
             return 0;
         }else {
             //we delete repeated elements in record so that we can calculate outs
@@ -699,14 +694,14 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //            System.out.println(record);
 
             outs = record.size()*4;//because there are four different suits
-            if(currentRound==Rounds.FLOP){
-                if(outs>8){
+            if (currentRound==Rounds.FLOP) {
+                if (outs>8) {
                     odds = (outs*2)-(outs-8);
                 }else {
                     odds = outs*2;
                 }
-            }else if(currentRound==Rounds.TURN){
-                if(outs>8){
+            }else if (currentRound==Rounds.TURN) {
+                if (outs>8) {
                     odds = (outs*2)-(outs-8);
                 }else {
                     odds = outs*2;
@@ -717,15 +712,15 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     }
     //this helper method is used to check if there exists a straight in ArrayList temp
-    private boolean canFormAStraight(ArrayList<Integer> temp){
+    private boolean canFormAStraight(ArrayList<Integer> temp) {
         int count = 0;
-        for(int i=0; i<temp.size()-1; i++){
-            if(temp.get(i)+1==temp.get(i+1)){
+        for(int i=0; i<temp.size()-1; i++) {
+            if (temp.get(i)+1==temp.get(i+1)) {
                 count++;
             }else {
                 count=0;
             }
-            if (count==4){
+            if (count==4) {
                 break;
             }
         }
@@ -734,7 +729,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public ArrayList<ArrayList<Integer>> generateCombinations(ArrayList<Integer>  difference, Rounds currentRound) {
         int n = difference.size();
         ArrayList<ArrayList<Integer>> combinations1 = new ArrayList<>();
-        if(currentRound==Rounds.FLOP){
+        if (currentRound==Rounds.FLOP) {
             // C(1, n)
             for (int i = 0; i < n; i++) {
                 ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(difference.get(i)));
@@ -748,7 +743,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 }
             }
         }
-        else if(currentRound==Rounds.TURN){
+        else if (currentRound==Rounds.TURN) {
             for (int i = 0; i < n; i++) {
                 ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(difference.get(i)));
                 combinations1.add(combination);
@@ -760,11 +755,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
              for example: allCards = {3, 6, 7, 9, A},
                  one suit of cards = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
                  cards that not in one suit of cards: difference = {2, 4, 5, 8, 10, 11, 12, 13}*/
-    private ArrayList<Integer> findCardsThatNotInOneSuitOfCards(Card[] allCards, int fastIndex, int slowIndex, Integer[] oneSuitOfCards){
+    private ArrayList<Integer> findCardsThatNotInOneSuitOfCards(Card[] allCards, int fastIndex, int slowIndex, Integer[] oneSuitOfCards) {
         ArrayList<Integer> difference = new ArrayList<>();
-        for(;fastIndex<oneSuitOfCards.length; fastIndex++){
-            if(slowIndex<allCards.length && oneSuitOfCards[fastIndex]==allCards[slowIndex].getValue()){
-                while (slowIndex<allCards.length && oneSuitOfCards[fastIndex]==allCards[slowIndex].getValue()){
+        for(;fastIndex<oneSuitOfCards.length; fastIndex++) {
+            if (slowIndex<allCards.length && oneSuitOfCards[fastIndex]==allCards[slowIndex].getValue()) {
+                while (slowIndex<allCards.length && oneSuitOfCards[fastIndex]==allCards[slowIndex].getValue()) {
                     slowIndex++;
                 }
             }
@@ -777,47 +772,47 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 
     /*--------------------predicate the odds of Three of a kind--------------------------*/
-    public Integer oddsOfThreeOfAKind(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfThreeOfAKind(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
-        for(Card card: allCards){
+        for(Card card: allCards) {
             String name = card.getName();
             names.put(name, names.getOrDefault(name, 0)+1);
         }
-        if(currentRound==Rounds.FLOP){
+        if (currentRound==Rounds.FLOP) {
             int outs = 0;
             //if there are only two cards are same, no three cards are same
-            if(countContains(names, 2)==1 && countContains(names, 3)==0){
+            if (countContains(names, 2) == 1 && countContains(names, 3) == 0) {
                 outs=2;
                 odds = outs*2;
             }
             //must be Three of a kind
-            if(countContains(names, 3)==1 && countContains(names, 2)==0){
+            if (countContains(names, 3) == 1 && countContains(names, 2) == 0) {
                 odds=100;
 //                outs=10;
 //                odds=outs*2-(outs-8);
             }
 /*            //player must select Full House instead of Three of a kind
-//            if(countContains(names, 3) && countContains(names, 2)){
+//            if (countContains(names, 3) && countContains(names, 2)) {
 //                odds = 0;
 //            }
             //it must be Four of a kind instead of Three of a kind
-//            if(countContains(names, 4)){
+//            if (countContains(names, 4)) {
 //                odds = 0;
 //            }*/
-            if(countContains(names, 1)==5){
+            if (countContains(names, 1) == 5) {
                 outs = 15;
                 odds = outs*2-(outs-8);
             }
         }
         //if there are more than 3 identical cards, then it is possible to form four of a kind in turn round
-        if(currentRound==Rounds.TURN){
+        if (currentRound==Rounds.TURN) {
             int outs = 0;
-            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 4) {
                 outs = 2;
                 odds = outs*2;
             }
-            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+            if (countContains(names, 3) == 1 && countContains(names, 1) == 3) {
                 odds=100;
 //                outs = 9;
 //                odds = outs*2-(outs-8);
@@ -828,35 +823,35 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /*--------------------predicate the odds of Two Pair--------------------------*/
-    public Integer oddsOfTwoPair(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfTwoPair(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
-        for(Card card: allCards){
+        for(Card card: allCards) {
             String name = card.getName();
             names.put(name, names.getOrDefault(name, 0)+1);
         }
-        if(currentRound==Rounds.FLOP) {
+        if (currentRound==Rounds.FLOP) {
             int outs = 0;
             //if there are only two cards are same, no three cards are same
-            if(countContains(names, 1)==5){
+            if (countContains(names, 1) == 5) {
                 outs=15;
                 odds = outs*2-(outs-8);
             }
-            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 3) {
                 outs=9;
                 odds=outs*2-(outs-8);
             }
-            if(countContains(names, 2)==2){
+            if (countContains(names, 2) == 2) {
                 odds=100;
             }
         }
-        if(currentRound==Rounds.TURN) {
+        if (currentRound==Rounds.TURN) {
             int outs = 0;
-            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 4) {
                 outs=12;
                 odds=outs*2-(outs-8);
             }
-            if(countContains(names, 2)==2 || countContains(names, 2)==3){
+            if (countContains(names, 2) == 2 || countContains(names, 2) == 3) {
                 odds=100;
             }
         }
@@ -864,33 +859,33 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /*--------------------predicate the odds of Pair--------------------------*/
-    public Integer oddsOfPair(Card[] allCards, Rounds currentRound){
+    public Integer oddsOfPair(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
-        for(Card card: allCards){
+        for(Card card: allCards) {
             String name = card.getName();
             names.put(name, names.getOrDefault(name, 0)+1);
         }
-        if(currentRound==Rounds.FLOP) {
+        if (currentRound==Rounds.FLOP) {
             int outs = 0;
-            if(countContains(names, 1)==5){
+            if (countContains(names, 1) == 5) {
                 outs=15;
                 odds = outs*2-(outs-8);
             }
-            if(countContains(names, 2)==1 && countContains(names, 1)==3){
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 3) {
                 odds=100;
             }
         }
-        if(currentRound==Rounds.TURN){
+        if (currentRound==Rounds.TURN) {
             int outs = 0;
-            if(countContains(names, 1)==6){
+            if (countContains(names, 1) == 6) {
                 outs=18;
                 odds = outs*2-(outs-8);
             }
-            if(countContains(names, 2)==1 && countContains(names, 1)==4){
+            if (countContains(names, 2) == 1 && countContains(names, 1) == 4) {
                 odds=100;
             }
-//            if(countContains(names, 3)==1 && countContains(names, 1)==3){
+//            if (countContains(names, 3) == 1 && countContains(names, 1) == 3) {
 //                odds=100;
 //            }
         }
@@ -979,7 +974,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //                getRiskTolerance();
     }
 
-     private boolean suitsInHandAreSame(Card[] hand){
+     private boolean suitsInHandAreSame(Card[] hand) {
         return hand[0].getSuit().equals(hand[1].getSuit());
     }
 }
