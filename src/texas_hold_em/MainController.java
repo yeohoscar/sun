@@ -26,10 +26,10 @@ public abstract class MainController {
     }
 
     public void play()	{
-        int dealerIndex=numPlayers;
+        int dealerIndex=texasPlayers.size();
         while (texasPlayers.size() > 1) {
             deck.reset();//before each game starts, shuffle the deck
-            if(dealerIndex==numPlayers){dealerIndex=0;}
+            if(dealerIndex>=texasPlayers.size()){dealerIndex=0;}
             List<Card> communityCards = new ArrayList<>();
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
@@ -50,9 +50,7 @@ public abstract class MainController {
                         return;
                 //next player become a dealer
                 dealerIndex ++;
-                while(texasPlayers.get(dealerIndex)==null || texasPlayers.get(dealerIndex).hasFolded()){
-                    dealerIndex++;
-                }
+
             }
             catch (Exception e) {
                 e.printStackTrace();

@@ -35,8 +35,8 @@ public abstract class RoundController {
         this.smallBlindAmount=5;
         pots.add(mainPot);
         ArrayList<Integer> playersID= new ArrayList<>();
-        for(int i = 0;i<players.size();i++){
-            playersID.add(i);
+        for(TexasPlayer player: players){
+            playersID.add(player.getId());
         }
         pots.get(0).setPlayerIds(playersID);
         this.printGame = new PrintGame(roundPlayers, deck, pots, communityCards);
@@ -52,6 +52,7 @@ public abstract class RoundController {
         //TODO remove player who all-in and loss or has less than big blind chips
         removePlayer();
     }
+
 
 
     public void blindBet(){
@@ -145,6 +146,7 @@ public abstract class RoundController {
                 currentIndex = 0;
             }
         }
+        onePlayerLeft();
         createSidePot();
 
     }

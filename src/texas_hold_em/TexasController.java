@@ -17,7 +17,13 @@ public class TexasController extends MainController {
 	@Override
 	public void setUp(String[] names, int bank) {
 		super.setUp(names, bank);
+		updatePlayerIDs();
 		deck  = new DeckOfCards();
+	}
+	private void updatePlayerIDs() {
+		for (int i = 0; i < texasPlayers.size(); i++) {
+			texasPlayers.get(i).setId(i);
+		}
 	}
 
 	public static void main(String[] args) {

@@ -14,8 +14,9 @@ import texas_hold_em.Hand;
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
 									    	 // stake in the pot
-	protected int stake      		= 0;		 // the amount of money the player has thrown into the current pot
-	
+	protected int stake      		= 0;// the amount of money the player has thrown into the current pot
+
+	protected int totalStake      	= 0;// total amount of money the player has thrown
 	private String name    		= "Player";  // the unique identifying name given to the player
 	
 	protected Hand hand 		= null;      // the hand dealt to this player
@@ -32,6 +33,7 @@ public abstract class Player {
 		this.name = name;
 		
 		bank      = money;
+
 		reset();
 	}
 		
@@ -43,7 +45,7 @@ public abstract class Player {
 
 	public void reset() {
 		folded = false;
-		
+		totalStake=bank;
 		stake  = 0;
 	}
 	
@@ -80,13 +82,17 @@ public abstract class Player {
 	public int getStake() {
 		return stake;
 	}
-
+	public int getTotalStake() {
+		return totalStake;
+	}
 	
 	public String getName() {
 		return name;
 	}
-	
-	
+
+	public void resetTotalStake() {
+		totalStake=0;
+	}
 	public boolean isBankrupt() {
 		// no more money left
 	
@@ -176,6 +182,7 @@ public abstract class Player {
 		if (bank == 0) return;
 
 		stake++;
+		totalStake++;
 		bank--;
 
 		pot.raiseStake(1);
@@ -192,7 +199,8 @@ public abstract class Player {
 		
 		stake += needed;
 		bank  -= needed; 
-		
+		totalStake +=needed;
+
 		pot.addToPot(needed);
 		System.out.println("\n> " + getName() + " says: I call that " + addCount(needed, "chip", "chips") + "!\n");
 	}
@@ -201,6 +209,7 @@ public abstract class Player {
 		if (getBank() == 0) return;
 
 		stake++;
+		totalStake++;
 		bank--;
 
 		pot.raiseStake(1);
