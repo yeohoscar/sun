@@ -31,6 +31,7 @@ public class RoundsOfTexas extends RoundController {
     }
 
     @Override
+    //compare the hand value and decide who win
     public void showDown() {
         if (onePlayerLeft()) {
             for (TexasPlayer player : roundPlayers) {
@@ -100,6 +101,7 @@ public class RoundsOfTexas extends RoundController {
     }
 
     @Override
+    //remove player who are unable to play the game
     public void removePlayer() {
         Iterator<TexasPlayer> iterator = roundPlayers.iterator();
         while (iterator.hasNext()) {
@@ -117,6 +119,7 @@ public class RoundsOfTexas extends RoundController {
 
 
     @Override
+    //create side pot when some one all in
     public void createSidePot() {
         ArrayList<Integer> playerList = getActivePot().getPlayerIds();
         ArrayList<Integer> allInPlayer = new ArrayList<>();
@@ -127,6 +130,8 @@ public class RoundsOfTexas extends RoundController {
         }
         if (allInPlayer.size()==0){return;}
 
+
+        //sort all in player list, start from the smallest stake
         Collections.sort(allInPlayer, new Comparator<Integer>() {
             @Override
             public int compare(Integer playerId1, Integer playerId2) {
@@ -145,7 +150,7 @@ public class RoundsOfTexas extends RoundController {
 
 
 
-
+            //calculate side pot
             int previousStake = 0;
             for(PotOfMoney pot :pots){
                 previousStake+=pot.getTotal();

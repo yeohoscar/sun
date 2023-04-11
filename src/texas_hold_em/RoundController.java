@@ -183,7 +183,7 @@ public abstract class RoundController {
             }
         }
     }
-
+    // get who move first
     public int firstMovePlayerIndex(Rounds currentRound) {
         int index ;
         if(currentRound==Rounds.PRE_FLOP){
@@ -203,6 +203,7 @@ public abstract class RoundController {
         }
         return index;
     }
+    //everyone called or folded
     public Boolean ActionClosed(){
         int foldCounter =0;
         int callCounter = 0;
