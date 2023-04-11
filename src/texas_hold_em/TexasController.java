@@ -40,21 +40,24 @@ public class TexasController extends MainController {
 			e.printStackTrace();
 		}
 
-		System.out.print("\nHow many players do you wish to play with?  ");
-
 		Scanner scanner = new Scanner(System.in);
 		String[] playerNames = names;
+		int numPlayers = 0;
 
-		try {
-			int numPlayers = scanner.nextInt();
+		while (!(numPlayers < 10 && numPlayers > 2)) {
+			System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
+			try {
+				numPlayers = scanner.nextInt();
 
-			if (numPlayers < 10 && numPlayers > 2) {
-				playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+				if (numPlayers < 10 && numPlayers > 2) {
+					playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+				} else {
+					throw new IllegalArgumentException();
+				}
+			} catch (Exception e) {
+				System.out.println("\nInvalid input.");
+				scanner.nextLine(); // Clear the scanner buffer
 			}
-
-		} catch (Exception e) {
-			System.out.println("Invalid input.");
-			scanner.nextLine(); // Clear the scanner buffer
 		}
 
 		int startingBank = 100;
