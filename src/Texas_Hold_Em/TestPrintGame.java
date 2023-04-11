@@ -14,7 +14,9 @@ public class TestPrintGame {
         deck.reset();
         Hand communityCards;
         ArrayList<TexasPlayer> texasPlayers = new ArrayList<>();
-        PotOfMoney pot = new PotOfMoney();
+        ArrayList<PotOfMoney> pots = new ArrayList<>();
+
+        //PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(3);
         List<Card> cards = List.of(communityCards.getHand());
 //        Hand community = new PokerHand();
@@ -23,7 +25,7 @@ public class TestPrintGame {
 //        communityCards.add(new NumberCard("Ace", "hearts", 1, 14));
 //        communityCards.add(new NumberCard("Deuce", "diamonds", 2));
 //        communityCards.add(new NumberCard("Three", "clubs", 3));
-        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, cards);
+        PrintGame printPublic = new PrintGame(texasPlayers, deck, pots, cards);
         printPublic.printPublicCard(cards);
 
     }
@@ -48,13 +50,14 @@ public class TestPrintGame {
 //            }
 //        }
         Hand communityCards;
-        PotOfMoney pot = new PotOfMoney();
+        ArrayList<PotOfMoney> pots = new ArrayList<>();
+        //PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(4);
         List<Card> cards = List.of(communityCards.getHand());
 
         ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
 
-        PrintGame printPublic = new PrintGame(texasPlayers, deck, pot, cards);
+        PrintGame printPublic = new PrintGame(texasPlayers, deck, pots, cards);
         printPublic.cardPrinter(false);
 
     }

@@ -10,8 +10,7 @@ package Texas_Hold_Em;
 import poker.DeckOfCards;
 
 public class TexasController extends MainController
-{	
-
+{
 	@Override
 	public void setUp(String[] names, int bank) {
 		super.setUp(names, bank);

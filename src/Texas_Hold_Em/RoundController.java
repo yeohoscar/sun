@@ -39,7 +39,7 @@ public abstract class RoundController {
             playersID.add(i);
         }
         pots.get(0).setPlayerIds(playersID);
-        this.printGame = new PrintGame(roundPlayers, deck, getActivePot(), communityCards);
+        this.printGame = new PrintGame(roundPlayers, deck, pots, communityCards);
         this.communityCards = communityCards;
     }
 
@@ -99,6 +99,7 @@ public abstract class RoundController {
                     printGame.table(Rounds.PRE_FLOP);
                 }
                 case 2 -> {
+                    System.out.println("******** Enter Flop Round *******");
                     flopRound();
                     roundCounter++;
                     dealCommunityCards(1);
@@ -138,9 +139,9 @@ public abstract class RoundController {
             printGame.table(currentRound);
 
 
-            for(PotOfMoney pot : pots){
-                System.out.println("CurrentStake="+pot.getCurrentStake()+"     Total="+pot.getTotal());
-            }
+//            for(PotOfMoney pot : pots){
+//                System.out.println("CurrentStake="+pot.getCurrentStake()+"     Total="+pot.getTotal());
+//            }
 
 
             currentIndex++;

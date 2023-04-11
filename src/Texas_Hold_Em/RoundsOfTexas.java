@@ -148,7 +148,6 @@ public class RoundsOfTexas extends RoundController {
 
             pots.add(sidePot);
         }
-
     }
 
 

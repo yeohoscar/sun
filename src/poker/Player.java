@@ -188,7 +188,8 @@ public abstract class Player {
 
 	public void seeBet(PotOfMoney pot) {
 		int needed  = pot.getCurrentStake() - getStake();
-		
+		System.out.println("needed = "+needed);
+
 		if (needed == 0 || needed > getBank())
 			return;
 		

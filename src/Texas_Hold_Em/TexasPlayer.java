@@ -278,9 +278,10 @@ abstract class TexasPlayer extends poker.Player {
 			return;
 		}
 
-		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
+		//System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
 
 		if (pot.getCurrentStake() == 0) {
+			//System.out.println("stake is assigned to zero");
 			stake = 0;
 		}
 
@@ -292,6 +293,7 @@ abstract class TexasPlayer extends poker.Player {
 			case FOLD -> fold();
 			default -> {}
 		}
+		//System.out.println("stake of player: "+this.getStake());
 
 	}
 }

@@ -36,7 +36,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
 //                - VARIABILITY/2;
-        riskTolerance = 50;
+        riskTolerance = 60;
         //System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
@@ -60,7 +60,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
 //        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
         risk = riskTolerance - getStake() - predicateRiskTolerance();
-        System.out.println("risk = "+risk);
+        System.out.println("final risk = "+risk);
         return risk; // tolerance drops as stake increases
     }
 
@@ -188,6 +188,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //TODO: affect the riskTolerance
             return 7;
         }
+        else if(suitsInHandAreSame(hand)){
+            return 15;
+        }else if(isContained(hand, "Ace") || isContained(hand, "Jack") || isContained(hand, "Queen") || isContained(hand, "King") || isContained(hand, "Ten")){
+            return 20;
+        }
         //TODO: may need to do some modify
         else{
             return 29;
@@ -279,7 +284,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //      4-if B is higher than A, we do not ned to consider the cards on hand, and change the riskTolerance
             risk += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
         }
-        //System.out.println("predicated risk = "+risk);
+        System.out.println("predicated risk = "+risk);
         return risk;
     }
 
@@ -935,16 +940,19 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldSee(PotOfMoney pot) {
+        //System.out.println("pot.getCurrentStake() - stake = "+(pot.getCurrentStake() - stake));
         if (pot.getCurrentStake() - stake > bank) {
+            //System.out.println("shouldSee return false");
             return false;
         }
-        if (getStake() == 0) {
-            System.out.println("getStake() in computer player = "+getStake());
-            return true;
-        }
+//        if (getStake() == 0) {
+//            System.out.println("shouldSee return true and getStake() in computer player = "+getStake());
+//            return true;
+//        }
         else {
             int value = getCurrentBestHand().getRiskWorthiness() +
-                    getRiskTolerance() + 10000000;
+                    getRiskTolerance();
+            //+ 10000000
             int value2 = Math.abs(dice.nextInt())%100;
             System.out.println("shouldSee value = "+value);
             System.out.println("shouldSee value2 = "+value2);
@@ -972,14 +980,24 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (pot.getCurrentStake() != 0) {
             return false;
         }
+
+//        System.out.println("Enter shouldCheck");
         int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
+        int value2 = Math.abs(dice.nextInt())%100;
+        System.out.println("shouldCheck value = "+value);
+        System.out.println("shouldCheck value2 = "+value2);
+        return value2 < value;
+
+
+
+
 //        System.out.println("getCurrentBestHand().getRiskWorthiness() = "+getCurrentBestHand().getRiskWorthiness());
 //        System.out.println("getRiskTolerance() = "+getRiskTolerance());
 //        System.out.println("value = "+value);
 //        System.out.println("dice.nextInt())%80 = "+Math.abs(dice.nextInt())%80);
-        return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
+//        return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
+//                getRiskTolerance();
         // + 100000000
     }
 
