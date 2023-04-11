@@ -176,7 +176,6 @@ abstract class TexasPlayer extends poker.Player {
 
 		List<Hand> hands = new ArrayList<>();
 		combinationUtil(result, data, 0, result.length - 1, 0, 5, hands, deck);
-
 		Hand bestHand = hands.get(0);
 		for (Hand hand : hands) {
 			if (bestHand.getValue() < hand.getValue()) {
@@ -230,6 +229,26 @@ abstract class TexasPlayer extends poker.Player {
 
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
 	}
+	
+	@Override
+	public void seeBet(PotOfMoney pot) {
+		int needed  = pot.getCurrentStake() - getStake();
+
+		if (needed > getBank()) {
+			return;
+		}
+		if (needed == 0) {
+			System.out.println("\n> " + getName() + " says: I check!\n");
+			return;
+		}
+
+		stake += needed;
+		bank  -= needed;
+
+		pot.addToPot(needed);
+
+		System.out.println("\n> " + getName() + " says: I see that " + addCount(needed, "chip", "chips") + "!\n");
+	}
 
 	public void winFromPot(int chips,PotOfMoney pot) {
 		// when the winner of a hand takes the pot as his/her winnings
@@ -241,11 +260,6 @@ abstract class TexasPlayer extends poker.Player {
 		pot.takeFromPot(chips);
 		System.out.println(this);
 	}
-	public void check() {
-		System.out.println("\n> " + getName() + " says: I check!\n");
-	}
-
-
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -254,8 +268,6 @@ abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 
     abstract boolean shouldAllIn(PotOfMoney pot);
-
-    abstract boolean shouldCheck(PotOfMoney pot);
 
 	abstract Action chooseAction(PotOfMoney pot);
 
@@ -285,7 +297,6 @@ abstract class TexasPlayer extends poker.Player {
 		}
 
 		switch (chooseAction(pot)) {
-			case CHECK -> check();
 			case SEE -> seeBet(pot);
 			case RAISE -> raiseBet(pot);
 			case ALL_IN -> allIn(pot);

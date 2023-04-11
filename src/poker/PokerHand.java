@@ -390,7 +390,8 @@ public class PokerHand implements Hand
 					{
 						// Attempt to construct the hand described by the predicate
 						
-						PokerHand reconsider	=  categorizeAs(preds[i].getName());
+						//PokerHand reconsider	=  categorizeAs(preds[i].getName());
+						PokerHand reconsider = recategorize();
 						
 						// Is it a better hand than the way we organized it previously?
 						 

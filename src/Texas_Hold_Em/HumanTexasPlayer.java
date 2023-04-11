@@ -91,24 +91,21 @@ public class HumanTexasPlayer extends TexasPlayer {
 		Action chosenAction = null;
 		try {
 			while (chosenAction == null) {
-				System.out.print("\n>> Pick an option: 1. Check  2. See  3. Raise  4. All In  5. Fold  ");
+				System.out.print("\n>> Pick an option: 1. See  2. Raise  3. All In  4. Fold  ");
 				System.in.read(input);
 
 				for (byte b : input) {
 					switch (((char) b)) {
 						case '1' -> {
-							if (shouldCheck(pot)) chosenAction = CHECK;
-						}
-						case '2' -> {
 							if (shouldSee(pot)) chosenAction = SEE;
 						}
-						case '3' -> {
+						case '2' -> {
 							if (shouldRaise(pot)) chosenAction = RAISE;
 						}
-						case '4' -> {
+						case '3' -> {
 							if (shouldAllIn(pot)) chosenAction = ALL_IN;
 						}
-						case '5' -> {
+						case '4' -> {
 							chosenAction = FOLD;
 						}
 						default -> {
@@ -151,14 +148,5 @@ public class HumanTexasPlayer extends TexasPlayer {
 
 	public boolean shouldAllIn(PotOfMoney pot) {
 		return askQuestion("Do you want to all in?");
-	}
-
-	public boolean shouldCheck(PotOfMoney pot) {
-		if (pot.getCurrentStake() == 0) {
-			return askQuestion("Do you want to check?");
-		} else {
-			notifyInvalidAction("check", "a bet has already been placed");
-			return false;
-		}
 	}
 }

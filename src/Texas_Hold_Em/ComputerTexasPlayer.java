@@ -917,7 +917,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public Action chooseAction(PotOfMoney pot) {
-        if (shouldCheck(pot)) return CHECK;
         if (shouldSee(pot)) return SEE;
         if (shouldRaise(pot)) return RAISE;
         if (shouldAllIn(pot)) return ALL_IN;
@@ -966,21 +965,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return value2 < value;
 //        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
 //                getRiskTolerance();
-    }
-
-    public boolean shouldCheck(PotOfMoney pot) {
-        if (pot.getCurrentStake() != 0) {
-            return false;
-        }
-        int value = getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
-//        System.out.println("getCurrentBestHand().getRiskWorthiness() = "+getCurrentBestHand().getRiskWorthiness());
-//        System.out.println("getRiskTolerance() = "+getRiskTolerance());
-//        System.out.println("value = "+value);
-//        System.out.println("dice.nextInt())%80 = "+Math.abs(dice.nextInt())%80);
-        return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
-        // + 100000000
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
