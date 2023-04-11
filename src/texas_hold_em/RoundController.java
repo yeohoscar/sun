@@ -96,49 +96,40 @@ public abstract class RoundController {
                     roundCounter++;
                     dealCommunityCards(3);
                     System.out.println("\n\nThree Public Cards are released\n");
-                    printGame.table(Rounds.PRE_FLOP);
                 }
                 case 2 -> {
+                    printGame.table(Rounds.FLOP);
                     flopRound();
                     roundCounter++;
                     dealCommunityCards(1);
                     System.out.println("\n\nTurn Card is released\n");
-                    printGame.table(Rounds.FLOP);
                 }
                 case 3 -> {
+                    printGame.table(Rounds.TURN);
                     turnRound();
                     roundCounter++;
                     dealCommunityCards(1);
                     System.out.println("\n\nRiver Card is released\n");
-                    printGame.table(Rounds.TURN);
                 }
                 default -> {
+                    printGame.table(Rounds.RIVER);
                     riverRound();
                     roundCounter++;
 
-                    printGame.table(Rounds.RIVER);
+                    printGame.table(Rounds.SHOWDOWN);
                 }
             }
             resetStakes();
-            //printGame.table("showDown");
         }
     }
     public void roundMove (Rounds currentRound) {
         int currentIndex = firstMovePlayerIndex(currentRound);
         roundPlayers.get(currentIndex).setDeck(deck);
-        //System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
         while (!onePlayerLeft() && !ActionClosed()) {
             delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
-
-            //System.out.println("currentRound = " + currentRound);
-            //System.out.println("Current player: " + currentPlayer.getName());
-
-
             currentPlayer.nextAction(getActivePot());
-
             printGame.table(currentRound);
-
             currentIndex++;
 
             if (currentIndex == numPlayers){
