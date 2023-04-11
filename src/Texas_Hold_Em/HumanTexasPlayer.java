@@ -50,15 +50,11 @@ public class HumanTexasPlayer extends TexasPlayer {
 
 	@Override
 	public void raiseBet(PotOfMoney pot) {
-		if (getBank() == 0||pot.getCurrentStake()>bank*2) {
-			System.out.println("No enough chips");
-			return;
-		}
 		Scanner scanner = new Scanner(System.in);
 		int raiseAmount = -1;
 
 		while (raiseAmount < pot.getCurrentStake() || raiseAmount > bank) {
-			System.out.print("\n>> How many chips do you want to raise? ");
+			System.out.print("\n>> How many chips do you want to raise to? ");
 			try {
 				raiseAmount = scanner.nextInt();
 				if (pot.getCurrentStake() == 0) {
@@ -76,11 +72,12 @@ public class HumanTexasPlayer extends TexasPlayer {
 			}
 		}
 
-		System.out.println("You want to raise " + raiseAmount + " chips.");
-		stake+=raiseAmount;
-		bank-=raiseAmount;
-		pot.raiseStake(raiseAmount);
-		System.out.println("\n> " + getName() + " says: I raise by " + raiseAmount + " chip!\n");
+		System.out.println("You want to raise to " + raiseAmount + " chips.");
+		int needed = raiseAmount - stake;
+		stake += needed;
+		bank -= needed;
+		pot.raiseStake(needed);
+		System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
 
 		if(bank==0){
 			allIn();
@@ -143,7 +140,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public boolean shouldRaise(PotOfMoney pot) {
-		if (bank < pot.getCurrentStake() * 2) {
+		if (bank < pot.getCurrentStake() * 2 - stake) {
 			notifyInvalidAction("raise", "insufficient chips");
 			return false;
 		}

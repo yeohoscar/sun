@@ -899,23 +899,21 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     @Override
     public void raiseBet(PotOfMoney pot) {
-        // pot current stake is either 0 or greater than big blind amount
-        if (pot.getCurrentStake() > bank || RoundController.BIG_BLIND_AMOUNT > bank) return;
-
         int raiseAmount;
 
         if (pot.getCurrentStake() == 0) {
             raiseAmount = RoundController.BIG_BLIND_AMOUNT;
         } else {
-            raiseAmount = pot.getCurrentStake();
+            raiseAmount = pot.getCurrentStake() * 2;
         }
 
-        stake += raiseAmount;
-        bank -= raiseAmount;
+        int needed = raiseAmount - stake;
+        stake += needed;
+        bank -= needed;
 
-        pot.raiseStake(raiseAmount);
+        pot.raiseStake(needed);
 
-        System.out.println("\n> " + getName() + " says: I raise by " + raiseAmount + " chips!\n");
+        System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
     }
 
     public Action chooseAction(PotOfMoney pot) {
@@ -957,7 +955,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
-        if (bank < pot.getCurrentStake() * 2) {
+        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
             return false;
         }
         int value = getCurrentBestHand().getRiskWorthiness() +
