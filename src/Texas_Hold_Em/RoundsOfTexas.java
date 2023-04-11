@@ -30,53 +30,6 @@ public class RoundsOfTexas extends RoundController {
         }
     }
 
-
-//    @Override
-//    public void blindBet() {
-//        super.blindBet();
-//        printGame.table("deal");
-//    }
-
-    /*@Override
-    public void roundCounter(int counter) {
-        int roundCounter = counter;
-        while (onePlayerLeft() && roundCounter != 5) {
-            switch (roundCounter) {
-                case 1 -> {
-                    preFlopRound();
-                    roundCounter++;
-                    printGame.table("pre-flop");
-                    //TODO: three public cards should be displayed on the table.
-                    break;
-                }
-                case 2 -> {
-                    flopRound();
-                    roundCounter++;
-                    printGame.table("flop");
-                    //TODO: turn card should be displayed on the table
-                    break;
-                }
-                case 3 -> {
-                    turnRound();
-                    roundCounter++;
-                    printGame.table("turn");
-                    //TODO: river card should be displayed on the table
-                    break;
-                }
-                default -> {
-                    riverRound();
-                    roundCounter++;
-                    printGame.table("river");
-                    break;
-                }
-
-
-
-
-            }
-        }
-    }*/
-
     @Override
     public void showDown() {
         if (onePlayerLeft()) {

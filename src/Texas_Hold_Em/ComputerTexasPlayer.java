@@ -14,6 +14,7 @@ import poker.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static Texas_Hold_Em.Action.*;
 
 public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY = 50;
@@ -178,12 +179,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
             return 12;
         }
         //these hand cards maybe can form strong straightFlush
-        else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "Ace") && suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "King") && suitsOnHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsOnHandAreSame(hand)){
+        else if((isContained(hand, "Ace") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
+                (isContained(hand, "Queen") && isContained(hand, "Ace") && suitsInHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsInHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
+                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)){
             //TODO: affect the riskTolerance
             return 7;
         }
@@ -917,6 +918,14 @@ public class ComputerTexasPlayer extends TexasPlayer {
         System.out.println("\n> " + getName() + " says: I raise by " + raiseAmount + " chips!\n");
     }
 
+    public Action chooseAction(PotOfMoney pot) {
+        if (shouldCheck(pot)) return CHECK;
+        if (shouldSee(pot)) return SEE;
+        if (shouldRaise(pot)) return RAISE;
+        if (shouldAllIn(pot)) return ALL_IN;
+        return FOLD;
+    }
+
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
     // Key decisions a player must make
@@ -928,6 +937,9 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldSee(PotOfMoney pot) {
+        if (pot.getCurrentStake() - stake > bank) {
+            return false;
+        }
         if (getStake() == 0) {
             System.out.println("getStake() in computer player = "+getStake());
             return true;
@@ -945,6 +957,9 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
+        if (bank < pot.getCurrentStake() * 2) {
+            return false;
+        }
         int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
         int value2 = Math.abs(dice.nextInt())%80;
@@ -956,6 +971,9 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     public boolean shouldCheck(PotOfMoney pot) {
+        if (pot.getCurrentStake() != 0) {
+            return false;
+        }
         int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
 //        System.out.println("getCurrentBestHand().getRiskWorthiness() = "+getCurrentBestHand().getRiskWorthiness());
@@ -979,7 +997,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //                getRiskTolerance();
     }
 
-     private boolean suitsOnHandAreSame(Card[] hand){
+     private boolean suitsInHandAreSame(Card[] hand){
         return hand[0].getSuit().equals(hand[1].getSuit());
     }
 }

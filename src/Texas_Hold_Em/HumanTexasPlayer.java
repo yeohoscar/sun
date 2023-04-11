@@ -3,6 +3,8 @@ package Texas_Hold_Em;
 import poker.PotOfMoney;
 import java.util.Scanner;
 
+import static Texas_Hold_Em.Action.*;
+
 public class HumanTexasPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -38,6 +40,10 @@ public class HumanTexasPlayer extends TexasPlayer {
 		catch (Exception e){};
 
 		return false;
+	}
+
+	public void notifyInvalidAction(String action, String reason) {
+		System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">\n\n");
 	}
 
 	// Prompts user to input number of chips to raise by
@@ -81,6 +87,42 @@ public class HumanTexasPlayer extends TexasPlayer {
 		}
 	}
 
+	public Action chooseAction(PotOfMoney pot) {
+		System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
+		byte[] input = new byte[100];
+		Action chosenAction = null;
+		try {
+			while (chosenAction == null) {
+				System.in.read(input);
+
+				for (byte b : input) {
+					switch (((char) b)) {
+						case '1' -> {
+							if (shouldCheck(pot)) chosenAction = CHECK;
+						}
+						case '2' -> {
+							if (shouldSee(pot)) chosenAction = SEE;
+						}
+						case '3' -> {
+							if (shouldRaise(pot)) chosenAction = RAISE;
+						}
+						case '4' -> {
+							if (shouldAllIn(pot)) chosenAction = ALL_IN;
+						}
+						case '5' -> {
+							chosenAction = FOLD;
+						}
+						default -> {
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return chosenAction;
+	}
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Key decisions a player must make
@@ -92,11 +134,19 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public boolean shouldSee(PotOfMoney pot) {
+		if (pot.getCurrentStake() - stake > bank) {
+			notifyInvalidAction("see", "insufficient chips");
+			return false;
+		}
 		return askQuestion("Do you want to see the bet of " +
 					addCount(pot.getCurrentStake() - getStake(), "chip", "chips"));
 	}
 
 	public boolean shouldRaise(PotOfMoney pot) {
+		if (bank < pot.getCurrentStake() * 2) {
+			notifyInvalidAction("raise", "insufficient chips");
+			return false;
+		}
 		return askQuestion("Do you want to raise the bet?");
 	}
 
@@ -108,6 +158,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 		if (pot.getCurrentStake() == 0) {
 			return askQuestion("Do you want to check?");
 		} else {
+			notifyInvalidAction("check", "a bet has already been placed");
 			return false;
 		}
 	}

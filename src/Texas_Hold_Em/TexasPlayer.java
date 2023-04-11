@@ -1,5 +1,6 @@
 package Texas_Hold_Em;
 
+import BlackJack.BlackjackHand;
 import poker.*;
 
 import java.util.ArrayList;
@@ -124,6 +125,18 @@ abstract class TexasPlayer extends poker.Player {
 		this.dealer = dealer;
 	}
 
+	@Override
+	public void takePot(PotOfMoney pot) {
+		// when the winner of a hand takes the pot as his/her winnings
+
+		System.out.println("\n> " + getName() + " says: I WIN " + addCount(pot.getTotal(), "chip", "chips") + "!\n");
+		System.out.println(currentBestHand.toString());
+
+		bank += pot.takePot();
+
+		System.out.println(this);
+	}
+
 	// Computes best hand using player's hole cards and the public cards
 
 	public void findBestHand(Card[] publicCards, DeckOfCards deck) {
@@ -238,6 +251,8 @@ abstract class TexasPlayer extends poker.Player {
 
     abstract boolean shouldCheck(PotOfMoney pot);
 
+	abstract Action chooseAction(PotOfMoney pot);
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Game actions are scheduled here
@@ -247,7 +262,7 @@ abstract class TexasPlayer extends poker.Player {
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
 
-		if (isBankrupt() || pot.getCurrentStake() - getStake() > getBank()) {
+		if (isBankrupt()) {
 			// not enough money to cover the bet
 
 			System.out.println("\n> " + getName() + " says: I'm out!\n");
@@ -256,43 +271,20 @@ abstract class TexasPlayer extends poker.Player {
 
 			return;
 		}
+
 		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
+
 		if (pot.getCurrentStake() == 0) {
-			// first mover of the round
+			stake = 0;
+		}
 
-			if (shouldCheck(pot)) {
-				stake = 0;
-				check();
-			} else if (shouldRaise(pot)) {
-				stake = 0;
-				raiseBet(pot);
-			} else if (shouldAllIn(pot)) {
-				stake = 0;
-				allIn(pot);
-			} else {
-				fold();
-			}
-		} else {
-			if (pot.getCurrentStake() > getStake()) {
-				// existing bet must be covered	
-				System.out.println("pot.getCurrentStake() in TexasPlayer = "+pot.getCurrentStake());
-				if (shouldSee(pot)) {
-
-					seeBet(pot);
-
-					if (shouldAllIn(pot)) {
-						allIn(pot);
-					} else if (shouldRaise(pot))
-						raiseBet(pot);
-				} else
-					fold();
-			} else {
-				if (shouldAllIn(pot)) {
-					allIn(pot);
-				} else {
-					fold();
-				}
-			}
+		switch (chooseAction(pot)) {
+			case CHECK -> check();
+			case SEE -> seeBet(pot);
+			case RAISE -> raiseBet(pot);
+			case ALL_IN -> allIn(pot);
+			case FOLD -> fold();
+			default -> {}
 		}
 	}
 }
