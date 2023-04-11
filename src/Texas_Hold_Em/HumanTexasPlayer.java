@@ -88,11 +88,11 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public Action chooseAction(PotOfMoney pot) {
-		System.out.print("\n>> Pick an option: 1. Check  2. See  3. Raise  4. All In  5. Fold");
 		byte[] input = new byte[100];
 		Action chosenAction = null;
 		try {
 			while (chosenAction == null) {
+				System.out.print("\n>> Pick an option: 1. Check  2. See  3. Raise  4. All In  5. Fold  ");
 				System.in.read(input);
 
 				for (byte b : input) {
