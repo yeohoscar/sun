@@ -31,9 +31,11 @@ public class HumanTexasPlayer extends TexasPlayer {
 		try {
 			System.in.read(input);
 
-			for (int i = 0; i < input.length; i++)
-				if ((char)input[i] == 'y' || (char)input[i] == 'Y')
+			for (int i = 0; i < input.length; i++){
+				if ((char)input[i] == 'y' || (char)input[i] == 'Y'){
 					return true;
+				}
+			}
 		}
 		catch (Exception e){};
 

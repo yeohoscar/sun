@@ -247,6 +247,8 @@ abstract class TexasPlayer extends poker.Player {
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
 
+		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
+		System.out.println("player getStake() = "+getStake());
 		if (isBankrupt() || pot.getCurrentStake() - getStake() > getBank()) {
 			// not enough money to cover the bet
 
@@ -256,20 +258,23 @@ abstract class TexasPlayer extends poker.Player {
 
 			return;
 		}
-		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
 		if (pot.getCurrentStake() == 0) {
 			// first mover of the round
 
 			if (shouldCheck(pot)) {
+				System.out.println("pot.getCurrentStake() == 0******* shouldCheck ******");
 				stake = 0;
 				check();
 			} else if (shouldRaise(pot)) {
+				System.out.println("pot.getCurrentStake() == 0******* shouldRaise ******");
 				stake = 0;
 				raiseBet(pot);
 			} else if (shouldAllIn(pot)) {
+				System.out.println("pot.getCurrentStake() == 0******* shouldAllIn ******");
 				stake = 0;
 				allIn(pot);
 			} else {
+				System.out.println("pot.getCurrentStake() == 0******* fold ******");
 				fold();
 			}
 		} else {
@@ -277,19 +282,28 @@ abstract class TexasPlayer extends poker.Player {
 				// existing bet must be covered	
 				System.out.println("pot.getCurrentStake() in TexasPlayer = "+pot.getCurrentStake());
 				if (shouldSee(pot)) {
-
+					System.out.println("pot.getCurrentStake() > getStake()******* shouldSee ******");
 					seeBet(pot);
 
 					if (shouldAllIn(pot)) {
+						System.out.println("pot.getCurrentStake() > getStake()******* shouldSee ****** shouldAllIn ******");
+
 						allIn(pot);
 					} else if (shouldRaise(pot))
-						raiseBet(pot);
-				} else
-					fold();
+						System.out.println("pot.getCurrentStake() > getStake()******* shouldSee ****** shouldRaise ******");
+
+					raiseBet(pot);
+				} else{
+					System.out.println("pot.getCurrentStake() > getStake()******* not shouldSee ****** fold ******");
+				    fold();
+				}
 			} else {
 				if (shouldAllIn(pot)) {
+					System.out.println("pot.getCurrentStake() <= getStake()******* shouldAllIn ******");
 					allIn(pot);
 				} else {
+					System.out.println("pot.getCurrentStake() <= getStake()******* fold ******");
+
 					fold();
 				}
 			}
