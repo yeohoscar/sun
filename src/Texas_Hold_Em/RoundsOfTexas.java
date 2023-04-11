@@ -48,12 +48,13 @@ public class RoundsOfTexas extends RoundController {
                 if (!player.hasFolded()) {
                     Card[] communityCardsArr = new Card[communityCards.size()];
                     player.findBestHand(communityCards.toArray(communityCardsArr), deck);
+                    System.out.println(player.getCurrentBestHand());
                     int handValue = player.getCurrentBestHand().getValue();
                     valueRank.put(i, handValue);
                 }
             }
             // find who has the largest handValue
-
+            System.out.println(valueRank);
 
             for (int i = pots.size() - 1; i >= 0; i--) {
                 PotOfMoney pot = pots.get(i);
@@ -100,12 +101,20 @@ public class RoundsOfTexas extends RoundController {
 
     @Override
     public void removePlayer() {
-        for(TexasPlayer player : roundPlayers){
-            if(player.getBank()<BIG_BLIND_AMOUNT){
-                roundPlayers.remove(player);
+        Iterator<TexasPlayer> iterator = roundPlayers.iterator();
+        while (iterator.hasNext()) {
+            TexasPlayer player = iterator.next();
+            if (player.getBank() < BIG_BLIND_AMOUNT) {
+                iterator.remove();
             }
         }
+
+        for(TexasPlayer player : roundPlayers){
+            player.reset();
+            player.resetDealer();
+        }
     }
+
 
     @Override
     public void createSidePot() {

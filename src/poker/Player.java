@@ -23,7 +23,7 @@ public abstract class Player {
 	protected Hand hand 		= null;      // the hand dealt to this player
 	
 	protected boolean folded 		= false;     // set to true when the player folds (gives up)
-	
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -196,8 +196,7 @@ public abstract class Player {
 		bank  -= needed; 
 		
 		pot.addToPot(needed);
-		
-		System.out.println("\n> " + getName() + " says: I see that " + addCount(needed, "chip", "chips") + "!\n");
+		System.out.println("\n> " + getName() + " says: I call that " + addCount(needed, "chip", "chips") + "!\n");
 	}
 
 	public void raiseBet(PotOfMoney pot) {

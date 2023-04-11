@@ -91,7 +91,9 @@ public class HumanTexasPlayer extends TexasPlayer {
 		Action chosenAction = null;
 		try {
 			while (chosenAction == null) {
-				System.out.print("\n>> Pick an option: 1. See  2. Raise  3. All In  4. Fold  ");
+
+				System.out.print("\n>> Pick an option: 1. Call/Check  2. Raise  3. All In  4. Fold  ");
+
 				System.in.read(input);
 
 				for (byte b : input) {
@@ -134,7 +136,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 			notifyInvalidAction("see", "insufficient chips");
 			return false;
 		}
-		return askQuestion("Do you want to see the bet of " +
+		return askQuestion("Do you want to call the bet of " +
 					addCount(pot.getCurrentStake() - getStake(), "chip", "chips"));
 	}
 

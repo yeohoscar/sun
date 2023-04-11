@@ -35,7 +35,9 @@ public abstract class MainController {
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
             RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, communityCards, dealerIndex);
             round.play();
-
+            if(texasPlayers.size()==1){
+                break;
+            }
             try {
                 System.out.print("\n\nPlay another round? Press 'q' to terminate this game ... ");
 

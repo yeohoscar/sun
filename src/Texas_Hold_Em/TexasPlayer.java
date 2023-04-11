@@ -18,6 +18,7 @@ abstract class TexasPlayer extends poker.Player {
 
 	private boolean allIn;
 
+
 	protected boolean dealer = false;
 
 	public DeckOfCards deckOfCards;
@@ -66,6 +67,9 @@ abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
+	public void resetDealer() {
+		dealer=false;
+	}
 	public void reset() {
 		folded = false;
 		allIn = false;
@@ -141,7 +145,6 @@ abstract class TexasPlayer extends poker.Player {
 	public void allIn() {
 		allIn = true;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -280,21 +283,26 @@ abstract class TexasPlayer extends poker.Player {
 	public void nextAction(PotOfMoney pot) {
 		if (hasFolded()) return;  // no longer in the game
 
-		if (isBankrupt()) {
-			// not enough money to cover the bet
 
-			System.out.println("\n> " + getName() + " says: I'm out!\n");
-
-			fold();
-
+		if(isAllIn()){
 			return;
 		}
+//		if (isBankrupt()) {
+//			// not enough money to cover the bet
+//
+//			System.out.println("\n> " + getName() + " says: I'm out!\n");
+//
+//			fold();
+//
+//			return;
+//		}
 
 		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
 
-		if (pot.getCurrentStake() == 0) {
+		if (stake==-1) {
 			stake = 0;
 		}
+
 
 		switch (chooseAction(pot)) {
 			case SEE -> seeBet(pot);

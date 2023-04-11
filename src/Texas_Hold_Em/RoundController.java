@@ -133,6 +133,7 @@ public abstract class RoundController {
             //System.out.println("currentRound = " + currentRound);
             //System.out.println("Current player: " + currentPlayer.getName());
 
+
             currentPlayer.nextAction(getActivePot());
 
             printGame.table(currentRound);
@@ -141,8 +142,6 @@ public abstract class RoundController {
             for(PotOfMoney pot : pots){
                 System.out.println("CurrentStake="+pot.getCurrentStake()+"     Total="+pot.getTotal());
             }
-
-
             currentIndex++;
 
             if (currentIndex == numPlayers){
@@ -192,11 +191,11 @@ public abstract class RoundController {
             index = bigIndex+1;
         }else {
             index = dealerIndex+1;
-            if(dealerIndex==(numPlayers)){
-                index=0;
-            }
         }
-
+        if(index==(numPlayers)){
+            index=0;
+        }
+        System.out.println("INDEX="+index);
         while(roundPlayers.get(index).hasFolded()){
             index++;
             if(index==numPlayers){
