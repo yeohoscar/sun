@@ -1,6 +1,5 @@
 package Texas_Hold_Em;
 
-import BlackJack.BlackjackHand;
 import poker.*;
 
 import java.util.ArrayList;
@@ -104,8 +103,6 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
-
-
 	public int getId() {
 		return id;
 	}
@@ -120,16 +117,6 @@ abstract class TexasPlayer extends poker.Player {
 	public boolean isAllIn() {
 		return allIn;
 	}
-
-
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Actions a player can make
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-
-
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -298,6 +285,7 @@ abstract class TexasPlayer extends poker.Player {
 //		}
 
 		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
+
 
 		if (stake==-1) {
 			stake = 0;

@@ -27,3 +27,4 @@ Due to the distinct differences between Blackjack and Poker, despite their simil
 - Added constructor chaining to pokerHand that allows for variable number of cards to be dealt
 - Added overloaded method to dealHand that allows variable number of cards to be dealt
 - Changed access modifiers of Player's class variables to protected
+- PokerHand categorise method now uses recategorize() instead of categoriseAs
