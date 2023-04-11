@@ -36,9 +36,9 @@ public class FourOfAKind extends PokerHand {
 	
 	public int getValue()	{
 		if (getCard(0).getRank() == getCard(3).getRank())
-			return PokerHand.FOURS_VALUE + getCard(0).getValue();
+			return PokerHand.FOURS_VALUE + getCard(0).getValue() + getCard(4).getValue();
 		else
-			return PokerHand.FOURS_VALUE + getCard(1).getValue();
+			return PokerHand.FOURS_VALUE + getCard(1).getValue() + getCard(0).getValue();
 	}
 	
 

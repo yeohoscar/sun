@@ -33,7 +33,8 @@ public class Flush extends PokerHand  {
 	//--------------------------------------------------------------------//
 	
 	public int getValue() 	{
-		return PokerHand.FLUSH_VALUE + getCard(0).getValue()*10 + getCard(1).getValue();
+		return PokerHand.FLUSH_VALUE + getCard(0).getValue()*10 + getCard(1).getValue()
+				+ getCard(2).getValue() + getCard(3).getValue() + getCard(4).getValue();
 	}
 	
 

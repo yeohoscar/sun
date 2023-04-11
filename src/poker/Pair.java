@@ -35,15 +35,19 @@ public class Pair extends PokerHand {
 	
 	public int getValue() {
 		if (getCard(0).getRank() == getCard(1).getRank())
-			return PokerHand.PAIR_VALUE + getCard(0).getValue()*10 + getCard(2).getValue();
+			return PokerHand.PAIR_VALUE + getCard(0).getValue()*10 + getCard(2).getValue()
+					+ getCard(3).getValue() + getCard(4).getValue();
 		else
 		if (getCard(1).getRank() == getCard(2).getRank())
-			return PokerHand.PAIR_VALUE + getCard(1).getValue()*10 + getCard(0).getValue();
+			return PokerHand.PAIR_VALUE + getCard(1).getValue()*10 + getCard(0).getValue()
+					+ getCard(3).getValue() + getCard(4).getValue();
 		else
 		if (getCard(2).getRank() == getCard(3).getRank())
-			return PokerHand.PAIR_VALUE + getCard(2).getValue()*10 + getCard(0).getValue();
+			return PokerHand.PAIR_VALUE + getCard(2).getValue()*10 + getCard(0).getValue()
+					+ getCard(1).getValue() + getCard(4).getValue();
 		else
-			return PokerHand.PAIR_VALUE + getCard(3).getValue()*10 + getCard(0).getValue();
+			return PokerHand.PAIR_VALUE + getCard(3).getValue()*10 + getCard(0).getValue()
+					+ getCard(1).getValue() + getCard(2).getValue();
 	}
 	
 	//--------------------------------------------------------------------//

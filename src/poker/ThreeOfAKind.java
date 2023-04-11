@@ -35,12 +35,12 @@ public class ThreeOfAKind extends PokerHand {
 	
 	public int getValue() {
 		if (getCard(0).getRank() == getCard(2).getRank())
-			return PokerHand.THREES_VALUE + getCard(0).getValue()*10 + getCard(3).getValue();
+			return PokerHand.THREES_VALUE + getCard(0).getValue()*10 + getCard(3).getValue() + getCard(4).getValue();
 		else
 		if (getCard(1).getRank() == getCard(3).getRank())
-			return PokerHand.THREES_VALUE + getCard(1).getValue()*10 + getCard(0).getValue();
+			return PokerHand.THREES_VALUE + getCard(1).getValue()*10 + getCard(0).getValue() + getCard(4).getValue();
 		else
-			return PokerHand.THREES_VALUE + getCard(2).getValue()*10 + getCard(0).getValue();			
+			return PokerHand.THREES_VALUE + getCard(2).getValue()*10 + getCard(0).getValue() + getCard(1).getValue();
 	}
 	
 	

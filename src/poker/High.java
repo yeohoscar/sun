@@ -35,9 +35,11 @@ public class High extends PokerHand {
 	
 	public int getValue() {
 		if (getCard(4).getRank() == 1) // an ace
-			return getCard(4).getValue();
+			return getCard(4).getValue() + getCard(3).getValue() + getCard(2).getValue()
+					+ getCard(1).getValue() + getCard(0).getValue();
 		else
-			return getCard(0).getValue();
+			return getCard(0).getValue() + getCard(4).getValue() + getCard(3).getValue()
+					+ getCard(2).getValue() + getCard(1).getValue();
 	}
 	
 	//--------------------------------------------------------------------//
