@@ -88,7 +88,7 @@ public class HumanTexasPlayer extends TexasPlayer {
 	}
 
 	public Action chooseAction(PotOfMoney pot) {
-		System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
+		System.out.print("\n>> Pick an option: 1. Check  2. See  3. Raise  4. All In  5. Fold");
 		byte[] input = new byte[100];
 		Action chosenAction = null;
 		try {
