@@ -235,9 +235,13 @@ public abstract class RoundController {
         }
     }
 
+    // Get the pot everyone is betting with
+
     public PotOfMoney getActivePot() {
         return pots.get(pots.size() - 1);
     }
+
+    // Reset pot and player stakes to prepare for new round of betting
 
     public void resetStakes() {
         getActivePot().setStake(0);
@@ -247,9 +251,13 @@ public abstract class RoundController {
         }
     }
 
+    // Utility method to delay actions
+
     private void delay(int numMilliseconds) {
         try {
             Thread.sleep(numMilliseconds);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
