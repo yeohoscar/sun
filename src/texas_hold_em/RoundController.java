@@ -212,7 +212,7 @@ public abstract class RoundController {
                 foldCounter++;
             }
             //TODO: should player.getStake()==pot.getCurrentStake() ?
-            if(player.getStake()==getActivePot().getCurrentStake()||player.isAllIn()){
+            else if(player.getStake()==getActivePot().getCurrentStake()||player.isAllIn()){
                 callCounter++;
             }
         }

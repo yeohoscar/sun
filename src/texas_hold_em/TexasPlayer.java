@@ -214,13 +214,14 @@ public abstract class TexasPlayer extends poker.Player {
 
 	public void allIn(PotOfMoney pot) {
 		if (getBank() == 0) return;
-
+		final int oldStake= stake;
 		stake += bank;
 
 		if (stake <= pot.getCurrentStake()*2){
 			pot.addToPot(bank);
 		} else {
 			pot.raiseStake(stake - pot.getCurrentStake());
+			pot.removeFromPot(oldStake);
 		}
 
 		bank = 0;

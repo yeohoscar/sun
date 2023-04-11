@@ -247,7 +247,7 @@ public class PrintGame {
 
 
         for(int i=0; i<pots.size(); i++){
-            if(i==pots.size()-1){
+            if(i==0){
                 System.out.println("| Main Pot:\n|    CurrentStake="+pots.get(i).getCurrentStake()+"     Total="+pots.get(i).getTotal());
             }
             else {
