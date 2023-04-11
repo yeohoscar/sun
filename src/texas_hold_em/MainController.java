@@ -54,11 +54,19 @@ public abstract class MainController {
                     dealerIndex++;
                 }
             }
-            catch (Exception e) {};
-
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            updatePlayerIDs();
         }
 
         System.out.println("Congratulations!");
         System.out.println(texasPlayers.get(0).getName()+" is the Winner of the Game!");
+    }
+
+    private void updatePlayerIDs() {
+        for (int i = 0; i < texasPlayers.size(); i++) {
+            texasPlayers.get(i).setId(i);
+        }
     }
 }

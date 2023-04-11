@@ -84,6 +84,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 }
             }
     }
+
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
             return hand[num];
