@@ -37,7 +37,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
 //                - VARIABILITY/2;
         riskTolerance = 60;
-        //System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -50,17 +49,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
     // a negative risk tolerance means the player is averse to risk (nervous)
     // a positive risk tolerance means the player is open to risk   (adventurous)
-
+    /************************ this method returns the riskTolerance by calling predicateRiskTolerance() method *****************************/
     public int getRiskTolerance() {
         int risk = 0;
-//        System.out.println("Original RiskTolerance = "+riskTolerance);
-//        System.out.println("stake of computerPlayer = "+getStake());
-//        System.out.println("\n\nriskTolerance = "+riskTolerance);
-//        System.out.println("getStake() = "+getStake() );
-//        System.out.println("predicateRiskTolerance() = "+predicateRiskTolerance());
-//        System.out.println("Updated riskTolerance = "+(riskTolerance - getStake() - predicateRiskTolerance()));
         risk = riskTolerance - getStake() - predicateRiskTolerance();
-        System.out.println("risk = "+risk);
         return risk; // tolerance drops as stake increases
     }
 
@@ -103,6 +95,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         this.communityCards = communityCards;
     }
 
+    /************************ this method sorts cards from low to high with highest cards on the right *****************************/
     public void sortCards(Card[] allCards) {
         int minPosition = 0;
         Card palm = null;
@@ -111,8 +104,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
         for (int i = 0; i < allCards.length-1; i++) {
             minPosition = i;
-            //maxValue    = getCard(i).getValue();
-
             // consider every other position to the left of this position
 
             for (int j = i+1; j < allCards.length; j++)  { // is there a higher card to the left?
@@ -131,6 +122,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         else if (allCards.length == 6 && Objects.equals(getCard(5, allCards).getName(), "Ace")) reorderStraight(allCards);
     }
 
+    /************************ this method will check if a card is contained in the passed in Card[] array *****************************/
     private boolean isContained(Card[] allCards, String name) {
         for (Card c: allCards) {
             if (Objects.equals(c.getName(), name)) {
@@ -140,6 +132,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return false;
     }
 
+    /************************ this method will reorder the position of Ace based on current cards *****************************/
     private void reorderStraight(Card[] allCards) {
         // Check to see if ace should be sorted as a low value (1) rather than a high value (14)
         if (allCards.length==5 && !(allCards[4].isAce()
@@ -169,6 +162,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
     }
 
+    /************************ this method will calculate the riskTolerance of two cards on hand in pre-flop round *****************************/
     public int preFlopRiskToleranceHelper(Card[] hand) {
         //the most advantage hand card
         if ((hand[0].isAce() && hand[1].isAce())
@@ -203,6 +197,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
     }
 
+    /************************ this method will calculate the riskTolerance in river round *****************************/
     public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck) {
         PokerHand publicHand = new PokerHand(publicCards, deck);
         String[] nameOrder = new String[] {"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
@@ -273,6 +268,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return 0;
     }
 
+    /************************ this method will calculate the riskTolerance in pre-flop, flop, turn and river round *****************************/
+    /************************ especially in flop and turn round, odds of all hand type will be calculated and select one from them *****************************/
     public int predicateRiskTolerance() {
         DeckOfCards deck = getDeckOfCards();
         Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
@@ -292,6 +289,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return risk;
     }
 
+    /************************ this method will return one hand type that from those that are higher than current hand type that player has *****************************/
     //this will return the finally returned hand type(with use of random value)
     private String findHandHigherThanCurrentHand(Map<String, Integer> predictedHandType, String currentHandType) {
         boolean isHigh = true;
@@ -338,7 +336,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
     }
 
-    //this method will predict the best hand type and return the risk affected by this best hand type
+    /************************ this method will predict the best hand type and return the risk affected by this best hand type *****************************/
     public int predicateBestHandTypeAndRisk(Card[] publicCards, DeckOfCards deck, Rounds currentRound) {
         int length = publicCards.length + 2;
         Card[] allCards = new Card[length];
@@ -370,6 +368,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //if the odds of predicted hand(higher than current hand) is greater than 40,
         return getHandValue(findHandHigherThanCurrentHand(predictedHandType, currentHandType));
     }
+
 
     private int getHandValue(String handType) {
         switch (handType) {
@@ -406,7 +405,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
     }
 
-    //this method returns the quantity of cards that appear n times in allCards(hand card +  public card)
+    /************************ this method returns the quantity of cards that appear n times in allCards(hand card +  public card) *****************************/
     private int countContains(Map<String, Integer> names, int n) {
         int count = 0;
         for (int value : names.values()) {
@@ -424,7 +423,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return combination(n - 1, k - 1) + combination(n - 1, k);
     }
 
-    /*--------------------predicate the odds of Royal Straight Flush--------------------------*/
+    /************************ predicate the odds of Royal Straight Flush ******************************/
     public Integer oddsOfRoyalFlush(Card[] allCards, Rounds currentRound) {
         int odds = 0;
         //hashMap stores the number of occurrence of each suit, key is the suit, and Integer is the number of occurrence of the suit
@@ -476,7 +475,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Straight Flush--------------------------*/
+    /************************ predicate the odds of Straight Flush ******************************/
     public Integer oddsOfStraightFlush(Card[] allCards, Rounds currentRound) {
         double oddsOfStraight = oddsOfStraight(allCards, currentRound) * 0.01;
         double oddsOfFlush = oddsOfFlush(allCards, currentRound) * 0.01;
@@ -487,7 +486,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return (int) oddsOfStraightFlush;
     }
 
-    /*--------------------predicate the odds of Four of a kind--------------------------*/
+    /************************ predicate the odds of Four of a kind ******************************/
     public Integer oddsOfFourOfAKind(Card[] allCards, Rounds currentRound) {
         //if there are more than 2 identical cards, then it is possible to form four of a kind in flop round
         int odds = 0;
@@ -537,7 +536,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Full House--------------------------*/
+    /************************ predicate the odds of Full House ******************************/
     public Integer oddsOfFullHouse(Card[] allCards, Rounds currentRound) {
         //if there are more than 2 identical cards, then it is possible to form full house in flop round
         int odds=0;
@@ -586,7 +585,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Flush--------------------------*/
+    /************************ predicate the odds of Flush ******************************/
     public Integer oddsOfFlush(Card[] allCards, Rounds currentRound) {
         //if there are more than 3 cards with same suits, then it is possible to form flush in flop round
         int odds=0;
@@ -640,7 +639,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Straight--------------------------*/
+    /************************ predicate the odds of Straight ******************************/
     public Integer oddsOfStraight(Card[] allCards, Rounds currentRound) {
         ArrayList<Integer> difference = new ArrayList<>();
         ArrayList<Integer> allCardsValue = new ArrayList<>();
@@ -776,7 +775,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
 
-    /*--------------------predicate the odds of Three of a kind--------------------------*/
+    /************************ predicate the odds of Three of a kind ******************************/
     public Integer oddsOfThreeOfAKind(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
@@ -827,7 +826,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Two Pair--------------------------*/
+    /************************ predicate the odds of Two Pair ******************************/
     public Integer oddsOfTwoPair(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
@@ -863,7 +862,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         return odds;
     }
 
-    /*--------------------predicate the odds of Pair--------------------------*/
+    /************************ predicate the odds of Pair ******************************/
     public Integer oddsOfPair(Card[] allCards, Rounds currentRound) {
         int odds=0;
         Map<String, Integer> names = new HashMap<>();
@@ -942,14 +941,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
 //            return true;
 //        }
         else {
-            int value = getCurrentBestHand().getRiskWorthiness() +
+            return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
-            int value2 = Math.abs(dice.nextInt())%100;
-            System.out.println("shouldSee value = "+value);
-            System.out.println("shouldSee value2 = "+value2);
-            return value2 < value;
-//            return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
-//                    getRiskTolerance() + 10000000;
         }
     }
 
@@ -957,26 +950,13 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
             return false;
         }
-        int value = getCurrentBestHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
-        int value2 = Math.abs(dice.nextInt())%80;
-        System.out.println("shouldRaise value = "+value);
-        System.out.println("shouldRaise value2 = "+value2);
-        return value2 < value;
-//        return Math.abs(dice.nextInt())%80 < getCurrentBestHand().getRiskWorthiness() +
-//                getRiskTolerance();
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-        int value = getCurrentBestHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt())%100 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
-        int value2 = Math.abs(dice.nextInt())%100;
-        System.out.println("shouldAllIn value = "+value);
-        System.out.println("shouldAllIn value2 = "+value2);
-        return value2 < value;
-
-//        return Math.abs(dice.nextInt())%50 < getCurrentBestHand().getRiskWorthiness() +
-//                getRiskTolerance();
     }
 
      private boolean suitsInHandAreSame(Card[] hand) {

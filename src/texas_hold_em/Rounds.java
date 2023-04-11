@@ -6,5 +6,6 @@ public enum Rounds {
     PRE_FLOP,
     FLOP,
     TURN,
-    RIVER
+    RIVER,
+    SHOWDOWN
 }
