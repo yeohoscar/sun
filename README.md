@@ -28,3 +28,4 @@ Due to the distinct differences between Blackjack and Poker, despite their simil
 - Added overloaded method to dealHand that allows variable number of cards to be dealt
 - Changed access modifiers of Player's class variables to protected
 - PokerHand categorise method now uses recategorize() instead of categoriseAs
+- Updated hand type getValue methods to handle issues where hands evaluate to same value despite being different due to different kicker cards
