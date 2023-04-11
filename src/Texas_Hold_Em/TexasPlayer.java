@@ -34,6 +34,32 @@ abstract class TexasPlayer extends poker.Player {
 		allIn = false;
 	}
 
+	public void setDeck(DeckOfCards deck){
+		deckOfCards=deck;
+	}
+	public DeckOfCards getDeckOfCards(){
+		return deckOfCards;
+	}
+
+	public void smallBlind(int smallBlind,PotOfMoney pot){
+		stake+=smallBlind;
+		bank-=smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+	public void bigBlind(int bigBlind,PotOfMoney pot){
+		stake+=bigBlind*2;
+		bank-=bigBlind*2;
+		pot.raiseStake(bigBlind);
+	}
+	//every player can act as a dealer
+	public void setDealer(boolean dealer) {
+		this.dealer = dealer;
+	}
+	public boolean isDealer(){
+		return dealer;
+	}
+
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Reset internal state for start of new hand of poker  
@@ -74,9 +100,7 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
-	public DeckOfCards getDeckOfCards(){
-		return deckOfCards;
-	}
+
 
 	public int getId() {
 		return id;
@@ -93,9 +117,15 @@ abstract class TexasPlayer extends poker.Player {
 		return allIn;
 	}
 
-	public boolean isDealer(){
-		return dealer;
-	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Actions a player can make
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+
+
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -114,15 +144,6 @@ abstract class TexasPlayer extends poker.Player {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public void setDeck(DeckOfCards deck){
-		deckOfCards=deck;
-	}
-
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
 	}
 
 	@Override
@@ -224,22 +245,7 @@ abstract class TexasPlayer extends poker.Player {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}
 
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Handles small and big blinds
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public void smallBlind(int smallBlind,PotOfMoney pot){
-		stake+=smallBlind;
-		bank-=smallBlind;
-		pot.raiseStake(smallBlind);
-	}
-	public void bigBlind(int bigBlind,PotOfMoney pot){
-		stake+=bigBlind;
-		bank-=bigBlind;
-		pot.raiseStake(bigBlind);
-	}
+	
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -286,5 +292,6 @@ abstract class TexasPlayer extends poker.Player {
 			case FOLD -> fold();
 			default -> {}
 		}
+
 	}
 }

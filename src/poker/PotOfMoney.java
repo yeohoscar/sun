@@ -71,14 +71,19 @@ public class PotOfMoney
 	//--------------------------------------------------------------------//
 	
 	public void raiseStake(int addition) {
+
 		stake += addition;
-		
+
 		addToPot(stake);
+
 	}
 	
 	
 	public void addToPot(int addition) {
 		total += addition;
+	}
+	public void removeFromPot(int addition) {
+		total -= addition;
 	}
 
 	public void takeFromPot(int addition) {

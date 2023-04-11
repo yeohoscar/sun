@@ -988,7 +988,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public boolean shouldAllIn(PotOfMoney pot) {
         int value = getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
-        int value2 = Math.abs(dice.nextInt())%50;
+        int value2 = Math.abs(dice.nextInt())%90;
         System.out.println("shouldAllIn value = "+value);
         System.out.println("shouldAllIn value2 = "+value2);
         return value2 < value;
