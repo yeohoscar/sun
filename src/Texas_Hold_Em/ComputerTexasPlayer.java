@@ -943,7 +943,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
         else {
             int value = getCurrentBestHand().getRiskWorthiness() +
-                    getRiskTolerance() + 10000000;
+                    getRiskTolerance();
             int value2 = Math.abs(dice.nextInt())%100;
             System.out.println("shouldSee value = "+value);
             System.out.println("shouldSee value2 = "+value2);
