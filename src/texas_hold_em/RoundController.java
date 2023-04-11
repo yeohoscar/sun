@@ -90,8 +90,10 @@ public abstract class RoundController {
 
     public void roundCounter(int counter){
         int roundCounter=counter;
+
         while (!onePlayerLeft() && roundCounter != 5) {
-            switch (roundCounter) {
+
+                    switch (roundCounter) {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
@@ -125,12 +127,19 @@ public abstract class RoundController {
     }
     public void roundMove (Rounds currentRound) {
         int currentIndex = firstMovePlayerIndex(currentRound);
+        int activePlayer = 0;
+        for(TexasPlayer player:roundPlayers){
+            if (!player.hasFolded()){activePlayer++;}
+        }
         roundPlayers.get(currentIndex).setDeck(deck);
         while (!onePlayerLeft() && !ActionClosed()) {
             delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
-            currentPlayer.nextAction(getActivePot());
-            printGame.table(currentRound);
+            if(!currentPlayer.hasFolded()||!currentPlayer.isAllIn()){
+                currentPlayer.nextAction(getActivePot());
+                printGame.table(currentRound);
+            }
+
             currentIndex++;
 
             if (currentIndex == numPlayers){
@@ -138,11 +147,11 @@ public abstract class RoundController {
             }
         }
         onePlayerLeft();
-        createSidePot();
+        createSidePot(activePlayer);
 
     }
 
-    abstract public void createSidePot();
+    abstract public void createSidePot(int activePlayer);
 
     public void preFlopRound(){
         blindBet();
@@ -244,7 +253,7 @@ public abstract class RoundController {
 
     // Utility method to delay actions
 
-    private void delay(int numMilliseconds) {
+    public void delay(int numMilliseconds) {
         try {
             Thread.sleep(numMilliseconds);
         } catch (Exception e) {

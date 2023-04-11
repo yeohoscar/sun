@@ -119,12 +119,12 @@ public class RoundsOfTexas extends RoundController {
 
 
     @Override
-    //create side pot when some one all in
-    public void createSidePot() {
+    //create side pot when someone all in
+    public void createSidePot(int activePlayer) {
         ArrayList<Integer> playerList = getActivePot().getPlayerIds();
         ArrayList<Integer> allInPlayer = new ArrayList<>();
         for(int id : playerList){
-            if(getPlayerById(roundPlayers,id).isAllIn()){
+            if(getPlayerById(roundPlayers,id).isAllIn()&&!getPlayerById(roundPlayers,id).hasSidePot()){
                 allInPlayer.add(id);
             }
         }
@@ -140,7 +140,6 @@ public class RoundsOfTexas extends RoundController {
                 return Integer.compare(player1.getStake(), player2.getStake());
             }
         });
-        int activePlayer = getActivePot().getPlayerIds().size();
         for(int ID : allInPlayer){
             TexasPlayer player = getPlayerById(roundPlayers,ID);
             PotOfMoney sidePot = new PotOfMoney();
@@ -171,7 +170,7 @@ public class RoundsOfTexas extends RoundController {
                 sidePot.setTotal(lastTotal-lastPot.getTotal());
             }
 
-
+            player.SetSidePot();
             pots.add(sidePot);
         }
 

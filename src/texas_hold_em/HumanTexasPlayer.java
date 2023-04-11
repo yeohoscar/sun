@@ -80,7 +80,8 @@ public class HumanTexasPlayer extends TexasPlayer {
 		int needed = raiseAmount - stake;
 		stake += needed;
 		bank -= needed;
-		pot.raiseStake(raiseAmount - pot.getCurrentStake());
+		pot.setStake(stake);
+		pot.addToPot(needed);
 		System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
 
 		if(bank==0){

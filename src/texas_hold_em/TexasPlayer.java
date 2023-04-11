@@ -17,6 +17,8 @@ public abstract class TexasPlayer extends poker.Player {
 
 	private boolean allIn;
 
+	private boolean hasSidePot;
+
 	protected boolean dealer = false;
 
 	public DeckOfCards deckOfCards;
@@ -31,6 +33,7 @@ public abstract class TexasPlayer extends poker.Player {
 		super(name, money);
 		this.id = id;
 		allIn = false;
+		hasSidePot =false;
 	}
 
 	//--------------------------------------------------------------------//
@@ -45,6 +48,7 @@ public abstract class TexasPlayer extends poker.Player {
 	public void reset() {
 		folded = false;
 		allIn = false;
+		hasSidePot =false;
 		stake  = 0;
 		totalStake=bank;
 	}
@@ -98,6 +102,12 @@ public abstract class TexasPlayer extends poker.Player {
 
 	public boolean isAllIn() {
 		return allIn;
+	}
+	public boolean hasSidePot() {
+		return hasSidePot;
+	}
+	public void SetSidePot() {
+		hasSidePot=true;
 	}
 
 	//--------------------------------------------------------------------//
@@ -214,15 +224,13 @@ public abstract class TexasPlayer extends poker.Player {
 
 	public void allIn(PotOfMoney pot) {
 		if (getBank() == 0) return;
-		final int oldStake= stake;
 		stake += bank;
 
-		if (stake <= pot.getCurrentStake()*2){
-			pot.addToPot(bank);
-		} else {
-			pot.raiseStake(stake - pot.getCurrentStake());
-			pot.removeFromPot(oldStake);
+		if (stake > pot.getCurrentStake()){
+			pot.setStake(stake);
 		}
+
+		pot.addToPot(bank);
 
 		bank = 0;
 		allIn =true;

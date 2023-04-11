@@ -910,7 +910,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
         stake += needed;
         bank -= needed;
 
-        pot.raiseStake(raiseAmount - pot.getCurrentStake());
+        pot.setStake(stake);
+        pot.addToPot(needed);
 
         System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
     }
