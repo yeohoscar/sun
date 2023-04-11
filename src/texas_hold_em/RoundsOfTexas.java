@@ -74,7 +74,7 @@ public class RoundsOfTexas extends RoundController {
                         }
                     }
                 }
-
+                System.out.println("Winner="+winners);
                 // Divide the pot amount equally among the winners
                 if (!winners.isEmpty()) {
                     int splitAmount = potAmount / winners.size();
@@ -135,23 +135,37 @@ public class RoundsOfTexas extends RoundController {
                 return Integer.compare(player1.getStake(), player2.getStake());
             }
         });
-
+        int activePlayer = getActivePot().getPlayerIds().size();
         for(int ID : allInPlayer){
             TexasPlayer player = getPlayerById(roundPlayers,ID);
             PotOfMoney sidePot = new PotOfMoney();
             PotOfMoney lastPot = getActivePot();
             ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
             newPlayerIds.removeIf(id -> id == player.getId());
-            int activePlayer = getActivePot().getPlayerIds().size();
+
+
+
+
             int previousStake = 0;
             for(PotOfMoney pot :pots){
                 previousStake+=pot.getTotal();
+            }if(player.getTotalStake()*activePlayer>previousStake){continue;}
+
+            if(pots.size()==1){
+                previousStake=lastPot.getTotal();
+                sidePot.setStake(lastPot.getCurrentStake());
+                sidePot.setPlayerIds(newPlayerIds);
+                lastPot.setTotal(player.getTotalStake()*activePlayer);
+                sidePot.setTotal(previousStake-player.getTotalStake()*activePlayer);
+            }else {
+                previousStake-=lastPot.getTotal();
+                int lastTotal = lastPot.getTotal();
+                sidePot.setStake(lastPot.getCurrentStake());
+                sidePot.setPlayerIds(newPlayerIds);
+                lastPot.setTotal(player.getTotalStake()*activePlayer-previousStake);
+                sidePot.setTotal(lastTotal-lastPot.getTotal());
             }
 
-            sidePot.setStake(lastPot.getCurrentStake());
-            sidePot.setTotal(previousStake-player.getStake()*activePlayer);
-            sidePot.setPlayerIds(newPlayerIds);
-            lastPot.setTotal(player.getStake()*activePlayer);
 
             pots.add(sidePot);
         }

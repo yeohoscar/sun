@@ -46,6 +46,7 @@ public abstract class TexasPlayer extends poker.Player {
 		folded = false;
 		allIn = false;
 		stake  = 0;
+		totalStake=bank;
 	}
 
 	public void resetStake() {
@@ -215,14 +216,14 @@ public abstract class TexasPlayer extends poker.Player {
 		if (getBank() == 0) return;
 
 		stake += bank;
-		bank = 0;
 
 		if (stake <= pot.getCurrentStake()*2){
-			pot.addToPot(stake);
+			pot.addToPot(bank);
 		} else {
 			pot.raiseStake(stake - pot.getCurrentStake());
 		}
 
+		bank = 0;
 		allIn =true;
 
 		System.out.println("\n> " + getName() + " says: and I all in!\n");
@@ -245,7 +246,7 @@ public abstract class TexasPlayer extends poker.Player {
 
 		pot.addToPot(needed);
 
-		System.out.println("\n> " + getName() + " says: I see that " + addCount(needed, "chip", "chips") + "!\n");
+		System.out.println("\n> " + getName() + " says: I call that " + addCount(needed, "chip", "chips") + "!\n");
 	}
 
 	public void winFromPot(int chips,PotOfMoney pot) {
