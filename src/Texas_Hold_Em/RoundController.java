@@ -128,6 +128,7 @@ public abstract class RoundController {
         roundPlayers.get(currentIndex).setDeck(deck);
         //System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
         while (!onePlayerLeft() && !ActionClosed()) {
+            delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
 
             //System.out.println("currentRound = " + currentRound);
