@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class TexasPlayer extends poker.Player {
+public abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
 
 	public final int NUM_CARDS_REQUIRED_FOR_FULL_HAND = 3;

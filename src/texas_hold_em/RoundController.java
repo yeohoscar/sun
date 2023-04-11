@@ -39,7 +39,7 @@ public abstract class RoundController {
             playersID.add(i);
         }
         pots.get(0).setPlayerIds(playersID);
-        this.printGame = new PrintGame(roundPlayers, deck, getActivePot(), communityCards);
+        this.printGame = new PrintGame(roundPlayers, deck, pots, communityCards);
         this.communityCards = communityCards;
     }
 
@@ -139,10 +139,6 @@ public abstract class RoundController {
 
             printGame.table(currentRound);
 
-
-            for(PotOfMoney pot : pots){
-                System.out.println("CurrentStake="+pot.getCurrentStake()+"     Total="+pot.getTotal());
-            }
             currentIndex++;
 
             if (currentIndex == numPlayers){
