@@ -17,7 +17,7 @@ public abstract class RoundController {
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
-    private int bigBlindAmount;
+    private int smallBlindAmount;
     protected List<Card> communityCards;
 
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
@@ -32,7 +32,7 @@ public abstract class RoundController {
         roundPlayers.get(dealerIndex).setDealer(true);
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
-        this.bigBlindAmount=10;
+        this.smallBlindAmount=5;
         pots.add(mainPot);
         ArrayList<Integer> playersID= new ArrayList<>();
         for(int i = 0;i<players.size();i++){
@@ -68,8 +68,8 @@ public abstract class RoundController {
             smallIndex = dealerIndex+1;
             bigIndex = dealerIndex+2;
         }
-        roundPlayers.get(smallIndex).smallBlind(bigBlindAmount/2,pots.get(0));
-        roundPlayers.get(bigIndex).bigBlind(bigBlindAmount,pots.get(0));
+        roundPlayers.get(smallIndex).smallBlind(smallBlindAmount,pots.get(0));
+        roundPlayers.get(bigIndex).bigBlind(smallBlindAmount,pots.get(0));
     }
 
     public int getNumPlayers() {
@@ -124,7 +124,7 @@ public abstract class RoundController {
         }
     }
     public void roundMove (Rounds currentRound) {
-        int currentIndex = firstMovePlayerIndex();
+        int currentIndex = firstMovePlayerIndex(currentRound);
         roundPlayers.get(currentIndex).setDeck(deck);
         //System.out.println("\npot.getCurrentStake() in RoundController = " + getActivePot().getCurrentStake());
         while (!onePlayerLeft() && !ActionClosed()) {
@@ -186,11 +186,17 @@ public abstract class RoundController {
         }
     }
 
-    public int firstMovePlayerIndex() {
-        int index = dealerIndex+1;
-        if(dealerIndex==(numPlayers)){
-            index=0;
+    public int firstMovePlayerIndex(Rounds currentRound) {
+        int index ;
+        if(currentRound==Rounds.PRE_FLOP){
+            index = bigIndex+1;
+        }else {
+            index = dealerIndex+1;
+            if(dealerIndex==(numPlayers)){
+                index=0;
+            }
         }
+
         while(roundPlayers.get(index).hasFolded()){
             index++;
             if(index==numPlayers){

@@ -33,6 +33,32 @@ abstract class TexasPlayer extends poker.Player {
 		allIn = false;
 	}
 
+	public void setDeck(DeckOfCards deck){
+		deckOfCards=deck;
+	}
+	public DeckOfCards getDeckOfCards(){
+		return deckOfCards;
+	}
+
+	public void smallBlind(int smallBlind,PotOfMoney pot){
+		stake+=smallBlind;
+		bank-=smallBlind;
+		pot.raiseStake(smallBlind);
+	}
+	public void bigBlind(int bigBlind,PotOfMoney pot){
+		stake+=bigBlind*2;
+		bank-=bigBlind*2;
+		pot.raiseStake(bigBlind);
+	}
+	//every player can act as a dealer
+	public void setDealer(boolean dealer) {
+		this.dealer = dealer;
+	}
+	public boolean isDealer(){
+		return dealer;
+	}
+
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Reset internal state for start of new hand of poker  
@@ -73,9 +99,7 @@ abstract class TexasPlayer extends poker.Player {
 		return hand;
 	}
 
-	public DeckOfCards getDeckOfCards(){
-		return deckOfCards;
-	}
+
 
 	public int getId() {
 		return id;
@@ -92,9 +116,15 @@ abstract class TexasPlayer extends poker.Player {
 		return allIn;
 	}
 
-	public boolean isDealer(){
-		return dealer;
-	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Actions a player can make
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+
+
+
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -115,16 +145,9 @@ abstract class TexasPlayer extends poker.Player {
 		this.id = id;
 	}
 
-	public void setDeck(DeckOfCards deck){
-		deckOfCards=deck;
-	}
 
-	//every player can act as a dealer
-	public void setDealer(boolean dealer) {
-		this.dealer = dealer;
-	}
 
-	// Computes best hand using player's hole cards and the public cards
+
 
 	public void findBestHand(Card[] publicCards, DeckOfCards deck) {
 		if (publicCards.length < NUM_CARDS_REQUIRED_FOR_FULL_HAND) {
@@ -211,22 +234,7 @@ abstract class TexasPlayer extends poker.Player {
 		System.out.println("\n> " + getName() + " says: I check!\n");
 	}
 
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-	// Handles small and big blinds
-	//--------------------------------------------------------------------//
-	//--------------------------------------------------------------------//
-
-	public void smallBlind(int smallBlind,PotOfMoney pot){
-		stake+=smallBlind;
-		bank-=smallBlind;
-		pot.raiseStake(smallBlind);
-	}
-	public void bigBlind(int bigBlind,PotOfMoney pot){
-		stake+=bigBlind;
-		bank-=bigBlind;
-		pot.raiseStake(bigBlind);
-	}
+	
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -256,7 +264,9 @@ abstract class TexasPlayer extends poker.Player {
 
 			return;
 		}
+
 		System.out.println("\ncurrent stake in pot = "+pot.getCurrentStake());
+
 		if (pot.getCurrentStake() == 0) {
 			// first mover of the round
 
@@ -294,5 +304,6 @@ abstract class TexasPlayer extends poker.Player {
 				}
 			}
 		}
+
 	}
 }

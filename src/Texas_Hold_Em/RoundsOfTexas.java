@@ -192,7 +192,7 @@ public class RoundsOfTexas extends RoundController {
             sidePot.setTotal(previousStake-player.getStake()*activePlayer);
             sidePot.setPlayerIds(newPlayerIds);
             lastPot.setTotal(player.getStake()*activePlayer);
-           
+
             pots.add(sidePot);
         }
 
