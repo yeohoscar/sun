@@ -36,7 +36,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
 //                - VARIABILITY/2;
-        riskTolerance = 50;
+        riskTolerance = 60;
         //System.out.println("riskToleranceeeeeeeeeeeeee = "+riskTolerance);
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
@@ -194,6 +194,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)) {
             return 7;
+        }else if(suitsInHandAreSame(hand)){
+            return 15;
+        }else if(isContained(hand, "Ace") || isContained(hand, "Jack") || isContained(hand, "Queen") || isContained(hand, "King") || isContained(hand, "Ten")){
+            return 20;
         } else {
             return 29;
         }
@@ -933,10 +937,10 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (pot.getCurrentStake() - stake > bank) {
             return false;
         }
-        if (getStake() == 0) {
-            System.out.println("getStake() in computer player = "+getStake());
-            return true;
-        }
+//        if (getStake() == 0) {
+//            System.out.println("getStake() in computer player = "+getStake());
+//            return true;
+//        }
         else {
             int value = getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
