@@ -47,7 +47,6 @@ public class PrintGame {
                 int count = 0;
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     String temp = String.format("__________________");
-                    System.out.println("half players = "+halfPlayers);
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
