@@ -1,6 +1,6 @@
 package texas_hold_em;
 
-/*----------Represents the actions a player can take-------------------*/
+/*----------Represents the different stages of a game-------------------*/
 
 public enum Rounds {
     PRE_FLOP,

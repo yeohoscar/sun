@@ -1,11 +1,4 @@
-
 package texas_hold_em;
-
-// This package provides classes necessary for implementing a game system for playing poker
-
-// A RoundOfPoker is a single round/deal in a game
-// A GameOfPoker is a sequence of one or more RoundOfPoker's
-
 
 import poker.DeckOfCards;
 
