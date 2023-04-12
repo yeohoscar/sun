@@ -138,9 +138,9 @@ public abstract class RoundController {
         roundPlayers.get(currentIndex).setDeck(deck);
         //loop until every one called or folded
         while (!onePlayerLeft() && !ActionClosed()) {
-            delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
+                delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
             }
