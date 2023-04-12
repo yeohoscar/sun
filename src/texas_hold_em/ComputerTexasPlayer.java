@@ -36,7 +36,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
 //                - VARIABILITY/2;
-        riskTolerance = 60;
+        riskTolerance = 130;
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -52,7 +52,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     /************************ this method returns the riskTolerance by calling predicateRiskTolerance() method *****************************/
     public int getRiskTolerance() {
         int risk = 0;
-        risk = riskTolerance - getStake() - predicateRiskTolerance();
+        risk = riskTolerance - getStake() + predicateRiskTolerance();
         return risk; // tolerance drops as stake increases
     }
 
@@ -178,7 +178,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "Queen")) ||
                 (isContained(hand, "Jack") && isContained(hand, "King")) ||
                 (isContained(hand, "Jack") && isContained(hand, "Ace"))) {
-            return 12;
+            return 5;
         }
         //these hand cards maybe can form strong straightFlush
         else if ((isContained(hand, "Ace") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
@@ -189,11 +189,11 @@ public class ComputerTexasPlayer extends TexasPlayer {
                 (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)) {
             return 7;
         }else if(suitsInHandAreSame(hand)){
-            return 15;
+            return 9;
         }else if(isContained(hand, "Ace") || isContained(hand, "Jack") || isContained(hand, "Queen") || isContained(hand, "King") || isContained(hand, "Ten")){
-            return 20;
+            return 15;
         } else {
-            return 29;
+            return 22;
         }
     }
 
@@ -303,7 +303,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             }
         }
 
-        if (isHigh) {
+        if (isHigh && currentHandType.equals("High")) {
             return "High";
         }
 
@@ -322,7 +322,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         //find those hand types that odds are greater than 30
         ArrayList<String> hands = new ArrayList<>();
         for (Map.Entry<String, Integer> entry1 : higherHandType.entrySet()) {
-            if (entry1.getValue() > 30) {
+            if (entry1.getValue() > 6) {
                 hands.add(entry1.getKey());
             }
         }
