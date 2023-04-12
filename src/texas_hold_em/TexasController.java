@@ -50,12 +50,12 @@ public class TexasController extends MainController {
         String[] playerNames = names;
         int numPlayers = 0;
 
-        while (!(numPlayers < 10 && numPlayers > 2)) {
+        while (!(numPlayers <= 10 && numPlayers >= 2)) {
             System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
             try {
                 numPlayers = scanner.nextInt();
 
-                if (numPlayers < 10 && numPlayers > 2) {
+                if (numPlayers <= 10 && numPlayers >= 2) {
                     playerNames = Arrays.copyOfRange(names, 0, numPlayers);
                 } else {
                     throw new IllegalArgumentException();
