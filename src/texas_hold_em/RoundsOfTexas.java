@@ -14,6 +14,7 @@ import java.util.*;
 public class RoundsOfTexas extends RoundController {
     private PrintGame printGame;
     private ArrayList<TexasPlayer> roundPlayers;
+
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, List<Card> communityCards, int dealerIndex) {
         super(deck, texasPlayers, communityCards, dealerIndex);
         this.roundPlayers = texasPlayers;
@@ -36,7 +37,7 @@ public class RoundsOfTexas extends RoundController {
         if (onePlayerLeft()) {
             for (TexasPlayer player : roundPlayers) {
                 if (!player.hasFolded()) {
-                    for(PotOfMoney pot:pots){
+                    for (PotOfMoney pot : pots) {
                         player.takePot(pot);
                     }
                 }
@@ -44,8 +45,8 @@ public class RoundsOfTexas extends RoundController {
         } else {
             HashMap<Integer, Integer> valueRank = new HashMap<>();
             // calculate handValue for each player
-            for (int i = 0 ;i<roundPlayers.size();i++) {
-                TexasPlayer player =roundPlayers.get(i);
+            for (int i = 0; i < roundPlayers.size(); i++) {
+                TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
                     Card[] communityCardsArr = new Card[communityCards.size()];
                     player.findBestHand(communityCards.toArray(communityCardsArr), deck);
@@ -59,7 +60,7 @@ public class RoundsOfTexas extends RoundController {
                 PotOfMoney pot = pots.get(i);
                 int potAmount = pot.getTotal();
                 HashMap<Integer, Integer> winners = new HashMap<>();
-                int highestHandValue=-1;
+                int highestHandValue = -1;
                 // Find the eligible winners for this pot based on hand value
                 for (int playerId : valueRank.keySet()) {
                     if (pot.getPlayerIds().contains(playerId)) {
@@ -77,8 +78,8 @@ public class RoundsOfTexas extends RoundController {
                 if (!winners.isEmpty()) {
                     int splitAmount = potAmount / winners.size();
                     for (int winnerId : winners.keySet()) {
-                        TexasPlayer winner = getPlayerById(roundPlayers,winnerId);
-                        winner.winFromPot(splitAmount,pot);
+                        TexasPlayer winner = getPlayerById(roundPlayers, winnerId);
+                        winner.winFromPot(splitAmount, pot);
 
                     }
                 }
@@ -108,7 +109,7 @@ public class RoundsOfTexas extends RoundController {
             }
         }
 
-        for(TexasPlayer player : roundPlayers){
+        for (TexasPlayer player : roundPlayers) {
             player.reset();
             player.resetDealer();
         }
@@ -120,12 +121,14 @@ public class RoundsOfTexas extends RoundController {
     public void createSidePot(int activePlayer) {
         ArrayList<Integer> playerList = getActivePot().getPlayerIds();
         ArrayList<Integer> allInPlayer = new ArrayList<>();
-        for(int id : playerList){
-            if(getPlayerById(roundPlayers,id).isAllIn()&&!getPlayerById(roundPlayers,id).hasSidePot()){
+        for (int id : playerList) {
+            if (getPlayerById(roundPlayers, id).isAllIn() && !getPlayerById(roundPlayers, id).hasSidePot()) {
                 allInPlayer.add(id);
             }
         }
-        if (allInPlayer.size()==0){return;}
+        if (allInPlayer.size() == 0) {
+            return;
+        }
 
 
         //sort all in player list, start from the smallest stake
@@ -137,39 +140,38 @@ public class RoundsOfTexas extends RoundController {
                 return Integer.compare(player1.getStake(), player2.getStake());
             }
         });
-        for(int ID : allInPlayer){
-            TexasPlayer player = getPlayerById(roundPlayers,ID);
+        for (int ID : allInPlayer) {
+            TexasPlayer player = getPlayerById(roundPlayers, ID);
             PotOfMoney sidePot = new PotOfMoney();
             PotOfMoney lastPot = getActivePot();
             ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
             newPlayerIds.removeIf(id -> id == player.getId());
 
 
-
             //calculate side pot
             int previousStake = 0;
-            for(PotOfMoney pot :pots){
-                previousStake+=pot.getTotal();
+            for (PotOfMoney pot : pots) {
+                previousStake += pot.getTotal();
             }
             // raise much more than stake
-            if(player.getTotalStake()*activePlayer>previousStake){
+            if (player.getTotalStake() * activePlayer > previousStake) {
                 player.SetSidePot();
                 continue;
             }
 
-            if(pots.size()==1){
-                previousStake=lastPot.getTotal();
+            if (pots.size() == 1) {
+                previousStake = lastPot.getTotal();
                 sidePot.setStake(lastPot.getCurrentStake());
                 sidePot.setPlayerIds(newPlayerIds);
-                lastPot.setTotal(player.getTotalStake()*activePlayer);
-                sidePot.setTotal(previousStake-player.getTotalStake()*activePlayer);
-            }else {
-                previousStake-=lastPot.getTotal();
+                lastPot.setTotal(player.getTotalStake() * activePlayer);
+                sidePot.setTotal(previousStake - player.getTotalStake() * activePlayer);
+            } else {
+                previousStake -= lastPot.getTotal();
                 int lastTotal = lastPot.getTotal();
                 sidePot.setStake(lastPot.getCurrentStake());
                 sidePot.setPlayerIds(newPlayerIds);
-                lastPot.setTotal(player.getTotalStake()*activePlayer-previousStake);
-                sidePot.setTotal(lastTotal-lastPot.getTotal());
+                lastPot.setTotal(player.getTotalStake() * activePlayer - previousStake);
+                sidePot.setTotal(lastTotal - lastPot.getTotal());
             }
 
             player.SetSidePot();

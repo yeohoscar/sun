@@ -170,7 +170,7 @@ public abstract class Player {
 		
 	public void fold() {			    
 	    // make this player give up
-	
+
 		if (!folded)
 			System.out.println("\n> " + getName() + " says: I fold!\n");
 		

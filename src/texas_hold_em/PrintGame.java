@@ -25,7 +25,7 @@ public class PrintGame {
     private List<Card> communityCards;
 
 
-    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, ArrayList<PotOfMoney> pots, List<Card> communityCards){
+    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
         this.texasPlayers = texasPlayers;
         this.deck = deck;
         this.pots = pots;
@@ -33,34 +33,34 @@ public class PrintGame {
     }
 
     /************************ this method will print the game table and cards of each player and public cards *****************************/
-    public void cardPrinter(boolean showDown){
+    public void cardPrinter(boolean showDown) {
 
         //showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
-        int halfPlayers = texasPlayers.size()/2;
+        int halfPlayers = texasPlayers.size() / 2;
         System.out.println("********** Game Table **********");
         for (int i = 0; i <= cardHeight; i++) {
-            if (i==0) {
+            if (i == 0) {
                 /************************ print border of players *****************************/
-                int count=0;
+                int count = 0;
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     String temp = String.format("__________________");
 
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
-                    if(j<halfPlayers){
+                    if (j < halfPlayers) {
                         sb.append(temp);
-                    }else {
+                    } else {
                         sb.append(temp);
                         count++;
-                        if(count==halfPlayers){
+                        if (count == halfPlayers) {
                             sb.append("\n");
                         }
                     }
@@ -71,16 +71,16 @@ public class PrintGame {
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
 
-                    if (j==0 || j==halfPlayers) {
+                    if (j == 0 || j == halfPlayers) {
                         sb.append("│ ");
                     }
 
-                    String temp = String.format("%14s","Name = "+texasPlayers.get(j).getName());
+                    String temp = String.format("%14s", "Name = " + texasPlayers.get(j).getName());
                     sb.append(temp).append(" │ ");
                 }
                 sb.append("\n");
@@ -90,17 +90,17 @@ public class PrintGame {
                 int[] index1, index2;
                 if (j < halfPlayers && sb != sb1) {
                     sb = sb1;
-                } else if (j >= halfPlayers && sb != sb2){
+                } else if (j >= halfPlayers && sb != sb2) {
                     sb1.append("\n");
                     sb = sb2;
                 }
 
-                if (j==0 || j==halfPlayers) {
+                if (j == 0 || j == halfPlayers) {
                     sb.append("│ ");
                 }
 
                 if (texasPlayers.get(j).hasFolded()) {
-                    if (i == cardHeight-1) {
+                    if (i == cardHeight - 1) {
                         String tmp = String.format("%14s", " Folded ");
                         sb.append(tmp).append(" │ ");
                     } else {
@@ -125,7 +125,7 @@ public class PrintGame {
                                 sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
                             }
                         } else {
-                            if(texasPlayers.get(j) instanceof HumanTexasPlayer){
+                            if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
                                 index1 = getIndex(texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
                                 index2 = getIndex(texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {
@@ -135,8 +135,7 @@ public class PrintGame {
                                 } else if (i == 2) {
                                     sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
                                 }
-                            }
-                            else {
+                            } else {
                                 sb.append("│    │").append("  ").append("│    │").append(" │ ");
                             }
                         }
@@ -151,15 +150,15 @@ public class PrintGame {
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
 
-                    if (j==0 || j==halfPlayers) {
+                    if (j == 0 || j == halfPlayers) {
                         sb.append("│ ");
                     }
-                    sb.append(String.format("%14s","Stake="+texasPlayers.get(j).getStake())).append(" │ ");
+                    sb.append(String.format("%14s", "Stake=" + texasPlayers.get(j).getStake())).append(" │ ");
                 }
                 sb.append("\n");
 
@@ -168,15 +167,15 @@ public class PrintGame {
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
 
-                    if (j==0 || j==halfPlayers) {
+                    if (j == 0 || j == halfPlayers) {
                         sb.append("│ ");
                     }
-                    sb.append(String.format("%14s","Bank="+texasPlayers.get(j).getBank())).append(" │ ");
+                    sb.append(String.format("%14s", "Bank=" + texasPlayers.get(j).getBank())).append(" │ ");
                 }
                 sb.append("\n");
 
@@ -185,39 +184,39 @@ public class PrintGame {
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
 
-                    if (j==0 || j==halfPlayers) {
+                    if (j == 0 || j == halfPlayers) {
                         sb.append("│ ");
                     }
-                    if(texasPlayers.get(j).isDealer()){
-                        sb.append(String.format("%14s","Dealer")).append(" │ ");
+                    if (texasPlayers.get(j).isDealer()) {
+                        sb.append(String.format("%14s", "Dealer")).append(" │ ");
                     } else {
-                        sb.append(String.format("%14s"," ")).append(" │ ");
+                        sb.append(String.format("%14s", " ")).append(" │ ");
                     }
                 }
                 sb.append("\n");
                 /************************ print border *****************************/
-                int count=0;
+                int count = 0;
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     String temp = String.format("------------------");
 
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
-                    } else if (j >= halfPlayers && sb != sb2){
+                    } else if (j >= halfPlayers && sb != sb2) {
                         sb1.append("\n");
                         sb = sb2;
                     }
-                    if(j<halfPlayers){
+                    if (j < halfPlayers) {
                         sb.append(temp);
-                    }else {
+                    } else {
                         sb.append(temp);
                         count++;
-                        if(count==halfPlayers){
+                        if (count == halfPlayers) {
                             sb.append("\n");
                         }
                     }
@@ -225,31 +224,31 @@ public class PrintGame {
             }
         }
         System.out.println(sb1);
-        if(communityCards.isEmpty()){
+        if (communityCards.isEmpty()) {
             System.out.println("Public cards not shown yet");
-        }else {
+        } else {
             System.out.println("Public cards: ");
         }
         printPublicCard(communityCards);
-        System.out.print("\n"+sb2);
+        System.out.print("\n" + sb2);
 
 
-        for(int i=0; i<pots.size(); i++){
-            if(i==0){
-                System.out.println("| Main Pot:\n|    CurrentStake="+pots.get(i).getCurrentStake()+"     Total="+pots.get(i).getTotal());
-            }
-            else {
-                System.out.println("| Side Pot:\n|    CurrentStake="+pots.get(i).getCurrentStake()+"     Total="+pots.get(i).getTotal());
+        for (int i = 0; i < pots.size(); i++) {
+            if (i == 0) {
+                System.out.println("| Main Pot:\n|    CurrentStake=" + pots.get(i).getCurrentStake() + "     Total=" + pots.get(i).getTotal());
+            } else {
+                System.out.println("| Side Pot:\n|    CurrentStake=" + pots.get(i).getCurrentStake() + "     Total=" + pots.get(i).getTotal());
             }
         }
         System.out.println("\n");
     }
+
     /************************ this method will return the index of suit and rank of one card in suits[] and ranks[] *****************************/
-    public int[] getIndex(Card card, String[] suits, String[] ranks){
+    public int[] getIndex(Card card, String[] suits, String[] ranks) {
         int[] result = new int[2];
         int suitIndex;
         int rankIndex;
-        switch (card.getSuit()){
+        switch (card.getSuit()) {
             case "hearts" -> {
                 suitIndex = 0;
             }
@@ -263,16 +262,16 @@ public class PrintGame {
                 suitIndex = 3;
             }
         }
-        if(card.isAce()){
+        if (card.isAce()) {
             rankIndex = 0;
-        }else if(card.isJack()){
+        } else if (card.isJack()) {
             rankIndex = 10;
-        }else if(card.isQueen()){
+        } else if (card.isQueen()) {
             rankIndex = 11;
-        }else if(card.isKing()){
+        } else if (card.isKing()) {
             rankIndex = 12;
-        }else {
-            rankIndex = card.getRank()-1;
+        } else {
+            rankIndex = card.getRank() - 1;
         }
         result[0] = suitIndex;
         result[1] = rankIndex;
@@ -280,12 +279,12 @@ public class PrintGame {
     }
 
     /************************ this method will print all public cards on game table *****************************/
-    public void printPublicCard(List<Card> communityCards){
+    public void printPublicCard(List<Card> communityCards) {
         StringBuilder sb = new StringBuilder();
         int suitIndex;
         int rankIndex;
         for (int j = 0; j <= cardHeight; j++) {
-            for(int i=0; i < communityCards.size(); i++) {
+            for (int i = 0; i < communityCards.size(); i++) {
                 int[] index = getIndex(communityCards.get(i), suits, ranks);
                 suitIndex = index[0];
                 rankIndex = index[1];
@@ -295,11 +294,11 @@ public class PrintGame {
                         sb.append(cardEdge[0]).append("  ");
                         break;
                     case 1:
-                        String tmp = String.format("%2s",ranks[rankIndex]);
+                        String tmp = String.format("%2s", ranks[rankIndex]);
                         sb.append("│").append(tmp).append("  │").append("  ");
                         break;
                     case cardHeight:
-                        sb.append(cardEdge[cardEdge.length-1]).append("  ");
+                        sb.append(cardEdge[cardEdge.length - 1]).append("  ");
                         break;
                     default:
                         sb.append("│   ").append(suits[suitIndex]).append("│").append("  ");
@@ -311,21 +310,21 @@ public class PrintGame {
         System.out.print(sb);
     }
 
-    public void table(Rounds currentRound){
-        switch (currentRound){
-            case PRE_FLOP ->{
+    public void table(Rounds currentRound) {
+        switch (currentRound) {
+            case PRE_FLOP -> {
                 cardPrinter(false);
                 break;
             }
-            case FLOP ->{
+            case FLOP -> {
                 cardPrinter(false);
                 break;
             }
-            case TURN ->{
+            case TURN -> {
                 cardPrinter(false);
                 break;
             }
-            case RIVER ->{
+            case RIVER -> {
                 cardPrinter(false);
                 break;
             }

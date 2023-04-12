@@ -118,7 +118,14 @@ public abstract class TexasPlayer extends poker.Player {
 	// Modifiers
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
+	@Override
+	public void fold() {
+		// make this player give up
+		if (!folded)
+			System.out.println("\n> " + getName() + " says: I fold!\n");
 
+		folded = true;
+	}
 	@Override
 	public void dealTo(DeckOfCards deck) {
 		hand = deck.dealHand(NUM_CARDS_DEALT);
@@ -257,8 +264,13 @@ public abstract class TexasPlayer extends poker.Player {
 		bank  -= needed;
 
 		pot.addToPot(needed);
+		if(bank==0){
+			allIn();
+			System.out.println("\n> " + getName() + " says: and I all in!\n");
+		}else {
+			System.out.println("\n> " + getName() + " says: I call that " + addCount(needed, "chip", "chips") + "!\n");
+		}
 
-		System.out.println("\n> " + getName() + " says: I call that " + addCount(needed, "chip", "chips") + "!\n");
 	}
 
 	public void winFromPot(int chips,PotOfMoney pot) {

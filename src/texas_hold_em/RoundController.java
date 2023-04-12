@@ -1,15 +1,16 @@
 package texas_hold_em;
+
 import poker.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RoundController {
-    public static int DELAY_BETWEEN_ACTIONS	=	1000;  // number of milliseconds between game actions
+    public static int DELAY_BETWEEN_ACTIONS = 1000;  // number of milliseconds between game actions
 
     public static final int SMALL_BLIND_AMOUNT = 1;
 
-    public static final int BIG_BLIND_AMOUNT = 2*SMALL_BLIND_AMOUNT;
+    public static final int BIG_BLIND_AMOUNT = 2 * SMALL_BLIND_AMOUNT;
     protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
 
@@ -32,10 +33,10 @@ public abstract class RoundController {
         roundPlayers.get(dealerIndex).setDealer(true);
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
-        this.smallBlindAmount=5;
+        this.smallBlindAmount = 5;
         pots.add(mainPot);
-        ArrayList<Integer> playersID= new ArrayList<>();
-        for(TexasPlayer player: players){
+        ArrayList<Integer> playersID = new ArrayList<>();
+        for (TexasPlayer player : players) {
             playersID.add(player.getId());
         }
         pots.get(0).setPlayerIds(playersID);
@@ -54,33 +55,32 @@ public abstract class RoundController {
     }
 
 
-
-    public void blindBet(){
+    public void blindBet() {
         System.out.println("Small Blind and Big Blind: ");
         System.out.println("\n\nNew Deal:\n\n");
 
-        if(dealerIndex==(numPlayers-2)){
-            smallIndex = numPlayers-1;
+        if (dealerIndex == (numPlayers - 2)) {
+            smallIndex = numPlayers - 1;
             bigIndex = 0;
-        }else if(dealerIndex==numPlayers-1){
+        } else if (dealerIndex == numPlayers - 1) {
             smallIndex = 0;
             bigIndex = 1;
-        }else {
-            smallIndex = dealerIndex+1;
-            bigIndex = dealerIndex+2;
+        } else {
+            smallIndex = dealerIndex + 1;
+            bigIndex = dealerIndex + 2;
         }
-        roundPlayers.get(smallIndex).smallBlind(smallBlindAmount,pots.get(0));
-        roundPlayers.get(bigIndex).bigBlind(smallBlindAmount,pots.get(0));
+        roundPlayers.get(smallIndex).smallBlind(smallBlindAmount, pots.get(0));
+        roundPlayers.get(bigIndex).bigBlind(smallBlindAmount, pots.get(0));
     }
 
     public int getNumPlayers() {
         return numPlayers;
     }
 
-    public boolean onePlayerLeft(){
-        int counter=0;
-        for(TexasPlayer player:roundPlayers) {
-            if(player.hasFolded()) {
+    public boolean onePlayerLeft() {
+        int counter = 0;
+        for (TexasPlayer player : roundPlayers) {
+            if (player.hasFolded()) {
                 pots.get(pots.size() - 1).getPlayerIds().removeIf(id -> id == player.getId());
                 counter++;
             }
@@ -88,12 +88,12 @@ public abstract class RoundController {
         return counter == numPlayers - 1;
     }
 
-    public void roundCounter(int counter){
-        int roundCounter=counter;
+    public void roundCounter(int counter) {
+        int roundCounter = counter;
 
         while (!onePlayerLeft() && roundCounter != 5) {
 
-                    switch (roundCounter) {
+            switch (roundCounter) {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
@@ -125,24 +125,29 @@ public abstract class RoundController {
             resetStakes();
         }
     }
-    public void roundMove (Rounds currentRound) {
+
+    public void roundMove(Rounds currentRound) {
+        //decide who move first
         int currentIndex = firstMovePlayerIndex(currentRound);
         int activePlayer = 0;
-        for(TexasPlayer player:roundPlayers){
-            if (!player.hasFolded()){activePlayer++;}
+        for (TexasPlayer player : roundPlayers) {
+            if (!player.hasFolded()) {
+                activePlayer++;
+            }
         }
         roundPlayers.get(currentIndex).setDeck(deck);
+        //loop until every one called or folded
         while (!onePlayerLeft() && !ActionClosed()) {
             delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
-            if(!currentPlayer.hasFolded()&&!currentPlayer.isAllIn()){
+            if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
             }
 
             currentIndex++;
 
-            if (currentIndex == numPlayers){
+            if (currentIndex == numPlayers) {
                 currentIndex = 0;
             }
         }
@@ -153,10 +158,10 @@ public abstract class RoundController {
 
     abstract public void createSidePot(int activePlayer);
 
-    public void preFlopRound(){
+    public void preFlopRound() {
         blindBet();
         //after small blind and big blind, deal two cards to each player
-        for(Player player : roundPlayers){
+        for (Player player : roundPlayers) {
             player.dealTo(deck);
             System.out.println(player);
         }
@@ -165,53 +170,59 @@ public abstract class RoundController {
         printGame.table(Rounds.PRE_FLOP);
         roundMove(Rounds.PRE_FLOP);
     }
-    public void flopRound(){
+
+    public void flopRound() {
         roundMove(Rounds.FLOP);
     }
-    public void turnRound(){
+
+    public void turnRound() {
         roundMove(Rounds.TURN);
     }
-    public void riverRound(){
+
+    public void riverRound() {
         roundMove(Rounds.RIVER);
     }
-    public void showDown(){
-        if(onePlayerLeft()){
-            for(Player player : roundPlayers){
-                if(!player.hasFolded()){
-                        player.takePot(getActivePot());
+
+    public void showDown() {
+        if (onePlayerLeft()) {
+            for (Player player : roundPlayers) {
+                if (!player.hasFolded()) {
+                    player.takePot(getActivePot());
                 }
             }
         }
     }
+
     // get who move first
     public int firstMovePlayerIndex(Rounds currentRound) {
-        int index ;
-        if(currentRound==Rounds.PRE_FLOP){
-            index = bigIndex+1;
-        }else {
-            index = dealerIndex+1;
+        int index;
+        if (currentRound == Rounds.PRE_FLOP) {
+            index = bigIndex + 1;
+        } else {
+            index = dealerIndex + 1;
         }
-        if(index==(numPlayers)){
-            index=0;
+        if (index == (numPlayers)) {
+            index = 0;
         }
-        while(roundPlayers.get(index).hasFolded()){
+        while (roundPlayers.get(index).hasFolded()) {
             index++;
-            if(index==numPlayers){
-                index=0;
+            if (index == numPlayers) {
+                index = 0;
             }
         }
         return index;
     }
+
     //everyone called or folded
-    public Boolean ActionClosed(){
-        int foldCounter =0;
+    public Boolean ActionClosed() {
+        int foldCounter = 0;
         int callCounter = 0;
-        for(TexasPlayer player : roundPlayers){
-            if(player.hasFolded()){
+        for (TexasPlayer player : roundPlayers) {
+            if (player.hasFolded()) {
                 foldCounter++;
             }
             //TODO: should player.getStake()==pot.getCurrentStake() ?
-            else if(player.getStake()==getActivePot().getCurrentStake()||player.isAllIn()){
+            else if (player.getStake() == getActivePot().getCurrentStake() || player.isAllIn()) {
                 callCounter++;
             }
         }
@@ -219,10 +230,9 @@ public abstract class RoundController {
     }
 
 
-
     public void removePlayer() {
-        for(int i=0;i<numPlayers;i++){
-            if(roundPlayers.get(i).isBankrupt()){
+        for (int i = 0; i < numPlayers; i++) {
+            if (roundPlayers.get(i).isBankrupt()) {
                 roundPlayers.remove(i);
             }
         }
