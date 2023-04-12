@@ -17,7 +17,7 @@ import java.util.*;
 import static texas_hold_em.Action.*;
 
 public class ComputerTexasPlayer extends TexasPlayer {
-    public static final int VARIABILITY = 50;
+    public static final int VARIABILITY = 100;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
 
@@ -36,7 +36,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 //        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
 //                - VARIABILITY/2;
-        riskTolerance = 130;
+        riskTolerance = 50;
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -371,38 +371,20 @@ public class ComputerTexasPlayer extends TexasPlayer {
 
 
     private int getHandValue(String handType) {
+        int risk = PokerHand.DEFAULT_RISK;
         switch (handType) {
-            case "RoyalStraightFlush" -> {
-                return PokerHand.ROYALFLUSH_RISK;
-            }
-            case "StraightFlush" -> {
-                return PokerHand.STRAIGHTFLUSH_RISK;
-            }
-            case "Straight" -> {
-                return PokerHand.STRAIGHT_RISK;
-            }
-            case "FourOfAKind" -> {
-                return PokerHand.FOURS_RISK;
-            }
-            case "Flush" -> {
-                return PokerHand.FLUSH_RISK;
-            }
-            case "FullHouse" -> {
-                return PokerHand.FULLHOUSE_RISK;
-            }
-            case "ThreeOfAKind" -> {
-                return PokerHand.THREES_RISK;
-            }
-            case "TwoPair" -> {
-                return PokerHand.TWOPAIR_RISK;
-            }
-            case "Pair" -> {
-                return PokerHand.PAIR_RISK;
-            }
-            default ->{
-                return PokerHand.HIGHCARD_RISK;
-            }
+            case "RoyalStraightFlush" -> risk = PokerHand.ROYALFLUSH_RISK;
+            case "StraightFlush" -> risk = PokerHand.STRAIGHTFLUSH_RISK;
+            case "Straight" -> risk = PokerHand.STRAIGHT_RISK;
+            case "FourOfAKind" -> risk = PokerHand.FOURS_RISK;
+            case "Flush" -> risk = PokerHand.FLUSH_RISK;
+            case "FullHouse" -> risk = PokerHand.FULLHOUSE_RISK;
+            case "ThreeOfAKind" -> risk = PokerHand.THREES_RISK;
+            case "TwoPair" -> risk = PokerHand.TWOPAIR_RISK;
+            case "Pair" -> risk = PokerHand.PAIR_RISK;
+            default -> risk = PokerHand.HIGHCARD_RISK;
         }
+        return 100 - risk;
     }
 
     /************************ this method returns the quantity of cards that appear n times in allCards(hand card +  public card) *****************************/
