@@ -43,6 +43,10 @@ public abstract class RoundController {
         this.printGame = new PrintGame(roundPlayers, deck, pots, communityCards);
         this.communityCards = communityCards;
     }
+    //Abstract Functions:
+    abstract public void removePlayer();
+    abstract public void showDown();
+    abstract public void createSidePot(int activePlayer);
 
 
     public void play() {
@@ -54,7 +58,7 @@ public abstract class RoundController {
         removePlayer();
     }
 
-
+    // handle the small blind and big blind
     public void blindBet() {
         System.out.println("Small Blind and Big Blind: ");
         System.out.println("\n\nNew Deal:\n\n");
@@ -73,9 +77,6 @@ public abstract class RoundController {
         roundPlayers.get(bigIndex).bigBlind(smallBlindAmount, pots.get(0));
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
-    }
 
     public boolean onePlayerLeft() {
         int counter = 0;
@@ -88,6 +89,7 @@ public abstract class RoundController {
         return counter == numPlayers - 1;
     }
 
+    // five round in the game
     public void roundCounter(int counter) {
         int roundCounter = counter;
 
@@ -156,7 +158,6 @@ public abstract class RoundController {
 
     }
 
-    abstract public void createSidePot(int activePlayer);
 
     public void preFlopRound() {
         blindBet();
@@ -183,15 +184,6 @@ public abstract class RoundController {
         roundMove(Rounds.RIVER);
     }
 
-    public void showDown() {
-        if (onePlayerLeft()) {
-            for (Player player : roundPlayers) {
-                if (!player.hasFolded()) {
-                    player.takePot(getActivePot());
-                }
-            }
-        }
-    }
 
     // get who move first
     public int firstMovePlayerIndex(Rounds currentRound) {
@@ -230,13 +222,7 @@ public abstract class RoundController {
     }
 
 
-    public void removePlayer() {
-        for (int i = 0; i < numPlayers; i++) {
-            if (roundPlayers.get(i).isBankrupt()) {
-                roundPlayers.remove(i);
-            }
-        }
-    }
+
 
     public void dealCommunityCards(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
@@ -269,4 +255,7 @@ public abstract class RoundController {
             e.printStackTrace();
         }
     }
+
+
+
 }

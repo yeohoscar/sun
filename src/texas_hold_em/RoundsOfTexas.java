@@ -12,7 +12,6 @@ import java.util.*;
 // A PokerGame is a sequence of RoundOfPoker's
 
 public class RoundsOfTexas extends RoundController {
-    private PrintGame printGame;
     private ArrayList<TexasPlayer> roundPlayers;
 
     public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, List<Card> communityCards, int dealerIndex) {
@@ -131,7 +130,7 @@ public class RoundsOfTexas extends RoundController {
         }
 
 
-        //sort all in player list, start from the smallest stake
+        //sort all in player list, start from player who has the smallest stake
         Collections.sort(allInPlayer, new Comparator<Integer>() {
             @Override
             public int compare(Integer playerId1, Integer playerId2) {
@@ -140,6 +139,7 @@ public class RoundsOfTexas extends RoundController {
                 return Integer.compare(player1.getStake(), player2.getStake());
             }
         });
+        //go through the allin players
         for (int ID : allInPlayer) {
             TexasPlayer player = getPlayerById(roundPlayers, ID);
             PotOfMoney sidePot = new PotOfMoney();
@@ -148,17 +148,17 @@ public class RoundsOfTexas extends RoundController {
             newPlayerIds.removeIf(id -> id == player.getId());
 
 
-            //calculate side pot
+            //count total chips in pots
             int previousStake = 0;
             for (PotOfMoney pot : pots) {
                 previousStake += pot.getTotal();
             }
-            // raise much more than stake
+            // do not create side pot if the player can win more than current total stakes in pots
             if (player.getTotalStake() * activePlayer > previousStake) {
                 player.SetSidePot();
                 continue;
             }
-
+            //calculate side pot
             if (pots.size() == 1) {
                 previousStake = lastPot.getTotal();
                 sidePot.setStake(lastPot.getCurrentStake());

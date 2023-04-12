@@ -20,7 +20,7 @@ public class TexasController extends MainController {
         updatePlayerIDs();
         deck = new DeckOfCards();
     }
-
+	//distribute new ids to remain players
     private void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
             texasPlayers.get(i).setId(i);
@@ -49,7 +49,7 @@ public class TexasController extends MainController {
         Scanner scanner = new Scanner(System.in);
         String[] playerNames = names;
         int numPlayers = 0;
-
+		// ask how many players in the game
         while (!(numPlayers <= 10 && numPlayers >= 2)) {
             System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
             try {
@@ -65,7 +65,7 @@ public class TexasController extends MainController {
                 scanner.nextLine(); // Clear the scanner buffer
             }
         }
-
+		// every player start with 100 chips
         int startingBank = 100;
 
         System.out.println("\nLet's play Texas Hold'Em ...\n\n");
