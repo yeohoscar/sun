@@ -34,9 +34,9 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public ComputerTexasPlayer(String name, int money,int id) {
         super(name, money,id);
 
-//        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
-//                - VARIABILITY/2;
-        riskTolerance = 50;
+        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
+                - VARIABILITY/2;
+
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
@@ -54,10 +54,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
         int risk = 0;
         risk = riskTolerance - getStake() + predicateRiskTolerance();
         return risk; // tolerance drops as stake increases
-    }
-
-    public List<Card> getCommunityCards() {
-        return communityCards;
     }
 
     public Rounds getCurrentRound() {
@@ -198,7 +194,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     }
 
     /************************ this method will calculate the riskTolerance in river round *****************************/
-    public int riverRoundRiskToleranceHelper(Card[] publicCards, Card[] handCards, DeckOfCards deck) {
+    public int riverRoundRiskToleranceHelper(Card[] publicCards, DeckOfCards deck) {
         PokerHand publicHand = new PokerHand(publicCards, deck);
         String[] nameOrder = new String[] {"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
@@ -284,7 +280,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         }
 
         if (currentRound == Rounds.RIVER) {
-            risk += riverRoundRiskToleranceHelper(publicCards, super.getHand().getHand(), deck);
+            risk += riverRoundRiskToleranceHelper(publicCards, deck);
         }
         return risk;
     }
@@ -634,8 +630,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
             oneSuitOfCards = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
             difference = findCardsThatNotInOneSuitOfCards(allCards, fastIndex, slowIndex, oneSuitOfCards);
             //if the last card is Ace, we need to call getValue
-            for(int i=0; i<allCards.length; i++) {
-                allCardsValue.add(allCards[i].getValue());
+            for (Card allCard : allCards) {
+                allCardsValue.add(allCard.getValue());
             }
         }else if (allCards[0].isAce()) {
             fastIndex=1;
@@ -643,8 +639,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
             oneSuitOfCards = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
             difference = findCardsThatNotInOneSuitOfCards(allCards, fastIndex, slowIndex, oneSuitOfCards);
             //if the last card is Ace, we need to call getRank
-            for(int i=0; i<allCards.length; i++) {
-                allCardsValue.add(allCards[i].getRank());
+            for (Card allCard : allCards) {
+                allCardsValue.add(allCard.getRank());
             }
         }else {
             oneSuitOfCards = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -717,8 +713,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
         ArrayList<ArrayList<Integer>> combinations1 = new ArrayList<>();
         if (currentRound==Rounds.FLOP) {
             // C(1, n)
-            for (int i = 0; i < n; i++) {
-                ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(difference.get(i)));
+            for (Integer integer : difference) {
+                ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(integer));
                 combinations1.add(combination);
             }
             // C(2, n)
@@ -730,8 +726,8 @@ public class ComputerTexasPlayer extends TexasPlayer {
             }
         }
         else if (currentRound==Rounds.TURN) {
-            for (int i = 0; i < n; i++) {
-                ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(difference.get(i)));
+            for (Integer integer : difference) {
+                ArrayList<Integer> combination = new ArrayList<>(Arrays.asList(integer));
                 combinations1.add(combination);
             }
         }
@@ -775,17 +771,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
             //must be Three of a kind
             if (countContains(names, 3) == 1 && countContains(names, 2) == 0) {
                 odds=100;
-//                outs=10;
-//                odds=outs*2-(outs-8);
             }
-/*            //player must select Full House instead of Three of a kind
-//            if (countContains(names, 3) && countContains(names, 2)) {
-//                odds = 0;
-//            }
-            //it must be Four of a kind instead of Three of a kind
-//            if (countContains(names, 4)) {
-//                odds = 0;
-//            }*/
             if (countContains(names, 1) == 5) {
                 outs = 15;
                 odds = outs*2-(outs-8);
@@ -800,8 +786,6 @@ public class ComputerTexasPlayer extends TexasPlayer {
             }
             if (countContains(names, 3) == 1 && countContains(names, 1) == 3) {
                 odds=100;
-//                outs = 9;
-//                odds = outs*2-(outs-8);
             }
 
         }

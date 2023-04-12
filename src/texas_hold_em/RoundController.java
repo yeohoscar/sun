@@ -18,7 +18,6 @@ public abstract class RoundController {
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
-    private int smallBlindAmount;
     protected List<Card> communityCards;
 
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
@@ -33,7 +32,6 @@ public abstract class RoundController {
         roundPlayers.get(dealerIndex).setDealer(true);
         this.dealerIndex = dealerIndex;
         numPlayers = roundPlayers.size();
-        this.smallBlindAmount = 5;
         pots.add(mainPot);
         ArrayList<Integer> playersID = new ArrayList<>();
         for (TexasPlayer player : players) {
@@ -73,8 +71,8 @@ public abstract class RoundController {
             smallIndex = dealerIndex + 1;
             bigIndex = dealerIndex + 2;
         }
-        roundPlayers.get(smallIndex).smallBlind(smallBlindAmount, pots.get(0));
-        roundPlayers.get(bigIndex).bigBlind(smallBlindAmount, pots.get(0));
+        roundPlayers.get(smallIndex).smallBlind(SMALL_BLIND_AMOUNT, pots.get(0));
+        roundPlayers.get(bigIndex).bigBlind(SMALL_BLIND_AMOUNT, pots.get(0));
     }
 
 
