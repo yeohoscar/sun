@@ -892,9 +892,9 @@ public class ComputerTexasPlayer extends TexasPlayer {
     //--------------------------------------------------------------------//
 
     public Action chooseAction(PotOfMoney pot) {
-        if (shouldSee(pot)) return SEE;
-        if (shouldRaise(pot)) return RAISE;
         if (shouldAllIn(pot)) return ALL_IN;
+        if (shouldRaise(pot)) return RAISE;
+        if (shouldSee(pot)) return SEE;
         return FOLD;
     }
 
