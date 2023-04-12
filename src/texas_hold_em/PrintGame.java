@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrintGame {
-    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
-    //String[] suits = {"♠", "♥", "♦", "♣"};
+    //    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
+    String[] suits = {"♠", "♥", "♦", "♣"};
     private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private String[] cardEdge = {"╭────╮", "╰────╯"};
 
@@ -47,7 +47,7 @@ public class PrintGame {
                 int count = 0;
                 for (int j = 0; j < texasPlayers.size(); j++) {
                     String temp = String.format("__________________");
-
+                    System.out.println("half players = "+halfPlayers);
                     if (j < halfPlayers && sb != sb1) {
                         sb = sb1;
 
@@ -60,8 +60,14 @@ public class PrintGame {
                     } else {
                         sb.append(temp);
                         count++;
-                        if (count == halfPlayers) {
-                            sb.append("\n");
+                        if(texasPlayers.size()%2==0){
+                            if (count == halfPlayers) {
+                                sb.append("\n");
+                            }
+                        }else {
+                            if(count == halfPlayers+1){
+                                sb.append("\n");
+                            }
                         }
                     }
                 }
@@ -216,8 +222,14 @@ public class PrintGame {
                     } else {
                         sb.append(temp);
                         count++;
-                        if (count == halfPlayers) {
-                            sb.append("\n");
+                        if(texasPlayers.size()%2==0){
+                            if (count == halfPlayers) {
+                                sb.append("\n");
+                            }
+                        }else {
+                            if(count == halfPlayers+1){
+                                sb.append("\n");
+                            }
                         }
                     }
                 }
