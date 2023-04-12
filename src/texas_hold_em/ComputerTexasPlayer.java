@@ -912,7 +912,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (pot.getCurrentStake() - stake > bank) {
             return false;
         } else {
-            return Math.abs(dice.nextInt()) % 130 < getCurrentBestHand().getRiskWorthiness() +
+            return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
         }
     }
@@ -921,12 +921,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
         if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
             return false;
         }
-        return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-        return Math.abs(dice.nextInt()) % 80 < getCurrentBestHand().getRiskWorthiness() +
+        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
 

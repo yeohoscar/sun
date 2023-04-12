@@ -12,7 +12,8 @@ import java.util.List;
 
 public class PrintGame {
     //    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
-    String[] suits = {"♠", "♥", "♦", "♣"};
+    //    String[] suits = {"♠", "♥", "♦", "♣"}; -> Issues with encoding with certain terminals
+    String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
     private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private String[] cardEdge = {"╭────╮", "╰────╯"};
 
