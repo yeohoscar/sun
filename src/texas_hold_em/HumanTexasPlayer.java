@@ -50,7 +50,45 @@ public class HumanTexasPlayer extends TexasPlayer {
 		System.out.print("\n>> Cannot perform <" + action + "> due to <" + reason + ">\n\n");
 	}
 
-	// Prompts user to input number of chips to raise by
+	public Action chooseAction(PotOfMoney pot) {
+		byte[] input = new byte[100];
+		Action chosenAction = null;
+		while (chosenAction == null) {
+			try {
+				System.out.print("\n>> Pick an option: 1. Call/Check  2. Raise  3. All In  4. Fold  ");
+
+				System.in.read(input);
+
+				for (byte b : input) {
+					switch (((char) b)) {
+						case '1' -> {
+							if (shouldSee(pot)) chosenAction = SEE;
+						}
+						case '2' -> {
+							if (shouldRaise(pot)) chosenAction = RAISE;
+						}
+						case '3' -> {
+							if (shouldAllIn(pot)) chosenAction = ALL_IN;
+						}
+						case '4' -> {
+							chosenAction = FOLD;
+						}
+						default -> {
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return chosenAction;
+	}
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// Get the user to input amount they wish to raise by and raise stake
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
 
 	@Override
 	public void raiseBet(PotOfMoney pot) {
@@ -87,40 +125,6 @@ public class HumanTexasPlayer extends TexasPlayer {
 		if(bank==0){
 			allIn();
 		}
-	}
-
-	public Action chooseAction(PotOfMoney pot) {
-		byte[] input = new byte[100];
-		Action chosenAction = null;
-		while (chosenAction == null) {
-			try {
-				System.out.print("\n>> Pick an option: 1. Call/Check  2. Raise  3. All In  4. Fold  ");
-
-				System.in.read(input);
-
-				for (byte b : input) {
-					switch (((char) b)) {
-						case '1' -> {
-							if (shouldSee(pot)) chosenAction = SEE;
-						}
-						case '2' -> {
-							if (shouldRaise(pot)) chosenAction = RAISE;
-						}
-						case '3' -> {
-							if (shouldAllIn(pot)) chosenAction = ALL_IN;
-						}
-						case '4' -> {
-							chosenAction = FOLD;
-						}
-						default -> {
-						}
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return chosenAction;
 	}
 
 	//--------------------------------------------------------------------//

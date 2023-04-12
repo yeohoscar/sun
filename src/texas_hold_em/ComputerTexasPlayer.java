@@ -855,12 +855,15 @@ public class ComputerTexasPlayer extends TexasPlayer {
             if (countContains(names, 2) == 1 && countContains(names, 1) == 4) {
                 odds=100;
             }
-//            if (countContains(names, 3) == 1 && countContains(names, 1) == 3) {
-//                odds=100;
-//            }
         }
         return odds;
     }
+
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+    // Raises stake by minimum needed
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
 
     @Override
     public void raiseBet(PotOfMoney pot) {
@@ -882,6 +885,12 @@ public class ComputerTexasPlayer extends TexasPlayer {
         System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
     }
 
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+    // Controls computer player action
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+
     public Action chooseAction(PotOfMoney pot) {
         if (shouldSee(pot)) return SEE;
         if (shouldRaise(pot)) return RAISE;
@@ -902,12 +911,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     public boolean shouldSee(PotOfMoney pot) {
         if (pot.getCurrentStake() - stake > bank) {
             return false;
-        }
-//        if (getStake() == 0) {
-//            System.out.println("getStake() in computer player = "+getStake());
-//            return true;
-//        }
-        else {
+        } else {
             return Math.abs(dice.nextInt()) % 100 < getCurrentBestHand().getRiskWorthiness() +
                     getRiskTolerance();
         }
