@@ -55,8 +55,6 @@ public class RoundsOfTexas extends RoundController {
                 }
             }
             // find who has the largest handValue
-            System.out.println(valueRank);
-
             for (int i = pots.size() - 1; i >= 0; i--) {
                 PotOfMoney pot = pots.get(i);
                 int potAmount = pot.getTotal();
@@ -75,7 +73,6 @@ public class RoundsOfTexas extends RoundController {
                         }
                     }
                 }
-                System.out.println("Winner="+winners);
                 // Divide the pot amount equally among the winners
                 if (!winners.isEmpty()) {
                     int splitAmount = potAmount / winners.size();
@@ -153,7 +150,12 @@ public class RoundsOfTexas extends RoundController {
             int previousStake = 0;
             for(PotOfMoney pot :pots){
                 previousStake+=pot.getTotal();
-            }if(player.getTotalStake()*activePlayer>previousStake){continue;}
+            }
+            // raise much more than stake
+            if(player.getTotalStake()*activePlayer>previousStake){
+                player.SetSidePot();
+                continue;
+            }
 
             if(pots.size()==1){
                 previousStake=lastPot.getTotal();

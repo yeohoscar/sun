@@ -135,7 +135,7 @@ public abstract class RoundController {
         while (!onePlayerLeft() && !ActionClosed()) {
             delay(DELAY_BETWEEN_ACTIONS);
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
-            if(!currentPlayer.hasFolded()||!currentPlayer.isAllIn()){
+            if(!currentPlayer.hasFolded()&&!currentPlayer.isAllIn()){
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
             }
@@ -194,7 +194,6 @@ public abstract class RoundController {
         if(index==(numPlayers)){
             index=0;
         }
-        System.out.println("INDEX="+index);
         while(roundPlayers.get(index).hasFolded()){
             index++;
             if(index==numPlayers){

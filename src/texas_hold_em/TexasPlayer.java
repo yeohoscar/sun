@@ -109,6 +109,9 @@ public abstract class TexasPlayer extends poker.Player {
 	public void SetSidePot() {
 		hasSidePot=true;
 	}
+	public void addBank(int add) {
+		bank+=add;
+	}
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
