@@ -58,7 +58,7 @@ public abstract class RoundController {
 
     // handle the small blind and big blind
     public void blindBet() {
-        System.out.println("Small Blind and Big Blind: ");
+        System.out.println("Small Blind: " + SMALL_BLIND_AMOUNT + "\nBig Blind: " + BIG_BLIND_AMOUNT);
         System.out.println("\n\nNew Deal:\n\n");
 
         if (dealerIndex == (numPlayers - 2)) {
