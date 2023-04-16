@@ -1,6 +1,6 @@
 package texas_scramble;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,22 +11,16 @@ public class DictionaryTrie {
     Node root;
 
     public DictionaryTrie() {
-        root = new Node('^', false, new ArrayList<Node>());
+        root = new Node('^', false, new ArrayList<>());
+        createDictionary();
     }
 
     private void createDictionary() {
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\User\\OneDrive\\Documents\\UCD\\UCD\\CompSci\\Stage 3\\Semester 2\\COMP30880 Software Engineering Project 3\\sun_emoji_comp30880_project (1)\\src\\texas_scramble\\wordList.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("Collins Scrabble Words (2019).txt"))) {
             stream.forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        DictionaryTrie d = new DictionaryTrie();
-        d.createDictionary();
-        char[] str = new char[20];
-        d.display(d.root, str, 0);
     }
 
     public Node getRoot() {
@@ -35,22 +29,36 @@ public class DictionaryTrie {
 
     private void add(String word) {
         Node curr = root;
-        char[] letters = word.toCharArray();
 
-        for (int i = 0; i < letters.length; i++) {
-            if (!curr.children.contains(letters[i])) {
-                if (i == letters.length - 1) {
-                    Node newNode = new Node(letters[i], true, new ArrayList<Node>());
-                    curr.addChild(newNode);
-                } else {
-                    Node newNode = new Node(letters[i], false, new ArrayList<Node>());
-                    curr.addChild(newNode);
-                    curr = newNode;
-                }
-            } else {
-                curr = curr.children.get(curr.children.indexOf(letters[i]));
+        for (char letter : word.toCharArray()) {
+            Node n = curr.children.stream()
+                    .filter(node -> letter == node.getLetter())
+                    .findFirst()
+                    .orElse(null);
+
+            if (n == null) {
+                n = new Node(letter, false, new ArrayList<>());
+                curr.addChild(n);
             }
+
+            curr = n;
         }
+        curr.setEndOfWord(true);
+    }
+
+    public boolean isValidWord(String word) {
+        Node curr = root;
+
+        for (char letter : word.toCharArray()) {
+            curr = curr.children.stream()
+                    .filter(node -> letter == node.getLetter())
+                    .findAny()
+                    .orElse(null);
+
+            if (curr == null) return false;
+        }
+
+        return true;
     }
 
     void display(Node root, char[] str, int level) {
@@ -76,14 +84,14 @@ public class DictionaryTrie {
         }
     }
 
-    private class Node {
+    private static class Node {
         char letter;
-        boolean isEndOfWord;
+        boolean endOfWord;
         List<Node> children;
 
         public Node(char letter, boolean isEndOfWord, List<Node> children) {
             this.letter = letter;
-            this.isEndOfWord = isEndOfWord;
+            this.endOfWord = isEndOfWord;
             this.children = children;
         }
 
@@ -92,23 +100,15 @@ public class DictionaryTrie {
         }
 
         public boolean isEndOfWord() {
-            return isEndOfWord;
+            return endOfWord;
         }
 
-        public List<Node> getChildren() {
-            return children;
+        public void setEndOfWord(boolean endOfWord) {
+            this.endOfWord = endOfWord;
         }
 
         public void addChild(Node newNode) {
             children.add(newNode);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof Character) {
-                return letter == (char) obj;
-            }
-            return false;
         }
     }
 }

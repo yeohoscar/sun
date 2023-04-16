@@ -4,7 +4,9 @@ package poker;
 // This package provides classes necessary for implementing a game system for playing poker
 
 
-public class Card
+import texas_scramble.HandElement;
+
+public class Card implements HandElement
 {
 	private String suit		= "";	// "hearts", "clubs", "diamonds", "spades"
 	private String name     = "";	// "Ace", "Deuce", "Three", ..., "Jack", "Queen", "King"

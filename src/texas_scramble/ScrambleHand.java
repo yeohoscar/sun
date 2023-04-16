@@ -15,7 +15,7 @@ public class ScrambleHand implements Hand {
 
     @Override
     public int getValue() {
-        return Arrays.stream(hand).mapToInt(Tile::getValue).sum();
+        return Arrays.stream(hand).mapToInt(Tile::value).sum();
     }
 
     @Override
@@ -26,6 +26,11 @@ public class ScrambleHand implements Hand {
     @Override
     public int getRiskWorthiness() {
         return 0;
+    }
+
+    @Override
+    public Card[] getHand() {
+        return new Card[0];
     }
 
     @Override
@@ -41,11 +46,5 @@ public class ScrambleHand implements Hand {
     @Override
     public int getNumDiscarded() {
         return 0;
-    }
-
-    @Override
-    public Card[] getHand() {
-        //TODO: abstract card and tile
-        return new Card[0];
     }
 }
