@@ -1,6 +1,7 @@
 package texas_hold_em;
 
 import poker.*;
+import texas_scramble.ScrambleHand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -192,8 +193,13 @@ public abstract class TexasPlayer extends poker.Player {
 	private void combinationUtil(Card[] arr, Card[] data, int start, int end, int index, int r, List<Hand> hands, DeckOfCards deck) {
 		// data combines hand with 5 cards
 		if (index == r) {
-			Hand newHand = new PokerHand(Arrays.copyOf(data, data.length), deck);
-			newHand = newHand.categorize();
+			Hand newHand;
+			if (hand instanceof PokerHand) {
+				newHand = new PokerHand(Arrays.copyOf(data, data.length), deck);
+				newHand = newHand.categorize();
+			} else {
+				newHand = new ScrambleHand(, deck);
+			}
 			hands.add(newHand);
 			return;
 		}
