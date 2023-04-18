@@ -18,8 +18,6 @@ public class TestScrambleComputerPlayer {
         //test letters3 and letters4 first, these two should have worked
         String[] letters3 = {"U", "N", "O", "S"};
         String[] letters4 = {"Z", "Z", "Z", "S"};
-        char[] str = new char[20];
-        player1.dictionaryTrie.display(player1.dictionaryTrie.getRoot(), str, 0);
         player1.findAllWords(letters4);
     }
 }
