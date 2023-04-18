@@ -13,6 +13,8 @@ public class DictionaryTrie {
     public DictionaryTrie() {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
+        char[] str = new char[20];
+        display(root, str, 0);
     }
 
     private void createDictionary() {
@@ -57,8 +59,7 @@ public class DictionaryTrie {
 
             if (curr == null) return false;
         }
-
-        return true;
+        return curr.isEndOfWord();
     }
 
     void display(Node root, char[] str, int level) {
