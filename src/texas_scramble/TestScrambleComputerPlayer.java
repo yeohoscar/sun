@@ -14,9 +14,12 @@ public class TestScrambleComputerPlayer {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters1 = {"e", "n", "o", "p", "g", "i", "a"};
         String[] letters2 = {"A", "S", "S"};
-        String[] letters3 = {"U", "N", "O", "S"};
-        String[] letters4 = {"u", "n", "o", "s"};
 
-        player1.findAllWords(letters3);
+        //test letters3 and letters4 first, these two should have worked
+        String[] letters3 = {"U", "N", "O", "S"};
+        String[] letters4 = {"Z", "Z", "Z", "S"};
+        char[] str = new char[20];
+        player1.dictionaryTrie.display(player1.dictionaryTrie.getRoot(), str, 0);
+        player1.findAllWords(letters4);
     }
 }

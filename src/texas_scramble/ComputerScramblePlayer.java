@@ -17,7 +17,7 @@ public class ComputerScramblePlayer {
     private Random dice	= new Random(System.currentTimeMillis());
 
     private List<Card> communityCards;
-    private DictionaryTrie dictionaryTrie = new DictionaryTrie();
+    public DictionaryTrie dictionaryTrie = new DictionaryTrie();
     public ComputerScramblePlayer(String name, int money,int id) {
         //super(name, money,id);
 
