@@ -1,11 +1,11 @@
 package texas_hold_em;
 
 import poker.*;
+import texas_scramble.DeckOfTiles;
 import texas_scramble.ScrambleHand;
+import texas_scramble.Tile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
@@ -188,18 +188,57 @@ public abstract class TexasPlayer extends poker.Player {
 		currentBestHand = bestHand;
 	}
 
+	public void findBestHand(Tile[] publicCards, DeckOfCards deck) {
+		int aLen = hand.getHand().length;
+		int bLen = publicCards.length;
+
+		Tile[] result = new Tile[aLen + bLen];
+		System.arraycopy((Tile[])hand.getHand(), 0, result, 0, aLen);
+		System.arraycopy(publicCards, 0, result, aLen, bLen);
+
+		List<Hand> hands = foo(result);
+
+		Hand bestHand = hands.get(0);
+		for (Hand hand : hands) {
+			if (bestHand.getValue() < hand.getValue()) {
+				bestHand = hand;
+			}
+		}
+
+		currentBestHand = bestHand;
+	}
+
+	private List<Hand> foo(Tile[] input) {
+		if (input == null) {
+			return null;
+		}
+		if (input.length == 1) {
+			return null;
+		}
+
+		List<Hand> hands = new ArrayList<>();
+		for (int i = 0; i < input.length; i++) {
+			Tile tmp = input[i];
+			Tile[] before = Arrays.copyOfRange(input, 0, i);
+			Tile[] after = Arrays.copyOfRange(input, i + 1, input.length);
+
+			int aLen = before.length;
+			int bLen = after.length;
+
+			Tile[] combined = new Tile[aLen + bLen];
+			System.arraycopy(before, 0, combined, 0, aLen);
+			System.arraycopy(after, 0, combined, aLen, bLen);
+		}
+		return hands;
+	}
+
 	// Utility recursive function for generating all combinations of cards and adding to list
 
 	private void combinationUtil(Card[] arr, Card[] data, int start, int end, int index, int r, List<Hand> hands, DeckOfCards deck) {
 		// data combines hand with 5 cards
 		if (index == r) {
-			Hand newHand;
-			if (hand instanceof PokerHand) {
-				newHand = new PokerHand(Arrays.copyOf(data, data.length), deck);
-				newHand = newHand.categorize();
-			} else {
-				newHand = new ScrambleHand(, deck);
-			}
+			Hand newHand = new PokerHand(Arrays.copyOf(data, data.length), deck);
+			newHand = newHand.categorize();
 			hands.add(newHand);
 			return;
 		}

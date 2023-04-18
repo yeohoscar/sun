@@ -121,8 +121,8 @@ public class PrintGame {
                         sb.append(cardEdge[1]).append("  ").append(cardEdge[1]).append(" │ ");
                     } else {
                         if (showDown) {
-                            index1 = getIndex(texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-                            index2 = getIndex(texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
+                            index1 = getIndex((Card)texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
+                            index2 = getIndex((Card)texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                             if (i == 1) {
                                 String tmp = String.format("%2s", ranks[index1[1]]);
                                 String tmp1 = String.format("%2s", ranks[index2[1]]);
@@ -132,8 +132,8 @@ public class PrintGame {
                             }
                         } else {
                             if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
-                                index1 = getIndex(texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-                                index2 = getIndex(texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
+                                index1 = getIndex((Card)texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
+                                index2 = getIndex((Card)texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {
                                     String tmp = String.format("%2s", ranks[index1[1]]);
                                     String tmp1 = String.format("%2s", ranks[index2[1]]);

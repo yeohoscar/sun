@@ -1,6 +1,7 @@
 package texas_hold_em;
 
 import poker.Card;
+import texas_scramble.HandElement;
 import texas_scramble.Tile;
 
 // Hand interface for use with polymorphism
@@ -18,5 +19,5 @@ public interface Hand {
 
     int getNumDiscarded();
 
-    Card[] getHand();
+    HandElement[] getHand();
 }

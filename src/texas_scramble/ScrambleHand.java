@@ -34,8 +34,8 @@ public class ScrambleHand implements Hand {
     }
 
     @Override
-    public Card[] getHand() {
-        return new Card[0];
+    public Tile[] getHand() {
+        return hand;
     }
 
     @Override

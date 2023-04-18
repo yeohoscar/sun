@@ -272,7 +272,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {
-            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
+            risk += preFlopRiskToleranceHelper((Card[])super.getHand().getHand());
         }
 
         if (currentRound == Rounds.FLOP || currentRound == Rounds.TURN) {
