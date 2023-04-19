@@ -8,20 +8,28 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class DictionaryTrie {
+    private static DictionaryTrie cache = null;
+
     Node root;
 
-    public DictionaryTrie() {
+    private DictionaryTrie() {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
         char[] str = new char[20];
         display(root, str, 0);
     }
 
+    public static synchronized DictionaryTrie getDictionary() {
+        if (cache == null) {
+            cache = new DictionaryTrie();
+        }
+        return cache;
+    }
+
     private void createDictionary() {
         try (Stream<String> stream = Files.lines(Paths.get("Collins Scrabble Words (2019).txt"))) {
-            stream
-               .filter(word -> word.length() <= 7)
-               .forEach(this::add);
+            stream.filter(word -> word.length() <= 7)
+                    .forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

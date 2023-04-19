@@ -17,7 +17,7 @@ public class ComputerScramblePlayer {
     private Random dice	= new Random(System.currentTimeMillis());
 
     private List<Card> communityCards;
-    private DictionaryTrie dictionaryTrie = new DictionaryTrie();
+
     public ComputerScramblePlayer(String name, int money,int id) {
         //super(name, money,id);
 
@@ -198,7 +198,7 @@ public class ComputerScramblePlayer {
                 if((!temp.contains(newCombination)) && checkDuplicated(duplicatedLetters, newCombination)){ //
                     temp.add(newCombination);
                     String word = newCombination.stream().collect(Collectors.joining());
-                    if(dictionaryTrie.isValidWord(word)){
+                    if(DictionaryTrie.getDictionary().isValidWord(word)){
                         result.add(word);
                     }
                 }
@@ -258,7 +258,7 @@ public class ComputerScramblePlayer {
             combination.add(letter);
             combinations.add(combination);
             String word = combination.stream().collect(Collectors.joining());
-            if(dictionaryTrie.isValidWord(word)){
+            if(DictionaryTrie.getDictionary().isValidWord(word)){
                 result.add(word);
             }
         }
@@ -278,7 +278,7 @@ public class ComputerScramblePlayer {
                 if(!temp.contains(newCombination) && checkDuplicated(duplicatedLetters, newCombination)){
                     temp.add(newCombination);
                     String word = newCombination.stream().collect(Collectors.joining());
-                    if(dictionaryTrie.isValidWord(word)){
+                    if(DictionaryTrie.getDictionary().isValidWord(word)){
                         result.add(word);
                     }
                 }
