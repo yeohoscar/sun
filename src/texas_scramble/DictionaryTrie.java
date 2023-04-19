@@ -19,7 +19,9 @@ public class DictionaryTrie {
 
     private void createDictionary() {
         try (Stream<String> stream = Files.lines(Paths.get("Collins Scrabble Words (2019).txt"))) {
-            stream.forEach(this::add);
+            stream
+               .filter(word -> word.length() <= 7)
+               .forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
