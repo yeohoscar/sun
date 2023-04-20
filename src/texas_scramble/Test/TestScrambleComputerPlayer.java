@@ -1,12 +1,8 @@
-package texas_scramble;
+package texas_scramble.Test;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
-import poker.*;
-import texas_hold_em.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import texas_scramble.Player.ComputerScramblePlayer;
 
 public class TestScrambleComputerPlayer {
     @Test

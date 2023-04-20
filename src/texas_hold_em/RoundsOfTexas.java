@@ -2,6 +2,8 @@
 package texas_hold_em;
 
 import poker.*;
+import texas.RoundController;
+import texas.TexasPlayer;
 
 
 import java.util.*;

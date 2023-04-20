@@ -1,11 +1,10 @@
-package texas_scramble;
+package texas_scramble.Player;
 
 import poker.Card;
 import poker.DeckOfCards;
-import poker.PokerHand;
-import texas_hold_em.Rounds;
+import texas.Rounds;
+import texas_scramble.Deck.DictionaryTrie;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 

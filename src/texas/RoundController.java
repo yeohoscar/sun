@@ -1,6 +1,7 @@
-package texas_hold_em;
+package texas;
 
 import poker.*;
+import texas_hold_em.PrintGame;
 
 import java.util.ArrayList;
 import java.util.List;

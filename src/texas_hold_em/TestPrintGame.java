@@ -3,6 +3,7 @@ package texas_hold_em;
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
 import poker.*;
+import texas.TexasPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

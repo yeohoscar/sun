@@ -10,11 +10,15 @@ package texas_hold_em;
 
 
 import poker.*;
+import texas.Action;
+import texas.RoundController;
+import texas.Rounds;
+import texas.TexasPlayer;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static texas_hold_em.Action.*;
+import static texas.Action.*;
 
 public class ComputerTexasPlayer extends TexasPlayer {
     public static final int VARIABILITY = 100;
