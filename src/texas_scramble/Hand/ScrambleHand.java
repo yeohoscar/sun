@@ -1,10 +1,5 @@
 package texas_scramble.Hand;
 
-<<<<<<< HEAD
-=======
-import poker.Card;
-import poker.DeckOfCards;
->>>>>>> abstractHandElements
 import texas_hold_em.Deck;
 import texas_hold_em.Hand;
 import texas_scramble.Deck.Tile;
@@ -30,13 +25,9 @@ public class ScrambleHand implements Hand {
             setTile(i, (Tile) deck.dealNext());
         }
     }
-<<<<<<< HEAD
-
     public ScrambleHand(Deck deck) {
         this(deck, 2);
     }
-=======
->>>>>>> abstractHandElements
 
     @Override
     public int getValue() {
