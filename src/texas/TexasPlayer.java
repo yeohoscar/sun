@@ -292,9 +292,9 @@ public abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-    abstract boolean shouldAllIn(PotOfMoney pot);
+    public abstract boolean shouldAllIn(PotOfMoney pot);
 
-	abstract Action chooseAction(PotOfMoney pot);
+	public abstract Action chooseAction(PotOfMoney pot);
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
