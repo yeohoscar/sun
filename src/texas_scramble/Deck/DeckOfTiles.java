@@ -2,8 +2,10 @@ package texas_scramble.Deck;
 
 import poker.Card;
 import poker.DeckOfCards;
+import poker.FaceCard;
 import texas_hold_em.Deck;
 import texas_hold_em.Hand;
+import texas_scramble.Hand.ScrambleHand;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -24,6 +26,34 @@ public class DeckOfTiles implements Deck {
         reset();
     }
     private void initializeTiles(){
+        while (next < 9) deck[next++] = new Tile("A", 1);
+        while (next < 11) deck[next++] = new Tile("B", 3);
+        while (next < 13) deck[next++] = new Tile("C", 3);
+        while (next < 17) deck[next++] = new Tile("D", 2);
+        while (next < 29) deck[next++] = new Tile("E", 1);
+        while (next < 31) deck[next++] = new Tile("F", 4);
+        while (next < 34) deck[next++] = new Tile("G", 2);
+        while (next < 36) deck[next++] = new Tile("H", 4);
+        while (next < 45) deck[next++] = new Tile("I", 1);
+        while (next < 46) deck[next++] = new Tile("J", 8);
+        while (next < 47) deck[next++] = new Tile("K", 5);
+        while (next < 51) deck[next++] = new Tile("L", 1);
+        while (next < 53) deck[next++] = new Tile("M", 3);
+        while (next < 59) deck[next++] = new Tile("N", 1);
+        while (next < 67) deck[next++] = new Tile("O", 1);
+        while (next < 69) deck[next++] = new Tile("P", 3);
+        while (next < 70) deck[next++] = new Tile("Q", 10);
+        while (next < 76) deck[next++] = new Tile("R", 1);
+        while (next < 80) deck[next++] = new Tile("S", 1);
+        while (next < 86) deck[next++] = new Tile("T", 1);
+        while (next < 90) deck[next++] = new Tile("U", 1);
+        while (next < 92) deck[next++] = new Tile("V", 4);
+        while (next < 94) deck[next++] = new Tile("W", 4);
+        while (next < 95) deck[next++] = new Tile("X", 8);
+        while (next < 97) deck[next++] = new Tile("Y", 4);
+        while (next < 98) deck[next++] = new Tile("Z", 10);
+        while (next < 100) deck[next++] = new Tile(" ", 0);
+
         storeTiles.put("A", 9);
         storeTiles.put("B", 2);
         storeTiles.put("C", 2);
@@ -55,6 +85,7 @@ public class DeckOfTiles implements Deck {
     public HashMap<String, Integer> getAllTiles(){
         return storeTiles;
     }
+
     @Override
     public void reset() {
         next = 0;
@@ -63,16 +94,30 @@ public class DeckOfTiles implements Deck {
 
     @Override
     public void shuffle() {
+        Tile palm;
 
+        int alpha, beta;
+
+        for (int i = 0; i < NUM_TILES*NUM_TILES; i++) {
+            alpha       = Math.abs(dice.nextInt())%NUM_TILES;
+            beta        = Math.abs(dice.nextInt())%NUM_TILES;
+
+            palm        = deck[alpha];
+            deck[alpha] = deck[beta];
+            deck[beta]  = palm;
+        }
     }
 
     @Override
-    public Card dealNext() {
-        return null;
+    public Tile dealNext() {
+        if (next >= NUM_TILES)
+            return new Tile("^",0);  // deck is empty
+        else
+            return deck[next++];
     }
 
     @Override
-    public Hand dealHand() {
-        return null;
+    public ScrambleHand dealHand() {
+        return new ScrambleHand(this);
     }
 }

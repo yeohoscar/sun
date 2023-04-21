@@ -17,7 +17,7 @@ public class TestPrintGame {
         ArrayList<TexasPlayer> texasPlayers = new ArrayList<>();
         PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(3);
-        List<Card> cards = List.of(communityCards.getHand());
+        List<Card> cards = List.of((Card[]) communityCards.getHand());
 //        Hand community = new PokerHand();
 ////        DeckOfCards deck;
 //        ArrayList<Card> communityCards = new ArrayList<>();
@@ -52,7 +52,7 @@ public class TestPrintGame {
         ArrayList<PotOfMoney> pots = new ArrayList<>();
 //        PotOfMoney pot = new PotOfMoney();
         communityCards=deck.dealHand(4);
-        List<Card> cards = List.of(communityCards.getHand());
+        List<Card> cards = List.of((Card[]) communityCards.getHand());
 
         ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
 

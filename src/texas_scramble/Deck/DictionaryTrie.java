@@ -17,11 +17,8 @@ public class DictionaryTrie {
     private DictionaryTrie() {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
-        char[] str = new char[20];
-        display(root, str, 0);
     }
     public List<String> findAllWords(String[] letters){
-        DictionaryTrie dict = getDictionary();
         Node current;
         HashMap<String, Integer> lettersContained = new HashMap<>();
         for(String letter: letters){
@@ -33,7 +30,7 @@ public class DictionaryTrie {
         }
         List<List<String>> allWords = new ArrayList<>();
         for(String letter: letters){
-            current=dict.getRoot();
+            current = root;
             Node n = current.children.stream()
                     .filter(node -> letter.charAt(0) == node.getLetter())
                     .findFirst()
@@ -71,7 +68,7 @@ public class DictionaryTrie {
         }
         return contained;
     }
-    private List<String> dfs(DictionaryTrie.Node node, String prefix, HashMap<String, Integer> lettersContained, List<String> results) {
+    private List<String> dfs(Node node, String prefix, HashMap<String, Integer> lettersContained, List<String> results) {
         if (node.isEndOfWord() && wordIsFormedByLettersContained(prefix, lettersContained)) {
             results.add(prefix);
             //System.out.println("results = "+results);
