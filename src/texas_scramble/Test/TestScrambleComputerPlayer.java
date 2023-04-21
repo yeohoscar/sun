@@ -4,6 +4,8 @@ package texas_scramble.Test;
 import org.junit.jupiter.api.Test;
 import poker.*;
 import texas_hold_em.*;
+import texas_scramble.Deck.DictionaryTrie;
+import texas_scramble.Player.ComputerScramblePlayer;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
