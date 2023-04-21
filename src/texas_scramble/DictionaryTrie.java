@@ -15,8 +15,6 @@ public class DictionaryTrie {
     private DictionaryTrie() {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
-        char[] str = new char[20];
-        display(root, str, 0);
     }
 
     public static synchronized DictionaryTrie getDictionary() {

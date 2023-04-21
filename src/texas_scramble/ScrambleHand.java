@@ -54,15 +54,19 @@ public class ScrambleHand implements Hand {
         }
     }
 
+    @Override
+    public int getRiskWorthiness() {
+        return 0;
+    }
+
+
+
+
+    // Useless methods for Scramble
 
     @Override
     public Hand categorize() {
         return null;
-    }
-
-    @Override
-    public int getRiskWorthiness() {
-        return 0;
     }
 
     @Override

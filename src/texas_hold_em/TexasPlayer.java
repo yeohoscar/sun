@@ -173,7 +173,7 @@ public abstract class TexasPlayer extends poker.Player {
 		int bLen = publicCards.length;
 
 		Card[] result = new Card[aLen + bLen];
-		System.arraycopy(hand.getHand(), 0, result, 0, aLen);
+		System.arraycopy((Card[])hand.getHand(), 0, result, 0, aLen);
 		System.arraycopy(publicCards, 0, result, aLen, bLen);
 
 		List<Hand> hands = new ArrayList<>();
