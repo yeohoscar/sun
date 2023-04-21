@@ -1,6 +1,5 @@
 package texas_hold_em;
 
-import poker.Card;
 import texas_scramble.Hand.HandElement;
 
 // Deck interface for use with polymorphism
