@@ -1,6 +1,7 @@
 package texas_scramble;
 
 import poker.Card;
+import poker.DeckOfCards;
 import texas_hold_em.Deck;
 import texas_hold_em.Hand;
 
@@ -16,12 +17,43 @@ public class ScrambleHand implements Hand {
         this.deck = deck;
     }
 
+    public ScrambleHand(Deck deck, int numCardsToBeDealt) {
+        this.deck = deck;
+
+        hand = new Tile[numCardsToBeDealt];
+
+        for (int i = 0; i < numCardsToBeDealt; i++) {
+            setTile(i, (Tile) deck.dealNext());
+        }
+    }
+
     @Override
     public int getValue() {
         int value = Arrays.stream(hand).mapToInt(Tile::value).sum();
         if (hand.length == 7) value += 50;
         return value;
     }
+
+    @Override
+    public Tile[] getHand() {
+        return hand;
+    }
+
+    @Override
+    public String toString() {
+        String desc = "";
+        for (Tile tile : hand) {
+            desc += tile + "\n";
+        }
+        return desc;
+    }
+
+    public void setTile(int idx, Tile tile) {
+        if (idx >= 0 && idx < hand.length) {
+            hand[idx] = tile;
+        }
+    }
+
 
     @Override
     public Hand categorize() {
@@ -34,14 +66,7 @@ public class ScrambleHand implements Hand {
     }
 
     @Override
-    public Tile[] getHand() {
-        return hand;
-    }
-
-    @Override
-    public void throwaway(int cardPos) {
-
-    }
+    public void throwaway(int cardPos) {}
 
     @Override
     public Hand discard() {

@@ -1,12 +1,13 @@
 package texas_hold_em;
 
 import poker.Card;
+import texas_scramble.HandElement;
 
 // Deck interface for use with polymorphism
 
 public interface Deck {
     void reset();
     void shuffle();
-    Card dealNext();
+    HandElement dealNext();
     Hand dealHand();
 }
