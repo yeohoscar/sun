@@ -1,4 +1,4 @@
-package texas_scramble;
+package texas_scramble.Deck;
 
 import java.io.*;
 import java.nio.file.Files;

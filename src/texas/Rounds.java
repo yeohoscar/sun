@@ -1,4 +1,4 @@
-package texas_hold_em;
+package texas;
 
 /*----------Represents the different stages of a game-------------------*/
 

@@ -1,16 +1,23 @@
-package texas_scramble;
+package texas_scramble.Player;
 
 import poker.Card;
 import poker.DeckOfCards;
-import poker.PokerHand;
-import texas_hold_em.Rounds;
+import texas.Rounds;
+import texas_scramble.Deck.DictionaryTrie;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ComputerScramblePlayer {
     public static final int VARIABILITY = 100;
+    /*public static int E, A, I, O, N, R, T, L, S, U= 1;
+    public static int D, G = 2;
+    public static int B, C, M, P = 3;
+    public static int F, H, V, W, Y = 4;
+    public static int K = 5;
+    public static int J, X = 8;
+    public static int Q, Z = 10;
+    public static int BLANK = 0;*/
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
 
@@ -231,14 +238,10 @@ public class ComputerScramblePlayer {
         }
         return check == 0;
     }
-    public void findAllWords(String[] letters){
+    public List<String> findAllWords(String[] letters){
         HashMap<String, Integer> duplicatedLetters = new HashMap<>();
-/*        char[] tempLetters = new char[letters.length];
-        for(int i=0; i<letters.length; i++){
-            tempLetters[i] = letters[i].charAt(0);
-        }
-        Arrays.sort(tempLetters);*/
-        //find all duplicate letters
+
+        //find those letters that arise multiple times in String[] letters
         for(String letter: letters){
             if(duplicatedLetters.containsKey(letter)){
                 duplicatedLetters.put(letter, duplicatedLetters.get(letter)+1);
@@ -252,7 +255,7 @@ public class ComputerScramblePlayer {
 
         List<List<String>> combinations = new ArrayList<>();
         List<String> result = new ArrayList<>();
-        // C(1,3)
+        // C(1, n)
         for (String letter : letters) {
             List<String> combination = new ArrayList<>();
             combination.add(letter);
@@ -262,14 +265,14 @@ public class ComputerScramblePlayer {
                 result.add(word);
             }
         }
+        // C(2, n) to C(n-1, n)
         List<List<String>> temp = new ArrayList<>();
         for(int i=2; i<letters.length; i++){
-
             findAllWordsHelper(temp, letters, combinations, result, duplicatedLetters);
             combinations = temp;
             temp = new ArrayList<>();
         }
-        // C(3,3)
+        // C(n, n)
         temp = new ArrayList<>();
         for (List<String> combination : combinations) {
             for (String letter : letters) {
@@ -289,13 +292,56 @@ public class ComputerScramblePlayer {
             System.out.println(re);
         }
         System.out.println("result.size = "+result.size());
+        return result;
     }
 
 
     //TODO: findAllWords will return all words that can be formed by current letters on players hand,
-    //      and findBestWord will return the word with highest score among all words returned by findAllWords
-    public String findBestWord(){
-        return null;
-    }
+    //      and findHighestScoreWord will return the word with highest score among all words returned by findAllWords
+    public String findHighestScoreWord(String[] letters){
+        //find all words that these letters can form
+        List<String> allWords = findAllWords(letters);
 
+        //calculate score of each of these words
+        HashMap<String, Integer> recordWordsScore = new HashMap<>();
+        for(String word: allWords){
+            recordWordsScore.put(word, calculateWordScore(word));
+        }
+        //find those words with highest score
+        int maxScore = Collections.max(recordWordsScore.values());
+        ArrayList<String> wordsWithMaxScore = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
+            if (entry.getValue() == maxScore) {
+                wordsWithMaxScore.add(entry.getKey());
+            }
+        }
+
+        //if there is only one word with highest score, return this word,
+        //otherwise, randomly choose one from those words with highest score
+        if(wordsWithMaxScore.size()==1){
+            return wordsWithMaxScore.get(0);
+        }else {
+            Random random = new Random();
+            return wordsWithMaxScore.get(random.nextInt(wordsWithMaxScore.size()));
+        }
+    }
+    public int calculateWordScore(String word){
+        int score = 0;
+        for(int i=0; i<word.length(); i++) {
+            /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {
+                score += 1;
+            }*/
+            switch (word.charAt(i)) {
+                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
+                case 'D', 'G' -> score+=2;
+                case 'B', 'C', 'M', 'P' -> score+=3;
+                case 'F', 'H', 'V', 'W', 'Y' -> score+=4;
+                case 'K' -> score+=5;
+                case 'J', 'X' -> score+=8;
+                case 'Q', 'Z' -> score+=10;
+                default -> score+=0;
+            }
+        }
+        return score;
+    }
 }

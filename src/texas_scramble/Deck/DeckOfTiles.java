@@ -1,4 +1,4 @@
-package texas_scramble;
+package texas_scramble.Deck;
 
 import poker.Card;
 import texas_hold_em.Deck;

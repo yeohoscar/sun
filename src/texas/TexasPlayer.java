@@ -1,9 +1,8 @@
-package texas_hold_em;
+package texas;
 
 import poker.*;
-import texas_scramble.DeckOfTiles;
-import texas_scramble.ScrambleHand;
-import texas_scramble.Tile;
+import texas_hold_em.Hand;
+import texas_scramble.Deck.Tile;
 
 import java.util.*;
 

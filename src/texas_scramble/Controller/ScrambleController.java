@@ -1,20 +1,21 @@
-package texas_hold_em;
+package texas_scramble.Controller;
 
-import poker.DeckOfCards;
 import texas.MainController;
+import texas_hold_em.TexasController;
+import texas_scramble.Deck.*;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TexasController extends MainController {
-
+public class ScrambleController extends MainController {
+    protected DeckOfTiles deck;
     @Override
     public void setUp(String[] names, int bank) {
         super.setUp(names, bank);
         updatePlayerIDs();
-        deck = new DeckOfCards();
+        deck = new DeckOfTiles();
     }
-	//distribute new ids to remain players
+    //distribute new ids to remain players
     private void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
             texasPlayers.get(i).setId(i);
@@ -24,7 +25,7 @@ public class TexasController extends MainController {
     public static void main(String[] args) {
         String[] names = {"Human", "Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
 
-        System.out.println("\nWelcome to the Automated Texas Hold'Em Machine ...\n\n");
+        System.out.println("\nWelcome to the Automated Texas Scramble Machine ...\n\n");
 
         System.out.print("\nWhat is your name?  ");
 
@@ -43,7 +44,7 @@ public class TexasController extends MainController {
         Scanner scanner = new Scanner(System.in);
         String[] playerNames = names;
         int numPlayers = 0;
-		// ask how many players in the game
+        // ask how many players in the game
         while (!(numPlayers <= 10 && numPlayers >= 2)) {
             System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
             try {
@@ -59,11 +60,11 @@ public class TexasController extends MainController {
                 scanner.nextLine(); // Clear the scanner buffer
             }
         }
-		// every player start with 100 chips
+        // every player start with 100 chips
         int startingBank = 100;
 
-        System.out.println("\nLet's play Texas Hold'Em ...\n\n");
-        TexasController game = new TexasController();
+        System.out.println("\nLet's play Texas Scramble ...\n\n");
+        ScrambleController game = new ScrambleController();
         game.setUp(playerNames, startingBank);
         game.play();
     }

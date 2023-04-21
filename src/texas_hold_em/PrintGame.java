@@ -2,10 +2,9 @@ package texas_hold_em;
 
 import poker.Card;
 import poker.DeckOfCards;
-import poker.Player;
 import poker.PotOfMoney;
-import texas_hold_em.Rounds;
-import texas_hold_em.TexasPlayer;
+import texas.Rounds;
+import texas.TexasPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

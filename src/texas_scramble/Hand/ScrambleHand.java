@@ -1,9 +1,10 @@
-package texas_scramble;
+package texas_scramble.Hand;
 
 import poker.Card;
 import poker.DeckOfCards;
 import texas_hold_em.Deck;
 import texas_hold_em.Hand;
+import texas_scramble.Deck.Tile;
 
 import java.util.Arrays;
 

@@ -1,13 +1,17 @@
-package texas_hold_em;
+package texas;
 
 import poker.Card;
 import poker.DeckOfCards;
+import texas.TexasPlayer;
+import texas_hold_em.ComputerTexasPlayer;
+import texas_hold_em.HumanTexasPlayer;
+import texas_hold_em.RoundsOfTexas;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MainController {
-    protected ArrayList<TexasPlayer> texasPlayers;
+    public ArrayList<TexasPlayer> texasPlayers;
 
     protected DeckOfCards deck;
 

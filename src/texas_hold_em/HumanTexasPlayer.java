@@ -1,9 +1,13 @@
 package texas_hold_em;
 
 import poker.PotOfMoney;
+import texas.Action;
+import texas.RoundController;
+import texas.TexasPlayer;
+
 import java.util.Scanner;
 
-import static texas_hold_em.Action.*;
+import static texas.Action.*;
 
 public class HumanTexasPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
