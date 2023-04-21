@@ -19,20 +19,8 @@ import static texas.Action.FOLD;
 
 public class ComputerScramblePlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
-    /*public static int E, A, I, O, N, R, T, L, S, U= 1;
-    public static int D, G = 2;
-    public static int B, C, M, P = 3;
-    public static int F, H, V, W, Y = 4;
-    public static int K = 5;
-    public static int J, X = 8;
-    public static int Q, Z = 10;
-    public static int BLANK = 0;*/
-
     private int riskTolerance;  // willingness of a player to take risks and bluff
-
     private Random dice	= new Random(System.currentTimeMillis());
-
-    private List<Card> communityCards;
     private DeckOfTiles deckOfTiles = new DeckOfTiles();
     public ComputerScramblePlayer(String name, int money,int id) {
         super(name, money,id);
@@ -41,8 +29,6 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
                 - VARIABILITY/2;
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
-    //for test
-
 
     //TODO: not done
     public int getRiskTolerance() {
@@ -52,22 +38,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 
         return risk; // tolerance drops as stake increases
     }
-    public Rounds getCurrentRound() {
-        switch (communityCards.size()) {
-            case 3 -> {
-                return Rounds.FLOP;
-            }
-            case 4 -> {
-                return Rounds.TURN;
-            }
-            case 5 -> {
-                return Rounds.RIVER;
-            }
-            default -> {
-                return Rounds.PRE_FLOP;
-            }
-        }
-    }
+
 
     //TODO: not done
     public Card getCard(int num, Card[] hand) {
@@ -76,9 +47,6 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         } else {
             return null;
         }
-    }
-    public void setCommunityCards(List<Card> communityCards) {
-        this.communityCards = communityCards;
     }
 
 
@@ -196,7 +164,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //TODO: not done
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
+        Card[] publicCards = getCommunityCards().toArray(new Card[getCommunityCards().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {
