@@ -10,17 +10,14 @@ package texas_hold_em;
 
 
 import poker.*;
-import texas.Action;
-import texas.RoundController;
-import texas.Rounds;
-import texas.TexasPlayer;
+import texas.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
 import static texas.Action.*;
 
-public class ComputerTexasPlayer extends TexasPlayer {
+public class ComputerTexasPlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
@@ -54,6 +51,7 @@ public class ComputerTexasPlayer extends TexasPlayer {
     // a negative risk tolerance means the player is averse to risk (nervous)
     // a positive risk tolerance means the player is open to risk   (adventurous)
     /************************ this method returns the riskTolerance by calling predicateRiskTolerance() method *****************************/
+    @Override
     public int getRiskTolerance() {
         int risk = 0;
         risk = riskTolerance - getStake() + predicateRiskTolerance();

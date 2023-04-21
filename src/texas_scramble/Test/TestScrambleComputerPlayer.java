@@ -80,9 +80,10 @@ public class TestScrambleComputerPlayer {
         //test when there is only one unknown letter
         String[] playerLetters = {"A", "B"};
         ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
-        /*for(String re: result){
-            System.out.println(re);
-        }*/
+//        for(String re: result){
+//            System.out.println(re);
+//        }
+
 
         //test when there are two unknown letters
         String[] playerLetters1 = {"A", "B"};
@@ -103,6 +104,7 @@ public class TestScrambleComputerPlayer {
             }
         }
         System.out.println("Size = "+result2.size());
+
     }
     @Test
     public void testFlopRound(){
@@ -110,10 +112,6 @@ public class TestScrambleComputerPlayer {
         //test when there are two unknown letters which are blanks
         String[] playerLetters2 = {"Z", "G", "H", " ", " "};
         ArrayList<String> result2 = player1.findAllCombination(playerLetters2, 2);
-//        System.out.println(player1.findHighestScoreWord(result2.get(0)));
-//        for(String re: result2){
-//            System.out.println(re);
-//        }
         for(String re: result2){
             System.out.println(player1.findHighestScoreWord(re));
         }
@@ -125,10 +123,6 @@ public class TestScrambleComputerPlayer {
         //test when there are two unknown letters which are blanks
         String[] playerLetters2 = {"Z", "G", "H", " ", " ", "A"};
         ArrayList<String> result2 = player1.findAllCombination(playerLetters2, 1);
-//        System.out.println(player1.findHighestScoreWord(result2.get(0)));
-//        for(String re: result2){
-//            System.out.println(re);
-//        }
         for(String re: result2){
             System.out.println(player1.findHighestScoreWord(re));
         }

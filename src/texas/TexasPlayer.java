@@ -3,10 +3,10 @@ package texas;
 import poker.*;
 import texas.Action;
 import texas_hold_em.Hand;
+import texas_scramble.Deck.DeckOfTiles;
+import texas_scramble.Deck.DictionaryTrie;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class TexasPlayer extends poker.Player {
 	public final int NUM_CARDS_DEALT = 2;
@@ -24,7 +24,7 @@ public abstract class TexasPlayer extends poker.Player {
 	protected boolean dealer = false;
 
 	public DeckOfCards deckOfCards;
-
+	private DeckOfTiles deckOfTiles = new DeckOfTiles();
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -292,7 +292,7 @@ public abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-    public abstract boolean shouldAllIn(PotOfMoney pot);
+    protected abstract boolean shouldAllIn(PotOfMoney pot);
 
 	public abstract Action chooseAction(PotOfMoney pot);
 
@@ -319,4 +319,150 @@ public abstract class TexasPlayer extends poker.Player {
 			default -> {}
 		}
 	}
+	protected ArrayList<String> findAvailableLetters(String[] lettersOnHand){
+		ArrayList<String> availableLetters = new ArrayList<>();
+		HashMap<String, Integer> temp1 = new HashMap<>(deckOfTiles.getAllTiles());
+		for(String letter: lettersOnHand){
+			temp1.put(letter, temp1.get(letter)-1);
+		}
+		for(Map.Entry<String, Integer> entry: temp1.entrySet()){
+			if(entry.getValue()!=0){
+				availableLetters.add(entry.getKey());
+			}
+		}
+		return availableLetters;
+	}
+
+
+	/**********************For Texas Scramble************************/
+
+	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
+	public HashMap<String, Integer> findHighestScoreWord(String combination){
+		DictionaryTrie dict = DictionaryTrie.getDictionary();
+		char[] charArray = combination.toCharArray();
+		String[] letters = new String[charArray.length];
+
+		for (int i = 0; i < charArray.length; i++) {
+			letters[i] = Character.toString(charArray[i]);
+		}
+
+		if(containBlank(letters)){
+			substituteBlank(letters);
+		}
+		//find all words that these letters can form
+		List<String> allWords = dict.findAllWords(letters);
+		//System.out.println("words size = "+allWords.size());
+		//if all words is empty, this means current letters on player's hand cna not form any words
+		if(allWords.isEmpty()){
+			return new HashMap<>(Collections.singletonMap("^", 0));
+		}
+		//calculate score of each of these words
+		HashMap<String, Integer> recordWordsScore = new HashMap<>();
+		for(String word: allWords){
+			recordWordsScore.put(word, calculateWordScore(word));
+		}
+		HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
+
+		//find those words with highest score
+		int maxScore = Collections.max(recordWordsScore.values());
+		//System.out.println("maxScore = "+maxScore);
+		for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
+			if (entry.getValue() == maxScore) {
+				storeHighestScoreWords.put(entry.getKey(), entry.getValue());
+			}
+		}
+		//if there is only one word with highest score, return this word,
+		//otherwise, randomly choose one from those words with highest score
+		if(storeHighestScoreWords.size()==1){
+			return storeHighestScoreWords;
+		}else {
+			List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
+			Random rand = new Random();
+			int randomIndex = rand.nextInt(keyList.size());
+			String randomKey = keyList.get(randomIndex);
+			return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
+		}
+	}
+	private ArrayList<String> updateAvailableLetters(HashMap<String, Integer> temp){
+		ArrayList<String> availableLetters = new ArrayList<>();
+		for(Map.Entry<String, Integer> entry: temp.entrySet()){
+			if(entry.getValue()>0){
+				availableLetters.add(entry.getKey());
+			}
+		}
+		return availableLetters;
+	}
+	public void substituteBlank(String[] letters){
+		ArrayList<String> availableLetters = findAvailableLetters(letters);
+		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+		for(int i=0; i<letters.length; i++){
+			if(letters[i].equals(" ")){
+				letters[i]=findHighestScoreLetter(availableLetters, temp);
+				availableLetters = updateAvailableLetters(temp);
+			}
+		}
+	}
+	private String findHighestScoreLetter(ArrayList<String> availableLetters, HashMap<String, Integer> temp){
+		int maxScore=0;
+		int score=0;
+		String maxScoreLetter = "A";
+		for(String letter: availableLetters){
+			switch (letter.charAt(0)) {
+				case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score = 1;
+				case 'D', 'G' -> score=2;
+				case 'B', 'C', 'M', 'P' -> score=3;
+				case 'F', 'H', 'V', 'W', 'Y' -> score=4;
+				case 'K' -> score=5;
+				case 'J', 'X' -> score=8;
+				case 'Q', 'Z' -> score=10;
+				default -> score=0;
+			}
+			if(maxScore<score){
+				maxScore=score;
+				maxScoreLetter=letter;
+			}
+		}
+		temp.put(maxScoreLetter, temp.get(maxScoreLetter)-1);
+		return maxScoreLetter;
+	}
+	private int countBlank(String[] letters){
+		int count=0;
+		for(String letter: letters){
+			if(letter.equals(" ")){
+				count++;
+			}
+		}
+		return count;
+	}
+	public boolean containBlank(String[] letters){
+		for(String letter: letters){
+			if(letter.equals(" ")){
+				return true;
+			}
+		}
+		return false;
+	}
+	private int calculateWordScore(String word){
+		int score = 0;
+		for(int i=0; i<word.length(); i++) {
+            /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {
+                score += 1;
+            }*/
+			switch (word.charAt(i)) {
+				case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
+				case 'D', 'G' -> score+=2;
+				case 'B', 'C', 'M', 'P' -> score+=3;
+				case 'F', 'H', 'V', 'W', 'Y' -> score+=4;
+				case 'K' -> score+=5;
+				case 'J', 'X' -> score+=8;
+				case 'Q', 'Z' -> score+=10;
+				default -> score+=0;
+			}
+		}
+		if(word.length()==7){
+			return score+50;
+		}
+		return score;
+	}
+
 }

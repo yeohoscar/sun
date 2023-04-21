@@ -3,13 +3,21 @@ package texas_scramble.Player;
 import org.w3c.dom.Node;
 import poker.Card;
 import poker.DeckOfCards;
+import poker.PotOfMoney;
+import texas.Action;
+import texas.RoundController;
 import texas.Rounds;
+import texas.TexasComputerPlayer;
+import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.DictionaryTrie;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ComputerScramblePlayer {
+import static texas.Action.*;
+import static texas.Action.FOLD;
+
+public class ComputerScramblePlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
     /*public static int E, A, I, O, N, R, T, L, S, U= 1;
     public static int D, G = 2;
@@ -25,45 +33,18 @@ public class ComputerScramblePlayer {
     private Random dice	= new Random(System.currentTimeMillis());
 
     private List<Card> communityCards;
-    private HashMap<String, Integer> storeTiles = new HashMap<>();
+    private DeckOfTiles deckOfTiles = new DeckOfTiles();
     public ComputerScramblePlayer(String name, int money,int id) {
-        //super(name, money,id);
+        super(name, money,id);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
                 - VARIABILITY/2;
-        initializeTiles();
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
     //for test
-    private void initializeTiles(){
-        storeTiles.put("A", 9);
-        storeTiles.put("B", 2);
-        storeTiles.put("C", 2);
-        storeTiles.put("D", 4);
-        storeTiles.put("E", 12);
-        storeTiles.put("F", 2);
-        storeTiles.put("G", 3);
-        storeTiles.put("H", 2);
-        storeTiles.put("I", 9);
-        storeTiles.put("J", 1);
-        storeTiles.put("K", 1);
-        storeTiles.put("L", 4);
-        storeTiles.put("M", 2);
-        storeTiles.put("N", 6);
-        storeTiles.put("O", 8);
-        storeTiles.put("P", 2);
-        storeTiles.put("Q", 1);
-        storeTiles.put("R", 6);
-        storeTiles.put("S", 4);
-        storeTiles.put("T", 6);
-        storeTiles.put("U", 4);
-        storeTiles.put("V", 2);
-        storeTiles.put("W", 2);
-        storeTiles.put("X", 1);
-        storeTiles.put("Y", 2);
-        storeTiles.put("Z", 1);
-        storeTiles.put(" ", 2);
-    }
+
+
+    //TODO: not done
     public int getRiskTolerance() {
         int risk = 0;
         //risk = riskTolerance - getStake() + predicateRiskTolerance();
@@ -87,6 +68,8 @@ public class ComputerScramblePlayer {
             }
         }
     }
+
+    //TODO: not done
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
             return hand[num];
@@ -99,8 +82,11 @@ public class ComputerScramblePlayer {
     }
 
 
-    //**********************|||||||||||||*****************************
+    /**********************|||||||||||||************************/
     //TODO: may need sortCard method
+
+
+    //TODO: not done
     public int preFlopRiskToleranceHelper(Card[] hand) {
         //the most advantage hand card
         /*if ((hand[0].isAce() && hand[1].isAce())
@@ -135,6 +121,8 @@ public class ComputerScramblePlayer {
         }*/
         return 0;
     }
+
+    //TODO: not done
     public int riverRoundRiskToleranceHelper(Card[] publicCards, DeckOfCards deck) {
         /*PokerHand publicHand = new PokerHand(publicCards, deck);
         String[] nameOrder = new String[] {"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
@@ -205,6 +193,7 @@ public class ComputerScramblePlayer {
         return 0;
     }
 
+    //TODO: not done
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
         Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
@@ -223,6 +212,8 @@ public class ComputerScramblePlayer {
         }
         return risk;
     }
+
+    //TODO: not done
     public int predicateBestWordAndRisk(Card[] publicCards, Rounds currentRound){
         //TODO: 1-in flop round, predicate river round, player has 5 cards(already known) and 2 card(should arise in river round)
         //        predicate the best word with these 6 cards
@@ -236,21 +227,24 @@ public class ComputerScramblePlayer {
     }
 
 
-
-    //**********************|||||||||||||*****************************
+    /**********************|||||||||||||************************/
     //this method is used to find all combinations that current community cards and cards on hand can combine with not arise cards
     //for example, there are 3 community cards and 2 cards on hand, to predicate river round, there are two cards space left,
-    //different cards in the two space with community cards and cards on hand con form different combinations
+    //different cards in the two space with community cards and cards on hand can have different combinations
     public ArrayList<String> findAllCombination(String[] lettersOnHand, int letterSpaceLeft){
         ArrayList<String> availableLetters = findAvailableLetters(lettersOnHand);
         ArrayList<String> updateAvailableLetters = new ArrayList<>();
         ArrayList<String> letterCombination = availableLetters;
+        HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+        for(String letter: lettersOnHand){
+            temp.put(letter, temp.get(letter)-1);
+        }
         while(letterSpaceLeft>1){
             //pre level: availableLetters
             for(String letter: availableLetters){
-                storeTiles.put(letter, storeTiles.get(letter)-1);
+                temp.put(letter, temp.get(letter)-1);
             }
-            for(Map.Entry<String, Integer> entry: storeTiles.entrySet()){
+            for(Map.Entry<String, Integer> entry: temp.entrySet()){
                 if(entry.getValue()>0){
                     //subs level
                     updateAvailableLetters.add(entry.getKey());
@@ -262,13 +256,11 @@ public class ComputerScramblePlayer {
             updateAvailableLetters.clear();
             letterSpaceLeft--;
         }
-
         //combine each of combination with letters on player's hand, each of the new combination will have the highest word
         String str = String.join("", lettersOnHand);
         for(int i=0; i<letterCombination.size(); i++){
             letterCombination.set(i, letterCombination.get(i)+str);
         }
-        initializeTiles();
         return letterCombination;
     }
     private ArrayList<String> combinationHelper(ArrayList<String> pre, ArrayList<String> subs){
@@ -280,152 +272,177 @@ public class ComputerScramblePlayer {
         }
         return letterCombination;
     }
-    private ArrayList<String> findAvailableLetters(String[] lettersOnHand){
-        ArrayList<String> availableLetters = new ArrayList<>();
-        for(String letter: lettersOnHand){
-            storeTiles.put(letter, storeTiles.get(letter)-1);
-        }
-        for(Map.Entry<String, Integer> entry: storeTiles.entrySet()){
-            if(entry.getValue()!=0){
-                availableLetters.add(entry.getKey());
-            }
-        }
-        return availableLetters;
+
+////    *********************|||||||||||||***********************
+//
+//    //findHighestScoreWord will return the word with highest score among all words returned by findAllWords
+//    public HashMap<String, Integer> findHighestScoreWord(String combination){
+//        DictionaryTrie dict = DictionaryTrie.getDictionary();
+//        char[] charArray = combination.toCharArray();
+//        String[] letters = new String[charArray.length];
+//
+//        for (int i = 0; i < charArray.length; i++) {
+//            letters[i] = Character.toString(charArray[i]);
+//        }
+//
+//        if(containBlank(letters)){
+//            substituteBlank(letters);
+//        }
+//        //find all words that these letters can form
+//        List<String> allWords = dict.findAllWords(letters);
+//        //System.out.println("words size = "+allWords.size());
+//        //if all words is empty, this means current letters on player's hand cna not form any words
+//        if(allWords.isEmpty()){
+//            return new HashMap<>(Collections.singletonMap("^", 0));
+//        }
+//        //calculate score of each of these words
+//        HashMap<String, Integer> recordWordsScore = new HashMap<>();
+//        for(String word: allWords){
+//            recordWordsScore.put(word, calculateWordScore(word));
+//        }
+//        HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
+//
+//        //find those words with highest score
+//        int maxScore = Collections.max(recordWordsScore.values());
+//        //System.out.println("maxScore = "+maxScore);
+//        for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
+//            if (entry.getValue() == maxScore) {
+//                storeHighestScoreWords.put(entry.getKey(), entry.getValue());
+//            }
+//        }
+//        //if there is only one word with highest score, return this word,
+//        //otherwise, randomly choose one from those words with highest score
+//        if(storeHighestScoreWords.size()==1){
+//            return storeHighestScoreWords;
+//        }else {
+//            List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
+//            Random rand = new Random();
+//            int randomIndex = rand.nextInt(keyList.size());
+//            String randomKey = keyList.get(randomIndex);
+//            return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
+//        }
+//    }
+//    private ArrayList<String> updateAvailableLetters(HashMap<String, Integer> temp){
+//        ArrayList<String> availableLetters = new ArrayList<>();
+//        for(Map.Entry<String, Integer> entry: temp.entrySet()){
+//            if(entry.getValue()>0){
+//                availableLetters.add(entry.getKey());
+//            }
+//        }
+//        return availableLetters;
+//    }
+//    public void substituteBlank(String[] letters){
+//        ArrayList<String> availableLetters = findAvailableLetters(letters);
+//        HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+//        for(int i=0; i<letters.length; i++){
+//            if(letters[i].equals(" ")){
+//                letters[i]=findHighestScoreLetter(availableLetters, temp);
+//                availableLetters = updateAvailableLetters(temp);
+//            }
+//        }
+//    }
+//    private String findHighestScoreLetter(ArrayList<String> availableLetters, HashMap<String, Integer> temp){
+//        int maxScore=0;
+//        int score=0;
+//        String maxScoreLetter = "A";
+//        for(String letter: availableLetters){
+//            switch (letter.charAt(0)) {
+//                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score = 1;
+//                case 'D', 'G' -> score=2;
+//                case 'B', 'C', 'M', 'P' -> score=3;
+//                case 'F', 'H', 'V', 'W', 'Y' -> score=4;
+//                case 'K' -> score=5;
+//                case 'J', 'X' -> score=8;
+//                case 'Q', 'Z' -> score=10;
+//                default -> score=0;
+//            }
+//            if(maxScore<score){
+//                maxScore=score;
+//                maxScoreLetter=letter;
+//            }
+//        }
+//        temp.put(maxScoreLetter, temp.get(maxScoreLetter)-1);
+//        return maxScoreLetter;
+//    }
+//    private int countBlank(String[] letters){
+//        int count=0;
+//        for(String letter: letters){
+//            if(letter.equals(" ")){
+//                count++;
+//            }
+//        }
+//        return count;
+//    }
+//    public boolean containBlank(String[] letters){
+//        for(String letter: letters){
+//            if(letter.equals(" ")){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//    public int calculateWordScore(String word){
+//        int score = 0;
+//        for(int i=0; i<word.length(); i++) {
+//            /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {
+//                score += 1;
+//            }*/
+//            switch (word.charAt(i)) {
+//                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
+//                case 'D', 'G' -> score+=2;
+//                case 'B', 'C', 'M', 'P' -> score+=3;
+//                case 'F', 'H', 'V', 'W', 'Y' -> score+=4;
+//                case 'K' -> score+=5;
+//                case 'J', 'X' -> score+=8;
+//                case 'Q', 'Z' -> score+=10;
+//                default -> score+=0;
+//            }
+//        }
+//        if(word.length()==7){
+//            return score+50;
+//        }
+//        return score;
+//    }
+
+    /**********************|||||||||||||************************/
+
+    //TODO: not done
+    public Action chooseAction(PotOfMoney pot){
+        if (shouldAllIn(pot)) return ALL_IN;
+        if (shouldRaise(pot)) return RAISE;
+        if (shouldSee(pot)) return SEE;
+        return FOLD;
     }
 
+    @Override
+    public boolean shouldOpen(PotOfMoney pot) {
+        return true;
+    }
 
-
-
-    //**********************|||||||||||||************************
-
-    //findHighestScoreWord will return the word with highest score among all words returned by findAllWords
-    public HashMap<String, Integer> findHighestScoreWord(String combination){
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
-        char[] charArray = combination.toCharArray();
-        String[] letters = new String[charArray.length];
-
-        for (int i = 0; i < charArray.length; i++) {
-            letters[i] = Character.toString(charArray[i]);
-        }
-
-        if(containBlank(letters)){
-            substituteBlank(letters);
-        }
-        //find all words that these letters can form
-        List<String> allWords = dict.findAllWords(letters);
-        //System.out.println("words size = "+allWords.size());
-        //if all words is empty, this means current letters on player's hand cna not form any words
-        if(allWords.isEmpty()){
-            return new HashMap<>(Collections.singletonMap("p", 0));
-        }
-        //calculate score of each of these words
-        HashMap<String, Integer> recordWordsScore = new HashMap<>();
-        for(String word: allWords){
-            recordWordsScore.put(word, calculateWordScore(word));
-        }
-        HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
-
-        //find those words with highest score
-        int maxScore = Collections.max(recordWordsScore.values());
-        //System.out.println("maxScore = "+maxScore);
-        for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
-            if (entry.getValue() == maxScore) {
-                storeHighestScoreWords.put(entry.getKey(), entry.getValue());
-            }
-        }
-        //if there is only one word with highest score, return this word,
-        //otherwise, randomly choose one from those words with highest score
-        if(storeHighestScoreWords.size()==1){
-            return storeHighestScoreWords;
-        }else {
-            List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
-            Random rand = new Random();
-            int randomIndex = rand.nextInt(keyList.size());
-            String randomKey = keyList.get(randomIndex);
-            return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
+    @Override
+    protected boolean shouldSee(PotOfMoney pot) {
+        if (pot.getCurrentStake() - stake > bank) {
+            return false;
+        } else {
+            return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
+                    getRiskTolerance();
         }
     }
-    private ArrayList<String> updateAvailableLetters(){
-        ArrayList<String> availableLetters = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry: storeTiles.entrySet()){
-            if(entry.getValue()>0){
-                availableLetters.add(entry.getKey());
-            }
+
+    @Override
+    protected boolean shouldRaise(PotOfMoney pot) {
+        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
+            return false;
         }
-        return availableLetters;
+        return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
+                getRiskTolerance();
     }
-    public void substituteBlank(String[] letters){
-        ArrayList<String> availableLetters = findAvailableLetters(letters);
-        for(int i=0; i<letters.length; i++){
-            if(letters[i].equals(" ")){
-                letters[i]=findHighestScoreLetter(availableLetters);
-                availableLetters = updateAvailableLetters();
-            }
-        }
-        initializeTiles();
+
+    protected boolean shouldAllIn(PotOfMoney pot){
+        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
+                getRiskTolerance();
     }
-    private String findHighestScoreLetter(ArrayList<String> availableLetters){
-        int maxScore=0;
-        int score=0;
-        String maxScoreLetter = "A";
-        for(String letter: availableLetters){
-            switch (letter.charAt(0)) {
-                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score = 1;
-                case 'D', 'G' -> score=2;
-                case 'B', 'C', 'M', 'P' -> score=3;
-                case 'F', 'H', 'V', 'W', 'Y' -> score=4;
-                case 'K' -> score=5;
-                case 'J', 'X' -> score=8;
-                case 'Q', 'Z' -> score=10;
-                default -> score=0;
-            }
-            if(maxScore<score){
-                maxScore=score;
-                maxScoreLetter=letter;
-            }
-        }
-        storeTiles.put(maxScoreLetter, storeTiles.get(maxScoreLetter)-1);
-        return maxScoreLetter;
-    }
-    private int countBlank(String[] letters){
-        int count=0;
-        for(String letter: letters){
-            if(letter.equals(" ")){
-                count++;
-            }
-        }
-        return count;
-    }
-    public boolean containBlank(String[] letters){
-        for(String letter: letters){
-            if(letter.equals(" ")){
-                return true;
-            }
-        }
-        return false;
-    }
-    public int calculateWordScore(String word){
-        int score = 0;
-        for(int i=0; i<word.length(); i++) {
-            /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {
-                score += 1;
-            }*/
-            switch (word.charAt(i)) {
-                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
-                case 'D', 'G' -> score+=2;
-                case 'B', 'C', 'M', 'P' -> score+=3;
-                case 'F', 'H', 'V', 'W', 'Y' -> score+=4;
-                case 'K' -> score+=5;
-                case 'J', 'X' -> score+=8;
-                case 'Q', 'Z' -> score+=10;
-                default -> score+=0;
-            }
-        }
-        if(word.length()==7){
-            return score+50;
-        }
-        return score;
-    }
+
 
 //    private void findWordsHelper(DictionaryTrie.Node root, String[] letters, StringBuilder sb, List<String> res) {
 //        // 如果当前节点表示一个单词，并且该单词由给定字符集合组成，则将其加入到结果列表中
@@ -452,7 +469,6 @@ public class ComputerScramblePlayer {
 //        return true;
 //    }
 //
-
     /*
     private void findAllWordsHelper(List<List<String>> temp, String[] letters, List<List<String>> combinations, List<String> words, HashMap<String, Integer> duplicatedLetters){
         for (List<String> combination : combinations) {
