@@ -89,6 +89,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
+
     public void setCommunityCards(List<Card> communityCards) {
         this.communityCards = communityCards;
     }

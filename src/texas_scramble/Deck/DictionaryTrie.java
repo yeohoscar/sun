@@ -1,5 +1,8 @@
 package texas_scramble.Deck;
 
+import poker.Player;
+import texas.TexasPlayer;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,6 +21,81 @@ public class DictionaryTrie {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
     }
+    /************* find all words contain community letters **************/
+    public int calculateAverageScoreOfAllWordsContainCommunityLetters(String[] letters, TexasPlayer player){
+        Node current;
+        HashMap<String, Integer> score = new HashMap<>();
+        score.put("|", 0);
+        List<List<String>> allWords = new ArrayList<>();
+        for(String letter: letters){
+            current = root;
+//            Node n = current.children.stream()
+//                    .filter(node -> letter.charAt(0) == node.getLetter())
+//                    .findFirst()
+//                    .orElse(null);
+//            if(n==null){
+//                return new ArrayList<>();
+//            }
+            //current = n;
+            List<String> words = allWordsContainCommunityLettersDfsHelper(current, letter, letters, new ArrayList<>(), score, player);
+            allWords.add(words);
+        }
+        ArrayList<String> result = new ArrayList<>();
+        for(List<String> words: allWords){
+            result.addAll(words);
+        }
+        return score.get("|")/result.size();
+    }
+    private boolean wordContainsCommunityLetters(String prefix, String[] communityLetters){
+//        String[] strArray = prefix.split("");
+//        boolean contained = true;
+//        HashMap<String, Integer> prefixHash = new HashMap<>();
+//        for(String letter: strArray){
+//            if(prefixHash.containsKey(letter)){
+//                prefixHash.put(letter, prefixHash.get(letter)+1);
+//            }else {
+//                prefixHash.put(letter, 1);
+//            }
+//        }
+        //compare if both key and value of prefixHash are subset of lettersContained
+        int countNumberOfLettersContained = 0;
+        for(String letter: communityLetters){
+            if(prefix.contains(letter)){
+                countNumberOfLettersContained++;
+            }
+        }
+        if(communityLetters.length==3){
+            if(countNumberOfLettersContained==1 && prefix.length()<=5){
+                return true;
+            }else if(countNumberOfLettersContained==2 && prefix.length()<=6){
+                return true;
+            }else return countNumberOfLettersContained == 3 && prefix.length() <= 7;
+        }else if(communityLetters.length==4){
+            if(countNumberOfLettersContained==1 && prefix.length()<=4){
+                return true;
+            }else if(countNumberOfLettersContained==2 && prefix.length()<=5){
+                return true;
+            }else return countNumberOfLettersContained == 3 && prefix.length() <= 6;
+        }
+        return false;
+    }
+    private List<String> allWordsContainCommunityLettersDfsHelper(Node node, String prefix, String[] lettersContained, List<String> results, HashMap<String,Integer> score, TexasPlayer player) {
+        if (node.isEndOfWord() && wordContainsCommunityLetters(prefix, lettersContained)) {
+            results.add(prefix);
+            score.put("|", score.get("|")+player.calculateWordScore(prefix));
+            //System.out.println("results = "+results);
+        }
+        for (int i = 0; i < node.children.size(); i++) {
+            Node child = node.children.get(i);
+            if (child != null) {
+                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
+                allWordsContainCommunityLettersDfsHelper(child, prefix + child.letter, lettersContained, results, score, player);
+            }
+        }
+        return results;
+    }
+
+    /************* find all words formed by letters on player's hand **************/
     public List<String> findAllWords(String[] letters){
         Node current;
         HashMap<String, Integer> lettersContained = new HashMap<>();

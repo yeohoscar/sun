@@ -381,8 +381,8 @@ public abstract class TexasPlayer extends poker.Player {
 	/**********************For Texas Scramble************************/
 
 	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
-	public HashMap<String, Integer> findHighestScoreWord(String combination){
-		DictionaryTrie dict = DictionaryTrie.getDictionary();
+	public HashMap<String, Integer> findHighestScoreWord(String combination, DictionaryTrie dict){
+		//DictionaryTrie dict = DictionaryTrie.getDictionary();
 		char[] charArray = combination.toCharArray();
 		String[] letters = new String[charArray.length];
 
@@ -400,14 +400,31 @@ public abstract class TexasPlayer extends poker.Player {
 		if(allWords.isEmpty()){
 			return new HashMap<>(Collections.singletonMap("^", 0));
 		}
+
 		//calculate score of each of these words
 		HashMap<String, Integer> recordWordsScore = new HashMap<>();
 		for(String word: allWords){
 			recordWordsScore.put(word, calculateWordScore(word));
 		}
-		HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
+		return findHighestScoreWordHelper(recordWordsScore);
+		//return findHighestScoreWordHelper(allWords);
 
+	}
+//	public HashMap<String, Integer> findHighestScoreWordHelper(List<String> allWords){
+	public HashMap<String, Integer> findHighestScoreWordHelper(HashMap<String, Integer> recordWordsScore){
+		HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
 		//find those words with highest score
+//		int maxScore = 0;
+//		String maxWord = "^";
+//		for(String word: allWords){
+//			int score = calculateWordScore(word);
+//			if(maxScore<score){
+//				maxScore = score;
+//				maxWord = word;
+//			}
+//		}
+//		storeHighestScoreWords.put(maxWord, maxScore);
+
 		int maxScore = Collections.max(recordWordsScore.values());
 		//System.out.println("maxScore = "+maxScore);
 		for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
@@ -427,6 +444,7 @@ public abstract class TexasPlayer extends poker.Player {
 			return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
 		}
 	}
+
 	private ArrayList<String> updateAvailableLetters(HashMap<String, Integer> temp){
 		ArrayList<String> availableLetters = new ArrayList<>();
 		for(Map.Entry<String, Integer> entry: temp.entrySet()){
@@ -486,7 +504,7 @@ public abstract class TexasPlayer extends poker.Player {
 		}
 		return false;
 	}
-	private int calculateWordScore(String word){
+	public int calculateWordScore(String word){
 		int score = 0;
 		for(int i=0; i<word.length(); i++) {
             /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {

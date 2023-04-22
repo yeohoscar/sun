@@ -3,19 +3,20 @@ package texas;
 import poker.Card;
 import poker.DeckOfCards;
 import poker.PotOfMoney;
+import texas_scramble.Deck.Tile;
 
 import java.util.List;
 
 abstract public class TexasComputerPlayer extends TexasPlayer{
-    private List<Card> communityCards;
+    private List<Tile> communityCards;
 
     public TexasComputerPlayer(String name, int money, int id) {
         super(name, money, id);
     }
-    public void setCommunityCards(List<Card> communityCards) {
-        this.communityCards = communityCards;
-    }
-    public List<Card> getCommunityCards(){
+//    public void setCommunityCards(List<Tile> communityCards) {
+//        this.communityCards = communityCards;
+//    }
+    public List<Tile> getCommunityCards(){
         return this.communityCards;
     }
     public Rounds getCurrentRound() {
@@ -34,8 +35,8 @@ abstract public class TexasComputerPlayer extends TexasPlayer{
             }
         }
     }
-    protected abstract int getRiskTolerance();
-    protected abstract int preFlopRiskToleranceHelper(Card[] hand);
-    protected abstract int riverRoundRiskToleranceHelper(Card[] publicCards, DeckOfCards deck);
+    public abstract int getRiskTolerance();
+//    abstract int preFlopRiskToleranceHelper();
+//    abstract int riverRoundRiskToleranceHelper();
     protected abstract int predicateRiskTolerance();
 }

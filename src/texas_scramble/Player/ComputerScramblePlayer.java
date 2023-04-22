@@ -10,6 +10,7 @@ import texas.Rounds;
 import texas.TexasComputerPlayer;
 import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.DictionaryTrie;
+import texas_scramble.Deck.Tile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +20,10 @@ import static texas.Action.FOLD;
 
 public class ComputerScramblePlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
+    public final int averageHandValue = 14;
+
+    //TODO: this average score needs to calculate, current value is estimated value
+    public int averageCommunityLettersScore = 0;
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice	= new Random(System.currentTimeMillis());
     private DeckOfTiles deckOfTiles = new DeckOfTiles();
@@ -49,122 +54,94 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
     }
 
+    /******************** just ignore this part ********************/
+    public ArrayList<String> findAll(ArrayList<String> average){
+        ArrayList<String> combinations = new ArrayList<>();
+        for (int i = 0; i < average.size(); i++) {
+            for (int j = i+1; j < average.size(); j++) {
+                combinations.add(average.get(i) + " " + average.get(j));
+            }
+        }
+        return combinations;
+    }
+    public int average(){
+        int total = 0;
+        ArrayList<String> average = new ArrayList<>();
+        for(Map.Entry<String, Integer> entry: deckOfTiles.getAllTiles().entrySet()){
+            for(int i=0; i<entry.getValue(); i++){
+                average.add(entry.getKey());
+            }
+        }
+        System.out.println("average.size = "+average.size());
+        ArrayList<String> all = findAll(average);
+        for(String hand: all){
+            total += calculateHandScore1(hand);
+        }
+        System.out.println("total value = "+total);
+        System.out.println("all.size = "+all.size());
+        return total/all.size();
+    }
+    private int calculateHandScore1(String hand){
+        int score = 0;
+        for(char tile: hand.toCharArray()){
+            switch (tile) {
+                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
+                case 'D', 'G' -> score+=2;
+                case 'B', 'C', 'M', 'P' -> score+=3;
+                case 'F', 'H', 'V', 'W', 'Y' -> score+=4;
+                case 'K' -> score+=5;
+                case 'J', 'X' -> score+=8;
+                case 'Q', 'Z' -> score+=9;
+                default -> score+=10;
+            }
+        }
+        return score;
+    }
+    /******************** |||||||||||||| ********************/
+
+
+
+
+
+
 
     /**********************|||||||||||||************************/
-    //TODO: may need sortCard method
-
-
-    //TODO: not done
-    public int preFlopRiskToleranceHelper(Card[] hand) {
-        //the most advantage hand card
-        /*if ((hand[0].isAce() && hand[1].isAce())
-                || (hand[0].isKing() && hand[1].isKing())
-                || (hand[0].isQueen() && hand[1].isQueen())
-                || (hand[0].isJack() && hand[1].isJack())) {
-            return 2;
+    private int calculateHandScore(Tile[] hand){
+        int score = 0;
+        for(Tile tile: hand){
+            switch (tile.name()) {
+                case "E", "A", "I", "O", "N", "R", "T", "L", "S", "U" -> score += 1;
+                case "D", "G" -> score+=2;
+                case "B", "C", "M", "P" -> score+=3;
+                case "F", "H", "V", "W", "Y" -> score+=4;
+                case "K" -> score+=5;
+                case "J", "X" -> score+=8;
+                case "Q", "Z" -> score+=9;
+                default -> score+=10;
+            }
         }
-        //these hand cards maybe can form strong straight
-        else if ((isContained(hand, "Ace") && isContained(hand, "King")) ||
-                (isContained(hand, "Queen") && isContained(hand, "King")) ||
-                (isContained(hand, "Queen") && isContained(hand, "Ace")) ||
-                (isContained(hand, "Jack") && isContained(hand, "Queen")) ||
-                (isContained(hand, "Jack") && isContained(hand, "King")) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace"))) {
-            return 5;
+        return score;
+    }
+    public int preFlopRiskToleranceHelper(Tile[] hand) {
+        if(calculateHandScore(hand)>=averageHandValue){
+            //TODO: the probability of taking raise action is high, just determine the risk value
         }
-        //these hand cards maybe can form strong straightFlush
-        else if ((isContained(hand, "Ace") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Queen") && isContained(hand, "Ace") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Queen") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "King") && suitsInHandAreSame(hand)) ||
-                (isContained(hand, "Jack") && isContained(hand, "Ace")) && suitsInHandAreSame(hand)) {
-            return 7;
-        }else if(suitsInHandAreSame(hand)){
-            return 9;
-        }else if(isContained(hand, "Ace") || isContained(hand, "Jack") || isContained(hand, "Queen") || isContained(hand, "King") || isContained(hand, "Ten")){
-            return 15;
-        } else {
-            return 22;
-        }*/
+        else {
+            //TODO: the probability of taking raise action is low, just determine the risk value
+        }
         return 0;
     }
 
     //TODO: not done
-    public int riverRoundRiskToleranceHelper(Card[] publicCards, DeckOfCards deck) {
-        /*PokerHand publicHand = new PokerHand(publicCards, deck);
-        String[] nameOrder = new String[] {"Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
+    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfCards deck) {
 
-        int length = publicCards.length + 2;
-        Card[] allCards = new Card[length];
-        System.arraycopy(publicCards, 0, allCards, 0, publicCards.length);
-        System.arraycopy(super.getHand().getHand(), 0, allCards, publicCards.length, super.getHand().getHand().length);
-        //we sort all cards from left to right, card with highest value is on right
-        sortCards(allCards);
-        sortCards(publicCards);
-        Method[] preds = PokerHand.class.getDeclaredMethods();
-//        int bestOdd = 0;
-        for (Method pred : preds) {
-            try {
-                if (pred.getName().startsWith("is") && pred.getParameterTypes().length == 0 &&
-                        pred.getReturnType() == Boolean.class) {
-                    if ((Boolean) pred.invoke(publicHand, new Object[0])) {
-                        String handType = pred.getName().substring(2);
-
-                        if (handType.equals("RoyalStraightFlush") || handType.equals("StraightFlush") || handType.equals("FullHouse") || handType.equals("Flush") || handType.equals("Straight")) {
-                            return getHandValue(handType);
-                        } else if (handType.equals("FourOfAKind")) {
-                            int count = 0;
-                            //cardNames store those cards that are not FourOfAKind
-                            ArrayList<String> cardNames = new ArrayList<>();
-                            String tem = allCards[0].getName();
-
-                            for (int i = 1; i < allCards.length; i++) {
-                                if (Objects.equals(allCards[i].getName(), tem)) {
-                                    count++;
-                                } else if (count != 3) {
-                                    cardNames.add(tem);
-                                    tem = allCards[i].getName();
-                                    count = 0;
-                                }
-
-                                if (count == 3 && !Objects.equals(allCards[i].getName(), tem)) {
-                                    cardNames.add(allCards[i].getName());
-                                    tem = allCards[i].getName();
-                                }
-                            }
-
-                            int risk = 0;
-                            String cardName = cardNames.get(cardNames.size() - 1);
-                            for (int i = 0; i < nameOrder.length; i++) {
-                                if (nameOrder[i].equals(cardName)) {
-                                    if (i >= 10) {
-                                        risk = 5;
-                                    }
-                                    else if (i > 6) {
-                                        risk = 10;
-                                    } else {
-                                        risk = 20;
-                                    }
-                                }
-                            }
-                            return risk;
-                        } else {
-                            return getHandValue(handType);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
         return 0;
     }
 
     //TODO: not done
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = getCommunityCards().toArray(new Card[getCommunityCards().size()]);
+        Tile[] publicCards = getCommunityCards().toArray(new Tile[getCommunityCards().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {
@@ -180,18 +157,67 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         return risk;
     }
-
+    public void removeWordsWithZeroValue(HashMap<String, Integer> highestWords){
+        String keyToRemove = "^";
+        highestWords.entrySet().removeIf(entry -> entry.getKey().equals(keyToRemove));
+    }
     //TODO: not done
-    public int predicateBestWordAndRisk(Card[] publicCards, Rounds currentRound){
-        //TODO: 1-in flop round, predicate river round, player has 5 cards(already known) and 2 card(should arise in river round)
-        //        predicate the best word with these 6 cards
-        //      2-in turn round, predicate river round, player has 6 cards(already known) and 1 card(should arise in river round)
-        //        predicate the best word with these 7 cards
+    public int predicateBestWordAndRisk(Tile[] publicCards, Rounds currentRound){
+        //TODO: have not combine community letters and letters on hand
+        DictionaryTrie dict = DictionaryTrie.getDictionary();
+
+        ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
+        String[] lettersOnHand = letters.toArray(new String[0]);
+
+        ArrayList<String> community = new ArrayList<>();
+        String[] communityLetters = community.toArray(new String[0]);
+
+        ArrayList<String> allCombination = new ArrayList<>();
+        HashMap<String, Integer> highestWords = new HashMap<>();
         if(currentRound==Rounds.FLOP){
+            //calculate average score of current community letters score
+            averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters,this);
             //1-findAllCombination()
-            //2-for each combination, call findHighestScoreWord()
+            allCombination = findAllCombination(lettersOnHand, 2);
+        }else if(currentRound==Rounds.TURN){
+            //calculate average score of current community letters score
+            averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters, this);
+            //1-findAllCombination()
+            allCombination = findAllCombination(lettersOnHand, 1);
+        }
+        //2-for each combination, call findHighestScoreWord(), find the highest score word of each combination
+        for(String combination: allCombination){
+            highestWords.putAll(findHighestScoreWord(combination, dict));
+        }
+        //remove those words like: ^, 0
+        removeWordsWithZeroValue(highestWords);
+        //3-find the average score of all combination and compare it with average score of current community letters
+        int averageScore = 0;
+        for(Map.Entry<String, Integer> entry: highestWords.entrySet()){
+            averageScore += entry.getValue();
+        }
+        averageScore = averageScore/highestWords.size();
+        if(averageScore>=averageCommunityLettersScore){
+            //TODO: determine the risk
+        }else {
+            //TODO: determine the risk
         }
         return 0;
+        /*//3-find the highest score word of all combination, then compare it with a value(not calculated yet)
+        HashMap<String, Integer> theFinalWord = new HashMap<>(findHighestScoreWordHelper(highestWords));
+        int theFinalWordScore = 0;
+        String theFinalWordSpelling = "^";
+        for(Map.Entry<String, Integer> entry: theFinalWord.entrySet()){
+            theFinalWordSpelling = entry.getKey();
+            theFinalWordScore = entry.getValue();
+        }
+        if(theFinalWordScore>averageCommunityLettersScore){
+            //TODO: determine the risk
+        }
+        else {
+            //TODO: determine the risk
+        }
+        return 0;*/
     }
 
 
@@ -200,36 +226,64 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //for example, there are 3 community cards and 2 cards on hand, to predicate river round, there are two cards space left,
     //different cards in the two space with community cards and cards on hand can have different combinations
     public ArrayList<String> findAllCombination(String[] lettersOnHand, int letterSpaceLeft){
-        ArrayList<String> availableLetters = findAvailableLetters(lettersOnHand);
-        ArrayList<String> updateAvailableLetters = new ArrayList<>();
-        ArrayList<String> letterCombination = availableLetters;
-        HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
-        for(String letter: lettersOnHand){
-            temp.put(letter, temp.get(letter)-1);
-        }
-        while(letterSpaceLeft>1){
-            //pre level: availableLetters
-            for(String letter: availableLetters){
+        if(letterSpaceLeft==0){
+            return new ArrayList<>(Arrays.asList(lettersOnHand));
+        }else {
+            ArrayList<String> availableLetters = findAvailableLetters(lettersOnHand);
+            ArrayList<String> updateAvailableLetters = new ArrayList<>();
+            ArrayList<String> letterCombination = availableLetters;
+            HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+//            System.out.println("before 1st level:");
+//            for(Map.Entry<String, Integer> entry: temp.entrySet()){
+//                System.out.print(entry+", ");
+//            }
+//            System.out.println();
+            for(String letter: lettersOnHand){
                 temp.put(letter, temp.get(letter)-1);
             }
-            for(Map.Entry<String, Integer> entry: temp.entrySet()){
-                if(entry.getValue()>0){
-                    //subs level
-                    updateAvailableLetters.add(entry.getKey());
+//            System.out.println("1st level available letters:");
+//            for(Map.Entry<String, Integer> entry: temp.entrySet()){
+//                System.out.print(entry+", ");
+//            }
+//            System.out.println();
+//            for(String letters: availableLetters){
+//                System.out.print(letters);
+//            }
+//            System.out.println();
+            while(letterSpaceLeft>1){
+//                System.out.println("letterSpaceLet = "+letterSpaceLeft);
+                //pre level: availableLetters
+                for(String letter: availableLetters){
+                    temp.put(letter, temp.get(letter)-1);
                 }
+                for(Map.Entry<String, Integer> entry: temp.entrySet()){
+                    if(entry.getValue()>0){
+                        //subs level
+                        updateAvailableLetters.add(entry.getKey());
+                    }
+                }
+//                System.out.println("updated:");
+//                for(Map.Entry<String, Integer> entry: temp.entrySet()){
+//                    System.out.print(entry+", ");
+//                }
+//                System.out.println();
+//                for(String letters: updateAvailableLetters){
+//                    System.out.print(letters);
+//                }
+//                System.out.println();
+                //两层的结合
+                letterCombination = combinationHelper(letterCombination, updateAvailableLetters);
+                availableLetters.addAll(updateAvailableLetters);
+                updateAvailableLetters.clear();
+                letterSpaceLeft--;
             }
-            //两层的结合
-            letterCombination = combinationHelper(letterCombination, updateAvailableLetters);
-            availableLetters = updateAvailableLetters;
-            updateAvailableLetters.clear();
-            letterSpaceLeft--;
+            //combine each of combination with letters on player's hand, each of the new combination will have the highest word
+            String str = String.join("", lettersOnHand);
+            for(int i=0; i<letterCombination.size(); i++){
+                letterCombination.set(i, letterCombination.get(i)+str);
+            }
+            return letterCombination;
         }
-        //combine each of combination with letters on player's hand, each of the new combination will have the highest word
-        String str = String.join("", lettersOnHand);
-        for(int i=0; i<letterCombination.size(); i++){
-            letterCombination.set(i, letterCombination.get(i)+str);
-        }
-        return letterCombination;
     }
     private ArrayList<String> combinationHelper(ArrayList<String> pre, ArrayList<String> subs){
         ArrayList<String> letterCombination = new ArrayList<>();
