@@ -381,18 +381,18 @@ public abstract class TexasPlayer extends poker.Player {
 	/**********************For Texas Scramble************************/
 
 	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
-	public HashMap<String, Integer> findHighestScoreWord(String combination, DictionaryTrie dict){
+	public HashMap<String, Integer> findHighestScoreWord(String[] letters, DictionaryTrie dict){
 		//DictionaryTrie dict = DictionaryTrie.getDictionary();
-		char[] charArray = combination.toCharArray();
-		String[] letters = new String[charArray.length];
+//		char[] charArray = combination.toCharArray();
+//		String[] letters = new String[charArray.length];
+//
+//		for (int i = 0; i < charArray.length; i++) {
+//			letters[i] = Character.toString(charArray[i]);
+//		}
 
-		for (int i = 0; i < charArray.length; i++) {
-			letters[i] = Character.toString(charArray[i]);
-		}
-
-		if(containBlank(letters)){
-			substituteBlank(letters);
-		}
+//		if(containBlank(letters)){
+//			removeBlank(letters);
+//		}
 		//find all words that these letters can form
 		List<String> allWords = dict.findAllWords(letters);
 		//System.out.println("words size = "+allWords.size());
@@ -454,15 +454,22 @@ public abstract class TexasPlayer extends poker.Player {
 		}
 		return availableLetters;
 	}
-	public void substituteBlank(String[] letters){
-		ArrayList<String> availableLetters = findAvailableLetters(letters);
-		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
-		for(int i=0; i<letters.length; i++){
-			if(letters[i].equals(" ")){
-				letters[i]=findHighestScoreLetter(availableLetters, temp);
-				availableLetters = updateAvailableLetters(temp);
+	public void removeBlank(String[] letters){
+//		ArrayList<String> availableLetters = findAvailableLetters(letters);
+//		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+//		for(int i=0; i<letters.length; i++){
+//			if(letters[i].equals(" ")){
+//				letters[i]=findHighestScoreLetter(availableLetters, temp);
+//				availableLetters = updateAvailableLetters(temp);
+//			}
+//		}
+		ArrayList<String> temp = new ArrayList<>();
+		for(String letter: letters){
+			if(!letter.equals(" ")){
+				temp.add(letter);
 			}
 		}
+		String[] removedBlank = temp.toArray(new String[0]);
 	}
 	private String findHighestScoreLetter(ArrayList<String> availableLetters, HashMap<String, Integer> temp){
 		int maxScore=0;

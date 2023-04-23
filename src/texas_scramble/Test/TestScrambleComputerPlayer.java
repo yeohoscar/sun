@@ -2,13 +2,9 @@ package texas_scramble.Test;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
-import poker.*;
-import texas_hold_em.*;
-import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.DictionaryTrie;
 import texas_scramble.Player.ComputerScramblePlayer;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +24,7 @@ public class TestScrambleComputerPlayer {
         String[] temp = letters6;
         //if letters contain blank, we must substitute blank with other letters
         if (player1.containBlank(temp)) {
-            player1.substituteBlank(temp);
+            player1.removeBlank(temp);
         }
         List<String> maxScoreWord2 = dict.findAllWords(temp);
         System.out.println(maxScoreWord2);
@@ -48,8 +44,10 @@ public class TestScrambleComputerPlayer {
         String[][] letters5 = {{"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}};
         String[] letters7 = {"Z", "G", "H", "P", "A"};
 
-        List<String> maxScoreWord2 = dict.findAllWords(letters7);
-        System.out.println(maxScoreWord2);
+        List<String> allWords = dict.findAllWords(letters7);
+        for(String word: allWords){
+            System.out.println(word);
+        }
 
 //        List<String> maxScoreWord3 = player1.findAllWords(letters4);
 //        System.out.println(maxScoreWord3);
@@ -68,7 +66,7 @@ public class TestScrambleComputerPlayer {
         DictionaryTrie dict = DictionaryTrie.getDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters2 = {"A", "S", "S"};
-        String letters3 = "XYENOPG";
+        String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
         String[] letters4 = {"XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG"};
         String letters7 = "ZGHQJ";//these letters can not form any words
         HashMap<String, Integer> maxScoreWord = player1.findHighestScoreWord(letters3, dict);
@@ -116,26 +114,39 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFlopRound() {
         DictionaryTrie dict = DictionaryTrie.getDictionary();
-        int averageCommunityLettersScore = 0;
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        HashMap<String, Integer> highestWords = new HashMap<>();
+        HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
-        String[] flopLetters2 = {"Z", "G", "H", "A", "B"};
-        String[] communityLetters2 = {"Z", "G", "H"};
-        String[] turnLetters2 = {"Z", "G", "H", "B", "C", "A"};
-        ArrayList<String> allCombination = player1.findAllCombination(turnLetters2, 1);
-        for (String combination : allCombination) {
-            highestWords.putAll(player1.findHighestScoreWord(combination, dict));
+        String[] flopLetters3 = {"Z", "A", "J", "H", "H"};
+        String[] flopCommunityLetters3 = {"J", "A", "Z"};
+        String[] turnLetters2 = {"E", "A", "I", " ", " ", "E"};
+        String[] turnCommunityLetters2 = {"I", " ", "A", "E"};
+        String[] turnLetters3 = {"Z", "G", "H", "B", "C", "A"};
+        //ArrayList<String> allCombination = player1.findAllCombination(flopLetters2, 2);
+        List<String> allWords = dict.findAllWords(turnLetters2);
+        float averageScore = 0;
+        for (String word : allWords) {
+            System.out.println("word = "+word);
+            averageScore += player1.calculateWordScore(word);
         }
-        player1.removeWordsWithZeroValue(highestWords);
-        int averageScore = 0;
-        for(Map.Entry<String, Integer> entry: highestWords.entrySet()){
-            averageScore += entry.getValue();
+        System.out.println("allWords size = "+allWords.size());
+        System.out.println("total score = "+averageScore);
+        averageScore = averageScore/allWords.size();
+
+
+
+
+        float averageCommunityLettersScore=0;
+        int totalNumber = 0;
+        List<String> allCommunityWords = dict.findAllWords(turnCommunityLetters2);
+        for(String word: allCommunityWords){
+            averageCommunityLettersScore+=player1.calculateWordScore(word);
+            totalNumber++;
         }
-        averageScore = averageScore/highestWords.size();
-
-        averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters2, player1);
-
+        System.out.println("\n");
+        System.out.println("allWords size = "+allCommunityWords.size());
+        System.out.println("total score = "+averageCommunityLettersScore);
+        averageCommunityLettersScore =  averageCommunityLettersScore/totalNumber;
         if(averageScore>averageCommunityLettersScore){
             System.out.println("averageScore = " + averageScore);
             System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
@@ -164,36 +175,40 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testTurnRound() {
         DictionaryTrie dict = DictionaryTrie.getDictionary();
-        int averageCommunityLettersScore = 0;
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        HashMap<String, Integer> highestWords = new HashMap<>();
+        HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
-        String[] flopLetters2 = {"Z", "G", "H", "A", "B"};
-        String[] communityLetters2 = {"Z", "G", "H"};
+        String[] flopLetters2 = {"E", "A", "J", "Q", "Z"};
+        String[] flopLetters3 = {"Q", "Z", "J", "X", "K"};
+        String[] communityLetters2 = {"Q", "A", "J"};
+        String[] communityLetters3 = {"Q", "Z", "J"};
         String[] turnLetters2 = {"Z", "G", "H", " ", " ", "A"};
-        ArrayList<String> allCombination = player1.findAllCombination(turnLetters2, 1);
-        System.out.println("size of combination = "+allCombination.size());
-        for (String combination : allCombination) {
-            highestWords.putAll(player1.findHighestScoreWord(combination, dict));
+        List<String> allWords = dict.findAllWords(flopLetters2);
+        float averageScore = 0;
+        for (String word : allWords) {
+            System.out.println("word = "+word);
+            averageScore += player1.calculateWordScore(word);
         }
-        player1.removeWordsWithZeroValue(highestWords);
-        int averageScore = 0;
-        for(Map.Entry<String, Integer> entry: highestWords.entrySet()){
-            averageScore += entry.getValue();
+        System.out.println("allWords size = "+allWords.size());
+        System.out.println("total score = "+averageScore);
+        averageScore =  averageScore/allWords.size();
+
+
+
+        float averageCommunityLettersScore=0;
+        int totalNumber = 0;
+        for(String word: dict.findAllWords(communityLetters2)){
+            averageCommunityLettersScore+=player1.calculateWordScore(word);
+            totalNumber++;
         }
-        averageScore = averageScore/highestWords.size();
-
-        System.out.println("averageScore = " + averageScore);
-
-//        averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters2, player1);
-//
-//        if(averageScore>averageCommunityLettersScore){
-//            System.out.println("averageScore = " + averageScore);
-//            System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
-//        }else {
-//            System.out.println("averageScore = " + averageScore);
-//            System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
-//        }
+        averageCommunityLettersScore = averageCommunityLettersScore/totalNumber;
+        if(averageScore>averageCommunityLettersScore){
+            System.out.println("averageScore = " + averageScore);
+            System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
+        }else {
+            System.out.println("averageScore = " + averageScore);
+            System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
+        }
     }
 
     @Test
@@ -209,10 +224,14 @@ public class TestScrambleComputerPlayer {
         String[] communityLetters1 = {"A", "B", "C"};
         String[] communityLetters2 = {"Z", "G", "H"};
         DictionaryTrie dict = DictionaryTrie.getDictionary();
-        int score = 0;
-        score = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters2, player1);
-
-        System.out.println("average score = "+score);
+        int averageCommunityLettersScore=0;
+        int totalNumber = 0;
+        for(String word: dict.findAllWords(communityLetters2)){
+            averageCommunityLettersScore+=player1.calculateWordScore(word);
+            totalNumber++;
+        }
+        averageCommunityLettersScore = averageCommunityLettersScore/totalNumber;
+        System.out.println("average score = "+averageCommunityLettersScore);
     }
     @Test
     public void testRemoveWordsWithZeroValue(){

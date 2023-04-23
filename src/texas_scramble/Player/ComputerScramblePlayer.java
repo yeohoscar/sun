@@ -172,31 +172,26 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         ArrayList<String> community = new ArrayList<>();
         String[] communityLetters = community.toArray(new String[0]);
 
-        ArrayList<String> allCombination = new ArrayList<>();
-        HashMap<String, Integer> highestWords = new HashMap<>();
-        if(currentRound==Rounds.FLOP){
-            //calculate average score of current community letters score
-            averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters,this);
-            //1-findAllCombination()
-            allCombination = findAllCombination(lettersOnHand, 2);
-        }else if(currentRound==Rounds.TURN){
-            //calculate average score of current community letters score
-            averageCommunityLettersScore = dict.calculateAverageScoreOfAllWordsContainCommunityLetters(communityLetters, this);
-            //1-findAllCombination()
-            allCombination = findAllCombination(lettersOnHand, 1);
+        //TODO:  average score of community letters score should be calculated before flop/turn round start
+        /***************** average score of community letters score should be calculated before flop/turn round start *******************/
+        //calculate average score of current community letters score
+        int averageCommunityLettersScore=0;
+        int totalNumber = 0;
+        for(String word: dict.findAllWords(communityLetters)){
+            averageCommunityLettersScore+=calculateWordScore(word);
+            totalNumber++;
         }
-        //2-for each combination, call findHighestScoreWord(), find the highest score word of each combination
-        for(String combination: allCombination){
-            highestWords.putAll(findHighestScoreWord(combination, dict));
-        }
-        //remove those words like: ^, 0
-        removeWordsWithZeroValue(highestWords);
-        //3-find the average score of all combination and compare it with average score of current community letters
+        averageCommunityLettersScore = Math.round((float) averageCommunityLettersScore/totalNumber);
+        /*************************************************************/
+
+        //calculate average score of words that can be formed by players' current letters
         int averageScore = 0;
-        for(Map.Entry<String, Integer> entry: highestWords.entrySet()){
-            averageScore += entry.getValue();
+        int totalWordNumber = 0;
+        for(String word: dict.findAllWords(lettersOnHand)){
+            averageScore += calculateWordScore(word);
+            totalWordNumber++;
         }
-        averageScore = averageScore/highestWords.size();
+        averageScore = Math.round((float) averageScore/totalWordNumber);
         if(averageScore>=averageCommunityLettersScore){
             //TODO: determine the risk
         }else {
@@ -221,7 +216,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     }
 
 
-    /**********************|||||||||||||************************/
+    /********************** may be not use anymore ************************/
     //this method is used to find all combinations that current community cards and cards on hand can combine with not arise cards
     //for example, there are 3 community cards and 2 cards on hand, to predicate river round, there are two cards space left,
     //different cards in the two space with community cards and cards on hand can have different combinations

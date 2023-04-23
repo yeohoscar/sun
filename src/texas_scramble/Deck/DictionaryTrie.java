@@ -1,6 +1,5 @@
 package texas_scramble.Deck;
 
-import poker.Player;
 import texas.TexasPlayer;
 
 import java.io.*;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.lang.System.exit;
+
 public class DictionaryTrie {
     private static DictionaryTrie cache = null;
 
@@ -21,14 +22,82 @@ public class DictionaryTrie {
         root = new Node('^', false, new ArrayList<>());
         createDictionary();
     }
-    /************* find all words contain community letters **************/
-    public int calculateAverageScoreOfAllWordsContainCommunityLetters(String[] letters, TexasPlayer player){
-        Node current;
-        HashMap<String, Integer> score = new HashMap<>();
-        score.put("|", 0);
-        List<List<String>> allWords = new ArrayList<>();
+//    /************* find all words contain community letters **************/
+//    public int calculateAverageScoreOfAllWordsContainCommunityLetters(String[] letters, TexasPlayer player){
+//        Node current;
+//        HashMap<String, Integer> score = new HashMap<>();
+//        score.put("|", 0);
+//        List<List<String>> allWords = new ArrayList<>();
+//        for(String letter: letters){
+//            current = root;
+////            Node n = current.children.stream()
+////                    .filter(node -> letter.charAt(0) == node.getLetter())
+////                    .findFirst()
+////                    .orElse(null);
+////            if(n==null){
+////                return new ArrayList<>();
+////            }
+//            //current = n;
+//            List<String> words = allWordsContainCommunityLettersDfsHelper(current, letter, letters, new ArrayList<>(), score, player);
+//            allWords.add(words);
+//        }
+//        ArrayList<String> result = new ArrayList<>();
+//        for(List<String> words: allWords){
+//            result.addAll(words);
+//        }
+//        return score.get("|")/result.size();
+//    }
+//    private List<String> allWordsContainCommunityLettersDfsHelper(Node node, String prefix, String[] lettersContained, List<String> results, HashMap<String,Integer> score, TexasPlayer player) {
+//        if (node.isEndOfWord() && wordContainsLetters(prefix, lettersContained)) {
+//            results.add(prefix);
+//            score.put("|", score.get("|")+player.calculateWordScore(prefix));
+//            //System.out.println("results = "+results);
+//        }
+//        for (int i = 0; i < node.children.size(); i++) {
+//            Node child = node.children.get(i);
+//            if (child != null) {
+//                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
+//                allWordsContainCommunityLettersDfsHelper(child, prefix + child.letter, lettersContained, results, score, player);
+//            }
+//        }
+//        return results;
+//    }
+    /************* find all words formed by letters on player's hand **************/
+    public boolean containBlank(String[] letters){
         for(String letter: letters){
-            current = root;
+            if(letter.equals(" ")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeBlank(String[] letters){
+//		ArrayList<String> availableLetters = findAvailableLetters(letters);
+//		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+//		for(int i=0; i<letters.length; i++){
+//			if(letters[i].equals(" ")){
+//				letters[i]=findHighestScoreLetter(availableLetters, temp);
+//				availableLetters = updateAvailableLetters(temp);
+//			}
+//		}
+        ArrayList<String> temp = new ArrayList<>();
+        for(String letter: letters){
+            if(!letter.equals(" ")){
+                temp.add(letter);
+            }
+        }
+        String[] removedBlank = temp.toArray(new String[0]);
+    }
+    public List<String> findAllWords(String[] letters){
+        Node current;
+        HashMap<String, Integer> lettersContained = new HashMap<>();
+        if(containBlank(letters)){
+            removeBlank(letters);
+        }
+        List<List<String>> allWords = new ArrayList<>();
+        current = root;
+        for(Node child: current.children){
 //            Node n = current.children.stream()
 //                    .filter(node -> letter.charAt(0) == node.getLetter())
 //                    .findFirst()
@@ -37,69 +106,20 @@ public class DictionaryTrie {
 //                return new ArrayList<>();
 //            }
             //current = n;
-            List<String> words = allWordsContainCommunityLettersDfsHelper(current, letter, letters, new ArrayList<>(), score, player);
+            String str = String.valueOf(child.letter);
+            //System.out.println("root children's letter = "+str);
+            List<String> words = dfs(child, str, letters, new ArrayList<>());
             allWords.add(words);
         }
         ArrayList<String> result = new ArrayList<>();
-        for(List<String> words: allWords){
-            result.addAll(words);
+        if(allWords.isEmpty()){
+            return result;
         }
-        return score.get("|")/result.size();
-    }
-    private boolean wordContainsCommunityLetters(String prefix, String[] communityLetters){
-//        String[] strArray = prefix.split("");
-//        boolean contained = true;
-//        HashMap<String, Integer> prefixHash = new HashMap<>();
-//        for(String letter: strArray){
-//            if(prefixHash.containsKey(letter)){
-//                prefixHash.put(letter, prefixHash.get(letter)+1);
-//            }else {
-//                prefixHash.put(letter, 1);
-//            }
-//        }
-        //compare if both key and value of prefixHash are subset of lettersContained
-        int countNumberOfLettersContained = 0;
-        for(String letter: communityLetters){
-            if(prefix.contains(letter)){
-                countNumberOfLettersContained++;
-            }
+        for(List<String> word: allWords){
+            result.addAll(word);
         }
-        if(communityLetters.length==3){
-            if(countNumberOfLettersContained==1 && prefix.length()<=5){
-                return true;
-            }else if(countNumberOfLettersContained==2 && prefix.length()<=6){
-                return true;
-            }else return countNumberOfLettersContained == 3 && prefix.length() <= 7;
-        }else if(communityLetters.length==4){
-            if(countNumberOfLettersContained==1 && prefix.length()<=4){
-                return true;
-            }else if(countNumberOfLettersContained==2 && prefix.length()<=5){
-                return true;
-            }else return countNumberOfLettersContained == 3 && prefix.length() <= 6;
-        }
-        return false;
-    }
-    private List<String> allWordsContainCommunityLettersDfsHelper(Node node, String prefix, String[] lettersContained, List<String> results, HashMap<String,Integer> score, TexasPlayer player) {
-        if (node.isEndOfWord() && wordContainsCommunityLetters(prefix, lettersContained)) {
-            results.add(prefix);
-            score.put("|", score.get("|")+player.calculateWordScore(prefix));
-            //System.out.println("results = "+results);
-        }
-        for (int i = 0; i < node.children.size(); i++) {
-            Node child = node.children.get(i);
-            if (child != null) {
-                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
-                allWordsContainCommunityLettersDfsHelper(child, prefix + child.letter, lettersContained, results, score, player);
-            }
-        }
-        return results;
-    }
-
-    /************* find all words formed by letters on player's hand **************/
-    public List<String> findAllWords(String[] letters){
-        Node current;
-        HashMap<String, Integer> lettersContained = new HashMap<>();
-        for(String letter: letters){
+        return result;
+        /*for(String letter: letters){
             if(lettersContained.containsKey(letter)){
                 lettersContained.put(letter, lettersContained.get(letter)+1);
             }else {
@@ -124,42 +144,114 @@ public class DictionaryTrie {
         for(List<String> words: allWords){
             result.addAll(words);
         }
-        return result;
+        return result;*/
     }
-    private boolean wordIsFormedByLettersContained(String prefix, HashMap<String, Integer> lettersContained){
-        //System.out.println("PPrefix = "+prefix);
-        String[] strArray = prefix.split("");
-        boolean contained = true;
-        HashMap<String, Integer> prefixHash = new HashMap<>();
-        for(String letter: strArray){
-            if(prefixHash.containsKey(letter)){
-                prefixHash.put(letter, prefixHash.get(letter)+1);
-            }else {
-                prefixHash.put(letter, 1);
-            }
-        }
+    private boolean wordContainsLetters(String prefix, String[] letters){
+//        String[] strArray = prefix.split("");
+//        boolean contained = true;
+//        HashMap<String, Integer> prefixHash = new HashMap<>();
+//        for(String letter: strArray){
+//            if(prefixHash.containsKey(letter)){
+//                prefixHash.put(letter, prefixHash.get(letter)+1);
+//            }else {
+//                prefixHash.put(letter, 1);
+//            }
+//        }
         //compare if both key and value of prefixHash are subset of lettersContained
-        for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
-            if(!(lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(entry.getKey())))){
-                contained=false;
+        int countNumberOfLettersContained = 0;
+        for(String letter: letters){
+            if(prefix.contains(letter)){
+                countNumberOfLettersContained++;
             }
         }
-        return contained;
+        if(letters.length==3){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 3) && prefix.length() <= (countNumberOfLettersContained + 4);
+//            if(countNumberOfLettersContained==1 && prefix.length()<=5){
+//                return true;
+//            }else if(countNumberOfLettersContained==2 && prefix.length()<=6){
+//                return true;
+//            }else return countNumberOfLettersContained == 3 && prefix.length() <= 7;
+        }else if(letters.length==4){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 4) && prefix.length() <= (countNumberOfLettersContained + 3);
+//            if(countNumberOfLettersContained==1 && prefix.length()<=4){
+//                return true;
+//            }else if(countNumberOfLettersContained==2 && prefix.length()<=5){
+//                return true;
+//            }else if(countNumberOfLettersContained==3 && prefix.length()<=6) {
+//                return true;
+//            }else return countNumberOfLettersContained == 4 && prefix.length() <= 7;
+        }else if(letters.length==5){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 5) && prefix.length() <= (countNumberOfLettersContained + 2);
+//            if(countNumberOfLettersContained==1 && prefix.length()<=3){
+//                return true;
+//            }else if(countNumberOfLettersContained==2 && prefix.length()<=4){
+//                return true;
+//            }else if(countNumberOfLettersContained==3 && prefix.length()<=5){
+//                return true;
+//            }else if(countNumberOfLettersContained==4 && prefix.length()<=6){
+//                return true;
+//            }else return countNumberOfLettersContained == 5 && prefix.length() <= 7;
+        }else if(letters.length==6){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 6) && prefix.length() <= (countNumberOfLettersContained + 1);
+//            if(countNumberOfLettersContained==1 && prefix.length()<=2){
+//                return true;
+//            }else if(countNumberOfLettersContained==2 && prefix.length()<=3){
+//                return true;
+//            }
+        }else if(letters.length==7){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 7) && prefix.length() <= (countNumberOfLettersContained);
+        }
+        return false;
     }
-    private List<String> dfs(Node node, String prefix, HashMap<String, Integer> lettersContained, List<String> results) {
-        if (node.isEndOfWord() && wordIsFormedByLettersContained(prefix, lettersContained)) {
+    /*
+
+        private boolean wordIsFormedByLettersContained(String prefix, HashMap<String, Integer> lettersContained){
+            //System.out.println("PPrefix = "+prefix);
+            String[] strArray = prefix.split("");
+            boolean contained = true;
+            HashMap<String, Integer> prefixHash = new HashMap<>();
+            for(String letter: strArray){
+                if(prefixHash.containsKey(letter)){
+                    prefixHash.put(letter, prefixHash.get(letter)+1);
+                }else {
+                    prefixHash.put(letter, 1);
+                }
+            }
+            //compare if both key and value of prefixHash are subset of lettersContained
+            for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
+                if(!(lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(entry.getKey())))){
+                    contained=false;
+                }
+            }
+            return contained;
+        }
+    */
+    private List<String> dfs(Node node, String prefix, String[] lettersContained, List<String> results) {
+        if (node.isEndOfWord() && wordContainsLetters(prefix, lettersContained)) {
             results.add(prefix);
-            //System.out.println("results = "+results);
         }
         for (int i = 0; i < node.children.size(); i++) {
             Node child = node.children.get(i);
             if (child != null) {
-                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
                 dfs(child, prefix + child.letter, lettersContained, results);
             }
         }
         return results;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static synchronized DictionaryTrie getDictionary() {
         if (cache == null) {
             cache = new DictionaryTrie();
