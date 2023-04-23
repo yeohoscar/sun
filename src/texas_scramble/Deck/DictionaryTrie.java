@@ -251,7 +251,7 @@ public class DictionaryTrie {
     }
 
     private void createDictionary() {
-        try (Stream<String> stream = Files.lines(Paths.get("full_dict.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("resources/full_dict.txt"))) {
             stream.forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();
