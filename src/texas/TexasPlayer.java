@@ -128,7 +128,7 @@ public abstract class TexasPlayer extends poker.Player {
 
 		folded = true;
 	}
-	@Override
+
 	public void dealTo(DeckOfCards deck) {
 		hand = deck.dealHand(NUM_CARDS_DEALT);
 	}

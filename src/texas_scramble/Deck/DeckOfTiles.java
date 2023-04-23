@@ -120,4 +120,9 @@ public class DeckOfTiles implements Deck {
     public ScrambleHand dealHand() {
         return new ScrambleHand(this);
     }
+
+    @Override
+    public Hand dealHand(int numCardsToBeDealt) {
+        return null;
+    }
 }

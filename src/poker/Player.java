@@ -9,6 +9,7 @@ package poker;
 //								and HumanPlayer, in which decisions are made using menus
 
 
+import texas_hold_em.Deck;
 import texas_hold_em.Hand;
 
 public abstract class Player {
@@ -118,7 +119,7 @@ public abstract class Player {
 	
 	
 	
-	public void dealTo(DeckOfCards deck) {
+	public void dealTo(Deck deck) {
 		hand = deck.dealHand();
 	}
 	

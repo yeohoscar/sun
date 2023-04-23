@@ -243,15 +243,6 @@ public class DictionaryTrie {
 
 
 
-
-
-
-
-
-
-
-
-
     public static synchronized DictionaryTrie getDictionary() {
         if (cache == null) {
             cache = new DictionaryTrie();
@@ -260,9 +251,8 @@ public class DictionaryTrie {
     }
 
     private void createDictionary() {
-        try (Stream<String> stream = Files.lines(Paths.get("Collins Scrabble Words (2019).txt"))) {
-            stream.filter(word -> word.length() <= 7)
-                    .forEach(this::add);
+        try (Stream<String> stream = Files.lines(Paths.get("full_dict.txt"))) {
+            stream.forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -315,8 +305,7 @@ public class DictionaryTrie {
             System.out.println(str);
         }
 
-        int i;
-        for (i = 0; i < root.children.size(); i++) {
+        for (int i = 0; i < root.children.size(); i++) {
             // if NON NULL child is found
             // add parent key to str and
             // call the display function recursively

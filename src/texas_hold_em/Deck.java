@@ -9,4 +9,6 @@ public interface Deck {
     void shuffle();
     HandElement dealNext();
     Hand dealHand();
+
+    Hand dealHand(int numCardsToBeDealt);
 }
