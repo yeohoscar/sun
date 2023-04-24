@@ -394,7 +394,7 @@ public abstract class TexasPlayer extends poker.Player {
 //			removeBlank(letters);
 //		}
 		//find all words that these letters can form
-		List<String> allWords = dict.findAllWords(letters);
+		List<String> allWords = dict.findAllWordsFormedByLetters(letters);
 		//System.out.println("words size = "+allWords.size());
 		//if all words is empty, this means current letters on player's hand cna not form any words
 		if(allWords.isEmpty()){
