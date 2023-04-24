@@ -5,10 +5,7 @@ import texas_hold_em.HumanTexasPlayer;
 import texas_scramble.Deck.*;
 import texas_scramble.Player.ComputerScramblePlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class ScrambleController extends MainController {
     protected DeckOfTiles deck;
@@ -17,7 +14,6 @@ public class ScrambleController extends MainController {
         texasPlayers = new ArrayList<>();
         numPlayers = names.length;
 
-
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0) {
                 texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank, i));
@@ -25,7 +21,7 @@ public class ScrambleController extends MainController {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
             }
         }
-        updatePlayerIDs();
+
         deck = new DeckOfTiles();
     }
 
@@ -43,10 +39,48 @@ public class ScrambleController extends MainController {
     }
 
     //distribute new ids to remain players
-    private void updatePlayerIDs() {
+    public void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
             texasPlayers.get(i).setId(i);
         }
+    }
+
+    @Override
+    public void play()	{
+        int dealerIndex=texasPlayers.size();
+        while (texasPlayers.size() > 1) {
+            deck.reset();//before each game starts, shuffle the deck
+            if(dealerIndex>=texasPlayers.size()){dealerIndex=0;}
+            List<Tile> communityTiles = new ArrayList<>();
+
+            //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
+            RoundOfScramble round = new RoundOfScramble(deck, texasPlayers, communityTiles, dealerIndex);
+            round.play();
+            if(texasPlayers.size()==1){
+                break;
+            }
+            try {
+                System.out.print("\n\nPlay another round? Press 'q' to terminate this game ... ");
+
+                byte[] input = new byte[100];
+
+                System.in.read(input);
+
+                for (int i = 0; i < input.length; i++)
+                    if ((char)input[i] == 'q' || (char)input[i] == 'Q')
+                        return;
+                //next player become a dealer
+                dealerIndex ++;
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            updatePlayerIDs();
+        }
+
+        System.out.println("Congratulations!");
+        System.out.println(texasPlayers.get(0).getName()+" is the Winner of the Game!");
     }
 
     public static void main(String[] args) {

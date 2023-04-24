@@ -239,6 +239,7 @@ public class DictionaryTrie {
 
 
 
+
     private void createDictionary(String pathToDictionary) {
         try (Stream<String> stream = Files.lines(Paths.get(pathToDictionary))) {
             stream.forEach(this::add);

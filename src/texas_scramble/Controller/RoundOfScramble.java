@@ -3,28 +3,83 @@ package texas_scramble.Controller;
 import poker.Card;
 import poker.DeckOfCards;
 import texas.RoundController;
+import texas.Rounds;
 import texas.TexasPlayer;
+import texas_hold_em.ComputerTexasPlayer;
+import texas_hold_em.PrintGame;
+import texas_scramble.Deck.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class RoundOfScramble extends RoundController {
-    public RoundOfScramble(DeckOfCards deck, ArrayList<TexasPlayer> players, List<Card> communityCards, int dealerIndex) {
-        super(deck, players, communityCards, dealerIndex);
+    private ArrayList<TexasPlayer> roundPlayers;
+    private DeckOfTiles deck;
+
+    private List<Tile> communityTiles;
+
+    public RoundOfScramble(DeckOfTiles deck, ArrayList<TexasPlayer> texasPlayers, List<Tile> communityTiles, int dealerIndex) {
+        super(null, texasPlayers, null, dealerIndex);
+        this.roundPlayers = texasPlayers;
+        this.deck=deck;
+        this.communityTiles=communityTiles;
+        //this.printGame = new PrintGame(texasPlayers, deck, pot);
+
+        initComputerPlayerWithCommunityCards(communityTiles);
     }
 
-    @Override
-    public void removePlayer() {
-        
+    private void initComputerPlayerWithCommunityCards(List<Tile> communityTiles) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof ComputerTexasPlayer) {
+                ((ComputerTexasPlayer) player).setCommunityCards(communityCards);
+            }
+        }
     }
+
 
     @Override
     public void showDown() {
-
+        
     }
+    public void roundCounter(int counter) {
+        int roundCounter = counter;
 
-    @Override
-    public void createSidePot(int activePlayer) {
+        while (!onePlayerLeft() && roundCounter != 5) {
 
+            switch (roundCounter) {
+                case 1 -> {
+                    preFlopRound();
+                    roundCounter++;
+                    dealCommunityTiles(3);
+                    System.out.println("\n\nThree Public Cards are released\n");
+                }
+                case 2 -> {
+                    //printGame.table(Rounds.FLOP);
+                    flopRound();
+                    roundCounter++;
+                    dealCommunityTiles(1);
+                    System.out.println("\n\nTurn Card is released\n");
+                }
+                case 3 -> {
+                    //printGame.table(Rounds.TURN);
+                    turnRound();
+                    roundCounter++;
+                    dealCommunityTiles(1);
+                    System.out.println("\n\nRiver Card is released\n");
+                }
+                default -> {
+                    //printGame.table(Rounds.RIVER);
+                    riverRound();
+                    roundCounter++;
+
+                    //printGame.table(Rounds.SHOWDOWN);
+                }
+            }
+            resetStakes();
+        }
+    }
+    public void dealCommunityTiles(int numCardsToBeDealt) {
+        for (int i = 0; i < numCardsToBeDealt; i++) {
+            communityTiles.add(deck.dealNext());
+        }
     }
 }

@@ -15,7 +15,7 @@ public class TexasController extends MainController {
         deck = new DeckOfCards();
     }
 	//distribute new ids to remain players
-    private void updatePlayerIDs() {
+    public void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
             texasPlayers.get(i).setId(i);
         }

@@ -148,6 +148,9 @@ public abstract class TexasPlayer extends poker.Player {
 	public void setDeck(DeckOfCards deck){
 		deckOfCards = deck;
 	}
+	public void setDeck(DeckOfTiles deck){
+		deckOfTiles = deck;
+	}
 
 	@Override
 	public void takePot(PotOfMoney pot) {
