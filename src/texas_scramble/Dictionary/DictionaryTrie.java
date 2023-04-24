@@ -60,7 +60,7 @@ public class DictionaryTrie {
 //        }
 //        return results;
 //    }
-    /************* find all words formed by letters on player's hand **************/
+    /************* find all words contain community letters and those not contain community letters **************/
     public boolean containBlank(String[] letters){
         for(String letter: letters){
             if(letter.equals(" ")){
@@ -69,7 +69,6 @@ public class DictionaryTrie {
         }
         return false;
     }
-
     public void removeBlank(String[] letters){
 //		ArrayList<String> availableLetters = findAvailableLetters(letters);
 //		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
@@ -155,7 +154,7 @@ public class DictionaryTrie {
 //                prefixHash.put(letter, 1);
 //            }
 //        }
-        //compare if both key and value of prefixHash are subset of lettersContained
+        //compare if both key and value of prefixHash are subset of lettersContaine
         int countNumberOfLettersContained = 0;
         for(String letter: letters){
             if(prefix.contains(letter)){
@@ -236,6 +235,73 @@ public class DictionaryTrie {
         }
         return results;
     }
+    /************* find all words that formed by player's current letters **************/
+    public List<String> findAllWordsFormedByLetters(String[] letters){
+        Node current;
+        HashMap<String, Integer> lettersContained = new HashMap<>();
+        for(String letter: letters){
+            if(lettersContained.containsKey(letter)){
+                lettersContained.put(letter, lettersContained.get(letter)+1);
+            }else {
+                lettersContained.put(letter, 1);
+            }
+        }
+        List<List<String>> allWords = new ArrayList<>();
+        for(Map.Entry<String, Integer> entry: lettersContained.entrySet()){
+            String letter = entry.getKey();
+            current = root;
+            Node n = current.children.stream()
+                    .filter(node -> letter.charAt(0) == node.getLetter())
+                    .findFirst()
+                    .orElse(null);
+            if(n==null){
+                return new ArrayList<>();
+            }
+            current = n;
+            allWords.add(dfs(current, letter, lettersContained, new ArrayList<>()));
+        }
+
+        List<String> result = new ArrayList<>();
+        for(List<String> words: allWords){
+            result.addAll(words);
+        }
+        return result;
+    }
+    private boolean wordIsFormedByLettersContained(String prefix, HashMap<String, Integer> lettersContained){
+        //System.out.println("PPrefix = "+prefix);
+        String[] strArray = prefix.split("");
+        boolean contained = true;
+        HashMap<String, Integer> prefixHash = new HashMap<>();
+        for(String letter: strArray){
+            if(prefixHash.containsKey(letter)){
+                prefixHash.put(letter, prefixHash.get(letter)+1);
+            }else {
+                prefixHash.put(letter, 1);
+            }
+        }
+        //compare if both key and value of prefixHash are subset of lettersContained
+        for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
+            if(!(lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(entry.getKey())))){
+                contained=false;
+            }
+        }
+        return contained;
+    }
+    private List<String> dfs(Node node, String prefix, HashMap<String, Integer> lettersContained, List<String> results) {
+        if (node.isEndOfWord() && wordIsFormedByLettersContained(prefix, lettersContained)) {
+            results.add(prefix);
+            //System.out.println("results = "+results);
+        }
+        for (int i = 0; i < node.children.size(); i++) {
+            Node child = node.children.get(i);
+            if (child != null) {
+                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
+                dfs(child, prefix + child.letter, lettersContained, results);
+            }
+        }
+        return results;
+    }
+
 
 
 

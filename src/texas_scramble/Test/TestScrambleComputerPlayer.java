@@ -41,7 +41,7 @@ public class TestScrambleComputerPlayer {
         String[] letters6 = {"A", "B", "C", "D"};
         String[] letters4 = {"X", "Y", "E", "N", "O", "P", "G"};
         String[][] letters5 = {{"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}};
-        String[] letters7 = {"Z", "G", "H", "P", "A"};
+        String[] letters7 = {"E", "N", "O", "P", "G", "X", "Y"};
 
         List<String> allWords = dict.findAllWords(letters7);
         for(String word: allWords){
@@ -76,39 +76,39 @@ public class TestScrambleComputerPlayer {
 //        }
     }
 
-    @Test
-    public void testFindAllCombination() {
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        //test when there is only one unknown letter
-        String[] playerLetters = {"A", "B"};
-        //ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
-//        for(String re: result){
+//    @Test
+//    public void testFindAllCombination() {
+//        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+//        //test when there is only one unknown letter
+//        String[] playerLetters = {"A", "B"};
+//        //ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
+////        for(String re: result){
+////            System.out.println(re);
+////        }
+//
+//
+//        //test when there are two unknown letters
+//        String[] playerLetters1 = {"A", "B"};
+//        //ArrayList<String> result1 = player1.findAllCombination(playerLetters1, 2);
+//        /*for(String re: result1){
 //            System.out.println(re);
+//        }*/
+//
+//        //test when there are two unknown letters which are blanks
+//        String[] playerLetters3 = {"Z", "G", "H", " ", " "};
+//        String[] playerLetters2 = {"Z", "G", "H"};
+//        ArrayList<String> result2 = player1.findAllCombination(playerLetters3, 2);
+//        for (String re : result2) {
+//            if (re.length() == 7) {
+//                System.out.println("length = " + re.length());
+//                System.out.println(re);
+//            } else {
+//                exit(0);
+//            }
 //        }
-
-
-        //test when there are two unknown letters
-        String[] playerLetters1 = {"A", "B"};
-        //ArrayList<String> result1 = player1.findAllCombination(playerLetters1, 2);
-        /*for(String re: result1){
-            System.out.println(re);
-        }*/
-
-        //test when there are two unknown letters which are blanks
-        String[] playerLetters3 = {"Z", "G", "H", " ", " "};
-        String[] playerLetters2 = {"Z", "G", "H"};
-        ArrayList<String> result2 = player1.findAllCombination(playerLetters3, 2);
-        for (String re : result2) {
-            if (re.length() == 7) {
-                System.out.println("length = " + re.length());
-                System.out.println(re);
-            } else {
-                exit(0);
-            }
-        }
-        System.out.println("Size = " + result2.size());
-
-    }
+//        System.out.println("Size = " + result2.size());
+//
+//    }
 
     @Test
     public void testFlopRound() {
@@ -216,7 +216,17 @@ public class TestScrambleComputerPlayer {
         int result = player1.average();
         System.out.println("result = " + result);
     }
+    @Test
+    public void testFindAllWordsFormedByLetters(){
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        String[] letters1 = {"A", "A", "E", "E"};
+        List<String> result = dict.findAllWordsFormedByLetters(letters1);
+        for(String word: result){
+            System.out.println(word);
+        }
 
+    }
     @Test
     public void testCalculateAverageScoreOfAllWordsContainCommunityLetters() {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
@@ -232,7 +242,7 @@ public class TestScrambleComputerPlayer {
         averageCommunityLettersScore = averageCommunityLettersScore/totalNumber;
         System.out.println("average score = "+averageCommunityLettersScore);
     }
-    @Test
+    /*@Test
     public void testRemoveWordsWithZeroValue(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> highestWords = new HashMap<>();
@@ -241,5 +251,5 @@ public class TestScrambleComputerPlayer {
         highestWords.put("ABC", 20);
         player1.removeWordsWithZeroValue(highestWords);
         System.out.println(highestWords);
-    }
+    }*/
 }

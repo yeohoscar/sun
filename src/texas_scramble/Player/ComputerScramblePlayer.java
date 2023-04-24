@@ -73,7 +73,13 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             return null;
         }
     }
-
+    public float averageScoreCalculator(List<String> allWords){
+        int averageScore=0;
+        for(String word: allWords){
+            averageScore += calculateWordScore(word);
+        }
+        return (float) averageScore/allWords.size();
+    }
     /******************** just ignore this part ********************/
     public ArrayList<String> findAll(ArrayList<String> average){
         ArrayList<String> combinations = new ArrayList<>();
@@ -117,15 +123,27 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         return score;
     }
-    /******************** |||||||||||||| ********************/
+    /********************** predicate riskTolerance of different round ************************/
+    //TODO: not done
+    public int predicateRiskTolerance() {
+//        DeckOfCards deck = getDeckOfCards();
+        Tile[] publicCards = getCommunityCards().toArray(new Tile[getCommunityCards().size()]);
+        Rounds currentRound = getCurrentRound();
+        int risk = 0;
+        if (currentRound == Rounds.PRE_FLOP) {
+//            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
+        }
 
+        if (currentRound == Rounds.FLOP || currentRound == Rounds.TURN) {
+            risk += predicateBestWordAndRisk(publicCards, currentRound);
+        }
 
-
-
-
-
-
-    /**********************|||||||||||||************************/
+        if (currentRound == Rounds.RIVER) {
+//            risk += riverRoundRiskToleranceHelper(publicCards, deck);
+        }
+        return risk;
+    }
+    /******************** predicate pre-flop round ********************/
     private int calculateHandScore(Tile[] hand){
         int score = 0;
         for(Tile tile: hand){
@@ -151,36 +169,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         return 0;
     }
-
-    //TODO: not done
-    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfCards deck) {
-
-        return 0;
-    }
-
-    //TODO: not done
-    public int predicateRiskTolerance() {
-//        DeckOfCards deck = getDeckOfCards();
-        Tile[] publicCards = getCommunityCards().toArray(new Tile[getCommunityCards().size()]);
-        Rounds currentRound = getCurrentRound();
-        int risk = 0;
-        if (currentRound == Rounds.PRE_FLOP) {
-//            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
-        }
-
-        if (currentRound == Rounds.FLOP || currentRound == Rounds.TURN) {
-            risk += predicateBestWordAndRisk(publicCards, currentRound);
-        }
-
-        if (currentRound == Rounds.RIVER) {
-//            risk += riverRoundRiskToleranceHelper(publicCards, deck);
-        }
-        return risk;
-    }
-    public void removeWordsWithZeroValue(HashMap<String, Integer> highestWords){
-        String keyToRemove = "^";
-        highestWords.entrySet().removeIf(entry -> entry.getKey().equals(keyToRemove));
-    }
+    /********************** predicate flop and turn round ************************/
     //TODO: not done
     public int predicateBestWordAndRisk(Tile[] publicCards, Rounds currentRound){
         //TODO: have not combine community letters and letters on hand
@@ -195,23 +184,11 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         //TODO:  average score of community letters score should be calculated before flop/turn round start
         /***************** average score of community letters score should be calculated before flop/turn round start *******************/
         //calculate average score of current community letters score
-        int averageCommunityLettersScore=0;
-        int totalNumber = 0;
-        for(String word: dict.findAllWords(communityLetters)){
-            averageCommunityLettersScore+=calculateWordScore(word);
-            totalNumber++;
-        }
-        averageCommunityLettersScore = Math.round((float) averageCommunityLettersScore/totalNumber);
+        float averageCommunityLettersScore=averageScoreCalculator(dict.findAllWords(communityLetters));
         /*************************************************************/
-
         //calculate average score of words that can be formed by players' current letters
-        int averageScore = 0;
-        int totalWordNumber = 0;
-        for(String word: dict.findAllWords(lettersOnHand)){
-            averageScore += calculateWordScore(word);
-            totalWordNumber++;
-        }
-        averageScore = Math.round((float) averageScore/totalWordNumber);
+        float averageScore = averageScoreCalculator(dict.findAllWords(lettersOnHand));
+//        averageScore = Math.round((float) averageScore/totalWordNumber);
         if(averageScore>=averageCommunityLettersScore){
             //TODO: determine the risk
         }else {
@@ -234,81 +211,97 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         return 0;*/
     }
+    /********************** predicate river round ************************/
+    //TODO: not done
+    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfCards deck) {
+        //TODO: have not combine community letters and letters on hand
+        DictionaryTrie dict = DictionaryTrie.getDictionary();
 
+        ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
+        String[] lettersOnHand = letters.toArray(new String[0]);
 
-    /********************** may be not use anymore ************************/
-    //this method is used to find all combinations that current community cards and cards on hand can combine with not arise cards
-    //for example, there are 3 community cards and 2 cards on hand, to predicate river round, there are two cards space left,
-    //different cards in the two space with community cards and cards on hand can have different combinations
-    public ArrayList<String> findAllCombination(String[] lettersOnHand, int letterSpaceLeft){
-        if(letterSpaceLeft==0){
-            return new ArrayList<>(Arrays.asList(lettersOnHand));
-        }else {
-            ArrayList<String> availableLetters = findAvailableLetters(lettersOnHand);
-            ArrayList<String> updateAvailableLetters = new ArrayList<>();
-            ArrayList<String> letterCombination = availableLetters;
-            HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
-//            System.out.println("before 1st level:");
-//            for(Map.Entry<String, Integer> entry: temp.entrySet()){
-//                System.out.print(entry+", ");
+        ArrayList<String> community = new ArrayList<>();
+        String[] communityLetters = community.toArray(new String[0]);
+
+        return 0;
+    }
+//    /********************** may be not use anymore ************************/
+//    //this method is used to find all combinations that current community cards and cards on hand can combine with not arise cards
+//    //for example, there are 3 community cards and 2 cards on hand, to predicate river round, there are two cards space left,
+//    //different cards in the two space with community cards and cards on hand can have different combinations
+//    public ArrayList<String> findAllCombination(String[] lettersOnHand, int letterSpaceLeft){
+//        if(letterSpaceLeft==0){
+//            return new ArrayList<>(Arrays.asList(lettersOnHand));
+//        }else {
+//            ArrayList<String> availableLetters = findAvailableLetters(lettersOnHand);
+//            ArrayList<String> updateAvailableLetters = new ArrayList<>();
+//            ArrayList<String> letterCombination = availableLetters;
+//            HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
+////            System.out.println("before 1st level:");
+////            for(Map.Entry<String, Integer> entry: temp.entrySet()){
+////                System.out.print(entry+", ");
+////            }
+////            System.out.println();
+//            for(String letter: lettersOnHand){
+//                temp.put(letter, temp.get(letter)-1);
 //            }
-//            System.out.println();
-            for(String letter: lettersOnHand){
-                temp.put(letter, temp.get(letter)-1);
-            }
-//            System.out.println("1st level available letters:");
-//            for(Map.Entry<String, Integer> entry: temp.entrySet()){
-//                System.out.print(entry+", ");
-//            }
-//            System.out.println();
-//            for(String letters: availableLetters){
-//                System.out.print(letters);
-//            }
-//            System.out.println();
-            while(letterSpaceLeft>1){
-//                System.out.println("letterSpaceLet = "+letterSpaceLeft);
-                //pre level: availableLetters
-                for(String letter: availableLetters){
-                    temp.put(letter, temp.get(letter)-1);
-                }
-                for(Map.Entry<String, Integer> entry: temp.entrySet()){
-                    if(entry.getValue()>0){
-                        //subs level
-                        updateAvailableLetters.add(entry.getKey());
-                    }
-                }
-//                System.out.println("updated:");
+////            System.out.println("1st level available letters:");
+////            for(Map.Entry<String, Integer> entry: temp.entrySet()){
+////                System.out.print(entry+", ");
+////            }
+////            System.out.println();
+////            for(String letters: availableLetters){
+////                System.out.print(letters);
+////            }
+////            System.out.println();
+//            while(letterSpaceLeft>1){
+////                System.out.println("letterSpaceLet = "+letterSpaceLeft);
+//                //pre level: availableLetters
+//                for(String letter: availableLetters){
+//                    temp.put(letter, temp.get(letter)-1);
+//                }
 //                for(Map.Entry<String, Integer> entry: temp.entrySet()){
-//                    System.out.print(entry+", ");
+//                    if(entry.getValue()>0){
+//                        //subs level
+//                        updateAvailableLetters.add(entry.getKey());
+//                    }
 //                }
-//                System.out.println();
-//                for(String letters: updateAvailableLetters){
-//                    System.out.print(letters);
-//                }
-//                System.out.println();
-                //两层的结合
-                letterCombination = combinationHelper(letterCombination, updateAvailableLetters);
-                availableLetters.addAll(updateAvailableLetters);
-                updateAvailableLetters.clear();
-                letterSpaceLeft--;
-            }
-            //combine each of combination with letters on player's hand, each of the new combination will have the highest word
-            String str = String.join("", lettersOnHand);
-            for(int i=0; i<letterCombination.size(); i++){
-                letterCombination.set(i, letterCombination.get(i)+str);
-            }
-            return letterCombination;
-        }
-    }
-    private ArrayList<String> combinationHelper(ArrayList<String> pre, ArrayList<String> subs){
-        ArrayList<String> letterCombination = new ArrayList<>();
-        for (String s : pre) {
-            for (String sub : subs) {
-                letterCombination.add(s + sub);
-            }
-        }
-        return letterCombination;
-    }
+////                System.out.println("updated:");
+////                for(Map.Entry<String, Integer> entry: temp.entrySet()){
+////                    System.out.print(entry+", ");
+////                }
+////                System.out.println();
+////                for(String letters: updateAvailableLetters){
+////                    System.out.print(letters);
+////                }
+////                System.out.println();
+//                //两层的结合
+//                letterCombination = combinationHelper(letterCombination, updateAvailableLetters);
+//                availableLetters.addAll(updateAvailableLetters);
+//                updateAvailableLetters.clear();
+//                letterSpaceLeft--;
+//            }
+//            //combine each of combination with letters on player's hand, each of the new combination will have the highest word
+//            String str = String.join("", lettersOnHand);
+//            for(int i=0; i<letterCombination.size(); i++){
+//                letterCombination.set(i, letterCombination.get(i)+str);
+//            }
+//            return letterCombination;
+//        }
+//    }
+//    private ArrayList<String> combinationHelper(ArrayList<String> pre, ArrayList<String> subs){
+//        ArrayList<String> letterCombination = new ArrayList<>();
+//        for (String s : pre) {
+//            for (String sub : subs) {
+//                letterCombination.add(s + sub);
+//            }
+//        }
+//        return letterCombination;
+//    }
+//    public void removeWordsWithZeroValue(HashMap<String, Integer> highestWords){
+//        String keyToRemove = "^";
+//        highestWords.entrySet().removeIf(entry -> entry.getKey().equals(keyToRemove));
+//    }
 
 ////    *********************|||||||||||||***********************
 //
@@ -440,7 +433,6 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 //        }
 //        return score;
 //    }
-
     /**********************|||||||||||||************************/
 
     //TODO: not done
