@@ -31,7 +31,6 @@ public class RoundsOfTexas extends RoundController {
             }
         }
     }
-
     @Override
     //compare the hand value and decide who win
     public void showDown() {
@@ -90,97 +89,12 @@ public class RoundsOfTexas extends RoundController {
         }
     }
 
-    public TexasPlayer getPlayerById(List<TexasPlayer> roundPlayers, int playerId) {
-        for (TexasPlayer player : roundPlayers) {
-            if (player.getId() == playerId) {
-                return player;
-            }
-        }
-        return null; // Player with the given ID was not found
-    }
-
-    @Override
-    //remove player who are unable to play the game
-    public void removePlayer() {
-        Iterator<TexasPlayer> iterator = roundPlayers.iterator();
-        while (iterator.hasNext()) {
-            TexasPlayer player = iterator.next();
-            if (player.getBank() < BIG_BLIND_AMOUNT) {
-                iterator.remove();
-            }
-        }
-
-        for (TexasPlayer player : roundPlayers) {
-            player.reset();
-            player.resetDealer();
-        }
-    }
 
 
-    @Override
-    //create side pot when someone all in
-    public void createSidePot(int activePlayer) {
-        ArrayList<Integer> playerList = getActivePot().getPlayerIds();
-        ArrayList<Integer> allInPlayer = new ArrayList<>();
-        for (int id : playerList) {
-            if (getPlayerById(roundPlayers, id).isAllIn() && !getPlayerById(roundPlayers, id).hasSidePot()) {
-                allInPlayer.add(id);
-            }
-        }
-        if (allInPlayer.size() == 0) {
-            return;
-        }
 
 
-        //sort all in player list, start from player who has the smallest stake
-        Collections.sort(allInPlayer, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer playerId1, Integer playerId2) {
-                Player player1 = getPlayerById(roundPlayers, playerId1);
-                Player player2 = getPlayerById(roundPlayers, playerId2);
-                return Integer.compare(player1.getStake(), player2.getStake());
-            }
-        });
-        //go through the allin players
-        for (int ID : allInPlayer) {
-            TexasPlayer player = getPlayerById(roundPlayers, ID);
-            PotOfMoney sidePot = new PotOfMoney();
-            PotOfMoney lastPot = getActivePot();
-            ArrayList<Integer> newPlayerIds = new ArrayList<>(lastPot.getPlayerIds());
-            newPlayerIds.removeIf(id -> id == player.getId());
 
 
-            //count total chips in pots
-            int previousStake = 0;
-            for (PotOfMoney pot : pots) {
-                previousStake += pot.getTotal();
-            }
-            // do not create side pot if the player can win more than current total stakes in pots
-            if (player.getTotalStake() * activePlayer > previousStake) {
-                player.SetSidePot();
-                continue;
-            }
-            //calculate side pot
-            if (pots.size() == 1) {
-                previousStake = lastPot.getTotal();
-                sidePot.setStake(lastPot.getCurrentStake());
-                sidePot.setPlayerIds(newPlayerIds);
-                lastPot.setTotal(player.getTotalStake() * activePlayer);
-                sidePot.setTotal(previousStake - player.getTotalStake() * activePlayer);
-            } else {
-                previousStake -= lastPot.getTotal();
-                int lastTotal = lastPot.getTotal();
-                sidePot.setStake(lastPot.getCurrentStake());
-                sidePot.setPlayerIds(newPlayerIds);
-                lastPot.setTotal(player.getTotalStake() * activePlayer - previousStake);
-                sidePot.setTotal(lastTotal - lastPot.getTotal());
-            }
-
-            player.SetSidePot();
-            pots.add(sidePot);
-        }
-
-    }
 
 
 }

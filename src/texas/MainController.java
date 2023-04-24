@@ -66,7 +66,7 @@ public abstract class MainController {
         System.out.println(texasPlayers.get(0).getName()+" is the Winner of the Game!");
     }
 
-    private void updatePlayerIDs() {
+    protected void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
             texasPlayers.get(i).setId(i);
         }

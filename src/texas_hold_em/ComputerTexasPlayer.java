@@ -94,6 +94,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
         this.communityCards = communityCards;
     }
 
+
     /************************ this method sorts cards from low to high with highest cards on the right *****************************/
     public void sortCards(Card[] allCards) {
         int minPosition = 0;
