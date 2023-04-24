@@ -20,46 +20,7 @@ public class DictionaryTrie {
         root = new Node('^', false, new ArrayList<>());
         createDictionary(pathToDictionary);
     }
-//    /************* find all words contain community letters **************/
-//    public int calculateAverageScoreOfAllWordsContainCommunityLetters(String[] letters, TexasPlayer player){
-//        Node current;
-//        HashMap<String, Integer> score = new HashMap<>();
-//        score.put("|", 0);
-//        List<List<String>> allWords = new ArrayList<>();
-//        for(String letter: letters){
-//            current = root;
-////            Node n = current.children.stream()
-////                    .filter(node -> letter.charAt(0) == node.getLetter())
-////                    .findFirst()
-////                    .orElse(null);
-////            if(n==null){
-////                return new ArrayList<>();
-////            }
-//            //current = n;
-//            List<String> words = allWordsContainCommunityLettersDfsHelper(current, letter, letters, new ArrayList<>(), score, player);
-//            allWords.add(words);
-//        }
-//        ArrayList<String> result = new ArrayList<>();
-//        for(List<String> words: allWords){
-//            result.addAll(words);
-//        }
-//        return score.get("|")/result.size();
-//    }
-//    private List<String> allWordsContainCommunityLettersDfsHelper(Node node, String prefix, String[] lettersContained, List<String> results, HashMap<String,Integer> score, TexasPlayer player) {
-//        if (node.isEndOfWord() && wordContainsLetters(prefix, lettersContained)) {
-//            results.add(prefix);
-//            score.put("|", score.get("|")+player.calculateWordScore(prefix));
-//            //System.out.println("results = "+results);
-//        }
-//        for (int i = 0; i < node.children.size(); i++) {
-//            Node child = node.children.get(i);
-//            if (child != null) {
-//                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
-//                allWordsContainCommunityLettersDfsHelper(child, prefix + child.letter, lettersContained, results, score, player);
-//            }
-//        }
-//        return results;
-//    }
+
     /************* find all words contain community letters and those not contain community letters **************/
     public boolean containBlank(String[] letters){
         for(String letter: letters){
@@ -301,7 +262,6 @@ public class DictionaryTrie {
         }
         return results;
     }
-
 
 
 

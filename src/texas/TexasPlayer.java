@@ -366,22 +366,9 @@ public abstract class TexasPlayer extends poker.Player {
 			default -> {}
 		}
 	}
-	protected ArrayList<String> findAvailableLetters(String[] lettersOnHand){
-		ArrayList<String> availableLetters = new ArrayList<>();
-		HashMap<String, Integer> temp1 = new HashMap<>(deckOfTiles.getAllTiles());
-		for(String letter: lettersOnHand){
-			temp1.put(letter, temp1.get(letter)-1);
-		}
-		for(Map.Entry<String, Integer> entry: temp1.entrySet()){
-			if(entry.getValue()!=0){
-				availableLetters.add(entry.getKey());
-			}
-		}
-		return availableLetters;
-	}
 
 
-	/**********************For Texas Scramble************************/
+	/********************** For Texas Scramble ************************/
 
 	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
 	public String findHighestScoreWord(String[] letters, DictionaryTrie dict){
@@ -450,72 +437,6 @@ public abstract class TexasPlayer extends poker.Player {
 		}
 	}
 
-	private ArrayList<String> updateAvailableLetters(HashMap<String, Integer> temp){
-		ArrayList<String> availableLetters = new ArrayList<>();
-		for(Map.Entry<String, Integer> entry: temp.entrySet()){
-			if(entry.getValue()>0){
-				availableLetters.add(entry.getKey());
-			}
-		}
-		return availableLetters;
-	}
-	public void removeBlank(String[] letters){
-//		ArrayList<String> availableLetters = findAvailableLetters(letters);
-//		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
-//		for(int i=0; i<letters.length; i++){
-//			if(letters[i].equals(" ")){
-//				letters[i]=findHighestScoreLetter(availableLetters, temp);
-//				availableLetters = updateAvailableLetters(temp);
-//			}
-//		}
-		ArrayList<String> temp = new ArrayList<>();
-		for(String letter: letters){
-			if(!letter.equals(" ")){
-				temp.add(letter);
-			}
-		}
-		String[] removedBlank = temp.toArray(new String[0]);
-	}
-	private String findHighestScoreLetter(ArrayList<String> availableLetters, HashMap<String, Integer> temp){
-		int maxScore=0;
-		int score=0;
-		String maxScoreLetter = "A";
-		for(String letter: availableLetters){
-			switch (letter.charAt(0)) {
-				case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score = 1;
-				case 'D', 'G' -> score=2;
-				case 'B', 'C', 'M', 'P' -> score=3;
-				case 'F', 'H', 'V', 'W', 'Y' -> score=4;
-				case 'K' -> score=5;
-				case 'J', 'X' -> score=8;
-				case 'Q', 'Z' -> score=10;
-				default -> score=0;
-			}
-			if(maxScore<score){
-				maxScore=score;
-				maxScoreLetter=letter;
-			}
-		}
-		temp.put(maxScoreLetter, temp.get(maxScoreLetter)-1);
-		return maxScoreLetter;
-	}
-	private int countBlank(String[] letters){
-		int count=0;
-		for(String letter: letters){
-			if(letter.equals(" ")){
-				count++;
-			}
-		}
-		return count;
-	}
-	public boolean containBlank(String[] letters){
-		for(String letter: letters){
-			if(letter.equals(" ")){
-				return true;
-			}
-		}
-		return false;
-	}
 	public int calculateWordScore(String word){
 		int score = 0;
 		for(int i=0; i<word.length(); i++) {

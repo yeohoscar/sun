@@ -13,22 +13,6 @@ import java.util.List;
 import static java.lang.System.exit;
 
 public class TestScrambleComputerPlayer {
-    @Test
-    public void testFindAllWordsWithBlank() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        String[] letters7 = {"Z", "G", "H", " ", " "};
-        String[] letters8 = {"Z", "G", "H", "Q", "J"};//these letters can not form any words
-        String[] letters6 = {"A", "B", "C", "D", " ", " "};
-
-        String[] temp = letters6;
-        //if letters contain blank, we must substitute blank with other letters
-        if (player1.containBlank(temp)) {
-            player1.removeBlank(temp);
-        }
-        List<String> maxScoreWord2 = dict.findAllWords(temp);
-        System.out.println(maxScoreWord2);
-    }
 
     @Test
     public void testFindAllWords() {
@@ -246,6 +230,23 @@ public class TestScrambleComputerPlayer {
         averageCommunityLettersScore = averageCommunityLettersScore/totalNumber;
         System.out.println("average score = "+averageCommunityLettersScore);
     }
+}
+    /*@Test
+    public void testFindAllWordsWithBlank() {
+        FullDictionary dict = FullDictionary.getFullDictionary();
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        String[] letters7 = {"Z", "G", "H", " ", " "};
+        String[] letters8 = {"Z", "G", "H", "Q", "J"};//these letters can not form any words
+        String[] letters6 = {"A", "B", "C", "D", " ", " "};
+
+        String[] temp = letters6;
+        //if letters contain blank, we must substitute blank with other letters
+        if (player1.containBlank(temp)) {
+            player1.removeBlank(temp);
+        }
+        List<String> maxScoreWord2 = dict.findAllWords(temp);
+        System.out.println(maxScoreWord2);
+    }*/
     /*@Test
     public void testRemoveWordsWithZeroValue(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
@@ -256,4 +257,4 @@ public class TestScrambleComputerPlayer {
         player1.removeWordsWithZeroValue(highestWords);
         System.out.println(highestWords);
     }*/
-}
+
