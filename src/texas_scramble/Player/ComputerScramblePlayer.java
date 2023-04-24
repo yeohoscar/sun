@@ -215,7 +215,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //TODO: not done
     public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfCards deck) {
         //TODO: have not combine community letters and letters on hand
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        DictionaryTrie dict = FullDictionary.getFullDictionary();
 
         ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
         String[] lettersOnHand = letters.toArray(new String[0]);
@@ -223,6 +223,19 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         ArrayList<String> community = new ArrayList<>();
         String[] communityLetters = community.toArray(new String[0]);
 
+        /***************** average score of community letters score should be calculated before flop/turn round start *******************/
+        //calculate average score of current community letters score
+        float averageCommunityLettersScore=averageScoreCalculator(dict.findAllWords(communityLetters));
+        /*************************************************************/
+        //calculate highest score word that can be formed by players' current letters
+        String highestScoreWord = findHighestScoreWord(lettersOnHand, dict);
+        float wordScore = calculateWordScore(highestScoreWord);
+//        averageScore = Math.round((float) averageScore/totalWordNumber);
+        if(wordScore>=averageCommunityLettersScore){
+            //TODO: determine the risk
+        }else {
+            //TODO: determine the risk
+        }
         return 0;
     }
 //    /********************** may be not use anymore ************************/

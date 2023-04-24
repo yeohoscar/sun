@@ -3,7 +3,7 @@ package texas;
 import poker.*;
 import texas_hold_em.Deck;
 import texas_hold_em.PrintGame;
-import texas_scramble.*;
+//import texas_scramble.*;
 import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.Tile;
 

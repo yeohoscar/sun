@@ -384,7 +384,7 @@ public abstract class TexasPlayer extends poker.Player {
 	/**********************For Texas Scramble************************/
 
 	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
-	public HashMap<String, Integer> findHighestScoreWord(String[] letters, DictionaryTrie dict){
+	public String findHighestScoreWord(String[] letters, DictionaryTrie dict){
 		//DictionaryTrie dict = DictionaryTrie.getDictionary();
 //		char[] charArray = combination.toCharArray();
 //		String[] letters = new String[charArray.length];
@@ -401,7 +401,8 @@ public abstract class TexasPlayer extends poker.Player {
 		//System.out.println("words size = "+allWords.size());
 		//if all words is empty, this means current letters on player's hand cna not form any words
 		if(allWords.isEmpty()){
-			return new HashMap<>(Collections.singletonMap("^", 0));
+//			return new HashMap<>(Collections.singletonMap("^", 0));
+			return "^";
 		}
 
 		//calculate score of each of these words
@@ -414,8 +415,8 @@ public abstract class TexasPlayer extends poker.Player {
 
 	}
 //	public HashMap<String, Integer> findHighestScoreWordHelper(List<String> allWords){
-	public HashMap<String, Integer> findHighestScoreWordHelper(HashMap<String, Integer> recordWordsScore){
-		HashMap<String, Integer> storeHighestScoreWords = new HashMap<>();
+	public String findHighestScoreWordHelper(HashMap<String, Integer> recordWordsScore){
+		ArrayList<String> storeHighestScoreWords = new ArrayList<>();
 		//find those words with highest score
 //		int maxScore = 0;
 //		String maxWord = "^";
@@ -427,24 +428,25 @@ public abstract class TexasPlayer extends poker.Player {
 //			}
 //		}
 //		storeHighestScoreWords.put(maxWord, maxScore);
-
 		int maxScore = Collections.max(recordWordsScore.values());
 		//System.out.println("maxScore = "+maxScore);
 		for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
 			if (entry.getValue() == maxScore) {
-				storeHighestScoreWords.put(entry.getKey(), entry.getValue());
+				storeHighestScoreWords.add(entry.getKey());
+//				storeHighestScoreWords.put(entry.getKey(), entry.getValue());
 			}
 		}
 		//if there is only one word with highest score, return this word,
 		//otherwise, randomly choose one from those words with highest score
 		if(storeHighestScoreWords.size()==1){
-			return storeHighestScoreWords;
+			return storeHighestScoreWords.get(0);
 		}else {
-			List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
+			//List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
 			Random rand = new Random();
-			int randomIndex = rand.nextInt(keyList.size());
-			String randomKey = keyList.get(randomIndex);
-			return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
+			int randomIndex = rand.nextInt(storeHighestScoreWords.size());
+			//String randomKey = keyList.get(randomIndex);
+			//return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
+			return storeHighestScoreWords.get(randomIndex);
 		}
 	}
 

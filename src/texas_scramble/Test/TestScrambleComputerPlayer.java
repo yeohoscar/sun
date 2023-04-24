@@ -67,9 +67,11 @@ public class TestScrambleComputerPlayer {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters2 = {"A", "S", "S"};
         String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
+        String[] letters5 = {"A", "A", "E"};
         String[] letters4 = {"XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG"};
         String letters7 = "ZGHQJ";//these letters can not form any words
-        HashMap<String, Integer> maxScoreWord = player1.findHighestScoreWord(letters3, dict);
+//        HashMap<String, Integer> maxScoreWord = player1.findHighestScoreWord(letters5, dict);
+        String maxScoreWord = player1.findHighestScoreWord(letters5, dict);
         System.out.println("word with highest score : " + maxScoreWord);
 //        for(String letter: letters4){
 //            HashMap<String, Integer> maxScoreWord2 = player1.findHighestScoreWord(letter);
@@ -222,7 +224,8 @@ public class TestScrambleComputerPlayer {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         DictionaryTrie dict = FullDictionary.getFullDictionary();
         String[] letters1 = {"A", "A", "E", "E"};
-        List<String> result = dict.findAllWordsFormedByLetters(letters1);
+        String[] letters2 = {"E", "N", "O", "P", "G", "X", "Y"};
+        List<String> result = dict.findAllWordsFormedByLetters(letters2);
         for(String word: result){
             System.out.println(word);
         }
