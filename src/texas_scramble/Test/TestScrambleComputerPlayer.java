@@ -2,6 +2,7 @@ package texas_scramble.Test;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
+import texas_scramble.Dictionary.DictionaryTrie;
 import texas_scramble.Dictionary.FullDictionary;
 import texas_scramble.Player.ComputerScramblePlayer;
 
@@ -219,7 +220,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFindAllWordsFormedByLetters(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        DictionaryTrie dict = FullDictionary.getFullDictionary();
         String[] letters1 = {"A", "A", "E", "E"};
         List<String> result = dict.findAllWordsFormedByLetters(letters1);
         for(String word: result){
