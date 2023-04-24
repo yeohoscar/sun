@@ -2,20 +2,19 @@ package texas_scramble.Test;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
-import texas_scramble.Deck.DictionaryTrie;
+import texas_scramble.Dictionary.FullDictionary;
 import texas_scramble.Player.ComputerScramblePlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.System.exit;
 
 public class TestScrambleComputerPlayer {
     @Test
     public void testFindAllWordsWithBlank() {
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters7 = {"Z", "G", "H", " ", " "};
         String[] letters8 = {"Z", "G", "H", "Q", "J"};//these letters can not form any words
@@ -32,7 +31,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testFindAllWords() {
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters1 = {"e", "n", "o", "p", "g", "i", "a"};
         String[] letters2 = {"A", "S", "S"};
@@ -63,7 +62,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testFindHighestScoreWord() {
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters2 = {"A", "S", "S"};
         String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
@@ -113,7 +112,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testFlopRound() {
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
@@ -174,7 +173,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testTurnRound() {
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
@@ -223,7 +222,7 @@ public class TestScrambleComputerPlayer {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] communityLetters1 = {"A", "B", "C"};
         String[] communityLetters2 = {"Z", "G", "H"};
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
         int averageCommunityLettersScore=0;
         int totalNumber = 0;
         for(String word: dict.findAllWords(communityLetters2)){

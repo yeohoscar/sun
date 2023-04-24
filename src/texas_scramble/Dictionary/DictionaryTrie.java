@@ -1,4 +1,4 @@
-package texas_scramble.Deck;
+package texas_scramble.Dictionary;
 
 import texas.TexasPlayer;
 
@@ -14,13 +14,11 @@ import java.util.stream.Stream;
 import static java.lang.System.exit;
 
 public class DictionaryTrie {
-    private static DictionaryTrie cache = null;
-
     Node root;
 
-    private DictionaryTrie() {
+    public DictionaryTrie(String pathToDictionary) {
         root = new Node('^', false, new ArrayList<>());
-        createDictionary();
+        createDictionary(pathToDictionary);
     }
 //    /************* find all words contain community letters **************/
 //    public int calculateAverageScoreOfAllWordsContainCommunityLetters(String[] letters, TexasPlayer player){
@@ -241,17 +239,8 @@ public class DictionaryTrie {
 
 
 
-
-
-    public static synchronized DictionaryTrie getDictionary() {
-        if (cache == null) {
-            cache = new DictionaryTrie();
-        }
-        return cache;
-    }
-
-    private void createDictionary() {
-        try (Stream<String> stream = Files.lines(Paths.get("full_dict.txt"))) {
+    private void createDictionary(String pathToDictionary) {
+        try (Stream<String> stream = Files.lines(Paths.get(pathToDictionary))) {
             stream.forEach(this::add);
         } catch (IOException ex) {
             ex.printStackTrace();

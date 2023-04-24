@@ -1,6 +1,5 @@
 package texas_scramble.Player;
 
-import org.w3c.dom.Node;
 import poker.Card;
 import poker.DeckOfCards;
 import poker.PotOfMoney;
@@ -9,11 +8,11 @@ import texas.RoundController;
 import texas.Rounds;
 import texas.TexasComputerPlayer;
 import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Deck.DictionaryTrie;
+import texas_scramble.Dictionary.DictionaryTrie;
+import texas_scramble.Dictionary.FullDictionary;
 import texas_scramble.Deck.Tile;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static texas.Action.*;
 import static texas.Action.FOLD;
@@ -27,12 +26,33 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice	= new Random(System.currentTimeMillis());
     private DeckOfTiles deckOfTiles = new DeckOfTiles();
-    public ComputerScramblePlayer(String name, int money,int id) {
-        super(name, money,id);
+
+    private DictionaryTrie dict;
+
+    public ComputerScramblePlayer(String name, int money, int id) {
+        super(name, money, id);
+
+        dict = new DictionaryTrie("resources/hard.txt");
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
                 - VARIABILITY/2;
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
+    }
+
+    public ComputerScramblePlayer(String name, int money, int id, String pathToDictionary) {
+        super(name, money, id);
+
+        dict = new DictionaryTrie(pathToDictionary);
+
+        riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
+                - VARIABILITY/2;
+        // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
+    }
+
+    public ComputerScramblePlayer(String name, int money, int id, String pathToDictionary, int riskTolerance) {
+        super(name, money, id);
+        dict = new DictionaryTrie(pathToDictionary);
+        this.riskTolerance = riskTolerance;
     }
 
     //TODO: not done
@@ -164,7 +184,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //TODO: not done
     public int predicateBestWordAndRisk(Tile[] publicCards, Rounds currentRound){
         //TODO: have not combine community letters and letters on hand
-        DictionaryTrie dict = DictionaryTrie.getDictionary();
+        FullDictionary dict = FullDictionary.getFullDictionary();
 
         ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
         String[] lettersOnHand = letters.toArray(new String[0]);

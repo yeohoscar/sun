@@ -1,20 +1,47 @@
 package texas_scramble.Controller;
 
 import texas.MainController;
-import texas_hold_em.TexasController;
+import texas_hold_em.HumanTexasPlayer;
 import texas_scramble.Deck.*;
+import texas_scramble.Player.ComputerScramblePlayer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ScrambleController extends MainController {
     protected DeckOfTiles deck;
     @Override
     public void setUp(String[] names, int bank) {
-        super.setUp(names, bank);
+        texasPlayers = new ArrayList<>();
+        numPlayers = names.length;
+
+
+        for (int i = 0; i < numPlayers; i++) {
+            if (i == 0) {
+                texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank, i));
+            } else {
+                texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
+            }
+        }
         updatePlayerIDs();
         deck = new DeckOfTiles();
     }
+
+    private ComputerScramblePlayer getPresetComputerPlayer(String name, int bank, int id) {
+        ComputerScramblePlayer player;
+        switch (name) {
+            case "Tom" -> player = new ComputerScramblePlayer(name, bank, id, "resources/easy.txt", -40);
+            case "Dick" -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt", 50);
+            case "Harry" -> player = new ComputerScramblePlayer(name, bank, id, "resources/harder.txt", 5);
+            case "Jim" -> player = new ComputerScramblePlayer(name, bank, id, "resources/hard.txt", -15);
+            case "Dave" -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt", 30);
+            default -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt");
+        }
+        return player;
+    }
+
     //distribute new ids to remain players
     private void updatePlayerIDs() {
         for (int i = 0; i < texasPlayers.size(); i++) {
@@ -51,7 +78,17 @@ public class ScrambleController extends MainController {
                 numPlayers = scanner.nextInt();
 
                 if (numPlayers <= 10 && numPlayers >= 2) {
+                    Random rand = new Random();
+                    int j = 1;
+                    for (int i = 0; i < numPlayers; i++) {
+                        int idx = rand.nextInt() % (numPlayers - j) + j;
+                        String tmp = names[j];
+                        names[j] = names[idx];
+                        names[idx] = tmp;
+                        j++;
+                    }
                     playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+                    Arrays.stream(playerNames).forEach(System.out::println);
                 } else {
                     throw new IllegalArgumentException();
                 }

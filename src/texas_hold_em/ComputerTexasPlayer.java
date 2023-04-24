@@ -32,7 +32,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerTexasPlayer(String name, int money,int id) {
+    public ComputerTexasPlayer(String name, int money, int id) {
         super(name, money,id);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
