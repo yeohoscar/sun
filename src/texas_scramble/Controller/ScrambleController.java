@@ -72,23 +72,22 @@ public class ScrambleController extends MainController {
         String[] playerNames = names;
         int numPlayers = 0;
         // ask how many players in the game
-        while (!(numPlayers <= 10 && numPlayers >= 2)) {
-            System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
+        while (!(numPlayers <= 9 && numPlayers >= 1)) {
+            System.out.print("\nHow many players do you wish to play with? (Between 1 and 9 inclusive)  ");
             try {
                 numPlayers = scanner.nextInt();
 
-                if (numPlayers <= 10 && numPlayers >= 2) {
+                if (numPlayers <= 9 && numPlayers >= 1) {
                     Random rand = new Random();
                     int j = 1;
                     for (int i = 0; i < numPlayers; i++) {
-                        int idx = rand.nextInt() % (numPlayers - j) + j;
+                        int idx = rand.nextInt() % (numPlayers - i) + j;
                         String tmp = names[j];
                         names[j] = names[idx];
                         names[idx] = tmp;
                         j++;
                     }
                     playerNames = Arrays.copyOfRange(names, 0, numPlayers);
-                    Arrays.stream(playerNames).forEach(System.out::println);
                 } else {
                     throw new IllegalArgumentException();
                 }

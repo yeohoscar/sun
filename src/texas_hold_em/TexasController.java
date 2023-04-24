@@ -44,12 +44,12 @@ public class TexasController extends MainController {
         String[] playerNames = names;
         int numPlayers = 0;
 		// ask how many players in the game
-        while (!(numPlayers <= 10 && numPlayers >= 2)) {
-            System.out.print("\nHow many players do you wish to play with? (Between 2 and 10 inclusive)  ");
+        while (!(numPlayers <= 9 && numPlayers >= 1)) {
+            System.out.print("\nHow many players do you wish to play with? (Between 1 and 9 inclusive)  ");
             try {
                 numPlayers = scanner.nextInt();
 
-                if (numPlayers <= 10 && numPlayers >= 2) {
+                if (numPlayers <= 9 && numPlayers >= 1) {
                     playerNames = Arrays.copyOfRange(names, 0, numPlayers);
                 } else {
                     throw new IllegalArgumentException();
