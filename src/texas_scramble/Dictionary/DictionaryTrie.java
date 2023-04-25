@@ -278,7 +278,7 @@ public class DictionaryTrie {
         return root;
     }
 
-    private void add(String word) {
+    public void add(String word) {
         Node curr = root;
 
         for (char letter : word.toCharArray()) {

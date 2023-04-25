@@ -55,6 +55,14 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         this.riskTolerance = riskTolerance;
     }
 
+    public boolean knowsWord(String word) {
+        return dict.isValidWord(word);
+    }
+
+    public void learnWord(String word) {
+        dict.add(word);
+    }
+
     //TODO: not done
     public int getRiskTolerance() {
         int risk = 0;

@@ -8,6 +8,7 @@ import texas.TexasPlayer;
 import texas_hold_em.ComputerTexasPlayer;
 import texas_hold_em.PrintGame;
 import texas_scramble.Deck.*;
+import texas_scramble.Player.ComputerScramblePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,18 @@ public class RoundOfScramble extends RoundController {
     public void dealCommunityTiles(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
             communityTiles.add(deck.dealNext());
+        }
+    }
+
+    // TODO: ADD THIS TO AFTER SHOWDOWN
+    // Takes all the words submitted by users as input and adds into each computer players dictionary if it is not in theirs
+    private void updatePlayerDictionary(List<String> newWords) {
+        for (String word : newWords) {
+            for (int i = 1; i < roundPlayers.size(); i++) {
+                ComputerScramblePlayer csp = (ComputerScramblePlayer) roundPlayers.get(i);
+
+                if (csp.knowsWord(word)) csp.learnWord(word);
+            }
         }
     }
 }

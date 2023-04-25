@@ -123,6 +123,6 @@ public class DeckOfTiles implements Deck {
 
     @Override
     public Hand dealHand(int numCardsToBeDealt) {
-        return null;
+        return new ScrambleHand(this, numCardsToBeDealt);
     }
 }
