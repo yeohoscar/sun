@@ -8,6 +8,11 @@ public record Tile(String name, int value) implements HandElement {
         if (name.length() == 0) {
             return "[BLANK]";
         }
-        return "[" + name + "]";
+//        return "[" + name + "]";
+        return name;
+    }
+    @Override
+    public int getValue(){
+        return this.value;
     }
 }

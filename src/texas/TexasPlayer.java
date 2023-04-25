@@ -23,6 +23,7 @@ public abstract class TexasPlayer extends poker.Player {
 
 	protected boolean dealer = false;
 
+	private boolean onTurn = false;
 	public DeckOfCards deckOfCards;
 	private DeckOfTiles deckOfTiles = new DeckOfTiles();
 	//--------------------------------------------------------------------//
@@ -37,6 +38,7 @@ public abstract class TexasPlayer extends poker.Player {
 		allIn = false;
 		hasSidePot =false;
 	}
+
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
@@ -78,7 +80,12 @@ public abstract class TexasPlayer extends poker.Player {
 	// Accessors
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-
+	public boolean isOnTurn() {
+		return onTurn;
+	}
+	public void setOnTurn(boolean onTurn) {
+		this.onTurn = onTurn;
+	}
 	public Hand getHand() {
 		return hand;
 	}

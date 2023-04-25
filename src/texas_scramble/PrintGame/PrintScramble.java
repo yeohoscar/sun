@@ -1,18 +1,19 @@
-package texas_hold_em;
+package texas_scramble.PrintGame;
 
 import poker.Card;
 import poker.DeckOfCards;
 import poker.PotOfMoney;
-import texas.Rounds;
 import texas.TexasPlayer;
 import texas.TexasPrintGame;
+import texas_hold_em.HumanTexasPlayer;
+import texas_scramble.Deck.DeckOfTiles;
+import texas_scramble.Deck.Tile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class PrintGame extends TexasPrintGame {
-    //    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
-    //    String[] suits = {"♠", "♥", "♦", "♣"}; -> Issues with encoding with certain terminals
+public class PrintScramble extends TexasPrintGame {
     String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
     private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private String[] cardEdge = {"╭────╮", "╰────╯"};
@@ -23,10 +24,10 @@ public class PrintGame extends TexasPrintGame {
     private DeckOfCards deck;
     private ArrayList<PotOfMoney> pots = new ArrayList<>();
 
-    private List<Card> communityCards;
+    private List<Tile> communityCards;
 
 
-    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
+    public PrintScramble(ArrayList<TexasPlayer> texasPlayers, DeckOfTiles tiles, ArrayList<PotOfMoney> pots, List<Tile> communityCards) {
         this.texasPlayers = texasPlayers;
         this.deck = deck;
         this.pots = pots;
@@ -121,25 +122,34 @@ public class PrintGame extends TexasPrintGame {
                         sb.append(cardEdge[1]).append("  ").append(cardEdge[1]).append(" │ ");
                     } else {
                         if (showDown) {
-                            index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-                            index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
+//                            index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
+//                            index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                             if (i == 1) {
-                                String tmp = String.format("%2s", ranks[index1[1]]);
-                                String tmp1 = String.format("%2s", ranks[index2[1]]);
-                                sb.append("│").append(tmp).append("  │").append("  ").append("│").append(tmp1).append("  │").append(" │ ");
+                                String letter1 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[0]).toString());
+                                String letter2 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[1]).toString());
+//                                String tmp = String.format("%2s", ranks[index1[1]]);
+//                                String tmp1 = String.format("%2s", ranks[index2[1]]);
+                                sb.append("│").append(letter1).append("  │").append("  ").append("│").append(letter2).append("  │").append(" │ ");
                             } else if (i == 2) {
-                                sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
+                                int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
+                                int value2 = texasPlayers.get(j).getHand().getHand()[1].getValue();
+                                sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
                             }
                         } else {
-                            if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
-                                index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-                                index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
+                            //if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
+                            if (texasPlayers.get(j).isOnTurn()) {
+//                                index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
+//                                index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {
-                                    String tmp = String.format("%2s", ranks[index1[1]]);
-                                    String tmp1 = String.format("%2s", ranks[index2[1]]);
-                                    sb.append("│").append(tmp).append("  │").append("  ").append("│").append(tmp1).append("  │").append(" │ ");
+                                    String letter1 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[0]).toString());
+                                    String letter2 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[1]).toString());
+//                                    String tmp = String.format("%2s", ranks[index1[1]]);
+//                                    String tmp1 = String.format("%2s", ranks[index2[1]]);
+                                    sb.append("│").append(letter1).append("  │").append("  ").append("│").append(letter2).append("  │").append(" │ ");
                                 } else if (i == 2) {
-                                    sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
+                                    int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
+                                    int value2 = texasPlayers.get(j).getHand().getHand()[1].getValue();
+                                    sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
                                 }
                             } else {
                                 sb.append("│    │").append("  ").append("│    │").append(" │ ");
@@ -254,66 +264,66 @@ public class PrintGame extends TexasPrintGame {
         }
         System.out.println("\n");
     }
-
-    /************************ this method will return the index of suit and rank of one card in suits[] and ranks[] *****************************/
-    public int[] getIndex(Card card, String[] suits, String[] ranks) {
-        int[] result = new int[2];
-        int suitIndex;
-        int rankIndex;
-        switch (card.getSuit()) {
-            case "hearts" -> {
-                suitIndex = 0;
-            }
-            case "diamonds" -> {
-                suitIndex = 1;
-            }
-            case "clubs" -> {
-                suitIndex = 2;
-            }
-            default -> {
-                suitIndex = 3;
-            }
-        }
-        if (card.isAce()) {
-            rankIndex = 0;
-        } else if (card.isJack()) {
-            rankIndex = 10;
-        } else if (card.isQueen()) {
-            rankIndex = 11;
-        } else if (card.isKing()) {
-            rankIndex = 12;
-        } else {
-            rankIndex = card.getRank() - 1;
-        }
-        result[0] = suitIndex;
-        result[1] = rankIndex;
-        return result;
-    }
+//    /************************ this method will return the index of suit and rank of one card in suits[] and ranks[] *****************************/
+//    public int[] getIndex(Tile card, String[] suits, String[] ranks) {
+//        int[] result = new int[2];
+//        int suitIndex;
+//        int rankIndex;
+//        switch (card.getSuit()) {
+//            case "hearts" -> {
+//                suitIndex = 0;
+//            }
+//            case "diamonds" -> {
+//                suitIndex = 1;
+//            }
+//            case "clubs" -> {
+//                suitIndex = 2;
+//            }
+//            default -> {
+//                suitIndex = 3;
+//            }
+//        }
+//        if (card.isAce()) {
+//            rankIndex = 0;
+//        } else if (card.isJack()) {
+//            rankIndex = 10;
+//        } else if (card.isQueen()) {
+//            rankIndex = 11;
+//        } else if (card.isKing()) {
+//            rankIndex = 12;
+//        } else {
+//            rankIndex = card.getRank() - 1;
+//        }
+//        result[0] = suitIndex;
+//        result[1] = rankIndex;
+//        return result;
+//    }
 
     /************************ this method will print all public cards on game table *****************************/
-    public void printPublicCard(List<Card> communityCards) {
+    public void printPublicCard(List<Tile> communityCards) {
         StringBuilder sb = new StringBuilder();
         int suitIndex;
         int rankIndex;
         for (int j = 0; j <= cardHeight; j++) {
             for (int i = 0; i < communityCards.size(); i++) {
-                int[] index = getIndex(communityCards.get(i), suits, ranks);
-                suitIndex = index[0];
-                rankIndex = index[1];
-
+//                int[] index = getIndex(communityCards.get(i), suits, ranks);
+//                suitIndex = index[0];
+//                rankIndex = index[1];
+                String letter1 = String.format("%2s", communityCards.get(i).toString());
+                int value1 = communityCards.get(i).getValue();
                 switch (j) {
                     case 0:
                         sb.append(cardEdge[0]).append("  ");
                         break;
                     case 1:
-                        String tmp = String.format("%2s", ranks[rankIndex]);
+                        String tmp = String.format("%2s", letter1);
                         sb.append("│").append(tmp).append("  │").append("  ");
                         break;
                     case cardHeight:
                         sb.append(cardEdge[cardEdge.length - 1]).append("  ");
                         break;
                     default:
-                        sb.append("│   ").append(suits[suitIndex]).append("│").append("  ");
+                        sb.append("│   ").append(value1).append("│").append("  ");
                         break;
                 }
             }
@@ -321,5 +331,4 @@ public class PrintGame extends TexasPrintGame {
         }
         System.out.print(sb);
     }
-
 }
