@@ -63,39 +63,7 @@ public class TestScrambleComputerPlayer {
 //        }
     }
 
-//    @Test
-//    public void testFindAllCombination() {
-//        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-//        //test when there is only one unknown letter
-//        String[] playerLetters = {"A", "B"};
-//        //ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
-////        for(String re: result){
-////            System.out.println(re);
-////        }
-//
-//
-//        //test when there are two unknown letters
-//        String[] playerLetters1 = {"A", "B"};
-//        //ArrayList<String> result1 = player1.findAllCombination(playerLetters1, 2);
-//        /*for(String re: result1){
-//            System.out.println(re);
-//        }*/
-//
-//        //test when there are two unknown letters which are blanks
-//        String[] playerLetters3 = {"Z", "G", "H", " ", " "};
-//        String[] playerLetters2 = {"Z", "G", "H"};
-//        ArrayList<String> result2 = player1.findAllCombination(playerLetters3, 2);
-//        for (String re : result2) {
-//            if (re.length() == 7) {
-//                System.out.println("length = " + re.length());
-//                System.out.println(re);
-//            } else {
-//                exit(0);
-//            }
-//        }
-//        System.out.println("Size = " + result2.size());
-//
-//    }
+
 
     @Test
     public void testFlopRound() {
@@ -258,3 +226,36 @@ public class TestScrambleComputerPlayer {
         System.out.println(highestWords);
     }*/
 
+//    @Test
+//    public void testFindAllCombination() {
+//        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+//        //test when there is only one unknown letter
+//        String[] playerLetters = {"A", "B"};
+//        //ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
+////        for(String re: result){
+////            System.out.println(re);
+////        }
+//
+//
+//        //test when there are two unknown letters
+//        String[] playerLetters1 = {"A", "B"};
+//        //ArrayList<String> result1 = player1.findAllCombination(playerLetters1, 2);
+//        /*for(String re: result1){
+//            System.out.println(re);
+//        }*/
+//
+//        //test when there are two unknown letters which are blanks
+//        String[] playerLetters3 = {"Z", "G", "H", " ", " "};
+//        String[] playerLetters2 = {"Z", "G", "H"};
+//        ArrayList<String> result2 = player1.findAllCombination(playerLetters3, 2);
+//        for (String re : result2) {
+//            if (re.length() == 7) {
+//                System.out.println("length = " + re.length());
+//                System.out.println(re);
+//            } else {
+//                exit(0);
+//            }
+//        }
+//        System.out.println("Size = " + result2.size());
+//
+//    }
