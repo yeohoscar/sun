@@ -1,12 +1,8 @@
 package texas_scramble.Controller;
 
-import poker.Card;
-import poker.DeckOfCards;
 import texas.RoundController;
-import texas.Rounds;
 import texas.TexasPlayer;
 import texas_hold_em.ComputerTexasPlayer;
-import texas_hold_em.PrintGame;
 import texas_scramble.Deck.*;
 import texas_scramble.Player.ComputerScramblePlayer;
 
@@ -31,7 +27,7 @@ public class RoundOfScramble extends RoundController {
     private void initComputerPlayerWithCommunityCards(List<Tile> communityTiles) {
         for (TexasPlayer player : roundPlayers) {
             if (player instanceof ComputerTexasPlayer) {
-                ((ComputerTexasPlayer) player).setCommunityCards(communityCards);
+                ((ComputerTexasPlayer) player).setCommunityElements(communityTiles);
             }
         }
     }

@@ -11,6 +11,7 @@ package texas_hold_em;
 
 import poker.*;
 import texas.*;
+import texas_scramble.Hand.HandElement;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -24,7 +25,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
 
     private Random dice	= new Random(System.currentTimeMillis());
 
-    private List<Card> communityCards;
+    private List<? extends HandElement> communityElements;
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
@@ -59,7 +60,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     }
 
     public Rounds getCurrentRound() {
-            switch (communityCards.size()) {
+            switch (communityElements.size()) {
                 case 3 -> {
                     return Rounds.FLOP;
                 }
@@ -90,8 +91,8 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     //--------------------------------------------------------------------//
 
 
-    public void setCommunityCards(List<Card> communityCards) {
-        this.communityCards = communityCards;
+    public void setCommunityElements(List<? extends HandElement> communityElements) {
+        this.communityElements = communityElements;
     }
 
 
@@ -272,7 +273,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     /************************ especially in flop and turn round, odds of all hand type will be calculated and select one from them *****************************/
     public int predicateRiskTolerance() {
         DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = communityCards.toArray(new Card[communityCards.size()]);
+        Card[] publicCards = communityElements.toArray(new Card[communityElements.size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {

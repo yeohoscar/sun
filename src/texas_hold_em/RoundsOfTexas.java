@@ -27,7 +27,7 @@ public class RoundsOfTexas extends RoundController {
     private void initComputerPlayerWithCommunityCards(List<Card> communityCards) {
         for (TexasPlayer player : roundPlayers) {
             if (player instanceof ComputerTexasPlayer) {
-                ((ComputerTexasPlayer) player).setCommunityCards(communityCards);
+                ((ComputerTexasPlayer) player).setCommunityElements(communityCards);
             }
         }
     }
