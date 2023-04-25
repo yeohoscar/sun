@@ -1,9 +1,7 @@
-package texas_hold_em;
+package texas.hold_em;
 
 import poker.Card;
-import poker.DeckOfCards;
 import poker.PotOfMoney;
-import texas.Rounds;
 import texas.TexasPlayer;
 import texas.TexasPrintGame;
 

@@ -1,6 +1,6 @@
-package texas_scramble.Deck;
+package texas.scramble.Deck;
 
-import texas_scramble.Hand.HandElement;
+import texas.scramble.Hand.HandElement;
 
 public record Tile(String name, int value) implements HandElement {
     @Override

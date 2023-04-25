@@ -1,6 +1,6 @@
-package texas_hold_em;
+package texas;
 
-import texas_scramble.Hand.HandElement;
+import texas.scramble.Hand.HandElement;
 
 // Hand interface for use with polymorphism
 

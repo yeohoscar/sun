@@ -1,16 +1,13 @@
-package texas_scramble.Test;
+package texas.scramble.Test;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
-import texas_scramble.Dictionary.DictionaryTrie;
-import texas_scramble.Dictionary.FullDictionary;
-import texas_scramble.Player.ComputerScramblePlayer;
+import texas.scramble.Dictionary.DictionaryTrie;
+import texas.scramble.Dictionary.FullDictionary;
+import texas.scramble.Player.ComputerScramblePlayer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static java.lang.System.exit;
 
 public class TestScrambleComputerPlayer {
 

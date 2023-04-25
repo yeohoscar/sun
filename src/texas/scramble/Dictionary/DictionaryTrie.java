@@ -1,6 +1,4 @@
-package texas_scramble.Dictionary;
-
-import texas.TexasPlayer;
+package texas.scramble.Dictionary;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import static java.lang.System.exit;
 
 public class DictionaryTrie {
     Node root;

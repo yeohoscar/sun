@@ -1,11 +1,8 @@
-package texas_scramble.Deck;
+package texas.scramble.Deck;
 
-import poker.Card;
-import poker.DeckOfCards;
-import poker.FaceCard;
-import texas_hold_em.Deck;
-import texas_hold_em.Hand;
-import texas_scramble.Hand.ScrambleHand;
+import texas.Deck;
+import texas.Hand;
+import texas.scramble.Hand.ScrambleHand;
 
 import java.util.HashMap;
 import java.util.Random;

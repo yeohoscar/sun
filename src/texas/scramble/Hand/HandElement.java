@@ -1,4 +1,4 @@
-package texas_scramble.Hand;
+package texas.scramble.Hand;
 
 public interface HandElement {
     int getValue();

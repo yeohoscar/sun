@@ -1,9 +1,6 @@
 package texas;
 
-import poker.Card;
-import poker.DeckOfCards;
-import poker.PotOfMoney;
-import texas_scramble.Deck.Tile;
+import texas.scramble.Deck.Tile;
 
 import java.util.List;
 

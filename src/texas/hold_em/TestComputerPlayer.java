@@ -1,4 +1,4 @@
-package texas_hold_em;
+package texas.hold_em;
 
 import org.junit.Test;
 import poker.Card;

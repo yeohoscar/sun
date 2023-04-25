@@ -1,6 +1,6 @@
-package texas_scramble.Player;
+package texas.scramble.Player;
 
-import texas_hold_em.HumanTexasPlayer;
+import texas.hold_em.HumanTexasPlayer;
 
 import java.util.Scanner;
 

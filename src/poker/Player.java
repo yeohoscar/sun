@@ -9,8 +9,8 @@ package poker;
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import texas_hold_em.Deck;
-import texas_hold_em.Hand;
+import texas.Deck;
+import texas.Hand;
 
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her

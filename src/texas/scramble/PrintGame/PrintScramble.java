@@ -1,16 +1,11 @@
-package texas_scramble.PrintGame;
+package texas.scramble.PrintGame;
 
-import poker.Card;
-import poker.DeckOfCards;
 import poker.PotOfMoney;
 import texas.TexasPlayer;
 import texas.TexasPrintGame;
-import texas_hold_em.HumanTexasPlayer;
-import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Deck.Tile;
+import texas.scramble.Deck.Tile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PrintScramble extends TexasPrintGame {

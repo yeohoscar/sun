@@ -1,4 +1,4 @@
-package texas_scramble.Player;
+package texas.scramble.Player;
 
 import poker.Card;
 import poker.DeckOfCards;
@@ -7,10 +7,10 @@ import texas.Action;
 import texas.RoundController;
 import texas.Rounds;
 import texas.TexasComputerPlayer;
-import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Dictionary.DictionaryTrie;
-import texas_scramble.Dictionary.FullDictionary;
-import texas_scramble.Deck.Tile;
+import texas.scramble.Deck.DeckOfTiles;
+import texas.scramble.Dictionary.DictionaryTrie;
+import texas.scramble.Dictionary.FullDictionary;
+import texas.scramble.Deck.Tile;
 
 import java.util.*;
 

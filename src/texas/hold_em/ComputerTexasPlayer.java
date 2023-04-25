@@ -1,5 +1,5 @@
 
-package texas_hold_em;
+package texas.hold_em;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
@@ -11,7 +11,7 @@ package texas_hold_em;
 
 import poker.*;
 import texas.*;
-import texas_scramble.Hand.HandElement;
+import texas.scramble.Hand.HandElement;
 
 import java.lang.reflect.Method;
 import java.util.*;

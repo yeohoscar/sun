@@ -1,8 +1,8 @@
-package texas_scramble.Hand;
+package texas.scramble.Hand;
 
-import texas_hold_em.Deck;
-import texas_hold_em.Hand;
-import texas_scramble.Deck.Tile;
+import texas.Deck;
+import texas.Hand;
+import texas.scramble.Deck.Tile;
 
 import java.util.Arrays;
 

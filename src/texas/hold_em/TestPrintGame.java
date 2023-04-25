@@ -1,8 +1,9 @@
-package texas_hold_em;
+package texas.hold_em;
 
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
 import poker.*;
+import texas.Hand;
 import texas.TexasPlayer;
 
 import java.util.ArrayList;

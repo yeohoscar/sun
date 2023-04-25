@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: texas_hold_em.TexasController
+Main-Class: texas.hold_em.TexasController
 

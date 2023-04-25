@@ -1,14 +1,14 @@
-package texas_scramble.Test;
+package texas.scramble.Test;
 
 import org.junit.jupiter.api.Test;
 import poker.PotOfMoney;
 import texas.TexasPlayer;
-import texas_hold_em.ComputerTexasPlayer;
-import texas_hold_em.Hand;
-import texas_hold_em.TexasController;
-import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Deck.Tile;
-import texas_scramble.PrintGame.PrintScramble;
+import texas.hold_em.ComputerTexasPlayer;
+import texas.Hand;
+import texas.hold_em.TexasController;
+import texas.scramble.Deck.DeckOfTiles;
+import texas.scramble.Deck.Tile;
+import texas.scramble.PrintGame.PrintScramble;
 
 import java.util.ArrayList;
 import java.util.List;

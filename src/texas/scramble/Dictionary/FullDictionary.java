@@ -1,4 +1,4 @@
-package texas_scramble.Dictionary;
+package texas.scramble.Dictionary;
 
 public class FullDictionary extends DictionaryTrie {
     private static final String pathToFullDictionary = "resources/full_dict.txt";

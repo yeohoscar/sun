@@ -1,10 +1,10 @@
-package texas_scramble.Controller;
+package texas.scramble.Controller;
 
 import texas.RoundController;
 import texas.TexasPlayer;
-import texas_hold_em.ComputerTexasPlayer;
-import texas_scramble.Deck.*;
-import texas_scramble.Player.ComputerScramblePlayer;
+import texas.hold_em.ComputerTexasPlayer;
+import texas.scramble.Deck.*;
+import texas.scramble.Player.ComputerScramblePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
