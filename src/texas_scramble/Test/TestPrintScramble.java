@@ -1,14 +1,10 @@
 package texas_scramble.Test;
 
 import org.junit.jupiter.api.Test;
-import poker.Card;
-import poker.DeckOfCards;
-import poker.Player;
 import poker.PotOfMoney;
 import texas.TexasPlayer;
 import texas_hold_em.ComputerTexasPlayer;
 import texas_hold_em.Hand;
-import texas_hold_em.PrintGame;
 import texas_hold_em.TexasController;
 import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.Tile;
@@ -42,7 +38,7 @@ public class TestPrintScramble {
 
         ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
 
-        PrintScramble printPublic = new PrintScramble(texasPlayers, Tiles, pots, cards);
+        PrintScramble printPublic = new PrintScramble(texasPlayers, pots, cards);
         printPublic.cardPrinter(false);
     }
 }

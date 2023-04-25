@@ -42,7 +42,7 @@ public abstract class RoundController {
             playersID.add(player.getId());
         }
         pots.get(0).setPlayerIds(playersID);
-        this.printGame = new PrintGame(roundPlayers, deck, pots, communityCards);
+        this.printGame = new PrintGame(roundPlayers, pots, communityCards);
         this.communityCards = communityCards;
     }
 
@@ -344,7 +344,4 @@ public abstract class RoundController {
             e.printStackTrace();
         }
     }
-
-
-
 }

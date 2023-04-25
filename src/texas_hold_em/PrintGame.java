@@ -13,22 +13,21 @@ import java.util.List;
 public class PrintGame extends TexasPrintGame {
     //    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
     //    String[] suits = {"♠", "♥", "♦", "♣"}; -> Issues with encoding with certain terminals
-    String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
-    private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private String[] cardEdge = {"╭────╮", "╰────╯"};
+    private final String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
+    private final String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private final String[] cardEdge = {"╭────╮", "╰────╯"};
 
     final int cardHeight = 3; //counting from 0
 
     private ArrayList<TexasPlayer> texasPlayers;
-    private DeckOfCards deck;
+
     private ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private List<Card> communityCards;
 
 
-    public PrintGame(ArrayList<TexasPlayer> texasPlayers, DeckOfCards deck, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
+    public PrintGame(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
         this.texasPlayers = texasPlayers;
-        this.deck = deck;
         this.pots = pots;
         this.communityCards = communityCards;
     }

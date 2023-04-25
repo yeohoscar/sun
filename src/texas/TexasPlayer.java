@@ -199,50 +199,6 @@ public abstract class TexasPlayer extends poker.Player {
 		currentBestHand = bestHand;
 	}
 
-	public void findBestHand(Tile[] publicCards, DeckOfCards deck) {
-		int aLen = hand.getHand().length;
-		int bLen = publicCards.length;
-
-		Tile[] result = new Tile[aLen + bLen];
-		System.arraycopy((Tile[])hand.getHand(), 0, result, 0, aLen);
-		System.arraycopy(publicCards, 0, result, aLen, bLen);
-
-		List<Hand> hands = foo(result);
-
-		Hand bestHand = hands.get(0);
-		for (Hand hand : hands) {
-			if (bestHand.getValue() < hand.getValue()) {
-				bestHand = hand;
-			}
-		}
-
-		currentBestHand = bestHand;
-	}
-
-	private List<Hand> foo(Tile[] input) {
-		if (input == null) {
-			return null;
-		}
-		if (input.length == 1) {
-			return null;
-		}
-
-		List<Hand> hands = new ArrayList<>();
-		for (int i = 0; i < input.length; i++) {
-			Tile tmp = input[i];
-			Tile[] before = Arrays.copyOfRange(input, 0, i);
-			Tile[] after = Arrays.copyOfRange(input, i + 1, input.length);
-
-			int aLen = before.length;
-			int bLen = after.length;
-
-			Tile[] combined = new Tile[aLen + bLen];
-			System.arraycopy(before, 0, combined, 0, aLen);
-			System.arraycopy(after, 0, combined, aLen, bLen);
-		}
-		return hands;
-	}
-
 	// Utility recursive function for generating all combinations of cards and adding to list
 
 	private void combinationUtil(Card[] arr, Card[] data, int start, int end, int index, int r, List<Hand> hands, DeckOfCards deck) {

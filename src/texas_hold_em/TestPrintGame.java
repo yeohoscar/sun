@@ -56,7 +56,7 @@ public class TestPrintGame {
 
         ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
 
-        PrintGame printPublic = new PrintGame(texasPlayers, deck, pots, cards);
+        PrintGame printPublic = new PrintGame(texasPlayers, pots, cards);
         printPublic.cardPrinter(false);
 
     }

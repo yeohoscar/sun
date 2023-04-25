@@ -14,22 +14,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PrintScramble extends TexasPrintGame {
-    String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
-    private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private String[] cardEdge = {"╭────╮", "╰────╯"};
+    private final String[] cardEdge = {"╭────╮", "╰────╯"};
 
     final int cardHeight = 3; //counting from 0
 
     private ArrayList<TexasPlayer> texasPlayers;
-    private DeckOfCards deck;
-    private ArrayList<PotOfMoney> pots = new ArrayList<>();
+
+    private ArrayList<PotOfMoney> pots;
 
     private List<Tile> communityCards;
 
 
-    public PrintScramble(ArrayList<TexasPlayer> texasPlayers, DeckOfTiles tiles, ArrayList<PotOfMoney> pots, List<Tile> communityCards) {
+    public PrintScramble(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Tile> communityCards) {
         this.texasPlayers = texasPlayers;
-        this.deck = deck;
         this.pots = pots;
         this.communityCards = communityCards;
     }
