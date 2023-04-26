@@ -115,7 +115,7 @@ public class ScrambleController extends MainController {
                 if (numPlayers <= 9 && numPlayers >= 1) {
                     Random rand = new Random();
                     int j = 1;
-                    for (int i = 0; i < numPlayers; i++) {
+                    for (int i = 1; i < numPlayers; i++) {
                         int idx = rand.nextInt() % (numPlayers - i) + j;
                         String tmp = names[j];
                         names[j] = names[idx];

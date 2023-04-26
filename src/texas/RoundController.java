@@ -45,7 +45,7 @@ public abstract class RoundController {
         }
         pots.get(0).setPlayerIds(playersID);
 
-        //this.printGame = new PrintGame(roundPlayers, (DeckOfCards) deck, pots, communityCards);
+        this.printGame = new PrintGame(roundPlayers, pots, communityCards);
         this.communityCards =  new ArrayList<>();
 
     }

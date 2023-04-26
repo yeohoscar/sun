@@ -14,9 +14,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer{
     public TexasComputerPlayer(String name, int money, int id) {
         super(name, money, id);
     }
-//    public void setCommunityCards(List<Tile> communityCards) {
-//        this.communityCards = communityCards;
-//    }
+
     public List<Card> getCommunityCards(){
         return this.communityCards;
     }
@@ -29,7 +27,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer{
 
     public Rounds getCurrentRound() {
         int size;
-        if(communityCards.isEmpty()){
+        if(communityCards==null){
             size=communityTiles.size();
         }else {
             size=communityCards.size();
