@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 import static texas.Action.*;
 
-public class HumanTexasPlayer extends TexasPlayer {
+public class TexasHumanPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public HumanTexasPlayer(String name, int money,int id) {
+	public TexasHumanPlayer(String name, int money, int id) {
 		super(name, money, id);
 	}
 

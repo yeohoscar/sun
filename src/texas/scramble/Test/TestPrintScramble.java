@@ -3,7 +3,7 @@ package texas.scramble.Test;
 import org.junit.jupiter.api.Test;
 import poker.PotOfMoney;
 import texas.TexasPlayer;
-import texas.hold_em.ComputerTexasPlayer;
+import texas.hold_em.HoldEmComputerPlayer;
 import texas.Hand;
 import texas.hold_em.TexasController;
 import texas.scramble.Deck.DeckOfTiles;
@@ -36,7 +36,7 @@ public class TestPrintScramble {
         communityCards=Tiles.dealHand(4);
         List<Tile> cards = List.of((Tile[]) communityCards.getHand());
 
-        ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
+        HoldEmComputerPlayer player=  new HoldEmComputerPlayer("ad", 0, 0);
 
         PrintScramble printPublic = new PrintScramble(texasPlayers, pots, cards);
         printPublic.cardPrinter(false);

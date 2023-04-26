@@ -19,7 +19,7 @@ import java.util.*;
 
 import static texas.Action.*;
 
-public class ComputerTexasPlayer extends TexasComputerPlayer {
+public class HoldEmComputerPlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
@@ -36,7 +36,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
 
-    public ComputerTexasPlayer(String name, int money, int id) {
+    public HoldEmComputerPlayer(String name, int money, int id) {
         super(name, money,id);
 
         riskTolerance = Math.abs(dice.nextInt())%VARIABILITY
@@ -356,7 +356,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
 
         String currentHandType = this.getCurrentBestHand().getClass().getSimpleName();
         Map<String, Integer> predictedHandType = new HashMap<>();
-        Method[] preds = ComputerTexasPlayer.class.getDeclaredMethods();
+        Method[] preds = HoldEmComputerPlayer.class.getDeclaredMethods();
 
         for (Method pred : preds) {
             try {

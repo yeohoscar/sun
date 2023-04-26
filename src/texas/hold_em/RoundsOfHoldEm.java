@@ -13,10 +13,10 @@ import java.util.*;
 // A RoundOfPoker is a single round/deal in a game
 // A PokerGame is a sequence of RoundOfPoker's
 
-public class RoundsOfTexas extends RoundController {
+public class RoundsOfHoldEm extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
 
-    public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
+    public RoundsOfHoldEm(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
         //this.printGame = new PrintGame(texasPlayers, deck, pot);
@@ -26,8 +26,8 @@ public class RoundsOfTexas extends RoundController {
 
     private void initComputerPlayerWithCommunityCards(List<Card> communityCards) {
         for (TexasPlayer player : roundPlayers) {
-            if (player instanceof ComputerTexasPlayer) {
-                ((ComputerTexasPlayer) player).setCommunityElements(communityCards);
+            if (player instanceof HoldEmComputerPlayer) {
+                ((HoldEmComputerPlayer) player).setCommunityElements(communityCards);
             }
         }
     }

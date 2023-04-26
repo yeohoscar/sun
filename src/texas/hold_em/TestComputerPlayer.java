@@ -19,7 +19,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        ComputerTexasPlayer RoyalStraightFlush = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer RoyalStraightFlush = new HoldEmComputerPlayer("Tom", 50, 0);
         int oddsOfRoyalStraightFlush = RoyalStraightFlush.oddsOfRoyalFlush(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfRoyalStraightFlush);
         System.out.println("Odds of RoyalStraightFlush: "+oddsOfRoyalStraightFlush);
@@ -119,7 +119,7 @@ public class TestComputerPlayer {
                 new NumberCard("Ten", "diamonds", 10),
                 new NumberCard("Jack", "hearts", 11),
                 new NumberCard("Ace", "spades", 1, 14)};
-        ComputerTexasPlayer Straight = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer Straight = new HoldEmComputerPlayer("Tom", 50, 0);
         int oddsOfStraightFlush = Straight.oddsOfStraightFlush(allCards1, Rounds.FLOP);
         //assertEquals(0, oddsOfStraight);
         System.out.println("Odds of StraightFlush when both of Straight and Flush is greater than 0 and less than 100: "+oddsOfStraightFlush);
@@ -158,7 +158,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        ComputerTexasPlayer FourOfAKind = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer FourOfAKind = new HoldEmComputerPlayer("Tom", 50, 0);
         FourOfAKind.sortCards(allCards1);
         int oddsOfFourOfAKind = FourOfAKind.oddsOfFourOfAKind(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfFourOfAKind);
@@ -239,7 +239,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        ComputerTexasPlayer FullHouse = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer FullHouse = new HoldEmComputerPlayer("Tom", 50, 0);
         FullHouse.sortCards(allCards1);
         int oddsOfFullHouse = FullHouse.oddsOfFullHouse(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfFullHouse);
@@ -320,7 +320,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "spades", 5)};
-        ComputerTexasPlayer Flush = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer Flush = new HoldEmComputerPlayer("Tom", 50, 0);
         int oddsOfFlush = Flush.oddsOfFlush(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfFlush);
         System.out.println("Odds of Flush when count is 2: "+oddsOfFlush);
@@ -406,7 +406,7 @@ public class TestComputerPlayer {
                 new NumberCard("Ten", "hearts", 10),
                 new NumberCard("Jack", "hearts", 11),
                 new NumberCard("Ace", "spades", 1, 14)};
-        ComputerTexasPlayer Straight = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer Straight = new HoldEmComputerPlayer("Tom", 50, 0);
         int oddsOfStraight = Straight.oddsOfStraight(allCards1, Rounds.FLOP);
         //assertEquals(0, oddsOfStraight);
         System.out.println("Odds of Straight when Ace is at end: "+oddsOfStraight);
@@ -537,7 +537,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        ComputerTexasPlayer ThreeOfAKind = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer ThreeOfAKind = new HoldEmComputerPlayer("Tom", 50, 0);
         ThreeOfAKind.sortCards(allCards1);
         int oddsOfThreeOfAKind = ThreeOfAKind.oddsOfThreeOfAKind(allCards1, Rounds.FLOP);
         assertEquals(23, oddsOfThreeOfAKind);
@@ -618,7 +618,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Three", "hearts", 3)};
-        ComputerTexasPlayer TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards1);
         int oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfTwoPair);
@@ -631,7 +631,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards2);
         oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards2, Rounds.FLOP);
         assertEquals(23, oddsOfTwoPair);
@@ -644,7 +644,7 @@ public class TestComputerPlayer {
                 new NumberCard("Deuce", "hearts", 2),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Five", "hearts", 5)};
-        TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards3);
         oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards3, Rounds.FLOP);
         assertEquals(17, oddsOfTwoPair);
@@ -657,7 +657,7 @@ public class TestComputerPlayer {
                 new NumberCard("Deuce", "hearts", 2),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Four", "hearts", 4)};
-        TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards4);
         oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards4, Rounds.FLOP);
         assertEquals(100, oddsOfTwoPair);
@@ -671,7 +671,7 @@ public class TestComputerPlayer {
                 new NumberCard("Deuce", "hearts", 2),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Four", "hearts", 4)};
-        TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards5);
         oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards5, Rounds.TURN);
         assertEquals(100, oddsOfTwoPair);
@@ -683,7 +683,7 @@ public class TestComputerPlayer {
                 new NumberCard("Deuce", "hearts", 2),
                 new NumberCard("Four", "hearts", 4),
                 new NumberCard("Four", "hearts", 4)};
-        TwoPair = new ComputerTexasPlayer("Tom", 50, 0);
+        TwoPair = new HoldEmComputerPlayer("Tom", 50, 0);
         TwoPair.sortCards(allCards6);
         oddsOfTwoPair = TwoPair.oddsOfTwoPair(allCards6, Rounds.TURN);
         assertEquals(100, oddsOfTwoPair);
@@ -700,7 +700,7 @@ public class TestComputerPlayer {
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Three", "hearts", 3),
                 new NumberCard("Three", "hearts", 3)};
-        ComputerTexasPlayer Pair = new ComputerTexasPlayer("Tom", 50, 0);
+        HoldEmComputerPlayer Pair = new HoldEmComputerPlayer("Tom", 50, 0);
         Pair.sortCards(allCards1);
         int oddsOfPair = Pair.oddsOfPair(allCards1, Rounds.FLOP);
         assertEquals(0, oddsOfPair);

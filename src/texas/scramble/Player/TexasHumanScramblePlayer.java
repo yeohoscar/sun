@@ -1,6 +1,6 @@
 package texas.scramble.Player;
 
-import texas.hold_em.HumanTexasPlayer;
+import texas.hold_em.TexasHumanPlayer;
 import texas.scramble.Deck.Tile;
 import texas.scramble.Dictionary.DictionaryTrie;
 import texas.scramble.Hand.ScrambleHand;
@@ -10,14 +10,14 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-public class HumanScramblePlayer extends HumanTexasPlayer {
+public class TexasHumanScramblePlayer extends TexasHumanPlayer {
 
     private int finalValue=0;
     private int wordLength=7;
     private DictionaryTrie dict;
 
     private Tile[] newHand;
-    public HumanScramblePlayer(String name, int money, int id) {
+    public TexasHumanScramblePlayer(String name, int money, int id) {
         super(name, money, id);
         this.dict = new DictionaryTrie("resources/hard.txt");
 

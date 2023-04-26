@@ -8,7 +8,7 @@ import texas.TexasPrintGame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintGame extends TexasPrintGame {
+public class PrintHoldEmGame extends TexasPrintGame {
     //    private String[] suits = {"\u001B[31m♥\u001B[0m", "\u001B[32m♦\u001B[0m", "\u001B[33m♣\u001B[0m", "\u001B[34m♠\u001B[0m"};
     //    String[] suits = {"♠", "♥", "♦", "♣"}; -> Issues with encoding with certain terminals
     private final String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
@@ -24,7 +24,7 @@ public class PrintGame extends TexasPrintGame {
     private List<Card> communityCards;
 
 
-    public PrintGame(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
+    public PrintHoldEmGame(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
         this.texasPlayers = texasPlayers;
         this.pots = pots;
         this.communityCards = communityCards;
@@ -128,7 +128,7 @@ public class PrintGame extends TexasPrintGame {
                                 sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
                             }
                         } else {
-                            if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
+                            if (texasPlayers.get(j) instanceof TexasHumanPlayer) {
                                 index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
                                 index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {

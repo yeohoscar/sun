@@ -55,9 +55,9 @@ public class TestPrintGame {
         communityCards=deck.dealHand(4);
         List<Card> cards = List.of((Card[]) communityCards.getHand());
 
-        ComputerTexasPlayer player=  new ComputerTexasPlayer("ad", 0, 0);
+        HoldEmComputerPlayer player=  new HoldEmComputerPlayer("ad", 0, 0);
 
-        PrintGame printPublic = new PrintGame(texasPlayers, pots, cards);
+        PrintHoldEmGame printPublic = new PrintHoldEmGame(texasPlayers, pots, cards);
         printPublic.cardPrinter(false);
 
     }

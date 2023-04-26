@@ -1,10 +1,8 @@
 package texas;
 
 import poker.*;
-import texas.hold_em.PrintGame;
+import texas.hold_em.PrintHoldEmGame;
 //import texas_scramble.*;
-import texas.scramble.Deck.DeckOfTiles;
-import texas.scramble.Deck.Tile;
 
 import java.util.*;
 
@@ -26,7 +24,7 @@ public abstract class RoundController {
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private PotOfMoney mainPot = new PotOfMoney();
-    protected PrintGame printGame;
+    protected PrintHoldEmGame printGame;
 
 
     public RoundController(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {

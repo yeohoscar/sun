@@ -4,7 +4,6 @@ import poker.DeckOfCards;
 import texas.RoundController;
 import texas.Rounds;
 import texas.TexasPlayer;
-import texas.hold_em.ComputerTexasPlayer;
 import texas.scramble.Deck.*;
 import texas.scramble.Player.ComputerScramblePlayer;
 

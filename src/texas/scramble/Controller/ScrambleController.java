@@ -3,7 +3,7 @@ package texas.scramble.Controller;
 import texas.MainController;
 import texas.scramble.Deck.*;
 import texas.scramble.Player.ComputerScramblePlayer;
-import texas.scramble.Player.HumanScramblePlayer;
+import texas.scramble.Player.TexasHumanScramblePlayer;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class ScrambleController extends MainController {
 
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0) {
-                texasPlayers.add(new HumanScramblePlayer(names[i].trim(), bank, i));
+                texasPlayers.add(new TexasHumanScramblePlayer(names[i].trim(), bank, i));
             } else {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
             }
@@ -83,7 +83,7 @@ public class ScrambleController extends MainController {
         System.out.println(texasPlayers.get(0).getName()+" is the Winner of the Game!");
     }
 
-    public static void main(String[] args) {
+    public static void startGame() {
         String[] names = {"Human", "Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
 
         System.out.println("\nWelcome to the Automated Texas Scramble Machine ...\n\n");

@@ -21,7 +21,7 @@ public class TexasController extends MainController {
         }
     }
 
-    public static void main(String[] args) {
+    public static void startGame() {
         String[] names = {"Human", "Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
 
         System.out.println("\nWelcome to the Automated Texas Hold'Em Machine ...\n\n");
