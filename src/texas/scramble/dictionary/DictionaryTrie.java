@@ -1,4 +1,4 @@
-package texas.scramble.Dictionary;
+package texas.scramble.dictionary;
 
 import java.io.*;
 import java.nio.file.Files;

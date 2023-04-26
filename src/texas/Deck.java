@@ -1,8 +1,8 @@
 package texas;
 
-import texas.scramble.Hand.HandElement;
+import texas.scramble.hand.HandElement;
 
-// Deck interface for use with polymorphism
+// deck interface for use with polymorphism
 
 public interface Deck {
     void reset();

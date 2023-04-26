@@ -1,8 +1,8 @@
-package texas.scramble.Deck;
+package texas.scramble.deck;
 
 import texas.Deck;
 import texas.Hand;
-import texas.scramble.Hand.ScrambleHand;
+import texas.scramble.hand.ScrambleHand;
 
 import java.util.HashMap;
 import java.util.Random;

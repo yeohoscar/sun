@@ -1,10 +1,10 @@
-package texas.scramble.Test;
+package texas.scramble.test;
 
-//import org.junit.Test;
+//import org.junit.test;
 import org.junit.jupiter.api.Test;
-import texas.scramble.Dictionary.DictionaryTrie;
-import texas.scramble.Dictionary.FullDictionary;
-import texas.scramble.Player.ComputerScramblePlayer;
+import texas.scramble.dictionary.DictionaryTrie;
+import texas.scramble.dictionary.FullDictionary;
+import texas.scramble.player.ComputerScramblePlayer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -196,7 +196,7 @@ public class TestScrambleComputerPlayer {
         System.out.println("average score = "+averageCommunityLettersScore);
     }
 }
-    /*@Test
+    /*@test
     public void testFindAllWordsWithBlank() {
         FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
@@ -212,7 +212,7 @@ public class TestScrambleComputerPlayer {
         List<String> maxScoreWord2 = dict.findAllWords(temp);
         System.out.println(maxScoreWord2);
     }*/
-    /*@Test
+    /*@test
     public void testRemoveWordsWithZeroValue(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> highestWords = new HashMap<>();
@@ -223,7 +223,7 @@ public class TestScrambleComputerPlayer {
         System.out.println(highestWords);
     }*/
 
-//    @Test
+//    @test
 //    public void testFindAllCombination() {
 //        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
 //        //test when there is only one unknown letter

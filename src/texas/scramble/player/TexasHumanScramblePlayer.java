@@ -1,9 +1,9 @@
-package texas.scramble.Player;
+package texas.scramble.player;
 
 import texas.hold_em.TexasHumanPlayer;
-import texas.scramble.Deck.Tile;
-import texas.scramble.Dictionary.DictionaryTrie;
-import texas.scramble.Hand.ScrambleHand;
+import texas.scramble.deck.Tile;
+import texas.scramble.dictionary.FullDictionary;
+import texas.scramble.hand.ScrambleHand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,13 +14,10 @@ public class TexasHumanScramblePlayer extends TexasHumanPlayer {
 
     private int finalValue=0;
     private int wordLength=7;
-    private DictionaryTrie dict;
 
     private Tile[] newHand;
     public TexasHumanScramblePlayer(String name, int money, int id) {
         super(name, money, id);
-        this.dict = new DictionaryTrie("resources/hard.txt");
-
     }
 
     public void submitWord() {
@@ -68,7 +65,7 @@ public class TexasHumanScramblePlayer extends TexasHumanPlayer {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
         String word = input.nextLine().trim();
-        while (!canFormString(newHand,word )||!dict.isValidWord(word)) {
+        while (!canFormString(newHand,word )||!FullDictionary.getFullDictionary().isValidWord(word)) {
             System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters): ");
             word = input.nextLine().trim();
         }
@@ -87,7 +84,7 @@ public class TexasHumanScramblePlayer extends TexasHumanPlayer {
         for(int i=0;i<letters.length;i++){
             letters[i]=hand.getHand()[i].name();
         }
-        return findHighestScoreWord(letters,dict);
+        return findHighestScoreWord(letters, FullDictionary.getFullDictionary());
     }
 
     public void removeTileFromNewHand(String letter) {

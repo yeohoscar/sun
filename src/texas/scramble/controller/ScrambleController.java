@@ -1,9 +1,9 @@
-package texas.scramble.Controller;
+package texas.scramble.controller;
 
 import texas.MainController;
-import texas.scramble.Deck.*;
-import texas.scramble.Player.ComputerScramblePlayer;
-import texas.scramble.Player.TexasHumanScramblePlayer;
+import texas.scramble.deck.*;
+import texas.scramble.player.ComputerScramblePlayer;
+import texas.scramble.player.TexasHumanScramblePlayer;
 
 import java.util.*;
 

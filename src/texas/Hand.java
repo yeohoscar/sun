@@ -1,8 +1,8 @@
 package texas;
 
-import texas.scramble.Hand.HandElement;
+import texas.scramble.hand.HandElement;
 
-// Hand interface for use with polymorphism
+// hand interface for use with polymorphism
 
 public interface Hand {
     int getValue();

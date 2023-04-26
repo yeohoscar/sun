@@ -19,7 +19,7 @@ public class RoundsOfHoldEm extends RoundController {
     public RoundsOfHoldEm(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
-        //this.printGame = new PrintGame(texasPlayers, deck, pot);
+        //this.printGame = new print_game(texasPlayers, deck, pot);
 
         initComputerPlayerWithCommunityCards(communityCards);
     }

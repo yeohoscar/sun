@@ -7,7 +7,7 @@ abstract class Player {
     protected static final int FIRST_HAND = 0;
 
     protected int bank = 0;
-    private String name = "Player";
+    private String name = "player";
     protected ArrayList<BlackjackHand> hands = new ArrayList<>();
 
     /*--------------------Constructor--------------------------*/

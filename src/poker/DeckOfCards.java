@@ -108,7 +108,7 @@ public class DeckOfCards implements Deck {
 
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-	// Test Harness
+	// test Harness
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
@@ -119,26 +119,26 @@ public class DeckOfCards implements Deck {
 		PokerHand hand2  = deck.dealHand();
 		PokerHand hand3  = deck.dealHand();
 		
-		System.out.println("\nPlayer 1: " + hand1 + "Value = " + hand1.getValue());
-		System.out.println("\nPlayer 2: " + hand2 + "Value = " + hand2.getValue());
-		System.out.println("\nPlayer 3: " + hand3 + "Value = " + hand3.getValue());
+		System.out.println("\nplayer 1: " + hand1 + "Value = " + hand1.getValue());
+		System.out.println("\nplayer 2: " + hand2 + "Value = " + hand2.getValue());
+		System.out.println("\nplayer 3: " + hand3 + "Value = " + hand3.getValue());
 		
 
 		hand1 = hand1.discard();
-		System.out.println("\nPlayer 1 discards " + hand1.getNumDiscarded() + " card(s)\n");
+		System.out.println("\nplayer 1 discards " + hand1.getNumDiscarded() + " card(s)\n");
 		
 		hand2 = hand2.discard();
-		System.out.println("\nPlayer 2 discards " + hand2.getNumDiscarded() + " card(s)\n");
+		System.out.println("\nplayer 2 discards " + hand2.getNumDiscarded() + " card(s)\n");
 
 		hand3 = hand3.discard();
-		System.out.println("\nPlayer 3 discards " + hand3.getNumDiscarded() + " card(s)\n");
+		System.out.println("\nplayer 3 discards " + hand3.getNumDiscarded() + " card(s)\n");
 
 		
 		System.out.println("\n\nAfter Discarding:\n");
 		
-		System.out.println("\nPlayer 1: " + hand1 + "New Value = " + hand1.getValue());
-		System.out.println("\nPlayer 2: " + hand2 + "New Value = " + hand2.getValue());
-		System.out.println("\nPlayer 3: " + hand3 + "New Value = " + hand3.getValue());
+		System.out.println("\nplayer 1: " + hand1 + "New Value = " + hand1.getValue());
+		System.out.println("\nplayer 2: " + hand2 + "New Value = " + hand2.getValue());
+		System.out.println("\nplayer 3: " + hand3 + "New Value = " + hand3.getValue());
 		
 		try {
 			System.out.print("\nPress ENTER to terminate ...");

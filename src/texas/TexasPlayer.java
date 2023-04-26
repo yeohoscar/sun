@@ -1,8 +1,8 @@
 package texas;
 
 import poker.*;
-import texas.scramble.Deck.DeckOfTiles;
-import texas.scramble.Dictionary.DictionaryTrie;
+import texas.scramble.deck.DeckOfTiles;
+import texas.scramble.dictionary.DictionaryTrie;
 
 import java.util.*;
 

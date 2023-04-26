@@ -3,7 +3,7 @@ package poker;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
-// A Player is an object that can make decisions in a game of poker
+// A player is an object that can make decisions in a game of poker
 
 // There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
 //								and HumanPlayer, in which decisions are made using menus

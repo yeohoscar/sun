@@ -1,11 +1,11 @@
-package texas.scramble.Controller;
+package texas.scramble.controller;
 
 import poker.DeckOfCards;
 import texas.RoundController;
 import texas.Rounds;
 import texas.TexasPlayer;
-import texas.scramble.Deck.*;
-import texas.scramble.Player.ComputerScramblePlayer;
+import texas.scramble.deck.*;
+import texas.scramble.player.ComputerScramblePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class RoundOfScramble extends RoundController {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
         this.communityTiles=new ArrayList<>();
-        //this.printGame = new PrintGame(texasPlayers, deck, pot);
+        //this.printGame = new print_game(texasPlayers, deck, pot);
 
         initComputerPlayerWithCommunityTiles(communityTiles);
     }

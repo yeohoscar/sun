@@ -1,7 +1,7 @@
 import blackjack.GameOfBlackJack;
 import poker.GameOfPoker;
 import texas.hold_em.TexasController;
-import texas.scramble.Controller.ScrambleController;
+import texas.scramble.controller.ScrambleController;
 
 public class Main {
     public static void main(String[] args) {

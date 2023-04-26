@@ -1,9 +1,9 @@
-package texas.scramble.PrintGame;
+package texas.scramble.print_game;
 
 import poker.PotOfMoney;
 import texas.TexasPlayer;
 import texas.TexasPrintGame;
-import texas.scramble.Deck.Tile;
+import texas.scramble.deck.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

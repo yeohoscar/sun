@@ -40,7 +40,7 @@ public abstract class RoundController {
         }
         pots.get(0).setPlayerIds(playersID);
 
-        //this.printGame = new PrintGame(roundPlayers, (DeckOfCards) deck, pots, communityCards);
+        //this.printGame = new print_game(roundPlayers, (DeckOfCards) deck, pots, communityCards);
         this.communityCards =  new ArrayList<>();
 
     }
@@ -71,7 +71,7 @@ public abstract class RoundController {
                 return player;
             }
         }
-        return null; // Player with the given ID was not found
+        return null; // player with the given ID was not found
     }
     public void createSidePot(int activePlayer) {
         ArrayList<Integer> playerList = getActivePot().getPlayerIds();
