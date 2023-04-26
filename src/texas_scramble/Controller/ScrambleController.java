@@ -4,6 +4,7 @@ import texas.MainController;
 import texas_hold_em.HumanTexasPlayer;
 import texas_scramble.Deck.*;
 import texas_scramble.Player.ComputerScramblePlayer;
+import texas_scramble.Player.HumanScramblePlayer;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class ScrambleController extends MainController {
 
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0) {
-                texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank, i));
+                texasPlayers.add(new HumanScramblePlayer(names[i].trim(), bank, i));
             } else {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
             }
@@ -51,10 +52,10 @@ public class ScrambleController extends MainController {
         while (texasPlayers.size() > 1) {
             deck.reset();//before each game starts, shuffle the deck
             if(dealerIndex>=texasPlayers.size()){dealerIndex=0;}
-            List<Tile> communityTiles = new ArrayList<>();
+
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
-            RoundOfScramble round = new RoundOfScramble(deck, texasPlayers, communityTiles, dealerIndex);
+            RoundOfScramble round = new RoundOfScramble(deck, texasPlayers, dealerIndex);
             round.play();
             if(texasPlayers.size()==1){
                 break;

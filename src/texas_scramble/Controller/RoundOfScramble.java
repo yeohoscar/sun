@@ -1,6 +1,8 @@
 package texas_scramble.Controller;
 
+import poker.DeckOfCards;
 import texas.RoundController;
+import texas.Rounds;
 import texas.TexasPlayer;
 import texas_hold_em.ComputerTexasPlayer;
 import texas_scramble.Deck.*;
@@ -10,24 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 public class RoundOfScramble extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
-    private DeckOfTiles deck;
+    protected List<Tile> communityTiles;
 
-    private List<Tile> communityTiles;
-
-    public RoundOfScramble(DeckOfTiles deck, ArrayList<TexasPlayer> texasPlayers, List<Tile> communityTiles, int dealerIndex) {
-        super(null, texasPlayers, null, dealerIndex);
+    public RoundOfScramble(DeckOfTiles deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
+        super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
-        this.deck=deck;
-        this.communityTiles=communityTiles;
+        this.communityTiles=new ArrayList<>();
         //this.printGame = new PrintGame(texasPlayers, deck, pot);
 
-        initComputerPlayerWithCommunityCards(communityTiles);
+        initComputerPlayerWithCommunityTiles(communityTiles);
     }
 
-    private void initComputerPlayerWithCommunityCards(List<Tile> communityTiles) {
+    private void initComputerPlayerWithCommunityTiles(List<Tile> communityTiles) {
         for (TexasPlayer player : roundPlayers) {
-            if (player instanceof ComputerTexasPlayer) {
-                ((ComputerTexasPlayer) player).setCommunityElements(communityTiles);
+            if (player instanceof ComputerScramblePlayer) {
+                ((ComputerScramblePlayer) player).setCommunityTiles(communityTiles);
+
             }
         }
     }
@@ -35,7 +35,7 @@ public class RoundOfScramble extends RoundController {
 
     @Override
     public void showDown() {
-        
+
     }
     public void roundCounter(int counter) {
         int roundCounter = counter;
@@ -76,8 +76,40 @@ public class RoundOfScramble extends RoundController {
     }
     public void dealCommunityTiles(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityTiles.add(deck.dealNext());
+            communityTiles.add((Tile) deck.dealNext());
         }
+    }
+    @Override
+    public void roundMove(Rounds currentRound) {
+        //decide who move first
+        int currentIndex = firstMovePlayerIndex(currentRound);
+        int activePlayer = 0;
+        for (TexasPlayer player : roundPlayers) {
+            if (!player.hasFolded()) {
+                activePlayer++;
+            }
+        }
+        roundPlayers.get(currentIndex).setDeck((DeckOfCards) deck);
+        //loop until every one called or folded
+        while (!onePlayerLeft() && !ActionClosed()) {
+            TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
+            if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
+                delay(DELAY_BETWEEN_ACTIONS);
+                currentPlayer.setOnTurn(true);
+                currentPlayer.nextAction(getActivePot());
+                printGame.table(currentRound);
+                currentPlayer.setOnTurn(false);
+            }
+
+            currentIndex++;
+
+            if (currentIndex == numPlayers) {
+                currentIndex = 0;
+            }
+        }
+        onePlayerLeft();
+        createSidePot(activePlayer);
+
     }
 
     // TODO: ADD THIS TO AFTER SHOWDOWN

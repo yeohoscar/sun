@@ -56,6 +56,7 @@ public class ScrambleHand implements Hand {
         }
     }
 
+
     @Override
     public int getRiskWorthiness() {
         return 0;

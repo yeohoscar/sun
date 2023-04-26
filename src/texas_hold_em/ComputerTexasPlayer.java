@@ -11,7 +11,9 @@ package texas_hold_em;
 
 import poker.*;
 import texas.*;
+
 import texas_scramble.Hand.HandElement;
+
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -26,6 +28,8 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     private Random dice	= new Random(System.currentTimeMillis());
 
     private List<? extends HandElement> communityElements;
+
+
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
@@ -94,6 +98,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
     public void setCommunityElements(List<? extends HandElement> communityElements) {
         this.communityElements = communityElements;
     }
+
 
 
     /************************ this method sorts cards from low to high with highest cards on the right *****************************/
@@ -289,6 +294,7 @@ public class ComputerTexasPlayer extends TexasComputerPlayer {
         }
         return risk;
     }
+
 
     /************************ this method will return one hand type that from those that are higher than current hand type that player has *****************************/
     //this will return the finally returned hand type(with use of random value)

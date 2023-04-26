@@ -140,7 +140,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //TODO: not done
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
-        Tile[] publicCards = getCommunityCards().toArray(new Tile[getCommunityCards().size()]);
+        Tile[] publicCards = getCommunityTiles().toArray(new Tile[getCommunityTiles().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {
@@ -156,6 +156,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         return risk;
     }
+
+
+
+
 
     /******************** predicate pre-flop round ********************/
     private int calculateHandScore(Tile[] hand) {
@@ -293,5 +297,6 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
                 getRiskTolerance();
     }
+
 
 }

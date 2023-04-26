@@ -2,11 +2,13 @@ package texas;
 
 import poker.*;
 import texas_hold_em.Deck;
+import texas_hold_em.Hand;
 import texas_hold_em.PrintGame;
 //import texas_scramble.*;
 import texas_scramble.Deck.DeckOfTiles;
 import texas_scramble.Deck.Tile;
 
+import java.lang.annotation.Target;
 import java.util.*;
 
 public abstract class RoundController {
@@ -18,7 +20,7 @@ public abstract class RoundController {
     protected ArrayList<TexasPlayer> roundPlayers;
     private int dealerIndex;
 
-    protected DeckOfCards deck;
+    protected Deck deck;
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
@@ -27,10 +29,10 @@ public abstract class RoundController {
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private PotOfMoney mainPot = new PotOfMoney();
-    private PrintGame printGame;
+    protected PrintGame printGame;
 
 
-    public RoundController(DeckOfCards deck, ArrayList<TexasPlayer> players, List<Card> communityCards, int dealerIndex) {
+    public RoundController(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {
         this.deck = deck;
         this.roundPlayers = players;
         roundPlayers.get(dealerIndex).setDealer(true);
@@ -42,8 +44,10 @@ public abstract class RoundController {
             playersID.add(player.getId());
         }
         pots.get(0).setPlayerIds(playersID);
-        this.printGame = new PrintGame(roundPlayers, pots, communityCards);
-        this.communityCards = communityCards;
+
+        //this.printGame = new PrintGame(roundPlayers, (DeckOfCards) deck, pots, communityCards);
+        this.communityCards =  new ArrayList<>();
+
     }
 
     //Abstract Functions:
@@ -226,7 +230,7 @@ public abstract class RoundController {
                 activePlayer++;
             }
         }
-        roundPlayers.get(currentIndex).setDeck(deck);
+        roundPlayers.get(currentIndex).setDeck((DeckOfCards) deck);
         //loop until every one called or folded
         while (!onePlayerLeft() && !ActionClosed()) {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
@@ -252,6 +256,7 @@ public abstract class RoundController {
         blindBet();
         //after small blind and big blind, deal two cards to each player
         for (Player player : roundPlayers) {
+
             player.dealTo(deck);
             System.out.println(player);
         }
@@ -315,7 +320,7 @@ public abstract class RoundController {
 
     public void dealCommunityCards(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityCards.add(deck.dealNext());
+            communityCards.add((Card) deck.dealNext());
         }
     }
 
