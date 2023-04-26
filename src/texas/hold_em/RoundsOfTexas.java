@@ -16,8 +16,8 @@ import java.util.*;
 public class RoundsOfTexas extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
 
-    public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, List<Card> communityCards, int dealerIndex) {
-        super(deck, texasPlayers, communityCards, dealerIndex);
+    public RoundsOfTexas(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
+        super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
         //this.printGame = new PrintGame(texasPlayers, deck, pot);
 
@@ -49,7 +49,7 @@ public class RoundsOfTexas extends RoundController {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
                     Card[] communityCardsArr = new Card[communityCards.size()];
-                    player.findBestHand(communityCards.toArray(communityCardsArr), deck);
+                    player.findBestHand(communityCards.toArray(communityCardsArr), (DeckOfCards) deck);
                     System.out.println(player.getCurrentBestHand());
                     int handValue = player.getCurrentBestHand().getValue();
                     valueRank.put(i, handValue);

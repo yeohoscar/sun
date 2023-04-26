@@ -33,10 +33,9 @@ public abstract class MainController {
         while (texasPlayers.size() > 1) {
             deck.reset();//before each game starts, shuffle the deck
             if(dealerIndex>=texasPlayers.size()){dealerIndex=0;}
-            List<Card> communityCards = new ArrayList<>();
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
-            RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, communityCards, dealerIndex);
+            RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, dealerIndex);
             round.play();
             if(texasPlayers.size()==1){
                 break;
