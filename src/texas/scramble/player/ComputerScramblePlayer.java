@@ -140,7 +140,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     //TODO: not done
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
-        Tile[] publicCards = getCommunityTiles().toArray(new Tile[getCommunityTiles().size()]);
+        Tile[] publicCards = getCommunityElements().toArray(new Tile[getCommunityElements().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {

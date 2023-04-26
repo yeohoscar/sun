@@ -26,10 +26,6 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
 
     private Random dice	= new Random(System.currentTimeMillis());
 
-    private List<? extends HandElement> communityElements;
-
-
-
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
     // Constructor
@@ -63,7 +59,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     }
 
     public Rounds getCurrentRound() {
-            switch (communityElements.size()) {
+            switch (getCommunityElements().size()) {
                 case 3 -> {
                     return Rounds.FLOP;
                 }
@@ -86,19 +82,6 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
             return null;
         }
     }
-
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    // Mutators
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
-
-    public void setCommunityElements(List<? extends HandElement> communityElements) {
-        this.communityElements = communityElements;
-    }
-
-
 
     /************************ this method sorts cards from low to high with highest cards on the right *****************************/
     public void sortCards(Card[] allCards) {
@@ -276,8 +259,8 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     /************************ this method will calculate the riskTolerance in pre-flop, flop, turn and river round *****************************/
     /************************ especially in flop and turn round, odds of all hand type will be calculated and select one from them *****************************/
     public int predicateRiskTolerance() {
-        DeckOfCards deck = getDeckOfCards();
-        Card[] publicCards = communityElements.toArray(new Card[communityElements.size()]);
+        DeckOfCards deck = (DeckOfCards) getDeck();
+        Card[] publicCards = getCommunityElements().toArray(new Card[getCommunityElements().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {

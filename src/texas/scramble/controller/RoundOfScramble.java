@@ -25,7 +25,7 @@ public class RoundOfScramble extends RoundController {
     private void initComputerPlayerWithCommunityTiles(List<Tile> communityTiles) {
         for (TexasPlayer player : roundPlayers) {
             if (player instanceof ComputerScramblePlayer) {
-                ((ComputerScramblePlayer) player).setCommunityTiles(communityTiles);
+                ((ComputerScramblePlayer) player).setCommunityElements(communityTiles);
 
             }
         }
