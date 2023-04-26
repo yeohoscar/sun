@@ -1,7 +1,9 @@
 package texas;
 
 import poker.*;
+import texas.hold_em.HoldEmComputerPlayer;
 import texas.hold_em.PrintHoldEmGame;
+import texas.scramble.hand.HandElement;
 //import texas_scramble.*;
 
 import java.util.*;
@@ -19,7 +21,8 @@ public abstract class RoundController {
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
-    protected List<Card> communityCards;
+
+    protected List<HandElement> communityElements;
 
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
@@ -41,8 +44,17 @@ public abstract class RoundController {
         pots.get(0).setPlayerIds(playersID);
 
         //this.printGame = new print_game(roundPlayers, (DeckOfCards) deck, pots, communityCards);
-        this.communityCards =  new ArrayList<>();
+        this.communityElements =  new ArrayList<>();
 
+        initComputerPlayerWithCommunityCards(communityElements);
+    }
+
+    private void initComputerPlayerWithCommunityCards(List<HandElement> communityElements) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof HoldEmComputerPlayer) {
+                ((TexasComputerPlayer) player).setCommunityElements(communityElements);
+            }
+        }
     }
 
     //Abstract Functions:
@@ -187,21 +199,21 @@ public abstract class RoundController {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
-                    dealCommunityCards(3);
+                    dealCommunityElements(3);
                     System.out.println("\n\nThree Public Cards are released\n");
                 }
                 case 2 -> {
                     printGame.table(Rounds.FLOP);
                     flopRound();
                     roundCounter++;
-                    dealCommunityCards(1);
+                    dealCommunityElements(1);
                     System.out.println("\n\nTurn Card is released\n");
                 }
                 case 3 -> {
                     printGame.table(Rounds.TURN);
                     turnRound();
                     roundCounter++;
-                    dealCommunityCards(1);
+                    dealCommunityElements(1);
                     System.out.println("\n\nRiver Card is released\n");
                 }
                 default -> {
@@ -310,12 +322,9 @@ public abstract class RoundController {
         return foldCounter + callCounter == numPlayers;
     }
 
-
-
-
-    public void dealCommunityCards(int numCardsToBeDealt) {
+    public void dealCommunityElements(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityCards.add((Card) deck.dealNext());
+            communityElements.add(deck.dealNext());
         }
     }
 

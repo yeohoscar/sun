@@ -90,9 +90,9 @@ public class TexasHumanScramblePlayer extends TexasHumanPlayer {
     public void removeTileFromNewHand(String letter) {
         Tile[] newArray = new Tile[newHand.length - 1];
         int j=0;
-        for (int i = 0; i < newHand.length; i++) {
-            if (newHand[i].name() != letter) {
-                newArray[j] = newHand[i];
+        for (Tile tile : newHand) {
+            if (tile.name() != letter) {
+                newArray[j] = tile;
                 j++;
             }
         }

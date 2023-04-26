@@ -58,23 +58,6 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
         return risk; // tolerance drops as stake increases
     }
 
-    public Rounds getCurrentRound() {
-            switch (getCommunityElements().size()) {
-                case 3 -> {
-                    return Rounds.FLOP;
-                }
-                case 4 -> {
-                    return Rounds.TURN;
-                }
-                case 5 -> {
-                    return Rounds.RIVER;
-                }
-                default -> {
-                    return Rounds.PRE_FLOP;
-                }
-            }
-    }
-
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
             return hand[num];

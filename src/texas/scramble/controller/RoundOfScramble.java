@@ -18,19 +18,7 @@ public class RoundOfScramble extends RoundController {
         this.roundPlayers = texasPlayers;
         this.communityTiles=new ArrayList<>();
         //this.printGame = new print_game(texasPlayers, deck, pot);
-
-        initComputerPlayerWithCommunityTiles(communityTiles);
     }
-
-    private void initComputerPlayerWithCommunityTiles(List<Tile> communityTiles) {
-        for (TexasPlayer player : roundPlayers) {
-            if (player instanceof ComputerScramblePlayer) {
-                ((ComputerScramblePlayer) player).setCommunityElements(communityTiles);
-
-            }
-        }
-    }
-
 
     @Override
     public void showDown() {

@@ -1,7 +1,5 @@
 package texas;
 
-import poker.Card;
-import texas.scramble.deck.Tile;
 import texas.scramble.hand.HandElement;
 
 import java.util.List;

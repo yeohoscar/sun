@@ -3,8 +3,9 @@ package texas.hold_em;
 
 import poker.*;
 import texas.RoundController;
+import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
-
+import texas.scramble.hand.HandElement;
 
 import java.util.*;
 
@@ -20,17 +21,8 @@ public class RoundsOfHoldEm extends RoundController {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
         //this.printGame = new print_game(texasPlayers, deck, pot);
-
-        initComputerPlayerWithCommunityCards(communityCards);
     }
 
-    private void initComputerPlayerWithCommunityCards(List<Card> communityCards) {
-        for (TexasPlayer player : roundPlayers) {
-            if (player instanceof HoldEmComputerPlayer) {
-                ((HoldEmComputerPlayer) player).setCommunityElements(communityCards);
-            }
-        }
-    }
     @Override
     //compare the hand value and decide who win
     public void showDown() {
@@ -48,8 +40,8 @@ public class RoundsOfHoldEm extends RoundController {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
-                    Card[] communityCardsArr = new Card[communityCards.size()];
-                    player.findBestHand(communityCards.toArray(communityCardsArr), (DeckOfCards) deck);
+                    Card[] communityCardsArr = new Card[communityElements.size()];
+                    player.findBestHand(communityElements.toArray(communityCardsArr), (DeckOfCards) deck);
                     System.out.println(player.getCurrentBestHand());
                     int handValue = player.getCurrentBestHand().getValue();
                     valueRank.put(i, handValue);
@@ -80,21 +72,9 @@ public class RoundsOfHoldEm extends RoundController {
                     for (int winnerId : winners.keySet()) {
                         TexasPlayer winner = getPlayerById(roundPlayers, winnerId);
                         winner.winFromPot(splitAmount, pot);
-
                     }
                 }
             }
-
-
         }
     }
-
-
-
-
-
-
-
-
-
 }
