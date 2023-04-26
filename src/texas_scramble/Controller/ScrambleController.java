@@ -115,21 +115,21 @@ public class ScrambleController extends MainController {
                 if (numPlayers <= 9 && numPlayers >= 1) {
                     Random rand = new Random();
                     int j = 1;
-                    for (int i = 1; i < numPlayers; i++) {
-                        int idx = rand.nextInt() % (numPlayers - i) + j;
+                    for (int i = 0; i < numPlayers; i++) {
+                        int idx = Math.abs(rand.nextInt()) % (numPlayers - i) + j;
                         String tmp = names[j];
                         names[j] = names[idx];
                         names[idx] = tmp;
                         j++;
                     }
-                    playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+                    playerNames = Arrays.copyOfRange(names, 0, numPlayers + 1);
                 } else {
                     throw new IllegalArgumentException();
                 }
             } catch (Exception e) {
                 System.out.println("\nInvalid input.");
-                scanner.nextLine(); // Clear the scanner buffer
             }
+            scanner.nextLine(); // Clear the scanner buffer
         }
         // every player start with 100 chips
         int startingBank = 100;
