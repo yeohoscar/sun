@@ -3,9 +3,7 @@ package texas.hold_em;
 
 import poker.*;
 import texas.RoundController;
-import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
-import texas.scramble.hand.HandElement;
 
 import java.util.*;
 
