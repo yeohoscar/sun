@@ -27,9 +27,9 @@ public class TestPrintScramble {
             player.dealTo(Tiles);
 //            player.setOnTurn(true);
         }
-//        texasPlayers.get(1).setOnTurn(true);
-//        texasPlayers.get(2).setOnTurn(false);
-//        texasPlayers.get(3).setOnTurn(true);
+        texasPlayers.get(1).setOnTurn(true);
+        texasPlayers.get(2).setOnTurn(false);
+        texasPlayers.get(3).setOnTurn(true);
         Hand communityCards;
         ArrayList<PotOfMoney> pots = new ArrayList<>();
 //        PotOfMoney pot = new PotOfMoney();
