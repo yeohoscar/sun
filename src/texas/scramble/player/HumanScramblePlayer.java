@@ -1,9 +1,11 @@
 package texas.scramble.player;
 
+
 import texas.hold_em.TexasHumanPlayer;
 import texas.scramble.deck.Tile;
 import texas.scramble.dictionary.FullDictionary;
 import texas.scramble.hand.ScrambleHand;
+
 
 import java.util.*;
 
@@ -56,9 +58,13 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
         for (int i = 0; i < inputString.length(); i++) {
             char c = inputString.charAt(i);
             String str = String.valueOf(c);
-            if(!charFreq.containsKey(str)&&charFreq.get(" ") != 0){
-                charFreq.put(" ", charFreq.get(" ") - 1);
-                continue;
+            if(!charFreq.containsKey(str)&&charFreq.containsKey(" ")){
+                if(charFreq.get(" ")!=0){
+                    charFreq.put(" ", charFreq.get(" ") - 1);
+                    continue;
+                }else{
+                    return false;
+                }
             }
             else if (!charFreq.containsKey(str) || charFreq.get(str) == 0) {
                 // The character c is not in the list or has already been used up
@@ -73,12 +79,18 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
     }
 
     public void combineTiles(List<Tile> communityTiles){
-        Tile[] allTiles = (Tile[]) Arrays.copyOf(hand.getHand(), 2 + communityTiles.size());
-        int index = 1;
+        Tile[] allTiles = (Tile[]) Arrays.copyOf(hand.getHand(), 7);
+        int index = 2;
         for (Tile tile : communityTiles) {
             allTiles[index++] = tile;
         }
         this.newHand=allTiles;
+        System.out.println("CommunityTiles"+communityTiles);
+        System.out.print("newHand: ");
+        for(Tile tile : newHand){
+            System.out.print(tile.name());
+        }
+        System.out.println();
 
     }
 
