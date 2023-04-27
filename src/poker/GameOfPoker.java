@@ -103,7 +103,7 @@ public class GameOfPoker
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public static void main(String[] args) {
+	public static void startGame() {
 		String[] names = {"Human", "Tom", "Dick", "Harry"};
 
 		System.out.println("\nWelcome to the Automated Poker Machine ...\n\n");

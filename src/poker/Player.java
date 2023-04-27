@@ -3,14 +3,14 @@ package poker;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
-// A Player is an object that can make decisions in a game of poker
+// A player is an object that can make decisions in a game of poker
 
 // There are two extension classes: ComputerPlayer, in which decisions are made using algorithms
 //								and HumanPlayer, in which decisions are made using menus
 
 
-import texas_hold_em.Deck;
-import texas_hold_em.Hand;
+import texas.Deck;
+import texas.Hand;
 
 public abstract class Player {
 	protected int bank       		= 0;		 // the total amount of money the player has left, not counting his/her
@@ -18,7 +18,7 @@ public abstract class Player {
 	protected int stake      		= 0;// the amount of money the player has thrown into the current pot
 
 	protected int totalStake      	= 0;// total amount of money the player has thrown
-	private String name    		= "Player";  // the unique identifying name given to the player
+	private String name    		= "player";  // the unique identifying name given to the player
 	
 	protected Hand hand 		= null;      // the hand dealt to this player
 	

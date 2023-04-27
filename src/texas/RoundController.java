@@ -1,14 +1,11 @@
 package texas;
 
 import poker.*;
-import texas_hold_em.Deck;
-import texas_hold_em.Hand;
-import texas_hold_em.PrintGame;
+import texas.hold_em.HoldEmComputerPlayer;
+import texas.hold_em.PrintHoldEmGame;
+import texas.scramble.hand.HandElement;
 //import texas_scramble.*;
-import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Deck.Tile;
 
-import java.lang.annotation.Target;
 import java.util.*;
 
 public abstract class RoundController {
@@ -24,12 +21,14 @@ public abstract class RoundController {
     protected int numPlayers;
     private int smallIndex;
     private int bigIndex;
-    protected List<Card> communityCards;
+
+    protected List<HandElement> communityElements;
 
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private PotOfMoney mainPot = new PotOfMoney();
-    protected PrintGame printGame;
+
+    protected TexasPrintGame printGame;
 
 
     public RoundController(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {
@@ -45,9 +44,17 @@ public abstract class RoundController {
         }
         pots.get(0).setPlayerIds(playersID);
 
-        this.printGame = new PrintGame(roundPlayers, pots, communityCards);
-        this.communityCards =  new ArrayList<>();
+        this.communityElements =  new ArrayList<>();
 
+        initComputerPlayerWithCommunityElements(communityElements);
+    }
+
+    private void initComputerPlayerWithCommunityElements(List<HandElement> communityElements) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof HoldEmComputerPlayer) {
+                ((TexasComputerPlayer) player).setCommunityElements(communityElements);
+            }
+        }
     }
 
     //Abstract Functions:
@@ -76,7 +83,7 @@ public abstract class RoundController {
                 return player;
             }
         }
-        return null; // Player with the given ID was not found
+        return null; // player with the given ID was not found
     }
     public void createSidePot(int activePlayer) {
         ArrayList<Integer> playerList = getActivePot().getPlayerIds();
@@ -192,21 +199,21 @@ public abstract class RoundController {
                 case 1 -> {
                     preFlopRound();
                     roundCounter++;
-                    dealCommunityCards(3);
+                    dealCommunityElements(3);
                     System.out.println("\n\nThree Public Cards are released\n");
                 }
                 case 2 -> {
                     printGame.table(Rounds.FLOP);
                     flopRound();
                     roundCounter++;
-                    dealCommunityCards(1);
+                    dealCommunityElements(1);
                     System.out.println("\n\nTurn Card is released\n");
                 }
                 case 3 -> {
                     printGame.table(Rounds.TURN);
                     turnRound();
                     roundCounter++;
-                    dealCommunityCards(1);
+                    dealCommunityElements(1);
                     System.out.println("\n\nRiver Card is released\n");
                 }
                 default -> {
@@ -315,12 +322,9 @@ public abstract class RoundController {
         return foldCounter + callCounter == numPlayers;
     }
 
-
-
-
-    public void dealCommunityCards(int numCardsToBeDealt) {
+    public void dealCommunityElements(int numCardsToBeDealt) {
         for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityCards.add((Card) deck.dealNext());
+            communityElements.add(deck.dealNext());
         }
     }
 

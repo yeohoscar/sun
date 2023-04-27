@@ -153,7 +153,7 @@ public class BlackjackHand {
         return false;
     }
 
-    /*----------Player actions that affect hand------------------*/
+    /*----------player actions that affect hand------------------*/
 
     public boolean hit(String name) {
         System.out.println("\n> " + name + " says: I hit!\n");

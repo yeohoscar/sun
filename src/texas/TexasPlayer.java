@@ -1,10 +1,8 @@
 package texas;
 
 import poker.*;
-import texas_hold_em.Hand;
-import texas_scramble.Deck.DeckOfTiles;
-import texas_scramble.Dictionary.DictionaryTrie;
-import texas_scramble.Deck.Tile;
+import texas.scramble.deck.DeckOfTiles;
+import texas.scramble.dictionary.DictionaryTrie;
 
 import java.util.*;
 
@@ -24,8 +22,9 @@ public abstract class TexasPlayer extends poker.Player {
 	protected boolean dealer = false;
 
 	private boolean onTurn = false;
-	public DeckOfCards deckOfCards;
-	private DeckOfTiles deckOfTiles = new DeckOfTiles();
+
+	private Deck deck;
+
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
@@ -105,8 +104,8 @@ public abstract class TexasPlayer extends poker.Player {
 		return currentBestHand;
 	}
 
-	public DeckOfCards getDeckOfCards(){
-		return deckOfCards;
+	public Deck getDeck(){
+		return deck;
 	}
 
 	public boolean isAllIn() {
@@ -152,11 +151,8 @@ public abstract class TexasPlayer extends poker.Player {
 		this.dealer = dealer;
 	}
 
-	public void setDeck(DeckOfCards deck){
-		deckOfCards = deck;
-	}
-	public void setDeck(DeckOfTiles deck){
-		deckOfTiles = deck;
+	public void setDeck(Deck deck){
+		this.deck = deck;
 	}
 
 	@Override

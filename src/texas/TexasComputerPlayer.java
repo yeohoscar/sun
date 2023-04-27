@@ -1,37 +1,31 @@
 package texas;
 
-import poker.Card;
-import poker.DeckOfCards;
-import poker.PotOfMoney;
-import texas_scramble.Deck.Tile;
+import texas.scramble.hand.HandElement;
 
 import java.util.List;
 
 abstract public class TexasComputerPlayer extends TexasPlayer{
-    private List<Card> communityCards;
-    private List<Tile> communityTiles;
+    private List<? extends HandElement> communityElements;
 
     public TexasComputerPlayer(String name, int money, int id) {
         super(name, money, id);
     }
 
-    public List<Card> getCommunityCards(){
-        return this.communityCards;
+//    public void setCommunityCards(List<Tile> communityCards) {
+//        this.communityCards = communityCards;
+//    }
+
+    public List<? extends HandElement> getCommunityElements(){
+        return communityElements;
     }
-    public void setCommunityCards(List<Card> communityCards){this.communityCards=communityCards;}
-    public List<Tile> getCommunityTiles(){
-        return this.communityTiles;
+
+    public void setCommunityElements(List<? extends HandElement> communityElements){
+        this.communityElements = communityElements;
     }
-    public void setCommunityTiles(List<Tile> communityTiles){this.communityTiles=communityTiles;}
 
 
     public Rounds getCurrentRound() {
-        int size;
-        if(communityCards==null){
-            size=communityTiles.size();
-        }else {
-            size=communityCards.size();
-        }
+        int size = communityElements.size();
         switch (size) {
             case 3 -> {
                 return Rounds.FLOP;
@@ -47,6 +41,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer{
             }
         }
     }
+
     public abstract int getRiskTolerance();
 //    abstract int preFlopRiskToleranceHelper();
 //    abstract int riverRoundRiskToleranceHelper();

@@ -1,14 +1,11 @@
 package texas;
 
-import poker.Card;
 import poker.DeckOfCards;
-import texas.TexasPlayer;
-import texas_hold_em.ComputerTexasPlayer;
-import texas_hold_em.HumanTexasPlayer;
-import texas_hold_em.RoundsOfTexas;
+import texas.hold_em.HoldEmComputerPlayer;
+import texas.hold_em.TexasHumanPlayer;
+import texas.hold_em.RoundsOfHoldEm;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class MainController {
     public ArrayList<TexasPlayer> texasPlayers;
@@ -24,9 +21,9 @@ public abstract class MainController {
 
         for (int i = 0; i < numPlayers; i++)
             if (i == 0)
-                texasPlayers.add(new HumanTexasPlayer(names[i].trim(), bank,i));
+                texasPlayers.add(new TexasHumanPlayer(names[i].trim(), bank,i));
             else
-                texasPlayers.add(new ComputerTexasPlayer(names[i].trim(), bank,i));
+                texasPlayers.add(new HoldEmComputerPlayer(names[i].trim(), bank,i));
     }
 
     public void play()	{
@@ -36,7 +33,7 @@ public abstract class MainController {
             if(dealerIndex>=texasPlayers.size()){dealerIndex=0;}
 
             //start a game, there are four rounds within a game: Pre-flop, Turn, River and the one after River.
-            RoundsOfTexas round = new RoundsOfTexas(deck, texasPlayers, dealerIndex);
+            RoundsOfHoldEm round = new RoundsOfHoldEm(deck, texasPlayers, dealerIndex);
             round.play();
             if(texasPlayers.size()==1){
                 break;

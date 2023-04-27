@@ -6,6 +6,7 @@ import java.util.List;
 
 abstract public class TexasPrintGame {
     abstract public void cardPrinter(boolean showDown);
+
     public void table(Rounds currentRound) {
         switch (currentRound) {
             case PRE_FLOP, FLOP, RIVER, TURN -> cardPrinter(false);

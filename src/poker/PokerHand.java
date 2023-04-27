@@ -3,8 +3,8 @@ package poker;
 
 // This package provides classes necessary for implementing a game system for playing poker
 
-import texas_hold_em.Hand;
-import texas_scramble.Hand.HandElement;
+import texas.Hand;
+import texas.scramble.hand.HandElement;
 
 import java.lang.reflect.*;
 
@@ -264,7 +264,7 @@ public class PokerHand implements Hand
 	
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-	// Hand Classifier
+	// hand Classifier
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	
@@ -380,7 +380,7 @@ public class PokerHand implements Hand
 		for (int i = 0; i < preds.length; i++) {
 			try {
 				
-				// Test all predicative methods of form  boolean isX()
+				// test all predicative methods of form  boolean isX()
 				
 				if (preds[i].getName().startsWith("is") && preds[i].getParameterTypes().length == 0 &&
 					preds[i].getReturnType() == boolean.class)
