@@ -26,7 +26,7 @@ public class DictionaryTrie {
         }
         return false;
     }
-    public void removeBlank(String[] letters){
+    public String[] removeBlank(String[] letters){
 //		ArrayList<String> availableLetters = findAvailableLetters(letters);
 //		HashMap<String, Integer> temp = new HashMap<>(deckOfTiles.getAllTiles());
 //		for(int i=0; i<letters.length; i++){
@@ -41,14 +41,17 @@ public class DictionaryTrie {
                 temp.add(letter);
             }
         }
-        String[] removedBlank = temp.toArray(new String[0]);
+        return temp.toArray(new String[0]);
     }
     public List<String> findAllWords(String[] letters){
         Node current;
         HashMap<String, Integer> lettersContained = new HashMap<>();
         if(containBlank(letters)){
-            removeBlank(letters);
+            letters = removeBlank(letters);
         }
+//        for(String letter: letters){
+//            System.out.println("removed blank letter = "+letter);
+//        }
         List<List<String>> allWords = new ArrayList<>();
         current = root;
         for(Node child: current.children){
@@ -112,13 +115,20 @@ public class DictionaryTrie {
 //            }
 //        }
         //compare if both key and value of prefixHash are subset of lettersContaine
+//        System.out.println("prefix = "+prefix);
+//        exit(0);
         int countNumberOfLettersContained = 0;
         for(String letter: letters){
             if(prefix.contains(letter)){
                 countNumberOfLettersContained++;
             }
         }
-        if(letters.length==3){
+        if(letters.length==1){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 1) && prefix.length() <= (countNumberOfLettersContained + 6);
+        }else if(letters.length==2){
+            return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 2) && prefix.length() <= (countNumberOfLettersContained + 5);
+        }
+        else if(letters.length==3){
             return (countNumberOfLettersContained >= 0 && countNumberOfLettersContained <= 3) && prefix.length() <= (countNumberOfLettersContained + 4);
 //            if(countNumberOfLettersContained==1 && prefix.length()<=5){
 //                return true;
@@ -195,6 +205,12 @@ public class DictionaryTrie {
     /************* find all words that formed by player's current letters **************/
     public List<String> findAllWordsFormedByLetters(String[] letters){
         Node current;
+//        if(containBlank(letters)){
+//			letters = removeBlank(letters);
+//		}
+//        for(String letter: letters){
+//            System.out.println("letter = "+letter);
+//        }
         HashMap<String, Integer> lettersContained = new HashMap<>();
         for(String letter: letters){
             if(lettersContained.containsKey(letter)){
@@ -203,19 +219,24 @@ public class DictionaryTrie {
                 lettersContained.put(letter, 1);
             }
         }
+//        for(Map.Entry<String, Integer> entry: lettersContained.entrySet()){
+//            System.out.println("lettersContained = "+entry.getKey());
+//        }
         List<List<String>> allWords = new ArrayList<>();
         for(Map.Entry<String, Integer> entry: lettersContained.entrySet()){
-            String letter = entry.getKey();
-            current = root;
-            Node n = current.children.stream()
-                    .filter(node -> letter.charAt(0) == node.getLetter())
-                    .findFirst()
-                    .orElse(null);
-            if(n==null){
-                return new ArrayList<>();
+            if(!entry.getKey().equals(" ")){
+                String letter = entry.getKey();
+                current = root;
+                Node n = current.children.stream()
+                        .filter(node -> letter.charAt(0) == node.getLetter())
+                        .findFirst()
+                        .orElse(null);
+                if(n==null){
+                    return new ArrayList<>();
+                }
+                current = n;
+                allWords.add(dfs(current, letter, lettersContained, new ArrayList<>()));
             }
-            current = n;
-            allWords.add(dfs(current, letter, lettersContained, new ArrayList<>()));
         }
 
         List<String> result = new ArrayList<>();
@@ -224,7 +245,8 @@ public class DictionaryTrie {
         }
         return result;
     }
-    private boolean wordIsFormedByLettersContained(String prefix, HashMap<String, Integer> lettersContained){
+    public boolean wordIsFormedByLettersContained(String prefix, HashMap<String, Integer> letters){
+        HashMap<String, Integer> lettersContained = new HashMap<>(letters);
         //System.out.println("PPrefix = "+prefix);
         String[] strArray = prefix.split("");
         boolean contained = true;
@@ -236,10 +258,36 @@ public class DictionaryTrie {
                 prefixHash.put(letter, 1);
             }
         }
-        //compare if both key and value of prefixHash are subset of lettersContained
-        for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
-            if(!(lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(entry.getKey())))){
-                contained=false;
+//        for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
+//            System.out.println("getKey = "+entry.getKey());
+//            System.out.println("getValue = "+entry.getValue());
+//        }
+        if(lettersContained.containsKey(" ")){
+            //System.out.println("true");
+            //exit(0);
+            //compare if both key and value of prefixHash are subset of lettersContained
+            for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
+                if(!lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(" "))){
+                    lettersContained.put(" ", lettersContained.get(" ")-entry.getValue());
+                }else if(!lettersContained.containsKey(entry.getKey()) && (entry.getValue()>lettersContained.get(" "))){
+                    contained = false;
+                }
+                if(lettersContained.containsKey(entry.getKey())){
+                    if(entry.getValue()>lettersContained.get(entry.getKey())){
+                        if((entry.getValue()-lettersContained.get(entry.getKey()))<=lettersContained.get(" ")){
+                            lettersContained.put(" ", lettersContained.get(" ")-(entry.getValue()-lettersContained.get(entry.getKey())));
+                        }else {
+                            contained=false;
+                        }
+                    }
+                }
+            }
+        }else {
+            //compare if both key and value of prefixHash are subset of lettersContained
+            for(Map.Entry<String, Integer> entry: prefixHash.entrySet()){
+                if(!(lettersContained.containsKey(entry.getKey()) && (entry.getValue()<=lettersContained.get(entry.getKey())))){
+                    contained=false;
+                }
             }
         }
         return contained;

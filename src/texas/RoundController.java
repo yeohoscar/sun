@@ -27,7 +27,8 @@ public abstract class RoundController {
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private PotOfMoney mainPot = new PotOfMoney();
-    protected PrintHoldEmGame printGame;
+
+    protected TexasPrintGame printGame;
 
 
     public RoundController(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {
@@ -43,13 +44,12 @@ public abstract class RoundController {
         }
         pots.get(0).setPlayerIds(playersID);
 
-        //this.printGame = new print_game(roundPlayers, (DeckOfCards) deck, pots, communityCards);
         this.communityElements =  new ArrayList<>();
 
-        initComputerPlayerWithCommunityCards(communityElements);
+        initComputerPlayerWithCommunityElements(communityElements);
     }
 
-    private void initComputerPlayerWithCommunityCards(List<HandElement> communityElements) {
+    private void initComputerPlayerWithCommunityElements(List<HandElement> communityElements) {
         for (TexasPlayer player : roundPlayers) {
             if (player instanceof HoldEmComputerPlayer) {
                 ((TexasComputerPlayer) player).setCommunityElements(communityElements);

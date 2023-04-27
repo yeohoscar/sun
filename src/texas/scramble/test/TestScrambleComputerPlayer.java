@@ -8,6 +8,9 @@ import texas.scramble.player.ComputerScramblePlayer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestScrambleComputerPlayer {
 
@@ -24,8 +27,8 @@ public class TestScrambleComputerPlayer {
         String[] letters4 = {"X", "Y", "E", "N", "O", "P", "G"};
         String[][] letters5 = {{"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}, {"X", "Y", "E", "N", "O", "P", "G"}};
         String[] letters7 = {"E", "N", "O", "P", "G", "X", "Y"};
-
-        List<String> allWords = dict.findAllWords(letters7);
+        String[] letters8 = {" ", " ", "A"};
+        List<String> allWords = dict.findAllWords(letters8);
         for(String word: allWords){
             System.out.println(word);
         }
@@ -46,13 +49,14 @@ public class TestScrambleComputerPlayer {
     public void testFindHighestScoreWord() {
         FullDictionary dict = FullDictionary.getFullDictionary();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        String[] letters2 = {"A", "S", "S"};
+        String[] letters2 = {"C"};
         String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
-        String[] letters5 = {"A", "A", "E"};
+        String[] letters5 = {"A", " ", " "};
+        String[] letters8 = {"A", "B", "C", "D", "E"};
         String[] letters4 = {"XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG", "XYENOPG"};
         String letters7 = "ZGHQJ";//these letters can not form any words
 //        HashMap<String, Integer> maxScoreWord = player1.findHighestScoreWord(letters5, dict);
-        String maxScoreWord = player1.findHighestScoreWord(letters5, dict);
+        String maxScoreWord = player1.findHighestScoreWord(letters2, dict);
         System.out.println("word with highest score : " + maxScoreWord);
 //        for(String letter: letters4){
 //            HashMap<String, Integer> maxScoreWord2 = player1.findHighestScoreWord(letter);
@@ -194,6 +198,83 @@ public class TestScrambleComputerPlayer {
         }
         averageCommunityLettersScore = averageCommunityLettersScore/totalNumber;
         System.out.println("average score = "+averageCommunityLettersScore);
+    }
+    @Test
+    public void testWordIsFormedByLettersContained(){
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        FullDictionary dict = FullDictionary.getFullDictionary();
+        /********|||********/
+        String prefix = "ABC";
+        HashMap<String, Integer> letters = new HashMap<>();
+        //A" "" "
+        letters.put("A", 1);
+        letters.put(" ", 2);
+        boolean result = dict.wordIsFormedByLettersContained(prefix, letters);
+        assertEquals(true, result);
+        /********|||********/
+        String prefix1 = "ADC";
+        HashMap<String, Integer> letters1 = new HashMap<>();
+        //AMM" "" "
+        letters1.put("A", 1);
+        letters1.put("M", 2);
+        letters1.put(" ", 2);
+        boolean result1 = dict.wordIsFormedByLettersContained(prefix1, letters1);
+        assertEquals(true, result1);
+        /********|||********/
+        String prefix2 = "LG";
+        HashMap<String, Integer> letters2 = new HashMap<>();
+        //AMM" "" "
+        letters2.put("A", 1);
+        letters2.put("M", 2);
+        letters2.put(" ", 2);
+        boolean result2 = dict.wordIsFormedByLettersContained(prefix2, letters2);
+        assertEquals(true, result2);
+        /********|||********/
+        String prefix3 = "LGK";
+        HashMap<String, Integer> letters3 = new HashMap<>();
+        //AMM" "" "
+        letters3.put("A", 1);
+        letters3.put("M", 2);
+        letters3.put(" ", 2);
+        boolean result3 = dict.wordIsFormedByLettersContained(prefix3, letters3);
+        assertEquals(false, result3);
+        /********|||********/
+        String prefix4 = "AMMPK";
+        HashMap<String, Integer> letters4 = new HashMap<>();
+        //AMM" "" "
+        letters4.put("A", 1);
+        letters4.put("M", 2);
+        letters4.put(" ", 2);
+        boolean result4 = dict.wordIsFormedByLettersContained(prefix4, letters4);
+        assertEquals(true, result4);
+        /********|||********/
+        String prefix5 = "APPLE";
+        HashMap<String, Integer> letters5 = new HashMap<>();
+        //AMM" "" "
+        letters5.put("A", 1);
+        letters5.put("P", 2);
+        letters5.put("L", 1);
+        letters5.put("E", 1);
+        boolean result5 = dict.wordIsFormedByLettersContained(prefix5, letters5);
+        assertEquals(true, result5);
+    }
+    @Test
+    public void testSubmitWords(){
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        /********|||********/
+        String[] lettersOnHand1 = {"A", "B", "C", "D", "E"};
+        HashMap<String, Integer> result1 = player1.submitWords(lettersOnHand1);
+        for(Map.Entry<String, Integer> entry: result1.entrySet()){
+            System.out.println(entry);
+        }
+        System.out.println("*************");
+        /********|||********/
+        String[] lettersOnHand2 = {"A", "B", "M", " ", "E", "Y", "A"};
+        HashMap<String, Integer> result2 = player1.submitWords(lettersOnHand2);
+        for(Map.Entry<String, Integer> entry: result2.entrySet()){
+            System.out.println(entry);
+        }
+        System.out.println("*************");
     }
 }
     /*@test

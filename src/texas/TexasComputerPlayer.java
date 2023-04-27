@@ -10,6 +10,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer{
     public TexasComputerPlayer(String name, int money, int id) {
         super(name, money, id);
     }
+
 //    public void setCommunityCards(List<Tile> communityCards) {
 //        this.communityCards = communityCards;
 //    }

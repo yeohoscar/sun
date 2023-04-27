@@ -50,14 +50,14 @@ public class TexasController extends MainController {
                 numPlayers = scanner.nextInt();
 
                 if (numPlayers <= 9 && numPlayers >= 1) {
-                    playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+                    playerNames = Arrays.copyOfRange(names, 0, numPlayers + 1);
                 } else {
                     throw new IllegalArgumentException();
                 }
             } catch (Exception e) {
                 System.out.println("\nInvalid input.");
-                scanner.nextLine(); // Clear the scanner buffer
             }
+            scanner.nextLine(); // Clear the scanner buffer
         }
 		// every player start with 100 chips
         int startingBank = 100;

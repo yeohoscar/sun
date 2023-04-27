@@ -1,7 +1,6 @@
 package texas.scramble.player;
 
 import poker.Card;
-import poker.DeckOfCards;
 import poker.PotOfMoney;
 import texas.Action;
 import texas.RoundController;
@@ -11,6 +10,7 @@ import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.dictionary.DictionaryTrie;
 import texas.scramble.dictionary.FullDictionary;
 import texas.scramble.deck.Tile;
+import texas.scramble.hand.HandElement;
 
 import java.util.*;
 
@@ -20,9 +20,6 @@ import static texas.Action.FOLD;
 public class ComputerScramblePlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 100;
     public final int averageHandValue = 14;
-
-    //TODO: this average score needs to calculate, current value is estimated value
-    public int averageCommunityLettersScore = 0;
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice = new Random(System.currentTimeMillis());
     private DeckOfTiles deckOfTiles = new DeckOfTiles();
@@ -63,17 +60,15 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         dict.add(word);
     }
 
-    //TODO: not done
     public int getRiskTolerance() {
         int risk = 0;
-        //risk = riskTolerance - getStake() + predicateRiskTolerance();
-        risk = riskTolerance + predicateRiskTolerance();
+        risk = riskTolerance - getStake() + predicateRiskTolerance();
+//        risk = riskTolerance + predicateRiskTolerance();
 
         return risk; // tolerance drops as stake increases
     }
 
 
-    //TODO: not done
     public Card getCard(int num, Card[] hand) {
         if (num >= 0 && num < hand.length) {
             return hand[num];
@@ -136,15 +131,14 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         return score;
     }
 
-    /********************** predicate riskTolerance of different round ************************/
-    //TODO: not done
+    /********************** predicate riskTolerance of different rounds ************************/
     public int predicateRiskTolerance() {
 //        DeckOfCards deck = getDeckOfCards();
         Tile[] publicCards = getCommunityElements().toArray(new Tile[getCommunityElements().size()]);
         Rounds currentRound = getCurrentRound();
         int risk = 0;
         if (currentRound == Rounds.PRE_FLOP) {
-//            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
+            risk += preFlopRiskToleranceHelper(super.getHand().getHand());
         }
 
         if (currentRound == Rounds.FLOP || currentRound == Rounds.TURN) {
@@ -152,20 +146,27 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
 
         if (currentRound == Rounds.RIVER) {
-//            risk += riverRoundRiskToleranceHelper(publicCards, deck);
+            risk += riverRoundRiskToleranceHelper(publicCards, deckOfTiles);
         }
         return risk;
     }
-
-
-
+    public String[] combineCommunityAndLettersOnHand(Tile[] publicCards, HandElement[] lettersOnNHand){
+        ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
+        for(Tile communityLetter: publicCards){
+            letters.add(communityLetter.name());
+        }
+        for(HandElement letterOnHand: lettersOnNHand){
+            letters.add(letterOnHand.toString());
+        }
+        return letters.toArray(new String[0]);
+    }
 
 
     /******************** predicate pre-flop round ********************/
-    private int calculateHandScore(Tile[] hand) {
+    private int calculateHandScore(HandElement[] hand) {
         int score = 0;
-        for (Tile tile : hand) {
-            switch (tile.name()) {
+        for (HandElement handElement : hand) {
+            switch (handElement.toString()) {
                 case "E", "A", "I", "O", "N", "R", "T", "L", "S", "U" -> score += 1;
                 case "D", "G" -> score += 2;
                 case "B", "C", "M", "P" -> score += 3;
@@ -179,28 +180,30 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         return score;
     }
 
-    public int preFlopRiskToleranceHelper(Tile[] hand) {
+    public int preFlopRiskToleranceHelper(HandElement[] hand) {
+        int risk = 0;
         if (calculateHandScore(hand) >= averageHandValue) {
             //TODO: the probability of taking raise action is high, just determine the risk value
+            risk = 8;
         } else {
             //TODO: the probability of taking raise action is low, just determine the risk value
+            risk = 16;
         }
-        return 0;
+        return risk;
     }
 
     /********************** predicate flop and turn round ************************/
-    //TODO: not done
     public int predicateBestWordAndRisk(Tile[] publicCards, Rounds currentRound) {
-        //TODO: have not combine community letters and letters on hand
+        int risk = 0;
         FullDictionary dict = FullDictionary.getFullDictionary();
-
-        ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
-        String[] lettersOnHand = letters.toArray(new String[0]);
-
+        //combine community letters and letters on hand
+        String[] lettersOnHand = combineCommunityAndLettersOnHand(publicCards, this.getHand().getHand());
+        //obtain community letters
         ArrayList<String> community = new ArrayList<>();
+        for(Tile publicCard: publicCards){
+            community.add(publicCard.name());
+        }
         String[] communityLetters = community.toArray(new String[0]);
-
-        //TODO:  average score of community letters score should be calculated before flop/turn round start
         /***************** average score of community letters score should be calculated before flop/turn round start *******************/
         //calculate average score of current community letters score
         float averageCommunityLettersScore = averageScoreCalculator(dict.findAllWords(communityLetters));
@@ -210,10 +213,12 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 //        averageScore = Math.round((float) averageScore/totalWordNumber);
         if (averageScore >= averageCommunityLettersScore) {
             //TODO: determine the risk
+            risk = 10;
         } else {
             //TODO: determine the risk
+            risk = 20;
         }
-        return 0;
+        return risk;
         /*//3-find the highest score word of all combination, then compare it with a value(not calculated yet)
         HashMap<String, Integer> theFinalWord = new HashMap<>(findHighestScoreWordHelper(highestWords));
         int theFinalWordScore = 0;
@@ -232,15 +237,16 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     }
 
     /********************** predicate river round ************************/
-    //TODO: not done
-    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfCards deck) {
-        //TODO: have not combine community letters and letters on hand
+    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfTiles deck) {
+        int risk = 0;
         DictionaryTrie dict = FullDictionary.getFullDictionary();
-
-        ArrayList<String> letters = new ArrayList<>();//store letters both from community letters and letters on hand
-        String[] lettersOnHand = letters.toArray(new String[0]);
-
+        //combine community letters and letters on hand
+        String[] lettersOnHand = combineCommunityAndLettersOnHand(publicCards, this.getHand().getHand());
+        //obtain community letters
         ArrayList<String> community = new ArrayList<>();
+        for(Tile publicCard: publicCards){
+            community.add(publicCard.name());
+        }
         String[] communityLetters = community.toArray(new String[0]);
 
         /***************** average score of community letters score should be calculated before flop/turn round start *******************/
@@ -253,12 +259,84 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 //        averageScore = Math.round((float) averageScore/totalWordNumber);
         if (wordScore >= averageCommunityLettersScore) {
             //TODO: determine the risk
+            risk = 10;
         } else {
             //TODO: determine the risk
+            risk = 20;
         }
-        return 0;
+        return risk;
     }
 
+    /**********************|||||||||||||************************/
+    public HashMap<String, Integer> submitWords(String[] lettersOnHand){
+//        String[] lettersOnHand = combineCommunityAndLettersOnHand(publicCards, this.getHand().getHand());
+        HashMap<String, Integer> submitWords = new HashMap<>();
+        boolean lettersFinished = false;
+        HashMap<String, Integer> lettersContained = new HashMap<>();
+        for(String letter: lettersOnHand){
+            if(lettersContained.containsKey(letter)){
+                lettersContained.put(letter, lettersContained.get(letter)+1);
+            }else {
+                lettersContained.put(letter, 1);
+            }
+        }
+        String word = findHighestScoreWord(lettersOnHand, dict);
+        String[] word1 = word.split("");
+        submitWords.put(word, calculateWordScore(word));
+        while (!lettersFinished){
+            if(word.length()==7){
+                lettersFinished = true;
+            }else {
+//                System.out.println("word = "+word);
+                //filter out remaining letters
+                for(String letter: word1){
+                    if(lettersContained.containsKey(letter)){
+                        lettersContained.put(letter, lettersContained.get(letter)-1);
+                    }else {
+                        lettersContained.put(" ", lettersContained.get(" ")-1);
+                    }
+                }
+//                for(Map.Entry<String, Integer> entry: lettersContained.entrySet()){
+//                    if(entry.getValue()!=0){
+//                        System.out.println("remaining letters = "+entry.getKey());
+//                        System.out.println("number of this letter = "+entry.getValue());
+//                    }
+//                }
+                if(noMoreRemainingLetters(lettersContained)){
+                    return submitWords;
+                }
+                //put remaining letters to a String[] array
+                ArrayList<String> remainingLetters = new ArrayList<>();
+                for(Map.Entry<String, Integer> entry: lettersContained.entrySet()){
+                    if(entry.getValue()>0){
+                        for(int i=0; i<entry.getValue(); i++){
+                            remainingLetters.add(entry.getKey());
+                        }
+                    }
+                }
+                String[] remainingLetters1 = new String[remainingLetters.size()];
+                remainingLetters.toArray(remainingLetters1);
+                //find highest score word with remaining letters
+                word = findHighestScoreWord(remainingLetters1, dict);
+                word1 = word.split("");
+                if(!word.equals("^")){
+                    submitWords.put(word, calculateWordScore(word));
+                }else {
+                    return submitWords;
+                }
+            }
+        }
+        return submitWords;
+    }
+    public boolean noMoreRemainingLetters(HashMap<String, Integer> remainingLetters){
+        boolean empty = true;
+        for(Map.Entry<String, Integer> entry: remainingLetters.entrySet()){
+            if(entry.getValue()!=0){
+                empty=false;
+            }
+        }
+        return empty;
+    }
     /**********************|||||||||||||************************/
 
     //TODO: not done

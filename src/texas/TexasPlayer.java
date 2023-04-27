@@ -335,8 +335,7 @@ public abstract class TexasPlayer extends poker.Player {
 //		char[] charArray = combination.toCharArray();
 //		String[] letters = new String[charArray.length];
 //
-//		for (int i = 0; i < charArray.length; i++) {
-//			letters[i] = Character.toString(charArray[i]);
+//		for //			letters[i] = Character.toString(charArray[i]);(int i = 0; i < charArray.length; i++) {
 //		}
 
 //		if(containBlank(letters)){

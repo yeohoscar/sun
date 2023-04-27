@@ -3,7 +3,7 @@ package texas.scramble.controller;
 import texas.MainController;
 import texas.scramble.deck.*;
 import texas.scramble.player.ComputerScramblePlayer;
-import texas.scramble.player.TexasHumanScramblePlayer;
+import texas.scramble.player.HumanScramblePlayer;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class ScrambleController extends MainController {
 
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0) {
-                texasPlayers.add(new TexasHumanScramblePlayer(names[i].trim(), bank, i));
+                texasPlayers.add(new HumanScramblePlayer(names[i].trim(), bank, i));
             } else {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
             }
@@ -115,20 +115,20 @@ public class ScrambleController extends MainController {
                     Random rand = new Random();
                     int j = 1;
                     for (int i = 0; i < numPlayers; i++) {
-                        int idx = rand.nextInt() % (numPlayers - i) + j;
+                        int idx = Math.abs(rand.nextInt()) % (numPlayers - i) + j;
                         String tmp = names[j];
                         names[j] = names[idx];
                         names[idx] = tmp;
                         j++;
                     }
-                    playerNames = Arrays.copyOfRange(names, 0, numPlayers);
+                    playerNames = Arrays.copyOfRange(names, 0, numPlayers + 1);
                 } else {
                     throw new IllegalArgumentException();
                 }
             } catch (Exception e) {
                 System.out.println("\nInvalid input.");
-                scanner.nextLine(); // Clear the scanner buffer
             }
+            scanner.nextLine(); // Clear the scanner buffer
         }
         // every player start with 100 chips
         int startingBank = 100;
