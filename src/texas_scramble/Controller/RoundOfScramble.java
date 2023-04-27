@@ -8,13 +8,18 @@ import texas.RoundController;
 import texas.Rounds;
 import texas.TexasPlayer;
 import texas_hold_em.ComputerTexasPlayer;
+import texas_hold_em.Hand;
 import texas_scramble.Deck.*;
+import texas_scramble.Hand.HandElement;
 import texas_scramble.Player.ComputerScramblePlayer;
+import texas_scramble.Player.HumanScramblePlayer;
 import texas_scramble.PrintGame.PrintScramble;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 public class RoundOfScramble extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
     protected List<Tile> communityTiles;
@@ -56,11 +61,18 @@ public class RoundOfScramble extends RoundController {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
                     //TODO get words and FinalValue For each Player
-                    Card[] communityCardsArr = new Card[communityCards.size()];
-                    player.findBestHand(communityCards.toArray(communityCardsArr), (DeckOfCards) deck);
-                    System.out.println(player.getCurrentBestHand());
-                    int handValue = player.getCurrentBestHand().getValue();
-                    valueRank.put(i, handValue);
+                    if (player instanceof HumanScramblePlayer) {
+                        valueRank.put(i, ((HumanScramblePlayer) player).submitWord(communityTiles));
+                    }else if(player instanceof ComputerScramblePlayer) {
+                        String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
+                        HashMap<String, Integer> CPUWords = ((ComputerScramblePlayer) player).submitWords(playerHand);
+                        int handValue = 0;
+                        for (Map.Entry<String, Integer> entry : CPUWords.entrySet()) {
+                            System.out.println(player.getName()+" submitted word \"" + entry.getKey() + "\" Value = " + entry.getValue());
+                            handValue+=entry.getValue();
+                        }
+                        valueRank.put(i, handValue);
+                    }
                 }
             }
             // find who has the largest handValue
@@ -96,6 +108,9 @@ public class RoundOfScramble extends RoundController {
 
         }
     }
+
+
+
     public void roundCounter(int counter) {
         int roundCounter = counter;
 
@@ -196,5 +211,19 @@ public class RoundOfScramble extends RoundController {
         System.out.println();
         printScramble.table(Rounds.PRE_FLOP);
         roundMove(Rounds.PRE_FLOP);
+    }
+
+    public String[] combineToString(List<Tile> communityTiles,Tile[] hand){
+        String[] str = new String[7];
+        int i=0;
+        for(Tile tile : communityTiles){
+            str[i]=tile.name();
+            i++;
+        }
+        for(Tile handTile : hand){
+            str[i]= handTile.name();
+            i++;
+        }
+        return str;
     }
 }

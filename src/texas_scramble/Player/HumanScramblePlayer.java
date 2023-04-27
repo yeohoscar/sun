@@ -5,9 +5,7 @@ import texas_scramble.Deck.Tile;
 import texas_scramble.Dictionary.DictionaryTrie;
 import texas_scramble.Hand.ScrambleHand;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class HumanScramblePlayer extends HumanTexasPlayer {
@@ -23,8 +21,8 @@ public class HumanScramblePlayer extends HumanTexasPlayer {
 
     }
 
-    public void submitWord() {
-        this.newHand = (Tile[]) hand.getHand();
+    public int submitWord(List<Tile> communityTiles) {
+        combineTiles(communityTiles);
         ArrayList<String> words = new ArrayList<>();
         words.add(askQuestion());
         while(wordLength>0){
@@ -46,22 +44,45 @@ public class HumanScramblePlayer extends HumanTexasPlayer {
         }
 
         System.out.println("The best word you can make is: "+bestWord((ScrambleHand) hand)+"!");
+
+        return finalValue;
     }
 
 
     public boolean canFormString(Tile[] newHand, String inputString) {
-        char[] stringArray = inputString.toCharArray();
-        Arrays.sort(newHand);
-        Arrays.sort(stringArray);
-        int i = 0;
-        int j = 0;
-        while (i < newHand.length && j < stringArray.length) {
-            if (newHand[i].name().charAt(0) == stringArray[j]) {
-                j++;
-            }
-            i++;
+        Map<String, Integer> charFreq = new HashMap<>();
+        for (Tile tile : newHand) {
+            charFreq.put(tile.name(), charFreq.getOrDefault(tile.name(), 0) + 1);
         }
-        return j == stringArray.length;
+
+    // Check if the string can be formed from the characters in the list
+        for (int i = 0; i < inputString.length(); i++) {
+            char c = inputString.charAt(i);
+            String str = String.valueOf(c);
+            if(!charFreq.containsKey(str)&&charFreq.get(" ") != 0){
+                charFreq.put(" ", charFreq.get(" ") - 1);
+                continue;
+            }
+            else if (!charFreq.containsKey(str) || charFreq.get(str) == 0) {
+                // The character c is not in the list or has already been used up
+                return false;
+            }
+            // Decrement the frequency of the character c in the list
+            charFreq.put(str, charFreq.get(str) - 1);
+        }
+
+    // All characters in the string can be formed from the list
+        return true;
+    }
+
+    public void combineTiles(List<Tile> communityTiles){
+        Tile[] allTiles = (Tile[]) Arrays.copyOf(hand.getHand(), 2 + communityTiles.size());
+        int index = 1;
+        for (Tile tile : communityTiles) {
+            allTiles[index++] = tile;
+        }
+        this.newHand=allTiles;
+
     }
 
     public String askQuestion(){
@@ -92,12 +113,15 @@ public class HumanScramblePlayer extends HumanTexasPlayer {
 
     public void removeTileFromNewHand(String letter) {
         Tile[] newArray = new Tile[newHand.length - 1];
-        int j=0;
-        for (int i = 0; i < newHand.length; i++) {
-            if (newHand[i].name() != letter) {
-                newArray[j] = newHand[i];
-                j++;
+        int j = 0;
+        for (Tile tile : newHand) {
+            if(tile.name().equals(" ")&&!Arrays.asList(newHand).contains(letter)){
+                continue;
             }
+            else if (tile.name().equals(letter)) {
+                continue;
+            }
+            newArray[j++] = tile;
         }
         newHand = newArray;
     }
