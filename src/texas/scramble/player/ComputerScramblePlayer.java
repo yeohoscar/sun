@@ -390,10 +390,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         } else {
             int risk = getRiskTolerance();
             int random = Math.abs(dice.nextInt()) % 60;
-            System.out.println("shouldSee getRiskTolerance() = "+risk);
-            System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-            System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
-            System.out.println();
+//            System.out.println("shouldSee getRiskTolerance() = "+risk);
+//            System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
+//            System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
+//            System.out.println();
 //            return getCurrentBestHand().getRiskWorthiness()+risk-random;
             return random <= getCurrentBestHand().getRiskWorthiness() + risk;
 //            return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
@@ -409,10 +409,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
         int risk = getRiskTolerance();
         int random = Math.abs(dice.nextInt()) % 60;
-        System.out.println("shouldRaise getRiskTolerance() = "+risk);
-        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-        System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
-        System.out.println();
+//        System.out.println("shouldRaise getRiskTolerance() = "+risk);
+//        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
+//        System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
+//        System.out.println();
 //        return getCurrentBestHand().getRiskWorthiness()+risk-random;
         return random <= getCurrentBestHand().getRiskWorthiness() + risk;
 //        return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
@@ -422,10 +422,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     protected boolean shouldAllIn(PotOfMoney pot) {
         int risk = getRiskTolerance();
         int random = Math.abs(dice.nextInt()) % 75;
-        System.out.println("shouldAllIn getRiskTolerance() = "+risk);
-        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-        System.out.println("Math.abs(dice.nextInt()) % 75 = "+random);
-        System.out.println();
+//        System.out.println("shouldAllIn getRiskTolerance() = "+risk);
+//        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
+//        System.out.println("Math.abs(dice.nextInt()) % 75 = "+random);
+//        System.out.println();
 //        return getCurrentBestHand().getRiskWorthiness()+risk-random;
         return random<=getCurrentBestHand().getRiskWorthiness()+risk;
 //        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
