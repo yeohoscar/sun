@@ -29,7 +29,7 @@ public class PrintScramble extends TexasPrintGame {
     /************************ this method will print the game table and cards of each player and public cards *****************************/
     public void cardPrinter(boolean showDown) {
 
-        //showDown = true;
+        showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
@@ -125,7 +125,18 @@ public class PrintScramble extends TexasPrintGame {
                             } else if (i == 2) {
                                 int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
                                 int value2 = texasPlayers.get(j).getHand().getHand()[1].getValue();
-                                sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                if(value1==10 && value2!=10){
+                                    sb.append("│  ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                }
+                                if(value1!=10 && value2==10){
+                                    sb.append("│   ").append(value1).append("│").append("  ").append("│  ").append(value2).append("│").append(" │ ");
+                                }
+                                if(value1!=10 && value2!=10){
+                                    sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                }
+                                if(value1==10 && value2==10){
+                                    sb.append("│  ").append(value1).append("│").append("  ").append("│  ").append(value2).append("│").append(" │ ");
+                                }
                             }
                         } else {
                             //if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
@@ -141,7 +152,18 @@ public class PrintScramble extends TexasPrintGame {
                                 } else if (i == 2) {
                                     int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
                                     int value2 = texasPlayers.get(j).getHand().getHand()[1].getValue();
-                                    sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                    if(value1==10 && value2!=10){
+                                        sb.append("│  ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                    }
+                                    if(value1!=10 && value2==10){
+                                        sb.append("│   ").append(value1).append("│").append("  ").append("│  ").append(value2).append("│").append(" │ ");
+                                    }
+                                    if(value1!=10 && value2!=10){
+                                        sb.append("│   ").append(value1).append("│").append("  ").append("│   ").append(value2).append("│").append(" │ ");
+                                    }
+                                    if(value1==10 && value2==10){
+                                        sb.append("│  ").append(value1).append("│").append("  ").append("│  ").append(value2).append("│").append(" │ ");
+                                    }
                                 }
                             } else {
                                 sb.append("│    │").append("  ").append("│    │").append(" │ ");

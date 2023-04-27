@@ -3,6 +3,7 @@ package texas;
 import poker.*;
 import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.dictionary.DictionaryTrie;
+import texas.scramble.hand.HandElement;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ public abstract class TexasPlayer extends poker.Player {
 	protected boolean dealer = false;
 
 	private boolean onTurn = false;
+	private List<? extends HandElement> communityElements;
 
 	private Deck deck;
 
@@ -59,7 +61,39 @@ public abstract class TexasPlayer extends poker.Player {
 	public void resetStake() {
 		stake = -1;
 	}
-	
+
+
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	// For Community Cards
+	//--------------------------------------------------------------------//
+	//--------------------------------------------------------------------//
+	public List<? extends HandElement> getCommunityElements(){
+		return communityElements;
+	}
+
+	public void setCommunityElements(List<? extends HandElement> communityElements){
+		this.communityElements = communityElements;
+	}
+
+
+	public Rounds getCurrentRound() {
+		int size = communityElements.size();
+		switch (size) {
+			case 3 -> {
+				return Rounds.FLOP;
+			}
+			case 4 -> {
+				return Rounds.TURN;
+			}
+			case 5 -> {
+				return Rounds.RIVER;
+			}
+			default -> {
+				return Rounds.PRE_FLOP;
+			}
+		}
+	}
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Display Behaviour 

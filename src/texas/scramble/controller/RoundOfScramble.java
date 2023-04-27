@@ -155,6 +155,7 @@ public class RoundOfScramble extends RoundController {
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.setOnTurn(true);
+                currentPlayer.setCommunityElements(communityTiles);
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
                 currentPlayer.setOnTurn(false);

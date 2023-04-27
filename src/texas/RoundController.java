@@ -47,6 +47,7 @@ public abstract class RoundController {
         this.communityElements =  new ArrayList<>();
 
         initComputerPlayerWithCommunityElements(communityElements);
+
     }
 
     private void initComputerPlayerWithCommunityElements(List<HandElement> communityElements) {

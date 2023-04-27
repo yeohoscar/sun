@@ -2,13 +2,16 @@ package texas.scramble.test;
 
 //import org.junit.test;
 import org.junit.jupiter.api.Test;
+import texas.scramble.deck.Tile;
 import texas.scramble.dictionary.DictionaryTrie;
 import texas.scramble.dictionary.FullDictionary;
+import texas.scramble.hand.HandElement;
 import texas.scramble.player.ComputerScramblePlayer;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,7 +68,18 @@ public class TestScrambleComputerPlayer {
     }
 
 
+    @Test
+    public void testPreFlopRound(){
+        FullDictionary dict = FullDictionary.getFullDictionary();
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        Random dice = new Random(System.currentTimeMillis());
 
+        /********|||********/
+        HandElement[] hand1 = {new Tile("D", 2), new Tile("Y", 4)};
+        int risk1 = player1.preFlopRiskToleranceHelper(hand1);
+        System.out.println("risk1 = "+risk1);
+        System.out.println("For shouldSee: \n"+"getRiskTolerance() = "+risk1+"\n Math.abs(dice.nextInt()) % 120 = "+Math.abs(dice.nextInt()) % 120);
+    }
     @Test
     public void testFlopRound() {
         FullDictionary dict = FullDictionary.getFullDictionary();
