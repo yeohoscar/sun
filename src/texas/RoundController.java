@@ -47,6 +47,7 @@ public abstract class RoundController {
         this.communityElements =  new ArrayList<>();
 
         initComputerPlayerWithCommunityElements(communityElements);
+//        this.printGame = new PrintHoldEmGame(players, pots)
 
     }
 
@@ -244,8 +245,11 @@ public abstract class RoundController {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
+                currentPlayer.setOnTurn(true);
+                currentPlayer.setCommunityElements(communityTiles);
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
+                currentPlayer.setOnTurn(false);
             }
 
             currentIndex++;
