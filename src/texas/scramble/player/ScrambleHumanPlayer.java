@@ -28,7 +28,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         String bestWord = bestWord(newHand);
         //ask user to enter a word
         words.add(askQuestion(wordLength));
-        while(wordLength>0){
+        while(newHand.length > 0) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Available Tiles: ");
             for(Tile tile : newHand){
