@@ -54,14 +54,13 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
                 System.out.println(getName()+" submitted word \"" + word + "\" Value = " +valueOfWord);
             }
         }
-        if (newHand.length==0){
-            finalValue+=50;
+
+        if (words.size() != 1 && newHand.length == 0) {
+            finalValue += 50;
         }
-        if(words.size()==1&&newHand.length==0){
-            finalValue+=50;
-        }
+
         //print the best word human player can make with his hand
-        System.out.println("The best word you can make is: \""+bestWord+"\" Value = "+calculateWordScore(bestWord));
+        System.out.println("The best word you can make is: \""+bestWord+"\" Value = " + calculateWordScore(bestWord));
 
         return finalValue;
     }
@@ -181,7 +180,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
     }
 
     //calculate score for each word
-    private int calculateHandScore(String word,Tile[] hand) {
+    private int calculateHandScore(String word, Tile[] hand) {
         int score = 0;
         for (char letter : word.toCharArray()) {
             // if this letter used " " this letter worth 0 score
@@ -198,6 +197,9 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
                 }
             }
         }
+
+        if (word.length() == 7) score += 100;
+
         return score;
     }
 }
