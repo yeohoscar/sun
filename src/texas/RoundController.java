@@ -250,7 +250,7 @@ public abstract class RoundController {
     public void preFlopRound() {
         blindBet();
         //after small blind and big blind, deal two cards to each player
-        for (Player player : roundPlayers) {
+        for (TexasPlayer player : roundPlayers) {
 
             player.dealTo(deck);
             System.out.println(player);

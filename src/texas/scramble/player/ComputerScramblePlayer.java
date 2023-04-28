@@ -22,7 +22,6 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     public final int averageHandValue = 4;
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice = new Random(System.currentTimeMillis());
-    private DeckOfTiles deckOfTiles = new DeckOfTiles();
 
     private DictionaryTrie dict;
 
@@ -105,6 +104,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     public int average() {
         int total = 0;
         ArrayList<String> average = new ArrayList<>();
+        DeckOfTiles deckOfTiles = new DeckOfTiles();
         for (Map.Entry<String, Integer> entry : deckOfTiles.getAllTiles().entrySet()) {
             for (int i = 0; i < entry.getValue(); i++) {
                 average.add(entry.getKey());
@@ -156,7 +156,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         }
 
         if (currentRound == Rounds.RIVER) {
-            risk += riverRoundRiskToleranceHelper(publicCards, deckOfTiles);
+            risk += riverRoundRiskToleranceHelper(publicCards);
         }
         return risk;
     }
@@ -248,7 +248,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     }
 
     /********************** predicate river round ************************/
-    public int riverRoundRiskToleranceHelper(Tile[] publicCards, DeckOfTiles deck) {
+    public int riverRoundRiskToleranceHelper(Tile[] publicCards) {
         int risk = 0;
         DictionaryTrie dict = FullDictionary.getFullDictionary();
         //combine community letters and letters on hand

@@ -11,10 +11,6 @@ abstract public class TexasComputerPlayer extends TexasPlayer {
         super(name, money, id);
     }
 
-//    public void setCommunityCards(List<Tile> communityCards) {
-//        this.communityCards = communityCards;
-//    }
-
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
     // For Community Cards
@@ -50,5 +46,4 @@ abstract public class TexasComputerPlayer extends TexasPlayer {
 //    abstract int preFlopRiskToleranceHelper();
 //    abstract int riverRoundRiskToleranceHelper();
     protected abstract int predicateRiskTolerance();
-
 }
