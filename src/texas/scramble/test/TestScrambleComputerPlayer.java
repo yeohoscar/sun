@@ -290,7 +290,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testSubstituteBlank(){
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         /********|||********/
         HashMap<String, Integer> words = new HashMap<>();
         words.put("APPLE", 15);
