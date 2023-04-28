@@ -104,7 +104,7 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
         }
         System.out.println();
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
-        String word = input.nextLine().trim();
+        String word = input.nextLine().trim().toUpperCase();
         while (!canFormString(newHand,word )||!FullDictionary.getFullDictionary().isValidWord(word)) {
             System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters) or g to give up: ");
             word = input.nextLine().trim();
