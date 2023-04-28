@@ -1,9 +1,7 @@
 package texas;
 
-import poker.Card;
 import poker.PotOfMoney;
 
-import java.util.ArrayList;
 import java.util.List;
 
 abstract public class TexasPrintGame {

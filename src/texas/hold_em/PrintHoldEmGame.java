@@ -5,7 +5,6 @@ import poker.PotOfMoney;
 import texas.TexasPlayer;
 import texas.TexasPrintGame;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrintHoldEmGame extends TexasPrintGame {

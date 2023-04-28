@@ -5,7 +5,6 @@ import texas.TexasPlayer;
 import texas.TexasPrintGame;
 import texas.scramble.deck.Tile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrintScramble extends TexasPrintGame {
