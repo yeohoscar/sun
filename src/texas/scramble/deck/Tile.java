@@ -5,10 +5,9 @@ import texas.scramble.hand.HandElement;
 public record Tile(String name, int value) implements HandElement {
     @Override
     public String toString() {
-        if (name.length() == 0) {
-            return "[BLANK]";
+        if (name.equals(" ")) {
+            return "BLANK";
         }
-//        return "[" + name + "]";
         return name;
     }
     @Override
