@@ -28,7 +28,6 @@ public class PrintScramble extends TexasPrintGame {
 
     /************************ this method will print the game table and cards of each player and public cards *****************************/
     public void cardPrinter(boolean showDown) {
-
 //        showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
@@ -114,13 +113,9 @@ public class PrintScramble extends TexasPrintGame {
                         sb.append(cardEdge[1]).append("  ").append(cardEdge[1]).append(" │ ");
                     } else {
                         if (showDown) {
-//                            index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-//                            index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                             if (i == 1) {
                                 String letter1 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[0]).toString());
                                 String letter2 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[1]).toString());
-//                                String tmp = String.format("%2s", ranks[index1[1]]);
-//                                String tmp1 = String.format("%2s", ranks[index2[1]]);
                                 sb.append("│").append(letter1).append("  │").append("  ").append("│").append(letter2).append("  │").append(" │ ");
                             } else if (i == 2) {
                                 int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
@@ -139,15 +134,10 @@ public class PrintScramble extends TexasPrintGame {
                                 }
                             }
                         } else {
-                            //if (texasPlayers.get(j) instanceof HumanTexasPlayer) {
                             if (texasPlayers.get(j).isOnTurn()) {
-//                                index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
-//                                index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {
                                     String letter1 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[0]).toString());
                                     String letter2 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[1]).toString());
-//                                    String tmp = String.format("%2s", ranks[index1[1]]);
-//                                    String tmp1 = String.format("%2s", ranks[index2[1]]);
                                     sb.append("│").append(letter1).append("  │").append("  ").append("│").append(letter2).append("  │").append(" │ ");
                                 } else if (i == 2) {
                                     int value1 = texasPlayers.get(j).getHand().getHand()[0].getValue();
@@ -277,51 +267,11 @@ public class PrintScramble extends TexasPrintGame {
             }
         }
     }
-//    /************************ this method will return the index of suit and rank of one card in suits[] and ranks[] *****************************/
-//    public int[] getIndex(Tile card, String[] suits, String[] ranks) {
-//        int[] result = new int[2];
-//        int suitIndex;
-//        int rankIndex;
-//        switch (card.getSuit()) {
-//            case "hearts" -> {
-//                suitIndex = 0;
-//            }
-//            case "diamonds" -> {
-//                suitIndex = 1;
-//            }
-//            case "clubs" -> {
-//                suitIndex = 2;
-//            }
-//            default -> {
-//                suitIndex = 3;
-//            }
-//        }
-//        if (card.isAce()) {
-//            rankIndex = 0;
-//        } else if (card.isJack()) {
-//            rankIndex = 10;
-//        } else if (card.isQueen()) {
-//            rankIndex = 11;
-//        } else if (card.isKing()) {
-//            rankIndex = 12;
-//        } else {
-//            rankIndex = card.getRank() - 1;
-//        }
-//        result[0] = suitIndex;
-//        result[1] = rankIndex;
-//        return result;
-//    }
-
     /************************ this method will print all public cards on game table *****************************/
     public void printPublicCard(List<Tile> communityCards) {
         StringBuilder sb = new StringBuilder();
-        int suitIndex;
-        int rankIndex;
         for (int j = 0; j <= cardHeight; j++) {
             for (int i = 0; i < communityCards.size(); i++) {
-//                int[] index = getIndex(communityCards.get(i), suits, ranks);
-//                suitIndex = index[0];
-//                rankIndex = index[1];
                 String letter1 = String.format("%2s", communityCards.get(i).toString());
                 int value1 = communityCards.get(i).getValue();
                 switch (j) {
