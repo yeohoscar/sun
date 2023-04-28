@@ -228,7 +228,7 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
             }else {
                 //filter out remaining letters
                 for(String letter: word1){
-                    if(lettersContained.containsKey(letter)){
+                    if(lettersContained.containsKey(letter) && lettersContained.get(letter)>0){
                         lettersContained.put(letter, lettersContained.get(letter)-1);
                     }else {
                         lettersContained.put(" ", lettersContained.get(" ")-1);
@@ -258,7 +258,34 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
                 }
             }
         }
-        return submitWords;
+        return substituteBlank(submitWords, lettersOnHand);
+    }
+    public HashMap<String, Integer> substituteBlank(HashMap<String, Integer> words, String[] lettersOnHand){
+        HashMap<String, Integer> lettersContained = new HashMap<>();
+        for(String letter: lettersOnHand){
+            if(lettersContained.containsKey(letter)){
+                lettersContained.put(letter, lettersContained.get(letter)+1);
+            }else {
+                lettersContained.put(letter, 1);
+            }
+        }
+        HashMap<String, Integer> finalWords = new HashMap<>(words);
+        for(Map.Entry<String, Integer> entry: words.entrySet()){
+            String[] word1 = entry.getKey().split("");
+            ArrayList<String> wordTemp = new ArrayList<>();
+            for(String letter: word1){
+                if(lettersContained.containsKey(letter) && lettersContained.get(letter)>0){
+                    wordTemp.add(letter);
+                    lettersContained.put(letter, lettersContained.get(letter)-1);
+                }else {
+                    wordTemp.add(" ");
+                    lettersContained.put(" ", lettersContained.get(" ")-1);
+                }
+            }
+            String word = String.join("", wordTemp);
+            finalWords.put(entry.getKey(), calculateWordScore(word));
+        }
+        return finalWords;
     }
     public boolean noMoreRemainingLetters(HashMap<String, Integer> remainingLetters){
         boolean empty = true;
