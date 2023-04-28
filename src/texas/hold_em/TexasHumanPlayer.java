@@ -65,6 +65,7 @@ public class TexasHumanPlayer extends TexasPlayer {
 
 				for (byte b : input) {
 					switch (((char) b)) {
+						case '\0', '\n' -> {}
 						case '1' -> {
 							if (shouldSee(pot)) chosenAction = SEE;
 						}
@@ -78,6 +79,7 @@ public class TexasHumanPlayer extends TexasPlayer {
 							chosenAction = FOLD;
 						}
 						default -> {
+							System.out.println("Invalid option.");
 						}
 					}
 				}

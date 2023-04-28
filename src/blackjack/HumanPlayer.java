@@ -46,7 +46,7 @@ public class HumanPlayer extends Player {
 
     @Override
     Action chooseAction(BlackjackHand hand) {
-        System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender");
+        System.out.print("\n>> Pick an option: 1. Hit  2. Stand  3. Double Down  4. Split  5. Surrender  ");
             byte[] input = new byte[100];
 
             try {
@@ -54,6 +54,7 @@ public class HumanPlayer extends Player {
 
                 for (byte b : input) {
                     switch (((char) b)) {
+                        case '\0', '\n': break;
                         case '1':
                             return Action.HIT;
                         case '2':
@@ -73,10 +74,12 @@ public class HumanPlayer extends Player {
                                 return Action.SURRENDER;
                             }
                         default:
-                            break;
+                            System.out.println("Invalid option.");
                     }
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         return Action.INVALID;
     }
 

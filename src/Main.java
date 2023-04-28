@@ -11,18 +11,21 @@ public class Main {
 
         while (true) {
             try {
-                System.out.print("\n>> Pick an option: 1. Poker  2. Blackjack  3. Texas Hold'em  4. Texas Scramble  ");
+                System.out.print("\n>> Pick an option: 1. Poker  2. Blackjack  3. Texas Hold'em  4. Texas Scramble  5. Quit  ");
 
                 System.in.read(input);
 
                 for (byte b : input) {
                     switch (((char) b)) {
+                        case '\0', '\n' -> {}
                         case '1' -> GameOfPoker.startGame();
                         case '2' -> GameOfBlackJack.startGame();
                         case '3' -> TexasController.startGame();
                         case '4' -> ScrambleController.startGame();
-                        default -> {
+                        case '5' -> {
+                            return;
                         }
+                        default -> System.out.println("Invalid option.");
                     }
                 }
             } catch (Exception e) {
