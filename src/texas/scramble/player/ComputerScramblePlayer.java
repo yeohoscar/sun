@@ -65,8 +65,8 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
                     - VARIABILITY / 2;
         }
-        System.out.println("riskTolerance = "+riskTolerance);
-        System.out.println("getStake() = "+getStake());
+//        System.out.println("riskTolerance = "+riskTolerance);
+//        System.out.println("getStake() = "+getStake());
         risk = riskTolerance - getStake() + predicateRiskTolerance();
 //        risk = riskTolerance + predicateRiskTolerance();
 
@@ -199,7 +199,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             //TODO: the probability of taking raise action is low, just determine the risk value
             risk = 6;
         }
-        System.out.println("risk = "+risk);
+//        System.out.println("risk = "+risk);
         return risk;
     }
 
@@ -363,7 +363,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         if (shouldSee(pot)){
             action.add(SEE);
         }
-        if (shouldAllIn(pot) && action.size()==0){
+        if (shouldAllIn(pot) && (action.size()==0 || action.size()==2)){
              action.add(ALL_IN);
         }
         if(action.size()==1){

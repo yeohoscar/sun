@@ -33,7 +33,7 @@ public class PrintHoldEmGame extends TexasPrintGame {
     /************************ this method will print the game table and cards of each player and public cards *****************************/
     public void cardPrinter(boolean showDown) {
 
-        //showDown = true;
+//        showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();

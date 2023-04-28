@@ -241,6 +241,8 @@ public abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
+
+
 	public void allIn(PotOfMoney pot) {
 		if (getBank() == 0) return;
 		stake += bank;

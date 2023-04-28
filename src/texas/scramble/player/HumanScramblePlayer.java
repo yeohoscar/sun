@@ -37,8 +37,10 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
         }
 
         for(String word: words){
-            finalValue+=calculateHandScore(word);
-            System.out.println(getName()+" submitted word \"" + word + "\" Value = " + calculateHandScore(word));
+            if(!word.equals("")){
+                finalValue+=calculateHandScore(word);
+                System.out.println(getName()+" submitted word \"" + word + "\" Value = " + calculateHandScore(word));
+            }
         }
         if (newHand.length==0){
             finalValue+=50;
@@ -47,7 +49,7 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
             finalValue+=50;
         }
 
-        System.out.println("The best word you can make is: "+bestWord+"!");
+        System.out.println("The best word you can make is: \""+bestWord+"\" Value = "+calculateWordScore(bestWord));
 
         return finalValue;
     }
@@ -101,16 +103,22 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
             System.out.print(tile.name()+" ");
         }
         System.out.println();
-        //TODO Stop when no words can be formed
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
         String word = input.nextLine().trim();
         while (!canFormString(newHand,word )||!FullDictionary.getFullDictionary().isValidWord(word)) {
-            System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters): ");
+            System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters) or g to give up: ");
             word = input.nextLine().trim();
+            if(word.equals("g")){
+                break;
+            }
         }
-        wordLength-=word.length();
-        removeTiles(word);
-        return word;
+        if(!word.equals("g")){
+            wordLength-=word.length();
+            removeTiles(word);
+            return word;
+        }
+
+        return "";
     }
     public void removeTiles(String word){
         for (int i = 0; i < word.length(); i++) {

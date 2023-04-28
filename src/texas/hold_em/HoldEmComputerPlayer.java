@@ -842,10 +842,29 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     //--------------------------------------------------------------------//
 
     public Action chooseAction(PotOfMoney pot) {
-        if (shouldAllIn(pot)) return ALL_IN;
-        if (shouldRaise(pot)) return RAISE;
-        if (shouldSee(pot)) return SEE;
-        return FOLD;
+//        if (shouldAllIn(pot)) return ALL_IN;
+//        if (shouldRaise(pot)) return RAISE;
+//        if (shouldSee(pot)) return SEE;
+//        return FOLD;
+        ArrayList<Action> action = new ArrayList<>();
+        if (shouldRaise(pot)){
+            action.add(RAISE);
+        }
+        if (shouldSee(pot)){
+            action.add(SEE);
+        }
+        if (shouldAllIn(pot) && (action.size()==0 || action.size()==2)){
+            action.add(ALL_IN);
+        }
+        if(action.size()==1){
+            return action.get(0);
+        }else if(action.size()==0){
+            return FOLD;
+        }else {
+            Random random = new Random();
+            int index = random.nextInt(action.size());
+            return action.get(index);
+        }
     }
 
     //--------------------------------------------------------------------//
