@@ -40,9 +40,5 @@ public class TestScrambleHumanPlayer {
 
         // Restore the original System.in
         System.setIn(sysInBackup);
-
     }
-
-
-
 }

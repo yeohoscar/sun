@@ -6,7 +6,7 @@ public record Tile(String name, int value) implements HandElement {
     @Override
     public String toString() {
         if (name.equals(" ")) {
-            return "BLANK";
+            return "^";
         }
         return name;
     }
