@@ -22,12 +22,13 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
 
     public int submitWord(List<Tile> communityTiles) {
         combineTiles(communityTiles);
+        String bestWord = bestWord(newHand);
         ArrayList<String> words = new ArrayList<>();
         words.add(askQuestion());
         while(wordLength>0){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
-            String answer = scanner.nextLine().toLowerCase();
+            String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
                 words.add(askQuestion());
             }else {
@@ -37,12 +38,16 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
 
         for(String word: words){
             finalValue+=calculateHandScore(word);
+            System.out.println(getName()+" submitted word \"" + word + "\" Value = " + calculateHandScore(word));
         }
         if (newHand.length==0){
             finalValue+=50;
         }
+        if(words.size()==1&&newHand.length==0){
+            finalValue+=50;
+        }
 
-        System.out.println("The best word you can make is: "+bestWord((ScrambleHand) hand)+"!");
+        System.out.println("The best word you can make is: "+bestWord+"!");
 
         return finalValue;
     }
@@ -85,17 +90,18 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
             allTiles[index++] = tile;
         }
         this.newHand=allTiles;
-        System.out.println("CommunityTiles"+communityTiles);
-        System.out.print("newHand: ");
-        for(Tile tile : newHand){
-            System.out.print(tile.name());
-        }
-        System.out.println();
+
 
     }
 
     public String askQuestion(){
         Scanner input = new Scanner(System.in);
+        System.out.print("Available Tiles: ");
+        for(Tile tile : newHand){
+            System.out.print(tile.name()+" ");
+        }
+        System.out.println();
+        //TODO Stop when no words can be formed
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
         String word = input.nextLine().trim();
         while (!canFormString(newHand,word )||!FullDictionary.getFullDictionary().isValidWord(word)) {
@@ -112,10 +118,10 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
             removeTileFromNewHand(letter);
         }
     }
-    public String bestWord(ScrambleHand hand) {
-        String[] letters = new String[hand.getHand().length];
-        for(int i=0;i<letters.length;i++){
-            letters[i]=hand.getHand()[i].name();
+    public String bestWord(Tile[] hand) {
+        String[] letters = new String[7];
+        for(int i=0;i<7;i++){
+            letters[i]=hand[i].name();
         }
         return findHighestScoreWord(letters, FullDictionary.getFullDictionary());
     }
@@ -123,16 +129,27 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
     public void removeTileFromNewHand(String letter) {
         Tile[] newArray = new Tile[newHand.length - 1];
         int j = 0;
+        boolean hasRemoved =false;
         for (Tile tile : newHand) {
-            if(tile.name().equals(" ")&&!Arrays.asList(newHand).contains(letter)){
-                continue;
+            if(!hasRemoved){
+                if((tile.name().equals(" ")&&!contains(newHand,letter))||tile.name().equals(letter)){
+                    hasRemoved=true;
+                    continue;
+                }
             }
-            else if (tile.name().equals(letter)) {
-                continue;
-            }
+
             newArray[j++] = tile;
         }
         newHand = newArray;
+    }
+
+    private boolean contains(Tile[] tiles,String letter){
+        for(Tile tile: tiles){
+            if(tile.name().equals(letter)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private int calculateHandScore(String hand) {

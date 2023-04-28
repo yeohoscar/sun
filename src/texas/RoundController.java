@@ -229,8 +229,10 @@ public abstract class RoundController {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
+                currentPlayer.setOnTurn(true);
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
+                currentPlayer.setOnTurn(false);
             }
 
             currentIndex++;

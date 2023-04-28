@@ -64,9 +64,17 @@ public class RoundOfScramble extends RoundController {
                         String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
                         HashMap<String, Integer> CPUWords = ((ComputerScramblePlayer) player).submitWords(playerHand);
                         int handValue = 0;
+                        int letterCount=0;
                         for (Map.Entry<String, Integer> entry : CPUWords.entrySet()) {
                             System.out.println(player.getName()+" submitted word \"" + entry.getKey() + "\" Value = " + entry.getValue());
                             handValue+=entry.getValue();
+                            letterCount+=entry.getKey().length();
+                        }
+                        if(letterCount==7){
+                            handValue+=50;
+                        }
+                        if(CPUWords.size()==1&&letterCount==7){
+                            handValue+=50;
                         }
                         valueRank.put(i, handValue);
                     }
