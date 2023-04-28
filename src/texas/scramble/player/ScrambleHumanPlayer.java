@@ -11,8 +11,7 @@ import java.util.*;
 
 public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
-    private int finalValue=0;
-    private int wordLength=7;
+    ArrayList<String> words;
 
     private Tile[] newHand;
     public ScrambleHumanPlayer(String name, int money, int id) {
@@ -20,16 +19,18 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
     }
 
     public int submitWord(List<Tile> communityTiles) {
+        int finalValue=0;
+        int wordLength=7;
+        this.words=new ArrayList<>();
         combineTiles(communityTiles);
         String bestWord = bestWord(newHand);
-        ArrayList<String> words = new ArrayList<>();
-        words.add(askQuestion());
+        words.add(askQuestion(wordLength));
         while(wordLength>0){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
             String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
-                words.add(askQuestion());
+                words.add(askQuestion(wordLength));
             }else {
                 break;
             }
@@ -53,8 +54,12 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         return finalValue;
     }
 
+    public List<String> getWords(){
+        return words;
+    }
 
-    public boolean canFormString(Tile[] newHand, String inputString) {
+
+    private boolean canFormString(Tile[] newHand, String inputString) {
         Map<String, Integer> charFreq = new HashMap<>();
         for (Tile tile : newHand) {
             charFreq.put(tile.name(), charFreq.getOrDefault(tile.name(), 0) + 1);
@@ -84,7 +89,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         return true;
     }
 
-    public void combineTiles(List<Tile> communityTiles){
+    private void combineTiles(List<Tile> communityTiles){
         Tile[] allTiles = (Tile[]) Arrays.copyOf(hand.getHand(), 7);
         int index = 2;
         for (Tile tile : communityTiles) {
@@ -95,7 +100,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     }
 
-    public String askQuestion(){
+    private String askQuestion(int wordLength){
         Scanner input = new Scanner(System.in);
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
@@ -119,13 +124,13 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
         return "";
     }
-    public void removeTiles(String word){
+    private void removeTiles(String word){
         for (int i = 0; i < word.length(); i++) {
             String letter = String.valueOf(word.charAt(i));
             removeTileFromNewHand(letter);
         }
     }
-    public String bestWord(Tile[] hand) {
+    private String bestWord(Tile[] hand) {
         String[] letters = new String[7];
         for(int i=0;i<7;i++){
             letters[i]=hand[i].name();
@@ -133,7 +138,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         return findHighestScoreWord(letters, FullDictionary.getInstance());
     }
 
-    public void removeTileFromNewHand(String letter) {
+    private void removeTileFromNewHand(String letter) {
         Tile[] newArray = new Tile[newHand.length - 1];
         int j = 0;
         boolean hasRemoved =false;

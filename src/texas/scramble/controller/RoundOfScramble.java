@@ -49,12 +49,14 @@ public class RoundOfScramble extends RoundOfTexas {
             }
         } else {
             HashMap<Integer, Integer> valueRank = new HashMap<>();
+            List<String> newWords = new ArrayList<>();
             // calculate handValue for each player
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
                     if (player instanceof ScrambleHumanPlayer) {
                         valueRank.put(i, ((ScrambleHumanPlayer) player).submitWord(communityTiles));
+                        newWords.addAll(((ScrambleHumanPlayer) player).getWords());
                     }else if(player instanceof ScrambleComputerPlayer) {
                         String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
                         HashMap<String, Integer> CPUWords = ((ScrambleComputerPlayer) player).submitWords(playerHand);
@@ -62,6 +64,7 @@ public class RoundOfScramble extends RoundOfTexas {
                         int letterCount=0;
                         for (Map.Entry<String, Integer> entry : CPUWords.entrySet()) {
                             System.out.println(player.getName()+" submitted word \"" + entry.getKey() + "\" Value = " + entry.getValue());
+                            newWords.add(entry.getKey());
                             handValue+=entry.getValue();
                             letterCount+=entry.getKey().length();
                         }
@@ -75,6 +78,7 @@ public class RoundOfScramble extends RoundOfTexas {
                     }
                 }
             }
+
             // find who has the largest handValue
             for (int i = pots.size() - 1; i >= 0; i--) {
                 PotOfMoney pot = pots.get(i);
@@ -105,7 +109,8 @@ public class RoundOfScramble extends RoundOfTexas {
                 }
             }
 
-
+            System.out.println("\n");
+            updatePlayerDictionary(newWords);
         }
     }
 
@@ -119,7 +124,7 @@ public class RoundOfScramble extends RoundOfTexas {
                 activePlayer++;
             }
         }
-        roundPlayers.get(currentIndex).setDeck((DeckOfTiles) deck);
+        roundPlayers.get(currentIndex).setDeck(deck);
         //loop until every one called or folded
         while (!onePlayerLeft() && !ActionClosed()) {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
@@ -147,13 +152,31 @@ public class RoundOfScramble extends RoundOfTexas {
     // TODO: ADD THIS TO AFTER SHOWDOWN
     // Takes all the words submitted by users as input and adds into each computer players dictionary if it is not in theirs
     private void updatePlayerDictionary(List<String> newWords) {
-        for (String word : newWords) {
-            for (int i = 1; i < roundPlayers.size(); i++) {
-                ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
-
-                if (!csp.knowsWord(word)) csp.learnWord(word);
+        HashMap<String,List<String>> learnWords = new HashMap<>();
+        for (int i = 1; i < roundPlayers.size(); i++) {
+            ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
+            for (String word : newWords) {
+                if (!csp.knowsWord(word)){
+                    csp.learnWord(word);
+                    List<String> str = new ArrayList<>();
+                    if(learnWords.containsKey(csp.getName())){
+                        str = learnWords.get(csp.getName());
+                    }
+                    str.add(word);
+                    learnWords.put(csp.getName(),str);
+                }
             }
         }
+
+            for(Map.Entry<String,List<String>> entry:learnWords.entrySet()){
+                if(entry.getValue().size()==1){
+                    System.out.println(entry.getKey()+" says: "+entry.getValue()+" is new word for me and I learned it now!");
+                }else if(entry.getValue().size()>1){
+                    System.out.println(entry.getKey()+" says: "+entry.getValue()+" are new words for me and I learned them now!");
+                }
+            }
+
+
     }
 
     @Override
