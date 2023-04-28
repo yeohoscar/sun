@@ -118,7 +118,7 @@ public class PrintHoldEmGame extends TexasPrintGame {
                                 sb.append("│   ").append(suits[index1[0]]).append("│").append("  ").append("│   ").append(suits[index2[0]]).append("│").append(" │ ");
                             }
                         } else {
-                            if (texasPlayers.get(j).isOnTurn()) {
+                            if (texasPlayers.get(j).isOnTurn() && texasPlayers instanceof HoldEmHumanPlayer) {
                                 index1 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[0], suits, ranks);
                                 index2 = getIndex((Card) texasPlayers.get(j).getHand().getHand()[1], suits, ranks);
                                 if (i == 1) {
