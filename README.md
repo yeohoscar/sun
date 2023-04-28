@@ -16,3 +16,5 @@ Yanhao Sun 19205434
 - Different skill levels for computer players i.e. vocabulary size
 - Computer players learn as games are played
 - Submit multiple words for increased score
+- If you used all the letters for multiple words you got 50 bonus
+- If you make a 7-length word you got 100 bonus
