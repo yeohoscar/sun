@@ -43,7 +43,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer {
         }
     }
 
-    public abstract int getRiskTolerance();
+    public abstract int getRiskTolerance(PotOfMoney pot);
 //    abstract int preFlopRiskToleranceHelper();
 //    abstract int riverRoundRiskToleranceHelper();
     protected abstract int predicateRiskTolerance();

@@ -18,7 +18,7 @@ import static texas.Action.*;
 import static texas.Action.FOLD;
 
 public class ComputerScramblePlayer extends TexasComputerPlayer {
-    public static final int VARIABILITY = 100;
+    public static final int VARIABILITY = 240;
     public final int averageHandValue = 4;
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice = new Random(System.currentTimeMillis());
@@ -59,15 +59,16 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         dict.add(word);
     }
 
-    public int getRiskTolerance() {
+    public int getRiskTolerance(PotOfMoney pot) {
         int risk = 0;
-        while (riskTolerance<=5){
+        while (riskTolerance<=50){
             riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
                     - VARIABILITY / 2;
         }
-//        System.out.println("riskTolerance = "+riskTolerance);
-//        System.out.println("getStake() = "+getStake());
-        risk = riskTolerance - getStake() + predicateRiskTolerance();
+        System.out.println("riskTolerance = "+riskTolerance);
+        System.out.println("(pot.getCurrentStake()-getStake()) = "+(pot.getCurrentStake()-getStake()));
+        risk = riskTolerance - (pot.getCurrentStake()-getStake()) + predicateRiskTolerance();
+        System.out.println("risk = "+risk);
 //        risk = riskTolerance + predicateRiskTolerance();
 
         return risk; // tolerance drops as stake increases
@@ -194,10 +195,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         int risk = 0;
         if (calculateHandScore(hand) >= averageHandValue) {
             //TODO: the probability of taking raise action is high, just determine the risk value
-            risk = 15;
+            risk = 28;
         } else {
             //TODO: the probability of taking raise action is low, just determine the risk value
-            risk = 6;
+            risk = 15;
         }
 //        System.out.println("risk = "+risk);
         return risk;
@@ -227,7 +228,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             risk = 35;
         } else {
             //TODO: determine the risk
-            risk = 17;
+            risk = 20;
         }
         return risk;
         /*//3-find the highest score word of all combination, then compare it with a value(not calculated yet)
@@ -270,10 +271,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 //        averageScore = Math.round((float) averageScore/totalWordNumber);
         if (wordScore >= averageCommunityLettersScore) {
             //TODO: determine the risk
-            risk = 35;
+            risk = 40;
         } else {
             //TODO: determine the risk
-            risk = 16;
+            risk = 25;
         }
         return risk;
     }
@@ -388,7 +389,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             return false;
 //            return -1;
         } else {
-            int risk = getRiskTolerance();
+            int risk = getRiskTolerance(pot);
             int random = Math.abs(dice.nextInt()) % 60;
 //            System.out.println("shouldSee getRiskTolerance() = "+risk);
 //            System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
@@ -407,7 +408,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
             return false;
 //            return -1;
         }
-        int risk = getRiskTolerance();
+        int risk = getRiskTolerance(pot);
         int random = Math.abs(dice.nextInt()) % 60;
 //        System.out.println("shouldRaise getRiskTolerance() = "+risk);
 //        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
@@ -420,7 +421,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     }
 
     protected boolean shouldAllIn(PotOfMoney pot) {
-        int risk = getRiskTolerance();
+        int risk = getRiskTolerance(pot);
         int random = Math.abs(dice.nextInt()) % 75;
 //        System.out.println("shouldAllIn getRiskTolerance() = "+risk);
 //        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
