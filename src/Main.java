@@ -16,7 +16,7 @@ public class Main {
                 System.in.read(input);
 
                 for (byte b : input) {
-                    switch (((char) b)) {
+                    switch ((char) b) {
                         case '\0', '\n' -> {}
                         case '1' -> GameOfPoker.startGame();
                         case '2' -> GameOfBlackJack.startGame();

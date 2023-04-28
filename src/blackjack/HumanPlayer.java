@@ -53,7 +53,7 @@ public class HumanPlayer extends Player {
                 System.in.read(input);
 
                 for (byte b : input) {
-                    switch (((char) b)) {
+                    switch ((char) b) {
                         case '\0', '\n': break;
                         case '1':
                             return Action.HIT;

@@ -64,7 +64,7 @@ public class HoldEmHumanPlayer extends TexasPlayer {
 				System.in.read(input);
 
 				for (byte b : input) {
-					switch (((char) b)) {
+					switch ((char) b) {
 						case '\0', '\n' -> {}
 						case '1' -> {
 							if (shouldSee(pot)) chosenAction = SEE;
