@@ -17,6 +17,7 @@ public class DeckOfTiles implements Deck {
     private Random dice = new Random(System.currentTimeMillis());
 
     private HashMap<String, Integer> storeTiles = new HashMap<>();
+
     public DeckOfTiles() {
         initializeTiles();
         reset();
