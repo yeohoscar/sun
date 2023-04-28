@@ -288,7 +288,7 @@ public abstract class TexasPlayer extends poker.Player {
 		// when the winner of a hand takes the pot as his/her winnings
 
 		System.out.println("\n> " + getName() + " says: I WIN " + addCount(chips, "chip", "chips") + "!\n");
-		System.out.println(hand.toString());
+		//System.out.println(hand.toString());
 
 		bank += chips;
 		pot.takeFromPot(chips);

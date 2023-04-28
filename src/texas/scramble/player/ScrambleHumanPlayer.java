@@ -23,10 +23,16 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         int wordLength=7;
         this.words=new ArrayList<>();
         combineTiles(communityTiles);
+        Tile[] copyOfHand = Arrays.copyOf(newHand, newHand.length);
         String bestWord = bestWord(newHand);
         words.add(askQuestion(wordLength));
         while(wordLength>0){
             Scanner scanner = new Scanner(System.in);
+            System.out.print("Available Tiles: ");
+            for(Tile tile : newHand){
+                System.out.print(tile.name()+" ");
+            }
+            System.out.println();
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
             String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
@@ -35,11 +41,12 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
                 break;
             }
         }
-
+        System.out.println("\n\n");
         for(String word: words){
             if(!word.equals("")){
-                finalValue+=calculateHandScore(word);
-                System.out.println(getName()+" submitted word \"" + word + "\" Value = " + calculateHandScore(word));
+                int valueOfWord = calculateHandScore(word,copyOfHand);
+                finalValue+=valueOfWord;
+                System.out.println(getName()+" submitted word \"" + word + "\" Value = " +valueOfWord);
             }
         }
         if (newHand.length==0){
@@ -164,18 +171,20 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         return false;
     }
 
-    private int calculateHandScore(String hand) {
+    private int calculateHandScore(String word,Tile[] hand) {
         int score = 0;
-        for (char tile : hand.toCharArray()) {
-            switch (tile) {
-                case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
-                case 'D', 'G' -> score += 2;
-                case 'B', 'C', 'M', 'P' -> score += 3;
-                case 'F', 'H', 'V', 'W', 'Y' -> score += 4;
-                case 'K' -> score += 5;
-                case 'J', 'X' -> score += 8;
-                case 'Q', 'Z' -> score += 9;
-                default -> score += 0;
+        for (char letter : word.toCharArray()) {
+            if(contains(hand,String.valueOf(letter))){
+                switch (letter) {
+                    case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
+                    case 'D', 'G' -> score += 2;
+                    case 'B', 'C', 'M', 'P' -> score += 3;
+                    case 'F', 'H', 'V', 'W', 'Y' -> score += 4;
+                    case 'K' -> score += 5;
+                    case 'J', 'X' -> score += 8;
+                    case 'Q', 'Z' -> score += 9;
+                    default -> score += 0;
+                }
             }
         }
         return score;

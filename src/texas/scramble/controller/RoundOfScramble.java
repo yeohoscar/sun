@@ -55,8 +55,10 @@ public class RoundOfScramble extends RoundOfTexas {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
                     if (player instanceof ScrambleHumanPlayer) {
+
                         valueRank.put(i, ((ScrambleHumanPlayer) player).submitWord(communityTiles));
                         newWords.addAll(((ScrambleHumanPlayer) player).getWords());
+                        System.out.println("--------"+player.getName()+" says: My total Score is "+valueRank.get(i)+"\n");
                     }else if(player instanceof ScrambleComputerPlayer) {
                         String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
                         HashMap<String, Integer> CPUWords = ((ScrambleComputerPlayer) player).submitWords(playerHand);
@@ -75,6 +77,7 @@ public class RoundOfScramble extends RoundOfTexas {
                             handValue+=50;
                         }
                         valueRank.put(i, handValue);
+                        System.out.println("--------"+player.getName()+" says: My total Score is "+handValue+"\n");
                     }
                 }
             }
@@ -149,14 +152,13 @@ public class RoundOfScramble extends RoundOfTexas {
 
     }
 
-    // TODO: ADD THIS TO AFTER SHOWDOWN
     // Takes all the words submitted by users as input and adds into each computer players dictionary if it is not in theirs
     private void updatePlayerDictionary(List<String> newWords) {
         HashMap<String,List<String>> learnWords = new HashMap<>();
         for (int i = 1; i < roundPlayers.size(); i++) {
             ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
             for (String word : newWords) {
-                if (!csp.knowsWord(word)){
+                if (!csp.knowsWord(word)&&!word.equals("")){
                     csp.learnWord(word);
                     List<String> str = new ArrayList<>();
                     if(learnWords.containsKey(csp.getName())){
