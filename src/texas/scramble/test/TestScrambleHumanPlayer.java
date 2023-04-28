@@ -28,7 +28,7 @@ public class TestScrambleHumanPlayer {
         System.out.println("CommunityTiles"+communityTiles);
 // Set up the input for the user
         InputStream sysInBackup = System.in; // backup System.in to restore it later
-        ByteArrayInputStream in = new ByteArrayInputStream("TEA\nN\n".getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream("TEA\nY\nn\n".getBytes());
         System.setIn(in);
 
         // Call the submitWord method and get the result
