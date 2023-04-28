@@ -5,10 +5,11 @@ import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.deck.Tile;
 import texas.scramble.player.ScrambleHumanPlayer;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -30,7 +31,7 @@ public class TestScrambleHumanPlayer {
         InputStream sysInBackup = System.in; // backup System.in to restore it later
         ByteArrayInputStream in = new ByteArrayInputStream("TEA\nY\nn\n".getBytes());
         System.setIn(in);
-
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         // Call the submitWord method and get the result
         int result1 = player.submitWord(communityTiles);
 
@@ -43,7 +44,5 @@ public class TestScrambleHumanPlayer {
     }
 
 
-    public void negative(int i){
 
-    }
 }

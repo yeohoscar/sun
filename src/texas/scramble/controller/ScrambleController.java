@@ -9,6 +9,7 @@ import java.util.*;
 
 public class ScrambleController extends TexasController {
     protected DeckOfTiles deck;
+    //set up the game with ScramblePlayer and Tiles for deck
     @Override
     public void setUp(String[] names, int bank) {
         texasPlayers = new ArrayList<>();
@@ -25,6 +26,7 @@ public class ScrambleController extends TexasController {
         deck = new DeckOfTiles();
     }
 
+    //each player has different knowledge of words
     private ScrambleComputerPlayer getPresetComputerPlayer(String name, int bank, int id) {
         ScrambleComputerPlayer player;
         switch (name) {

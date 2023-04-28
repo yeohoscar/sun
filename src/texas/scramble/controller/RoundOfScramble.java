@@ -24,11 +24,10 @@ public class RoundOfScramble extends RoundOfTexas {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
         this.communityTiles = new ArrayList<>();
-
         this.printGame = new PrintScramble(texasPlayers, pots, communityTiles);
         initComputerPlayerWithCommunityTiles(communityTiles);
     }
-
+    // initialize communityTiles for ComputerPlayers
     private void initComputerPlayerWithCommunityTiles(List<Tile> communityTiles) {
         for (TexasPlayer player : roundPlayers) {
             if (player instanceof HoldEmComputerPlayer) {
@@ -39,6 +38,7 @@ public class RoundOfScramble extends RoundOfTexas {
 
     @Override
     public void showDown() {
+        // If only one player remaining, this player is the winner
         if (onePlayerLeft()) {
             for (TexasPlayer player : roundPlayers) {
                 if (!player.hasFolded()) {
@@ -54,11 +54,12 @@ public class RoundOfScramble extends RoundOfTexas {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
+                    //get words and final score from human player
                     if (player instanceof ScrambleHumanPlayer) {
-
                         valueRank.put(i, ((ScrambleHumanPlayer) player).submitWord(communityTiles));
                         newWords.addAll(((ScrambleHumanPlayer) player).getWords());
                         System.out.println("--------"+player.getName()+" says: My total Score is "+valueRank.get(i)+"\n");
+                    //get words and final score from computer player
                     }else if(player instanceof ScrambleComputerPlayer) {
                         String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
                         HashMap<String, Integer> CPUWords = ((ScrambleComputerPlayer) player).submitWords(playerHand);
@@ -70,12 +71,15 @@ public class RoundOfScramble extends RoundOfTexas {
                             handValue+=entry.getValue();
                             letterCount+=entry.getKey().length();
                         }
+                        // if used all the Tiles
                         if(letterCount==7){
                             handValue+=50;
                         }
+                        // if made a 7 length word
                         if(CPUWords.size()==1&&letterCount==7){
                             handValue+=50;
                         }
+                        // print final score
                         valueRank.put(i, handValue);
                         System.out.println("--------"+player.getName()+" says: My total Score is "+handValue+"\n");
                     }
@@ -111,7 +115,7 @@ public class RoundOfScramble extends RoundOfTexas {
                     }
                 }
             }
-
+            // let computer player learn the words not in their dictionary
             System.out.println("\n");
             updatePlayerDictionary(newWords);
         }
@@ -169,7 +173,7 @@ public class RoundOfScramble extends RoundOfTexas {
                 }
             }
         }
-
+            // print who learn what words
             for(Map.Entry<String,List<String>> entry:learnWords.entrySet()){
                 if(entry.getValue().size()==1){
                     System.out.println(entry.getKey()+" says: "+entry.getValue()+" is new word for me and I learned it now!");
@@ -187,7 +191,7 @@ public class RoundOfScramble extends RoundOfTexas {
             communityTiles.add((Tile) deck.dealNext());
         }
     }
-
+    // combine hand and communityTiles to one String[]
     public String[] combineToString(List<Tile> communityTiles,Tile[] hand){
         String[] str = new String[7];
         int i=0;
