@@ -125,6 +125,7 @@ public class DictionaryTrie {
         }
         List<List<String>> allWords = new ArrayList<>();
         current = root;
+        //for each child node of root node, use dfs to search all words that can formed by String[] letters
         for(Node child: current.children){
             String str = String.valueOf(child.letter);
             List<String> words = dfs(child, str, letters, new ArrayList<>());
@@ -259,7 +260,6 @@ public class DictionaryTrie {
         for (int i = 0; i < node.children.size(); i++) {
             Node child = node.children.get(i);
             if (child != null) {
-                //System.out.println("prefix + child.letter = "+(prefix+child.letter));
                 dfs(child, prefix + child.letter, lettersContained, results);
             }
         }

@@ -64,12 +64,7 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
             riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
                     - VARIABILITY / 2;
         }
-//        System.out.println("riskTolerance = "+riskTolerance);
-//        System.out.println("(pot.getCurrentStake()-getStake()) = "+(pot.getCurrentStake()-getStake()));
         risk = riskTolerance - (pot.getCurrentStake()-getStake()) + predicateRiskTolerance();
-//        System.out.println("risk = "+risk);
-//        risk = riskTolerance + predicateRiskTolerance();
-
         return risk; // tolerance drops as stake increases
     }
 
@@ -328,18 +323,10 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
     protected boolean shouldSee(PotOfMoney pot) {
         if (pot.getCurrentStake() - stake > bank) {
             return false;
-//            return -1;
         } else {
             int risk = getRiskTolerance(pot);
             int random = Math.abs(dice.nextInt()) % 60;
-//            System.out.println("shouldSee getRiskTolerance() = "+risk);
-//            System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-//            System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
-//            System.out.println();
-//            return getCurrentBestHand().getRiskWorthiness()+risk-random;
             return random <= getCurrentBestHand().getRiskWorthiness() + risk;
-//            return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
-//                    getRiskTolerance();
         }
     }
 
@@ -347,31 +334,16 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
     protected boolean shouldRaise(PotOfMoney pot) {
         if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundOfTexas.BIG_BLIND_AMOUNT) {
             return false;
-//            return -1;
         }
         int risk = getRiskTolerance(pot);
         int random = Math.abs(dice.nextInt()) % 60;
-//        System.out.println("shouldRaise getRiskTolerance() = "+risk);
-//        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-//        System.out.println("Math.abs(dice.nextInt()) % 60 = "+random);
-//        System.out.println();
-//        return getCurrentBestHand().getRiskWorthiness()+risk-random;
         return random <= getCurrentBestHand().getRiskWorthiness() + risk;
-//        return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
-//                getRiskTolerance();
     }
 
     protected boolean shouldAllIn(PotOfMoney pot) {
         int risk = getRiskTolerance(pot);
         int random = Math.abs(dice.nextInt()) % 75;
-//        System.out.println("shouldAllIn getRiskTolerance() = "+risk);
-//        System.out.println("getCurrentBestHand().getRiskWorthiness()+getRiskTolerance() = "+getCurrentBestHand().getRiskWorthiness() + risk);
-//        System.out.println("Math.abs(dice.nextInt()) % 75 = "+random);
-//        System.out.println();
-//        return getCurrentBestHand().getRiskWorthiness()+risk-random;
         return random<=(getCurrentBestHand().getRiskWorthiness()+risk)*0.1;
-//        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
-//                getRiskTolerance();
     }
 
 
