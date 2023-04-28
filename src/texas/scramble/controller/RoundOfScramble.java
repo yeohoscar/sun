@@ -155,7 +155,7 @@ public class RoundOfScramble extends RoundController {
             for (int i = 1; i < roundPlayers.size(); i++) {
                 ComputerScramblePlayer csp = (ComputerScramblePlayer) roundPlayers.get(i);
 
-                if (csp.knowsWord(word)) csp.learnWord(word);
+                if (!csp.knowsWord(word)) csp.learnWord(word);
             }
         }
     }
