@@ -276,8 +276,37 @@ public class TestScrambleComputerPlayer {
         }
         System.out.println("*************");
         /********|||********/
-        String[] lettersOnHand2 = {"A", "B", "M", " ", "E", "Y", "A"};
+        String[] lettersOnHand2 = {"A", "B", "M", " ", "E", "Y", "A"};// 1 3 3 1 4 1 = 13
         HashMap<String, Integer> result2 = player1.submitWords(lettersOnHand2);
+        for(Map.Entry<String, Integer> entry: result2.entrySet()){
+            System.out.println(entry);
+        }
+        HashMap<String, Integer> result3 = player1.substituteBlank(result2, lettersOnHand2);
+        System.out.println("Result 3:");
+        for(Map.Entry<String, Integer> entry: result3.entrySet()){
+            System.out.println(entry);
+        }
+        System.out.println("*************");
+    }
+    @Test
+    public void testSubstituteBlank(){
+        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        /********|||********/
+        HashMap<String, Integer> words = new HashMap<>();
+        words.put("APPLE", 15);
+        words.put("ME", 20);
+        String[] lettersOnHand1 = {"A", "P", "L", "E", "M", " ", " "};//1 3 1 1 3
+        HashMap<String, Integer> result1 = player1.substituteBlank(words, lettersOnHand1);
+        for(Map.Entry<String, Integer> entry: result1.entrySet()){
+            System.out.println(entry);
+        }
+        System.out.println("*************");
+        /********|||********/
+        HashMap<String, Integer> words1 = new HashMap<>();
+        words1.put("ORANGE", 15);
+        words1.put("AI", 20);
+        String[] lettersOnHand2 = {"O", "R", "A", "G", "E", " ", " "};//1 1 1 2 1 = 6
+        HashMap<String, Integer> result2 = player1.substituteBlank(words1, lettersOnHand2);
         for(Map.Entry<String, Integer> entry: result2.entrySet()){
             System.out.println(entry);
         }
