@@ -11,6 +11,9 @@ Yanhao Sun 19205434
 4. Enter number of players to play with, with 1 being minimum and 9 being the maximum
 5. Follow prompts to play game
 
+## Note
+Blank tile is represented by **^**.
+
 ## Special Features
 - Able to select what game to play
 - Defined computer player personalities
