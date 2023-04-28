@@ -22,8 +22,6 @@ public abstract class RoundController {
     private int smallIndex;
     private int bigIndex;
 
-    protected List<HandElement> communityElements;
-
     protected ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private PotOfMoney mainPot = new PotOfMoney();
@@ -43,19 +41,6 @@ public abstract class RoundController {
             playersID.add(player.getId());
         }
         pots.get(0).setPlayerIds(playersID);
-
-        this.communityElements =  new ArrayList<>();
-
-        initComputerPlayerWithCommunityElements(communityElements);
-
-    }
-
-    private void initComputerPlayerWithCommunityElements(List<HandElement> communityElements) {
-        for (TexasPlayer player : roundPlayers) {
-            if (player instanceof HoldEmComputerPlayer) {
-                ((TexasComputerPlayer) player).setCommunityElements(communityElements);
-            }
-        }
     }
 
     //Abstract Functions:
@@ -323,11 +308,7 @@ public abstract class RoundController {
         return foldCounter + callCounter == numPlayers;
     }
 
-    public void dealCommunityElements(int numCardsToBeDealt) {
-        for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityElements.add(deck.dealNext());
-        }
-    }
+    protected abstract void dealCommunityElements(int numCardsToBeDealt);
 
     // Get the pot everyone is betting with
 

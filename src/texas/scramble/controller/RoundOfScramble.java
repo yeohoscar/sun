@@ -6,8 +6,11 @@ import poker.Player;
 import poker.PotOfMoney;
 import texas.RoundController;
 import texas.Rounds;
+import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
+import texas.hold_em.HoldEmComputerPlayer;
 import texas.scramble.deck.*;
+import texas.scramble.hand.HandElement;
 import texas.scramble.player.ComputerScramblePlayer;
 import texas.scramble.player.HumanScramblePlayer;
 import texas.scramble.print_game.PrintScramble;
@@ -19,14 +22,23 @@ import java.util.Map;
 
 public class RoundOfScramble extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
-    protected List<Tile> communityTiles;
+    private List<Tile> communityTiles;
 
     public RoundOfScramble(DeckOfTiles deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
-        this.communityTiles=new ArrayList<>();
+        this.communityTiles = new ArrayList<>();
 
-        this.printGame = new PrintScramble(texasPlayers,pots,communityTiles);
+        this.printGame = new PrintScramble(texasPlayers, pots, communityTiles);
+        initComputerPlayerWithCommunityTiles(communityTiles);
+    }
+
+    private void initComputerPlayerWithCommunityTiles(List<Tile> communityTiles) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof HoldEmComputerPlayer) {
+                ((TexasComputerPlayer) player).setCommunityElements(communityTiles);
+            }
+        }
     }
 
     @Override
@@ -94,50 +106,6 @@ public class RoundOfScramble extends RoundController {
         }
     }
 
-
-
-    public void roundCounter(int counter) {
-        int roundCounter = counter;
-
-        while (!onePlayerLeft() && roundCounter != 5) {
-
-            switch (roundCounter) {
-                case 1 -> {
-                    preFlopRound();
-                    roundCounter++;
-                    dealCommunityTiles(3);
-                    System.out.println("\n\nThree Public Tiles are released\n");
-                }
-                case 2 -> {
-                    printGame.table(Rounds.FLOP);
-                    flopRound();
-                    roundCounter++;
-                    dealCommunityTiles(1);
-                    System.out.println("\n\nTurn Tile is released\n");
-                }
-                case 3 -> {
-                    printGame.table(Rounds.TURN);
-                    turnRound();
-                    roundCounter++;
-                    dealCommunityTiles(1);
-                    System.out.println("\n\nRiver Tile is released\n");
-                }
-                default -> {
-                    printGame.table(Rounds.RIVER);
-                    riverRound();
-                    roundCounter++;
-
-                    printGame.table(Rounds.SHOWDOWN);
-                }
-            }
-            resetStakes();
-        }
-    }
-    public void dealCommunityTiles(int numCardsToBeDealt) {
-        for (int i = 0; i < numCardsToBeDealt; i++) {
-            communityTiles.add((Tile) deck.dealNext());
-        }
-    }
     @Override
     public void roundMove(Rounds currentRound) {
         //decide who move first
@@ -155,7 +123,8 @@ public class RoundOfScramble extends RoundController {
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.setOnTurn(true);
-                currentPlayer.setCommunityElements(communityTiles);
+                if (currentPlayer instanceof TexasComputerPlayer)
+                    ((TexasComputerPlayer) currentPlayer).setCommunityElements(communityTiles);
                 currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
                 currentPlayer.setOnTurn(false);
@@ -185,18 +154,10 @@ public class RoundOfScramble extends RoundController {
     }
 
     @Override
-    public void preFlopRound() {
-        blindBet();
-        //after small blind and big blind, deal two cards to each player
-        for (Player player : roundPlayers) {
-
-            player.dealTo(deck);
-            System.out.println(player);
+    protected void dealCommunityElements(int numCardsToBeDealt) {
+        for (int i = 0; i < numCardsToBeDealt; i++) {
+            communityTiles.add((Tile) deck.dealNext());
         }
-        //print the table before the game starts
-        System.out.println();
-        printGame.table(Rounds.PRE_FLOP);
-        roundMove(Rounds.PRE_FLOP);
     }
 
     public String[] combineToString(List<Tile> communityTiles,Tile[] hand){

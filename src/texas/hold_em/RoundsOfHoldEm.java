@@ -3,7 +3,9 @@ package texas.hold_em;
 
 import poker.*;
 import texas.RoundController;
+import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
+import texas.scramble.deck.Tile;
 
 import java.util.*;
 
@@ -15,10 +17,24 @@ import java.util.*;
 public class RoundsOfHoldEm extends RoundController {
     private ArrayList<TexasPlayer> roundPlayers;
 
+    private List<Card> communityCards;
+
     public RoundsOfHoldEm(DeckOfCards deck, ArrayList<TexasPlayer> texasPlayers, int dealerIndex) {
         super(deck, texasPlayers, dealerIndex);
         this.roundPlayers = texasPlayers;
+        this.communityCards = new ArrayList<>();
+
         //this.printGame = new print_game(texasPlayers, deck, pot);
+
+        initComputerPlayerWithCommunityCards(communityCards);
+    }
+
+    private void initComputerPlayerWithCommunityCards(List<Card> communityCards) {
+        for (TexasPlayer player : roundPlayers) {
+            if (player instanceof HoldEmComputerPlayer) {
+                ((TexasComputerPlayer) player).setCommunityElements(communityCards);
+            }
+        }
     }
 
     @Override
@@ -38,8 +54,8 @@ public class RoundsOfHoldEm extends RoundController {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
-                    Card[] communityCardsArr = new Card[communityElements.size()];
-                    player.findBestHand(communityElements.toArray(communityCardsArr), (DeckOfCards) deck);
+                    Card[] communityCardsArr = new Card[communityCards.size()];
+                    player.findBestHand(communityCards.toArray(communityCardsArr), (DeckOfCards) deck);
                     System.out.println(player.getCurrentBestHand());
                     int handValue = player.getCurrentBestHand().getValue();
                     valueRank.put(i, handValue);
@@ -73,6 +89,13 @@ public class RoundsOfHoldEm extends RoundController {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void dealCommunityElements(int numCardsToBeDealt) {
+        for (int i = 0; i < numCardsToBeDealt; i++) {
+            communityCards.add((Card) deck.dealNext());
         }
     }
 }
