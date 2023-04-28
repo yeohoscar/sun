@@ -75,10 +75,6 @@ public class RoundOfScramble extends RoundOfTexas {
                         if(letterCount==7){
                             handValue+=50;
                         }
-                        // if made a 7 length word
-                        if(CPUWords.size()==1&&letterCount==7){
-                            handValue+=50;
-                        }
                         // print final score
                         valueRank.put(i, handValue);
                         System.out.println("--------"+player.getName()+" says: My total Score is "+handValue+"\n");
