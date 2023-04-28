@@ -29,7 +29,7 @@ public class PrintScramble extends TexasPrintGame {
     /************************ this method will print the game table and cards of each player and public cards *****************************/
     public void cardPrinter(boolean showDown) {
 
-        showDown = true;
+//        showDown = true;
         StringBuilder sb = null;
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
@@ -337,7 +337,11 @@ public class PrintScramble extends TexasPrintGame {
                         sb.append(cardEdge[cardEdge.length - 1]).append("  ");
                         break;
                     default:
-                        sb.append("│   ").append(value1).append("│").append("  ");
+                        if(value1==10){
+                            sb.append("│  ").append(value1).append("│").append("  ");
+                        }else {
+                            sb.append("│   ").append(value1).append("│").append("  ");
+                        }
                         break;
                 }
             }

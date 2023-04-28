@@ -33,7 +33,7 @@ public class TestPrintScramble {
         Hand communityCards;
         ArrayList<PotOfMoney> pots = new ArrayList<>();
 //        PotOfMoney pot = new PotOfMoney();
-        communityCards=Tiles.dealHand(4);
+        communityCards=Tiles.dealHand(5);
         List<Tile> cards = List.of((Tile[]) communityCards.getHand());
 
         HoldEmComputerPlayer player=  new HoldEmComputerPlayer("ad", 0, 0);
