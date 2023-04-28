@@ -206,7 +206,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     /********************** predicate flop and turn round ************************/
     public int predicateBestWordAndRisk(Tile[] publicCards, Rounds currentRound) {
         int risk = 0;
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         //combine community letters and letters on hand
         String[] lettersOnHand = combineCommunityAndLettersOnHand(publicCards, this.getHand().getHand());
         //obtain community letters
@@ -250,7 +250,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
     /********************** predicate river round ************************/
     public int riverRoundRiskToleranceHelper(Tile[] publicCards) {
         int risk = 0;
-        DictionaryTrie dict = FullDictionary.getFullDictionary();
+        DictionaryTrie dict = FullDictionary.getInstance();
         //combine community letters and letters on hand
         String[] lettersOnHand = combineCommunityAndLettersOnHand(publicCards, this.getHand().getHand());
         //obtain community letters

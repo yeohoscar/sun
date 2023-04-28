@@ -4,7 +4,6 @@ package texas.scramble.player;
 import texas.hold_em.TexasHumanPlayer;
 import texas.scramble.deck.Tile;
 import texas.scramble.dictionary.FullDictionary;
-import texas.scramble.hand.ScrambleHand;
 
 
 import java.util.*;
@@ -105,7 +104,7 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
         System.out.println();
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
         String word = input.nextLine().trim().toUpperCase();
-        while (!canFormString(newHand,word )||!FullDictionary.getFullDictionary().isValidWord(word)) {
+        while (!canFormString(newHand,word )||!FullDictionary.getInstance().isValidWord(word)) {
             System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters) or g to give up: ");
             word = input.nextLine().trim();
             if(word.equals("g")){
@@ -131,7 +130,7 @@ public class HumanScramblePlayer extends TexasHumanPlayer {
         for(int i=0;i<7;i++){
             letters[i]=hand[i].name();
         }
-        return findHighestScoreWord(letters, FullDictionary.getFullDictionary());
+        return findHighestScoreWord(letters, FullDictionary.getInstance());
     }
 
     public void removeTileFromNewHand(String letter) {

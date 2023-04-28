@@ -19,7 +19,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testFindAllWords() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters1 = {"e", "n", "o", "p", "g", "i", "a"};
         String[] letters2 = {"A", "S", "S"};
@@ -50,7 +50,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testFindHighestScoreWord() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] letters2 = {"C"};
         String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
@@ -70,7 +70,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testPreFlopRound(){
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         Random dice = new Random(System.currentTimeMillis());
 
@@ -82,7 +82,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testFlopRound() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
@@ -143,7 +143,7 @@ public class TestScrambleComputerPlayer {
 
     @Test
     public void testTurnRound() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
@@ -189,7 +189,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFindAllWordsFormedByLetters(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        DictionaryTrie dict = FullDictionary.getFullDictionary();
+        DictionaryTrie dict = FullDictionary.getInstance();
         String[] letters1 = {"A", "A", "E", "E"};
         String[] letters2 = {"E", "N", "O", "P", "G", "X", "Y"};
         List<String> result = dict.findAllWordsFormedByLetters(letters2);
@@ -203,7 +203,7 @@ public class TestScrambleComputerPlayer {
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
         String[] communityLetters1 = {"A", "B", "C"};
         String[] communityLetters2 = {"Z", "G", "H"};
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         int averageCommunityLettersScore=0;
         int totalNumber = 0;
         for(String word: dict.findAllWords(communityLetters2)){
@@ -216,7 +216,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testWordIsFormedByLettersContained(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        FullDictionary dict = FullDictionary.getFullDictionary();
+        FullDictionary dict = FullDictionary.getInstance();
         /********|||********/
         String prefix = "ABC";
         HashMap<String, Integer> letters = new HashMap<>();
