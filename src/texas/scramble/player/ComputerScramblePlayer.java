@@ -224,10 +224,10 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 //        averageScore = Math.round((float) averageScore/totalWordNumber);
         if (averageScore >= averageCommunityLettersScore) {
             //TODO: determine the risk
-            risk = 30;
+            risk = 35;
         } else {
             //TODO: determine the risk
-            risk = 15;
+            risk = 17;
         }
         return risk;
         /*//3-find the highest score word of all combination, then compare it with a value(not calculated yet)

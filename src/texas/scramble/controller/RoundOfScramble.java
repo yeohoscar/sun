@@ -132,8 +132,8 @@ public class RoundOfScramble extends RoundController {
                 currentPlayer.setOnTurn(true);
                 if (currentPlayer instanceof TexasComputerPlayer)
                     ((TexasComputerPlayer) currentPlayer).setCommunityElements(communityTiles);
-                currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
+                currentPlayer.nextAction(getActivePot());
                 currentPlayer.setOnTurn(false);
             }
 

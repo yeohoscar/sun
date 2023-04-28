@@ -230,8 +230,8 @@ public abstract class RoundController {
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.setOnTurn(true);
-                currentPlayer.nextAction(getActivePot());
                 printGame.table(currentRound);
+                currentPlayer.nextAction(getActivePot());
                 currentPlayer.setOnTurn(false);
             }
 
