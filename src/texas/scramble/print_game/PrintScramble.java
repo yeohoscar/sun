@@ -124,7 +124,7 @@ public class PrintScramble extends TexasPrintGame {
                                 }
                             }
                         } else {
-                            if (texasPlayers.get(j).isOnTurn() && texasPlayers instanceof ScrambleHumanPlayer) {
+                            if (texasPlayers.get(j).isOnTurn() && texasPlayers.get(j) instanceof ScrambleHumanPlayer) {
                                 if (i == 1) {
                                     String letter1 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[0]).toString());
                                     String letter2 = String.format("%2s", (texasPlayers.get(j).getHand().getHand()[1]).toString());
