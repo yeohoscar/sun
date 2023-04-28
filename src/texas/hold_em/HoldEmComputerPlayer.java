@@ -52,7 +52,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     // a positive risk tolerance means the player is open to risk   (adventurous)
     /************************ this method returns the riskTolerance by calling predicateRiskTolerance() method *****************************/
     @Override
-    public int getRiskTolerance() {
+    public int getRiskTolerance(PotOfMoney pot) {
         int risk = 0;
         risk = riskTolerance - getStake() + predicateRiskTolerance();
         return risk; // tolerance drops as stake increases
@@ -882,7 +882,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
             return false;
         } else {
             return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
-                    getRiskTolerance();
+                    getRiskTolerance(pot);
         }
     }
 
@@ -891,12 +891,12 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
             return false;
         }
         return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
+                getRiskTolerance(pot);
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
         return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance();
+                getRiskTolerance(pot);
     }
 
      private boolean suitsInHandAreSame(Card[] hand) {
