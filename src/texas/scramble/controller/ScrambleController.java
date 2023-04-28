@@ -26,15 +26,15 @@ public class ScrambleController extends TexasController {
         deck = new DeckOfTiles();
     }
 
-    //each player has different knowledge of words
+    // Get computer players
     private ScrambleComputerPlayer getPresetComputerPlayer(String name, int bank, int id) {
         ScrambleComputerPlayer player;
         switch (name) {
-            case "Tom" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/easy.txt", -40);
-            case "Dick" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 50);
-            case "Harry" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/harder.txt", 5);
-            case "Jim" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/hard.txt", -15);
-            case "Dave" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 30);
+            case "Tom" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/easy.txt", 50);
+            case "Dick" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 120);
+            case "Harry" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/harder.txt", 85);
+            case "Jim" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/hard.txt", 63);
+            case "Dave" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 104);
             default -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt");
         }
         return player;

@@ -17,7 +17,8 @@ import static texas.Action.*;
 import static texas.Action.FOLD;
 
 public class ScrambleComputerPlayer extends TexasComputerPlayer {
-    public static final int VARIABILITY = 240;
+    public static final int VARIABILITY_UPPER = 120;
+    public static final int VARIABILITY_LOWER = 50;
     public final int averageHandValue = 4;
     private int riskTolerance;  // willingness of a player to take risks and bluff
     private Random dice = new Random(System.currentTimeMillis());
@@ -29,9 +30,8 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
 
         dict = new DictionaryTrie("resources/hard.txt");
 
-        riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
-                - VARIABILITY / 2;
-        // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
+        riskTolerance = dice.nextInt(VARIABILITY_UPPER - VARIABILITY_LOWER + 1) + VARIABILITY_LOWER;
+        // this gives a range of tolerance between VARIABILITY_LOWER to VARIABILITY_UPPER
     }
 
     public ScrambleComputerPlayer(String name, int money, int id, String pathToDictionary) {
@@ -39,9 +39,8 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
 
         dict = new DictionaryTrie(pathToDictionary);
 
-        riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
-                - VARIABILITY / 2;
-        // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
+        riskTolerance = dice.nextInt(VARIABILITY_UPPER - VARIABILITY_LOWER + 1) + VARIABILITY_LOWER;
+        // this gives a range of tolerance between VARIABILITY_LOWER to VARIABILITY_UPPER
     }
 
     public ScrambleComputerPlayer(String name, int money, int id, String pathToDictionary, int riskTolerance) {
@@ -60,10 +59,6 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
 
     public int getRiskTolerance(PotOfMoney pot) {
         int risk = 0;
-        while (riskTolerance<=50){
-            riskTolerance = Math.abs(dice.nextInt()) % VARIABILITY
-                    - VARIABILITY / 2;
-        }
         risk = riskTolerance - (pot.getCurrentStake()-getStake()) + predicateRiskTolerance();
         return risk; // tolerance drops as stake increases
     }
@@ -345,6 +340,4 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
         int random = Math.abs(dice.nextInt()) % 75;
         return random<=(getCurrentBestHand().getRiskWorthiness()+risk)*0.1;
     }
-
-
 }

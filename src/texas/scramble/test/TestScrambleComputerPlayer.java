@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestScrambleComputerPlayer {
 
@@ -311,6 +312,17 @@ public class TestScrambleComputerPlayer {
             System.out.println(entry);
         }
         System.out.println("*************");
+    }
+
+    @Test
+    public void testRiskToleranceGenerator() {
+        Random r = new Random();
+
+        for (int i = 0; i < 1000; i++) {
+            int risk = r.nextInt(120 - 50 + 1) + 50;
+
+            if (risk < 50 || risk > 120) fail();
+        }
     }
 }
 
