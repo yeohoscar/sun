@@ -13,20 +13,11 @@ public class PrintHoldEmGame extends TexasPrintGame {
     //    String[] suits = {"♠", "♥", "♦", "♣"}; -> Issues with encoding with certain terminals
     private final String[] suits = {"S", "H", "D", "C"}; // Letter representation of suits
     private final String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private final String[] cardEdge = {"╭────╮", "╰────╯"};
-
-    final int cardHeight = 3; //counting from 0
-
-    private ArrayList<TexasPlayer> texasPlayers;
-
-    private ArrayList<PotOfMoney> pots = new ArrayList<>();
 
     private List<Card> communityCards;
 
-
-    public PrintHoldEmGame(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Card> communityCards) {
-        this.texasPlayers = texasPlayers;
-        this.pots = pots;
+    public PrintHoldEmGame(List<TexasPlayer> texasPlayers, List<PotOfMoney> pots, List<Card> communityCards) {
+        super(texasPlayers, pots);
         this.communityCards = communityCards;
     }
 

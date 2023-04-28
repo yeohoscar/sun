@@ -9,20 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrintScramble extends TexasPrintGame {
-    private final String[] cardEdge = {"╭────╮", "╰────╯"};
-
-    final int cardHeight = 3; //counting from 0
-
-    private ArrayList<TexasPlayer> texasPlayers;
-
-    private ArrayList<PotOfMoney> pots;
-
     private List<Tile> communityCards;
 
-
-    public PrintScramble(ArrayList<TexasPlayer> texasPlayers, ArrayList<PotOfMoney> pots, List<Tile> communityCards) {
-        this.texasPlayers = texasPlayers;
-        this.pots = pots;
+    public PrintScramble(List<TexasPlayer> texasPlayers, List<PotOfMoney> pots, List<Tile> communityCards) {
+        super(texasPlayers, pots);
         this.communityCards = communityCards;
     }
 
