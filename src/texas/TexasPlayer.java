@@ -292,7 +292,7 @@ public abstract class TexasPlayer extends poker.Player {
 
 		bank += chips;
 		pot.takeFromPot(chips);
-		System.out.println(this);
+		//System.out.println(this);
 	}
 
 	//--------------------------------------------------------------------//
