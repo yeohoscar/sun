@@ -18,6 +18,8 @@ public class DeckOfTiles implements Deck {
 
     private HashMap<String, Integer> storeTiles = new HashMap<>();
 
+    // Constructor
+
     public DeckOfTiles() {
         initializeTiles();
         reset();

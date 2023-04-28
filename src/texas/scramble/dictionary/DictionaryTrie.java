@@ -15,6 +15,8 @@ import java.util.stream.Stream;
 public class DictionaryTrie {
     private final Node root;
 
+    // Constructor
+
     public DictionaryTrie(String pathToDictionary) {
         root = new Node('^', false, new ArrayList<>());
         createDictionary(pathToDictionary);

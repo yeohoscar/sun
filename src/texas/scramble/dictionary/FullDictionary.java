@@ -7,6 +7,8 @@ public class FullDictionary extends DictionaryTrie {
 
     private static FullDictionary cache = null;
 
+    // Constructor
+
     private FullDictionary() {
         super(pathToFullDictionary);
     }

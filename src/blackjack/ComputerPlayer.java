@@ -177,16 +177,4 @@ public class ComputerPlayer extends Player {
         }
         return Action.INVALID;
     }
-
-    public static void main(String[] args) {
-        DeckOfCards deck = new DeckOfCards();
-        ComputerPlayer p = new ComputerPlayer("jim", 5);
-        p.setDealerCard(new NumberCard("Ace", "Hearts", 1, 11));
-
-        p.dealTo(deck);
-        p.hands.get(0).setCard(0, new NumberCard("Ace", "Hearts", 1, 11));
-        p.hands.get(0).setCard(1, new NumberCard("King", "Hearts", 1, 2));
-        p.hands.get(0).addCard();
-        System.out.println(p.hands.get(0) + "\n\n" + p.chooseAction(p.hands.get(0)));
-    }
 }

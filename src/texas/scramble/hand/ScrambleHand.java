@@ -6,15 +6,14 @@ import texas.scramble.deck.Tile;
 
 import java.util.Arrays;
 
+// A hand of Tiles
+
 public class ScrambleHand implements Hand {
     private Tile[] hand;  								// the actual sequence of cards
 
     private Deck deck; 							// the deck from which the hand is made
 
-    public ScrambleHand(Tile[] hand, Deck deck) {
-        this.hand = hand;
-        this.deck = deck;
-    }
+    // Constructors
 
     public ScrambleHand(Deck deck, int numCardsToBeDealt) {
         this.deck = deck;
@@ -57,20 +56,18 @@ public class ScrambleHand implements Hand {
     }
 
 
-    @Override
-    public int getRiskWorthiness() {
-        return 0;
-    }
-
-
-
 
     // Useless methods for Scramble
+
+    // No categories for Scramble hands
 
     @Override
     public Hand categorize() {
         return null;
     }
+
+
+    // No discard feature in Scramble
 
     @Override
     public void throwaway(int cardPos) {}
@@ -82,6 +79,13 @@ public class ScrambleHand implements Hand {
 
     @Override
     public int getNumDiscarded() {
+        return 0;
+    }
+
+    // Risk worthiness is implemented in ScrambleComputerClass
+
+    @Override
+    public int getRiskWorthiness() {
         return 0;
     }
 }
