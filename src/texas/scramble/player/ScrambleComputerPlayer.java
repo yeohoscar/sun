@@ -369,7 +369,7 @@ public class ScrambleComputerPlayer extends TexasComputerPlayer {
 //        System.out.println("Math.abs(dice.nextInt()) % 75 = "+random);
 //        System.out.println();
 //        return getCurrentBestHand().getRiskWorthiness()+risk-random;
-        return random<=getCurrentBestHand().getRiskWorthiness()+risk;
+        return random<=(getCurrentBestHand().getRiskWorthiness()+risk)*0.1;
 //        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
 //                getRiskTolerance();
     }
