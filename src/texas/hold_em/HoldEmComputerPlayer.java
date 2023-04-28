@@ -19,7 +19,7 @@ import java.util.*;
 import static texas.Action.*;
 
 public class HoldEmComputerPlayer extends TexasComputerPlayer {
-    public static final int VARIABILITY = 100;
+    public static final int VARIABILITY = 240;
 
     private int riskTolerance;  // willingness of a player to take risks and bluff
 
@@ -894,8 +894,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     }
 
     public boolean shouldAllIn(PotOfMoney pot) {
-        return Math.abs(dice.nextInt()) % 150 < getCurrentBestHand().getRiskWorthiness() +
-                getRiskTolerance(pot);
+        return Math.abs(dice.nextInt()) % 150 < (getCurrentBestHand().getRiskWorthiness() + getRiskTolerance(pot))*0.2;
     }
 
      private boolean suitsInHandAreSame(Card[] hand) {
