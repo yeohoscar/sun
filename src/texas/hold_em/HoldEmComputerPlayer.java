@@ -54,7 +54,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     @Override
     public int getRiskTolerance(PotOfMoney pot) {
         int risk = 0;
-        risk = riskTolerance - getStake() + predicateRiskTolerance();
+        risk = riskTolerance - (pot.getCurrentStake()-getStake()) + predicateRiskTolerance();
         return risk; // tolerance drops as stake increases
     }
 
