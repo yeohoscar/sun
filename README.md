@@ -12,9 +12,12 @@ Yanhao Sun 19205434
 5. Follow prompts to play game
 
 ## Special Features
+- Able to select what game to play
 - Defined computer player personalities
 - Different skill levels for computer players i.e. vocabulary size
-- Computer players learn as games are played
+- Computer players learn new words as games are played
 - Submit multiple words for increased score
-- If you used all the letters for multiple words you got 50 bonus
-- If you make a 7-length word you got 100 bonus
+- If you used all the letters for multiple words you get 50 bonus points
+- If you make a 7-length word you get 100 bonus points
+- Graphical representation in the text UI
+  - Only current player's cards will 
