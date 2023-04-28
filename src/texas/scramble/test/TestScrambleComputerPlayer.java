@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestScrambleComputerPlayer {
 
@@ -179,13 +179,6 @@ public class TestScrambleComputerPlayer {
             System.out.println("averageCommunityLettersScore = "+averageCommunityLettersScore);
         }
     }
-
-    @Test
-    public void calculateMidValue() {
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        int result = player1.average();
-        System.out.println("result = " + result);
-    }
     @Test
     public void testFindAllWordsFormedByLetters(){
         ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
@@ -291,63 +284,4 @@ public class TestScrambleComputerPlayer {
         System.out.println("*************");
     }
 }
-    /*@test
-    public void testFindAllWordsWithBlank() {
-        FullDictionary dict = FullDictionary.getFullDictionary();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        String[] letters7 = {"Z", "G", "H", " ", " "};
-        String[] letters8 = {"Z", "G", "H", "Q", "J"};//these letters can not form any words
-        String[] letters6 = {"A", "B", "C", "D", " ", " "};
 
-        String[] temp = letters6;
-        //if letters contain blank, we must substitute blank with other letters
-        if (player1.containBlank(temp)) {
-            player1.removeBlank(temp);
-        }
-        List<String> maxScoreWord2 = dict.findAllWords(temp);
-        System.out.println(maxScoreWord2);
-    }*/
-    /*@test
-    public void testRemoveWordsWithZeroValue(){
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-        HashMap<String, Integer> highestWords = new HashMap<>();
-        highestWords.put("^", 0);
-        highestWords.put("HELLO", 10);
-        highestWords.put("ABC", 20);
-        player1.removeWordsWithZeroValue(highestWords);
-        System.out.println(highestWords);
-    }*/
-
-//    @test
-//    public void testFindAllCombination() {
-//        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
-//        //test when there is only one unknown letter
-//        String[] playerLetters = {"A", "B"};
-//        //ArrayList<String> result = player1.findAllCombination(playerLetters, 1);
-////        for(String re: result){
-////            System.out.println(re);
-////        }
-//
-//
-//        //test when there are two unknown letters
-//        String[] playerLetters1 = {"A", "B"};
-//        //ArrayList<String> result1 = player1.findAllCombination(playerLetters1, 2);
-//        /*for(String re: result1){
-//            System.out.println(re);
-//        }*/
-//
-//        //test when there are two unknown letters which are blanks
-//        String[] playerLetters3 = {"Z", "G", "H", " ", " "};
-//        String[] playerLetters2 = {"Z", "G", "H"};
-//        ArrayList<String> result2 = player1.findAllCombination(playerLetters3, 2);
-//        for (String re : result2) {
-//            if (re.length() == 7) {
-//                System.out.println("length = " + re.length());
-//                System.out.println(re);
-//            } else {
-//                exit(0);
-//            }
-//        }
-//        System.out.println("Size = " + result2.size());
-//
-//    }

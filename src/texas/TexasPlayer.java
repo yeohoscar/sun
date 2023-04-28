@@ -334,54 +334,26 @@ public abstract class TexasPlayer extends poker.Player {
 
 	//findHighestScoreWord will return the word with highest score among all words returned by findAllWords
 	public String findHighestScoreWord(String[] letters, DictionaryTrie dict){
-		//DictionaryTrie dict = DictionaryTrie.getDictionary();
-//		char[] charArray = combination.toCharArray();
-//		String[] letters = new String[charArray.length];
-//
-//		for //			letters[i] = Character.toString(charArray[i]);(int i = 0; i < charArray.length; i++) {
-//		}
-
-//		if(containBlank(letters)){
-//			removeBlank(letters);
-//		}
 		//find all words that these letters can form
 		List<String> allWords = dict.findAllWordsFormedByLetters(letters);
-		//System.out.println("words size = "+allWords.size());
 		//if all words is empty, this means current letters on player's hand cna not form any words
 		if(allWords.isEmpty()){
-//			return new HashMap<>(Collections.singletonMap("^", 0));
 			return "^";
 		}
-
 		//calculate score of each of these words
 		HashMap<String, Integer> recordWordsScore = new HashMap<>();
 		for(String word: allWords){
 			recordWordsScore.put(word, calculateWordScore(word));
 		}
 		return findHighestScoreWordHelper(recordWordsScore);
-		//return findHighestScoreWordHelper(allWords);
-
 	}
-//	public HashMap<String, Integer> findHighestScoreWordHelper(List<String> allWords){
 	public String findHighestScoreWordHelper(HashMap<String, Integer> recordWordsScore){
 		ArrayList<String> storeHighestScoreWords = new ArrayList<>();
 		//find those words with highest score
-//		int maxScore = 0;
-//		String maxWord = "^";
-//		for(String word: allWords){
-//			int score = calculateWordScore(word);
-//			if(maxScore<score){
-//				maxScore = score;
-//				maxWord = word;
-//			}
-//		}
-//		storeHighestScoreWords.put(maxWord, maxScore);
 		int maxScore = Collections.max(recordWordsScore.values());
-		//System.out.println("maxScore = "+maxScore);
 		for (Map.Entry<String, Integer> entry : recordWordsScore.entrySet()) {
 			if (entry.getValue() == maxScore) {
 				storeHighestScoreWords.add(entry.getKey());
-//				storeHighestScoreWords.put(entry.getKey(), entry.getValue());
 			}
 		}
 		//if there is only one word with highest score, return this word,
@@ -389,11 +361,8 @@ public abstract class TexasPlayer extends poker.Player {
 		if(storeHighestScoreWords.size()==1){
 			return storeHighestScoreWords.get(0);
 		}else {
-			//List<String> keyList = new ArrayList<>(storeHighestScoreWords.keySet());
 			Random rand = new Random();
 			int randomIndex = rand.nextInt(storeHighestScoreWords.size());
-			//String randomKey = keyList.get(randomIndex);
-			//return new HashMap<>(Collections.singletonMap(randomKey, storeHighestScoreWords.get(randomKey)));
 			return storeHighestScoreWords.get(randomIndex);
 		}
 	}
@@ -401,9 +370,6 @@ public abstract class TexasPlayer extends poker.Player {
 	public int calculateWordScore(String word){
 		int score = 0;
 		for(int i=0; i<word.length(); i++) {
-            /*if (word.charAt(i) == 'E' || word.charAt(i) == 'A' || word.charAt(i) == 'I' || word.charAt(i) == 'O' || word.charAt(i) == 'N' || word.charAt(i) == 'R' || word.charAt(i) == 'T' || word.charAt(i) == 'L' || word.charAt(i) == 'S' || word.charAt(i) == 'U') {
-                score += 1;
-            }*/
 			switch (word.charAt(i)) {
 				case 'E', 'A', 'I', 'O', 'N', 'R', 'T', 'L', 'S', 'U' -> score += 1;
 				case 'D', 'G' -> score+=2;
