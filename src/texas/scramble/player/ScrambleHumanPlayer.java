@@ -32,7 +32,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Available Tiles: ");
             for(Tile tile : newHand){
-                System.out.print(tile.toString() + " ");
+                System.out.print(tile + " ");
             }
             System.out.println();
 
@@ -117,7 +117,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         Scanner input = new Scanner(System.in);
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
-            System.out.print(tile.name()+" ");
+            System.out.print(tile + " ");
         }
         System.out.println();
         System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
@@ -199,22 +199,5 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
             }
         }
         return score;
-    }
-
-    public static void main(String[] args) {
-            ScrambleHumanPlayer player = new ScrambleHumanPlayer("qwe", 100, 0);
-            List<Tile> communityTiles = new ArrayList<>();
-            DeckOfTiles deck = new DeckOfTiles();
-            communityTiles.add(new Tile("T",1));
-            communityTiles.add(new Tile("E",1));
-            communityTiles.add(new Tile("E",1));
-            communityTiles.add(new Tile("N",1));
-            communityTiles.add(new Tile(" ",0));
-            player.dealTo(deck);
-
-            int res = player.submitWord(communityTiles);
-
-            System.out.println(res);
-
     }
 }
