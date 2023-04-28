@@ -836,7 +836,6 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     }
 
 
-
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
     // Controls computer player action

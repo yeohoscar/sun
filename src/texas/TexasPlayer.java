@@ -241,25 +241,7 @@ public abstract class TexasPlayer extends poker.Player {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	@Override
-	public void raiseBet(PotOfMoney pot) {
-		int raiseAmount;
 
-		if (pot.getCurrentStake() == 0) {
-			raiseAmount = RoundController.BIG_BLIND_AMOUNT;
-		} else {
-			raiseAmount = pot.getCurrentStake() * 2;
-		}
-
-		int needed = raiseAmount - stake;
-		stake += needed;
-		bank -= needed;
-
-		pot.setStake(stake);
-		pot.addToPot(needed);
-
-		System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
-	}
 
 	public void allIn(PotOfMoney pot) {
 		if (getBank() == 0) return;
