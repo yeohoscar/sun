@@ -34,7 +34,7 @@ public class PrintScramble extends TexasPrintGame {
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         int halfPlayers = texasPlayers.size() / 2;
-        System.out.println("********** Game Table **********");
+        System.out.println("\n\n********** Game Table **********");
         for (int i = 0; i <= cardHeight; i++) {
             if (i == 0) {
                 /************************ print border of players *****************************/
@@ -276,7 +276,6 @@ public class PrintScramble extends TexasPrintGame {
                 System.out.println("| Side Pot:\n|    CurrentStake=" + pots.get(i).getCurrentStake() + "     Total=" + pots.get(i).getTotal());
             }
         }
-        System.out.println("\n");
     }
 //    /************************ this method will return the index of suit and rank of one card in suits[] and ranks[] *****************************/
 //    public int[] getIndex(Tile card, String[] suits, String[] ranks) {
