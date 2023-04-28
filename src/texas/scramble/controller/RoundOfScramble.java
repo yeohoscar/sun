@@ -57,7 +57,6 @@ public class RoundOfScramble extends RoundController {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
-                    //TODO get words and FinalValue For each Player
                     if (player instanceof HumanScramblePlayer) {
                         valueRank.put(i, ((HumanScramblePlayer) player).submitWord(communityTiles));
                     }else if(player instanceof ComputerScramblePlayer) {
