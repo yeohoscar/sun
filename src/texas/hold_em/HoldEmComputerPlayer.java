@@ -837,32 +837,6 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
 
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
-    // Raises stake by minimum needed
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
-    @Override
-    public void raiseBet(PotOfMoney pot) {
-        int raiseAmount;
-
-        if (pot.getCurrentStake() == 0) {
-            raiseAmount = RoundController.BIG_BLIND_AMOUNT;
-        } else {
-            raiseAmount = pot.getCurrentStake() * 2;
-        }
-
-        int needed = raiseAmount - stake;
-        stake += needed;
-        bank -= needed;
-
-        pot.setStake(stake);
-        pot.addToPot(needed);
-
-        System.out.println("\n> " + getName() + " says: I raise to " + raiseAmount + " chips!\n");
-    }
-
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
     // Controls computer player action
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
