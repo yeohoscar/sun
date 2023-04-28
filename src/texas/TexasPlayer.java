@@ -382,7 +382,7 @@ public abstract class TexasPlayer extends poker.Player {
 			}
 		}
 		if(word.length()==7){
-			return score+50;
+			return score+100;
 		}
 		return score;
 	}

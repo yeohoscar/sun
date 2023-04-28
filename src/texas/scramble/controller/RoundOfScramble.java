@@ -72,8 +72,8 @@ public class RoundOfScramble extends RoundOfTexas {
                             letterCount+=entry.getKey().length();
                         }
                         // if used all the Tiles
-                        if(letterCount==7){
-                            handValue+=50;
+                        if(CPUWords.size() > 1 && letterCount == 7){
+                            handValue += 50;
                         }
                         // print final score
                         valueRank.put(i, handValue);
