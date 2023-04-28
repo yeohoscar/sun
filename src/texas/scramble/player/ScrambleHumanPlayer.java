@@ -125,12 +125,12 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
         //keep asking questions until user give an existed word or type g to give up
         while (!canFormString(newHand,word )||!FullDictionary.getInstance().isValidWord(word)) {
             System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters) or g to give up: ");
-            word = input.nextLine().trim();
-            if(word.equals("g")){
+            word = input.nextLine().trim().toUpperCase();
+            if(word.equals("G")){
                 break;
             }
         }
-        if(!word.equals("g")){
+        if(!word.equals("G")){
             wordLength-=word.length();
             removeTiles(word);
             return word;
