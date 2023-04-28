@@ -2,21 +2,21 @@ package texas.hold_em;
 
 import poker.PotOfMoney;
 import texas.Action;
-import texas.RoundController;
+import texas.RoundOfTexas;
 import texas.TexasPlayer;
 
 import java.util.Scanner;
 
 import static texas.Action.*;
 
-public class TexasHumanPlayer extends TexasPlayer {
+public class HoldEmHumanPlayer extends TexasPlayer {
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 	// Constructor
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
 
-	public TexasHumanPlayer(String name, int money, int id) {
+	public HoldEmHumanPlayer(String name, int money, int id) {
 		super(name, money, id);
 	}
 
@@ -106,7 +106,7 @@ public class TexasHumanPlayer extends TexasPlayer {
 			try {
 				raiseAmount = scanner.nextInt();
 				if (pot.getCurrentStake() == 0) {
-					if (raiseAmount < RoundController.BIG_BLIND_AMOUNT) {
+					if (raiseAmount < RoundOfTexas.BIG_BLIND_AMOUNT) {
 						System.out.println("Raise amount must be at least the big blind amount.");
 					}
 				} else {

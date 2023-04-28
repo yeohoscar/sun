@@ -2,10 +2,9 @@
 package texas.hold_em;
 
 import poker.*;
-import texas.RoundController;
+import texas.RoundOfTexas;
 import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
-import texas.scramble.deck.Tile;
 
 import java.util.*;
 
@@ -14,7 +13,7 @@ import java.util.*;
 // A RoundOfPoker is a single round/deal in a game
 // A PokerGame is a sequence of RoundOfPoker's
 
-public class RoundsOfHoldEm extends RoundController {
+public class RoundsOfHoldEm extends RoundOfTexas {
     private ArrayList<TexasPlayer> roundPlayers;
 
     private List<Card> communityCards;

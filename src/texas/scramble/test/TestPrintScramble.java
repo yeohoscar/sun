@@ -5,7 +5,7 @@ import poker.PotOfMoney;
 import texas.TexasPlayer;
 import texas.hold_em.HoldEmComputerPlayer;
 import texas.Hand;
-import texas.hold_em.TexasController;
+import texas.hold_em.HoldEmController;
 import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.deck.Tile;
 import texas.scramble.print_game.PrintScramble;
@@ -19,7 +19,7 @@ public class TestPrintScramble {
         DeckOfTiles Tiles = new DeckOfTiles();
         Tiles.reset();
         String[] names = {"Human", "Tom", "Dick", "Harry", "Yan", "wang", "Sun"};
-        TexasController controller = new TexasController();
+        HoldEmController controller = new HoldEmController();
         controller.setUp(names, 5);
         ArrayList<TexasPlayer> texasPlayers = controller.texasPlayers;
         texasPlayers.get(1).setDealer(true);

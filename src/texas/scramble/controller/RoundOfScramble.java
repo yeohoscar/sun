@@ -1,18 +1,14 @@
 package texas.scramble.controller;
 
-import poker.Card;
-import poker.DeckOfCards;
-import poker.Player;
 import poker.PotOfMoney;
-import texas.RoundController;
+import texas.RoundOfTexas;
 import texas.Rounds;
 import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
 import texas.hold_em.HoldEmComputerPlayer;
 import texas.scramble.deck.*;
-import texas.scramble.hand.HandElement;
-import texas.scramble.player.ComputerScramblePlayer;
-import texas.scramble.player.HumanScramblePlayer;
+import texas.scramble.player.ScrambleComputerPlayer;
+import texas.scramble.player.ScrambleHumanPlayer;
 import texas.scramble.print_game.PrintScramble;
 
 import java.util.ArrayList;
@@ -20,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RoundOfScramble extends RoundController {
+public class RoundOfScramble extends RoundOfTexas {
     private ArrayList<TexasPlayer> roundPlayers;
     private List<Tile> communityTiles;
 
@@ -57,11 +53,11 @@ public class RoundOfScramble extends RoundController {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
-                    if (player instanceof HumanScramblePlayer) {
-                        valueRank.put(i, ((HumanScramblePlayer) player).submitWord(communityTiles));
-                    }else if(player instanceof ComputerScramblePlayer) {
+                    if (player instanceof ScrambleHumanPlayer) {
+                        valueRank.put(i, ((ScrambleHumanPlayer) player).submitWord(communityTiles));
+                    }else if(player instanceof ScrambleComputerPlayer) {
                         String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
-                        HashMap<String, Integer> CPUWords = ((ComputerScramblePlayer) player).submitWords(playerHand);
+                        HashMap<String, Integer> CPUWords = ((ScrambleComputerPlayer) player).submitWords(playerHand);
                         int handValue = 0;
                         int letterCount=0;
                         for (Map.Entry<String, Integer> entry : CPUWords.entrySet()) {
@@ -153,7 +149,7 @@ public class RoundOfScramble extends RoundController {
     private void updatePlayerDictionary(List<String> newWords) {
         for (String word : newWords) {
             for (int i = 1; i < roundPlayers.size(); i++) {
-                ComputerScramblePlayer csp = (ComputerScramblePlayer) roundPlayers.get(i);
+                ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
 
                 if (!csp.knowsWord(word)) csp.learnWord(word);
             }

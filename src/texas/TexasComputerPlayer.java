@@ -59,7 +59,7 @@ abstract public class TexasComputerPlayer extends TexasPlayer {
         int raiseAmount;
 
         if (pot.getCurrentStake() == 0) {
-            raiseAmount = RoundController.BIG_BLIND_AMOUNT;
+            raiseAmount = RoundOfTexas.BIG_BLIND_AMOUNT;
         } else {
             raiseAmount = pot.getCurrentStake() * 2;
         }

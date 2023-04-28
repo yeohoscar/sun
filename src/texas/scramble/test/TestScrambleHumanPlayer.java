@@ -3,22 +3,20 @@ package texas.scramble.test;
 import org.junit.jupiter.api.Test;
 import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.deck.Tile;
-import texas.scramble.hand.ScrambleHand;
-import texas.scramble.player.HumanScramblePlayer;
+import texas.scramble.player.ScrambleHumanPlayer;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class testHummanScramblePlayer {
+public class TestScrambleHumanPlayer {
     @Test
     public void testSubmitWord(){
 
-        HumanScramblePlayer player = new HumanScramblePlayer("qwe",100,0);
+        ScrambleHumanPlayer player = new ScrambleHumanPlayer("qwe",100,0);
         List<Tile> communityTiles = new ArrayList<>();
         DeckOfTiles deck = new DeckOfTiles();
         communityTiles.add(new Tile("T",1));

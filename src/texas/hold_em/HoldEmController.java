@@ -1,12 +1,12 @@
 package texas.hold_em;
 
 import poker.DeckOfCards;
-import texas.MainController;
+import texas.TexasController;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TexasController extends MainController {
+public class HoldEmController extends TexasController {
 
     @Override
     public void setUp(String[] names, int bank) {
@@ -63,7 +63,7 @@ public class TexasController extends MainController {
         int startingBank = 100;
 
         System.out.println("\nLet's play Texas Hold'Em ...\n\n");
-        TexasController game = new TexasController();
+        HoldEmController game = new HoldEmController();
         game.setUp(playerNames, startingBank);
         game.play();
     }

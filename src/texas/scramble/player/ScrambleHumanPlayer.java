@@ -1,7 +1,7 @@
 package texas.scramble.player;
 
 
-import texas.hold_em.TexasHumanPlayer;
+import texas.hold_em.HoldEmHumanPlayer;
 import texas.scramble.deck.Tile;
 import texas.scramble.dictionary.FullDictionary;
 
@@ -9,13 +9,13 @@ import texas.scramble.dictionary.FullDictionary;
 import java.util.*;
 
 
-public class HumanScramblePlayer extends TexasHumanPlayer {
+public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     private int finalValue=0;
     private int wordLength=7;
 
     private Tile[] newHand;
-    public HumanScramblePlayer(String name, int money, int id) {
+    public ScrambleHumanPlayer(String name, int money, int id) {
         super(name, money, id);
     }
 

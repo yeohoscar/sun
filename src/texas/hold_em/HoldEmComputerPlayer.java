@@ -11,7 +11,6 @@ package texas.hold_em;
 
 import poker.*;
 import texas.*;
-import texas.scramble.hand.HandElement;
 
 
 import java.lang.reflect.Method;
@@ -887,7 +886,7 @@ public class HoldEmComputerPlayer extends TexasComputerPlayer {
     }
 
     public boolean shouldRaise(PotOfMoney pot) {
-        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
+        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundOfTexas.BIG_BLIND_AMOUNT) {
             return false;
         }
         return Math.abs(dice.nextInt()) % 120 < getCurrentBestHand().getRiskWorthiness() +

@@ -2,12 +2,12 @@ package texas;
 
 import poker.DeckOfCards;
 import texas.hold_em.HoldEmComputerPlayer;
-import texas.hold_em.TexasHumanPlayer;
+import texas.hold_em.HoldEmHumanPlayer;
 import texas.hold_em.RoundsOfHoldEm;
 
 import java.util.ArrayList;
 
-public abstract class MainController {
+public abstract class TexasController {
     public ArrayList<TexasPlayer> texasPlayers;
 
     protected DeckOfCards deck;
@@ -21,7 +21,7 @@ public abstract class MainController {
 
         for (int i = 0; i < numPlayers; i++)
             if (i == 0)
-                texasPlayers.add(new TexasHumanPlayer(names[i].trim(), bank,i));
+                texasPlayers.add(new HoldEmHumanPlayer(names[i].trim(), bank,i));
             else
                 texasPlayers.add(new HoldEmComputerPlayer(names[i].trim(), bank,i));
     }

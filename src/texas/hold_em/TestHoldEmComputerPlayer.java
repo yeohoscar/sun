@@ -8,7 +8,7 @@ import texas.Rounds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestComputerPlayer {
+public class TestHoldEmComputerPlayer {
     @Test
     public void testRoyalStraightFlush() {
         //can not be RoyalStraightFlush

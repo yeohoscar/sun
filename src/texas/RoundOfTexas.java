@@ -1,14 +1,11 @@
 package texas;
 
 import poker.*;
-import texas.hold_em.HoldEmComputerPlayer;
-import texas.hold_em.PrintHoldEmGame;
-import texas.scramble.hand.HandElement;
 //import texas_scramble.*;
 
 import java.util.*;
 
-public abstract class RoundController {
+public abstract class RoundOfTexas {
     public static int DELAY_BETWEEN_ACTIONS = 1000;  // number of milliseconds between game actions
 
     public static final int SMALL_BLIND_AMOUNT = 1;
@@ -29,7 +26,7 @@ public abstract class RoundController {
     protected TexasPrintGame printGame;
 
 
-    public RoundController(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {
+    public RoundOfTexas(Deck deck, ArrayList<TexasPlayer> players, int dealerIndex) {
         this.deck = deck;
         this.roundPlayers = players;
         roundPlayers.get(dealerIndex).setDealer(true);

@@ -6,7 +6,7 @@ import texas.scramble.deck.Tile;
 import texas.scramble.dictionary.DictionaryTrie;
 import texas.scramble.dictionary.FullDictionary;
 import texas.scramble.hand.HandElement;
-import texas.scramble.player.ComputerScramblePlayer;
+import texas.scramble.player.ScrambleComputerPlayer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFindAllWords() {
         FullDictionary dict = FullDictionary.getInstance();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         String[] letters1 = {"e", "n", "o", "p", "g", "i", "a"};
         String[] letters2 = {"A", "S", "S"};
 
@@ -51,7 +51,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFindHighestScoreWord() {
         FullDictionary dict = FullDictionary.getInstance();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         String[] letters2 = {"C"};
         String[] letters3 = {"X", "Y", "E", "N", "O", "P", "G"};
         String[] letters5 = {"A", " ", " "};
@@ -71,7 +71,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testPreFlopRound(){
         FullDictionary dict = FullDictionary.getInstance();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         Random dice = new Random(System.currentTimeMillis());
 
         /********|||********/
@@ -83,7 +83,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testFlopRound() {
         FullDictionary dict = FullDictionary.getInstance();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
         String[] flopLetters3 = {"Z", "A", "J", "H", "H"};
@@ -144,7 +144,7 @@ public class TestScrambleComputerPlayer {
     @Test
     public void testTurnRound() {
         FullDictionary dict = FullDictionary.getInstance();
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         HashMap<String, Integer> wordsScore = new HashMap<>();
         //test when there are two unknown letters which are blanks
         String[] flopLetters2 = {"E", "A", "J", "Q", "Z"};
@@ -181,7 +181,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testFindAllWordsFormedByLetters(){
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         DictionaryTrie dict = FullDictionary.getInstance();
         String[] letters1 = {"A", "A", "E", "E"};
         String[] letters2 = {"E", "N", "O", "P", "G", "X", "Y"};
@@ -193,7 +193,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testCalculateAverageScoreOfAllWordsContainCommunityLetters() {
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         String[] communityLetters1 = {"A", "B", "C"};
         String[] communityLetters2 = {"Z", "G", "H"};
         FullDictionary dict = FullDictionary.getInstance();
@@ -208,7 +208,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testWordIsFormedByLettersContained(){
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         FullDictionary dict = FullDictionary.getInstance();
         /********|||********/
         String prefix = "ABC";
@@ -267,7 +267,7 @@ public class TestScrambleComputerPlayer {
     }
     @Test
     public void testSubmitWords(){
-        ComputerScramblePlayer player1 = new ComputerScramblePlayer("Tom", 0, 0);
+        ScrambleComputerPlayer player1 = new ScrambleComputerPlayer("Tom", 0, 0);
         /********|||********/
         String[] lettersOnHand1 = {"A", "B", "C", "D", "E"};
         HashMap<String, Integer> result1 = player1.submitWords(lettersOnHand1);

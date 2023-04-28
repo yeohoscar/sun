@@ -34,7 +34,7 @@ public class TestPrintGame {
         DeckOfCards deck = new DeckOfCards();
         deck.reset();
         String[] names = {"Human", "Tom", "Dick", "Harry", "Yan", "wang", "Sun"};
-        TexasController controller = new TexasController();
+        HoldEmController controller = new HoldEmController();
         controller.setUp(names, 5);
         ArrayList<TexasPlayer> texasPlayers = controller.texasPlayers;
         texasPlayers.get(1).setDealer(true);

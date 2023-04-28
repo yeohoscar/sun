@@ -3,10 +3,9 @@ package texas.scramble.player;
 import poker.Card;
 import poker.PotOfMoney;
 import texas.Action;
-import texas.RoundController;
+import texas.RoundOfTexas;
 import texas.Rounds;
 import texas.TexasComputerPlayer;
-import texas.scramble.deck.DeckOfTiles;
 import texas.scramble.dictionary.DictionaryTrie;
 import texas.scramble.dictionary.FullDictionary;
 import texas.scramble.deck.Tile;
@@ -17,7 +16,7 @@ import java.util.*;
 import static texas.Action.*;
 import static texas.Action.FOLD;
 
-public class ComputerScramblePlayer extends TexasComputerPlayer {
+public class ScrambleComputerPlayer extends TexasComputerPlayer {
     public static final int VARIABILITY = 240;
     public final int averageHandValue = 4;
     private int riskTolerance;  // willingness of a player to take risks and bluff
@@ -25,7 +24,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 
     private DictionaryTrie dict;
 
-    public ComputerScramblePlayer(String name, int money, int id) {
+    public ScrambleComputerPlayer(String name, int money, int id) {
         super(name, money, id);
 
         dict = new DictionaryTrie("resources/hard.txt");
@@ -35,7 +34,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
-    public ComputerScramblePlayer(String name, int money, int id, String pathToDictionary) {
+    public ScrambleComputerPlayer(String name, int money, int id, String pathToDictionary) {
         super(name, money, id);
 
         dict = new DictionaryTrie(pathToDictionary);
@@ -45,7 +44,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
         // this gives a range of tolerance between -VARIABILITY/2 to +VARIABILITY/2
     }
 
-    public ComputerScramblePlayer(String name, int money, int id, String pathToDictionary, int riskTolerance) {
+    public ScrambleComputerPlayer(String name, int money, int id, String pathToDictionary, int riskTolerance) {
         super(name, money, id);
         dict = new DictionaryTrie(pathToDictionary);
         this.riskTolerance = riskTolerance;
@@ -319,7 +318,7 @@ public class ComputerScramblePlayer extends TexasComputerPlayer {
 
     @Override
     protected boolean shouldRaise(PotOfMoney pot) {
-        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundController.BIG_BLIND_AMOUNT) {
+        if (bank < pot.getCurrentStake() * 2 - stake || bank < RoundOfTexas.BIG_BLIND_AMOUNT) {
             return false;
 //            return -1;
         }

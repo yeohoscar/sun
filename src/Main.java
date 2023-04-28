@@ -1,6 +1,6 @@
 import blackjack.GameOfBlackJack;
 import poker.GameOfPoker;
-import texas.hold_em.TexasController;
+import texas.hold_em.HoldEmController;
 import texas.scramble.controller.ScrambleController;
 
 public class Main {
@@ -20,7 +20,7 @@ public class Main {
                         case '\0', '\n' -> {}
                         case '1' -> GameOfPoker.startGame();
                         case '2' -> GameOfBlackJack.startGame();
-                        case '3' -> TexasController.startGame();
+                        case '3' -> HoldEmController.startGame();
                         case '4' -> ScrambleController.startGame();
                         case '5' -> {
                             return;

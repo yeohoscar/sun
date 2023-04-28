@@ -2,12 +2,12 @@ package texas.scramble.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import texas.scramble.player.ComputerScramblePlayer;
+import texas.scramble.player.ScrambleComputerPlayer;
 
 public class TestDictionary {
     @Test
     public void testLearnWord() {
-        ComputerScramblePlayer com = new ComputerScramblePlayer("TEST", 100, 0);
+        ScrambleComputerPlayer com = new ScrambleComputerPlayer("TEST", 100, 0);
 
         Assertions.assertTrue(com.knowsWord("APPLE"));
         Assertions.assertFalse(com.knowsWord("AB"));

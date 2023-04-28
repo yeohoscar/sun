@@ -1,13 +1,13 @@
 package texas.scramble.controller;
 
-import texas.MainController;
+import texas.TexasController;
 import texas.scramble.deck.*;
-import texas.scramble.player.ComputerScramblePlayer;
-import texas.scramble.player.HumanScramblePlayer;
+import texas.scramble.player.ScrambleComputerPlayer;
+import texas.scramble.player.ScrambleHumanPlayer;
 
 import java.util.*;
 
-public class ScrambleController extends MainController {
+public class ScrambleController extends TexasController {
     protected DeckOfTiles deck;
     @Override
     public void setUp(String[] names, int bank) {
@@ -16,7 +16,7 @@ public class ScrambleController extends MainController {
 
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0) {
-                texasPlayers.add(new HumanScramblePlayer(names[i].trim(), bank, i));
+                texasPlayers.add(new ScrambleHumanPlayer(names[i].trim(), bank, i));
             } else {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
             }
@@ -25,15 +25,15 @@ public class ScrambleController extends MainController {
         deck = new DeckOfTiles();
     }
 
-    private ComputerScramblePlayer getPresetComputerPlayer(String name, int bank, int id) {
-        ComputerScramblePlayer player;
+    private ScrambleComputerPlayer getPresetComputerPlayer(String name, int bank, int id) {
+        ScrambleComputerPlayer player;
         switch (name) {
-            case "Tom" -> player = new ComputerScramblePlayer(name, bank, id, "resources/easy.txt", -40);
-            case "Dick" -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt", 50);
-            case "Harry" -> player = new ComputerScramblePlayer(name, bank, id, "resources/harder.txt", 5);
-            case "Jim" -> player = new ComputerScramblePlayer(name, bank, id, "resources/hard.txt", -15);
-            case "Dave" -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt", 30);
-            default -> player = new ComputerScramblePlayer(name, bank, id, "resources/medium.txt");
+            case "Tom" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/easy.txt", -40);
+            case "Dick" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 50);
+            case "Harry" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/harder.txt", 5);
+            case "Jim" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/hard.txt", -15);
+            case "Dave" -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt", 30);
+            default -> player = new ScrambleComputerPlayer(name, bank, id, "resources/medium.txt");
         }
         return player;
     }
