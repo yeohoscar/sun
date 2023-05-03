@@ -61,4 +61,4 @@ Blank tile is represented by **^**.
 - If you used all the letters for multiple words you get 50 bonus points
 - If you make a 7-length word you get 100 bonus points
 - Graphical representation in the text UI
-  - Only current player's cards will 
+  - Only current player's cards will be printed out
