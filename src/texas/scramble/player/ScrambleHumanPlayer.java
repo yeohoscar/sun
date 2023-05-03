@@ -21,13 +21,12 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     public int submitWord(List<Tile> communityTiles) {
         int finalValue=0;
-        int wordLength=7;
         this.words=new ArrayList<>();
         combineTiles(communityTiles);
         Tile[] copyOfHand = Arrays.copyOf(newHand, newHand.length);
         String bestWord = bestWord(newHand);
         //ask user to enter a word
-        words.add(askQuestion(wordLength));
+        words.add(askQuestion());
         while(newHand.length > 0) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Available Tiles: ");
@@ -40,7 +39,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
             String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
-                words.add(askQuestion(wordLength));
+                words.add(askQuestion());
             }else {
                 break;
             }
@@ -112,25 +111,24 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     }
 
-    private String askQuestion(int wordLength){
+    private String askQuestion(){
         Scanner input = new Scanner(System.in);
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
             System.out.print(tile + " ");
         }
         System.out.println();
-        System.out.println("Please enter your word (maximum "+wordLength+" letters): ");
+        System.out.println("Please enter your word (maximum "+newHand.length+" letters): ");
         String word = input.nextLine().trim().toUpperCase();
         //keep asking questions until user give an existed word or type g to give up
         while (!canFormString(newHand,word )||!FullDictionary.getInstance().isValidWord(word)) {
-            System.out.println("InValid word! Please enter a word again (maximum "+wordLength+" letters) or g to give up: ");
+            System.out.println("InValid word! Please enter a word again (maximum "+newHand.length+" letters) or g to give up: ");
             word = input.nextLine().trim().toUpperCase();
             if(word.equals("G")){
                 break;
             }
         }
         if(!word.equals("G")){
-            wordLength-=word.length();
             removeTiles(word);
             return word;
         }
