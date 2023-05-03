@@ -60,5 +60,6 @@ Blank tile is represented by **^**.
 - Submit multiple words for increased score
 - If you used all the letters for multiple words you get 50 bonus points
 - If you make a 7-length word you get 100 bonus points
+- Show best word human player can make with his hand for word learning
 - Graphical representation in the text UI
   - Only current player's cards will be printed out

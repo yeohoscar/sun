@@ -15,31 +15,34 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
     ArrayList<String> words;
 
     private Tile[] newHand;
+    boolean answerFinished;
+    boolean notice;
     public ScrambleHumanPlayer(String name, int money, int id) {
         super(name, money, id);
     }
 
     public int submitWord(List<Tile> communityTiles) {
         int finalValue=0;
+        answerFinished=false;
+        notice=true;
         this.words=new ArrayList<>();
         combineTiles(communityTiles);
         Tile[] copyOfHand = Arrays.copyOf(newHand, newHand.length);
         String bestWord = bestWord(newHand);
         //ask user to enter a word
-        words.add(askQuestion());
-        while(newHand.length > 0) {
+        words.add(askQuestion(notice));
+        while(newHand.length > 0&&!answerFinished) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Available Tiles: ");
             for(Tile tile : newHand){
                 System.out.print(tile + " ");
             }
             System.out.println();
-
             //allow user quit when they do not want to enter another word
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
             String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
-                words.add(askQuestion());
+                words.add(askQuestion(notice));
             }else {
                 break;
             }
@@ -60,6 +63,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
         //print the best word human player can make with his hand
         System.out.println("The best word you can make is: \""+bestWord+"\" Value = " + calculateWordScore(bestWord));
+        answerFinished=true;
 
         return finalValue;
     }
@@ -111,13 +115,17 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     }
 
-    private String askQuestion(){
+    private String askQuestion(boolean notice){
         Scanner input = new Scanner(System.in);
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
             System.out.print(tile + " ");
         }
         System.out.println();
+        if(notice){
+            System.out.println("Notice: If you used all the letters for multiple words you get 50 bonus points\n        If you make a 7-length word you get 100 bonus points");
+            this.notice=false;
+        }
         System.out.println("Please enter your word (maximum "+newHand.length+" letters): ");
         String word = input.nextLine().trim().toUpperCase();
         //keep asking questions until user give an existed word or type g to give up
@@ -125,6 +133,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
             System.out.println("InValid word! Please enter a word again (maximum "+newHand.length+" letters) or g to give up: ");
             word = input.nextLine().trim().toUpperCase();
             if(word.equals("G")){
+                answerFinished=true;
                 break;
             }
         }
