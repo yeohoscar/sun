@@ -22,13 +22,13 @@ public class RoundOfBlackJack {
             if (player == null) {
                 continue;
             }
+            System.out.println("\n>> " + player.getName() + "'s turn!");
             // player without dealer
             if (!(player instanceof DealerPlayer)) {
                 switch (player.getClass().getSimpleName()) {
                     case "HumanPlayer" -> {
                         System.out.println("Dealer's card: (" + faceUpCard.getName() + " of " + faceUpCard.getSuit() + ")");
                         player.placeBet(-1);
-                        break;
                     }
                     case "ComputerPlayer"-> {
                         ((ComputerPlayer) player).setDealerCard(faceUpCard);
@@ -38,10 +38,8 @@ public class RoundOfBlackJack {
                         } else {
                             player.placeBet(5);
                         }
-                        break;
                     }
                     default-> {
-                        break;
                     }
                 }
                 //player choose actions

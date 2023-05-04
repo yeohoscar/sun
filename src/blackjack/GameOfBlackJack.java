@@ -1,5 +1,8 @@
 package blackjack;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class GameOfBlackJack {
 
 
@@ -10,7 +13,7 @@ public class GameOfBlackJack {
     private int numPlayers;//the number of players
 
     /*--------------------Constructor--------------------------*/
-    public GameOfBlackJack(String[] names, int bank)
+    public GameOfBlackJack(String[] names, int bank, int numHumanPlayers)
     {
         numPlayers = names.length+1;//the reason that adds extra one is for dealer
 
@@ -19,7 +22,7 @@ public class GameOfBlackJack {
 
         //initialise HumanPlayer and all ComputerPlayer
         for (int i = 0; i < numPlayers-1; i++)
-            if (i == 0)
+            if (i < numHumanPlayers)
                 players[i] = new HumanPlayer(names[i].trim(), bank);
             else
                 players[i] = new ComputerPlayer(names[i].trim(), bank);
@@ -75,27 +78,75 @@ public class GameOfBlackJack {
     }
 
     public static void startGame() {
-        String[] names = {"Human", "Tom", "Dick", "Harry"};
+        String[] names = {"Human", "Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
 
         System.out.println("\nWelcome to the Automated Blackjack Machine ...\n\n");
 
-        System.out.print("\nWhat is your name?  ");
+        System.out.println("\nHow many human players are there? (max 10)  ");
 
-        byte[] input = new byte[100];
+        Scanner scanner = new Scanner(System.in);
+        int numHumanPlayers = 0;
 
-        try {
-            int numBytesRead = System.in.read(input);
-            String userInput = new String(input, 0, numBytesRead).trim();
-            if (!userInput.isEmpty()) {
-                names[0] = userInput;
+        while (true) {
+            try {
+                numHumanPlayers = scanner.nextInt();
+
+                if (numHumanPlayers >= 0 && numHumanPlayers <= 10) {
+                    break;
+                } else {
+                    System.out.println("Invalid number of human players");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        catch (Exception e){};
+
+        for (int i = 0; i < numHumanPlayers; i++) {
+            System.out.print("\nPlayer " + (i + 1) + ", What is your name?  ");
+
+            byte[] input = new byte[100];
+
+            try {
+                int numBytesRead = System.in.read(input);
+                String userInput = new String(input, 0, numBytesRead).trim();
+                if (!userInput.isEmpty()) {
+                    names[i] = userInput;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String[] playerNames = names;
+
+        if (numHumanPlayers != 10) {
+            int numComputerPlayers = -10;
+            // ask how many players in the game
+            while (!(numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2)) {
+                if (numHumanPlayers == 0) {
+                    System.out.print("\nHow many computer players do you wish to play with? (Between 2 and 10 inclusive)  ");
+                } else {
+                    System.out.print("\nHow many computer players do you wish to play with? (Between 1 and " + (10 - numHumanPlayers) + " inclusive)  ");
+                }
+                try {
+                    numComputerPlayers = scanner.nextInt();
+
+                    if (numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2) {
+                        playerNames = Arrays.copyOfRange(names, 0, numComputerPlayers + 1 + numHumanPlayers);
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                } catch (Exception e) {
+                    System.out.println("\nInvalid input.");
+                }
+                scanner.nextLine(); // Clear the scanner buffer
+            }
+        }
 
         int startingBank = 10;
 
         System.out.println("\nLet's play BLACKJACK ...\n\n");
-        GameOfBlackJack game = new GameOfBlackJack(names, startingBank);
+        GameOfBlackJack game = new GameOfBlackJack(playerNames, startingBank, numHumanPlayers);
 
         game.play();
     }
