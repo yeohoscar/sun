@@ -73,7 +73,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
     }
 
 
-    private boolean canFormString(Tile[] newHand, String inputString) {
+    public boolean canFormString(Tile[] newHand, String inputString) {
         Map<String, Integer> charFreq = new HashMap<>();
         for (Tile tile : newHand) {
             charFreq.put(tile.name(), charFreq.getOrDefault(tile.name(), 0) + 1);
