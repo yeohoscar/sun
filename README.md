@@ -43,6 +43,7 @@ Since permission to edit the poker package was given, we tried to make minimal c
 
 ### Special Features
 - Able to select what game to play
+- Support multiple human and computer players
 - Defined computer player personalities
 - Different skill levels for computer players i.e. vocabulary size
 - Computer players learn new words as games are played
