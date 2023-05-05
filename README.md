@@ -7,6 +7,8 @@ Yanhao Sun 19205434
 ## Poker
 Created by lecturer.  
 Is available to play.
+### Special Features
+- Support multiple human and computer players
 
 ## Blackjack
 ### Instructions to Run
@@ -19,6 +21,11 @@ Is available to play.
 ### Justification of Implementation
 Due to the distinct differences between Blackjack and Poker, despite their similarities, it was necessary to create standalone classes such as Player, DeckofCards, GameOfBlackjack, etc. Many of the code present in the Poker classes were replicated and modified to accomodate Blackjack. This is because extending the classes did not seem correct as Blackjack is not Poker. Additionally, it would require overriding many of the methods, making it difficult to debug. Thus, it was better to create them as standalone classes.
 
+### Special Features
+- Support multiple human and computer players
+- Defined computer player personalities
+
+
 ## Texas Hold'Em
 ### Instructions to run
 1. Run jar package
@@ -28,6 +35,13 @@ Due to the distinct differences between Blackjack and Poker, despite their simil
 
 ### Justification of Implementation
 Since permission to edit the poker package was given, we tried to make minimal changes to the package in order to reuse the code. The implementation for Texas Hold'Em was done as abstract as possible to enable smooth development of Texas Scramble in the future.
+
+### Special Features
+- Support multiple human and computer players
+- Defined computer player personalities
+- Graphical representation in the text UI
+  - Only current player's cards will be printed out
+
 
 ## Texas Scramble
 ### Instructions to run
