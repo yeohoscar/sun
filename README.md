@@ -5,10 +5,10 @@ Haocheng Sun 19203637
 Yanhao Sun 19205434
 
 ## Poker
-Created by lecturer.  
+Created by lecturer.
 Is available to play.  
 Original functionality preserved.
-  
+
 ## Blackjack
 ### Instructions to Run
 1. Run jar package.
