@@ -78,7 +78,14 @@ public class GameOfBlackJack {
         else
             return null;
     }
-
+    public static boolean checkName(String humanName, String[] names){
+        for(String name: names){
+            if(name.equals(humanName)){
+                return true;
+            }
+        }
+        return false;
+    }
     public static void startGame() {
         String[] names = {"Human", "Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
 
@@ -102,7 +109,7 @@ public class GameOfBlackJack {
                 e.printStackTrace();
             }
         }
-
+        String userInput;
         for (int i = 0; i < numHumanPlayers; i++) {
             System.out.print("\nPlayer " + (i + 1) + ", What is your name?  ");
 
@@ -110,7 +117,13 @@ public class GameOfBlackJack {
 
             try {
                 int numBytesRead = System.in.read(input);
-                String userInput = new String(input, 0, numBytesRead).trim();
+                userInput = new String(input, 0, numBytesRead).trim();
+                while (checkName(userInput, names)){
+                    System.out.println("\nThis name is already occupied, please try again: ");
+                    byte[] input1 = new byte[100];
+                    int numBytesRead1 = System.in.read(input1);
+                    userInput = new String(input1, 0, numBytesRead1).trim();
+                }
                 if (!userInput.isEmpty()) {
                     names[i] = userInput;
                 }

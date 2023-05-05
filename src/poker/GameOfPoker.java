@@ -102,20 +102,33 @@ public class GameOfPoker
 	// Launcher for application
 	//--------------------------------------------------------------------//
 	//--------------------------------------------------------------------//
-
+	public static boolean checkName(String humanName, String[] names){
+		for(String name: names){
+			if(name.equals(humanName)){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static void startGame() {
 		String[] names = {"Human", "Tom", "Dick", "Harry"};
 
 		System.out.println("\nWelcome to the Automated Poker Machine ...\n\n");
 
 		System.out.print("\nWhat is your name?  ");
-
+		String userInput;
 		byte[] input = new byte[100];
 
 		try {
-			System.in.read(input);
-
-			names[0] = new String(input);
+			int numBytesRead = System.in.read(input);
+			userInput = new String(input, 0, numBytesRead).trim();
+			while (checkName(userInput, names)){
+				System.out.println("\nThis name is already occupied, please try again: ");
+				byte[] input1 = new byte[100];
+				int numBytesRead1 = System.in.read(input1);
+				userInput = new String(input1, 0, numBytesRead1).trim();
+			}
+			names[0] = userInput;
 		}
 		catch (Exception e){};
 
