@@ -6,10 +6,9 @@ Yanhao Sun 19205434
 
 ## Poker
 Created by lecturer.  
-Is available to play.
-### Special Features
-- Support multiple human and computer players
-
+Is available to play.  
+Original functionality preserved.
+  
 ## Blackjack
 ### Instructions to Run
 1. Run jar package.
@@ -23,8 +22,6 @@ Due to the distinct differences between Blackjack and Poker, despite their simil
 
 ### Special Features
 - Support multiple human and computer players
-- Defined computer player personalities
-
 
 ## Texas Hold'Em
 ### Instructions to run
@@ -38,7 +35,6 @@ Since permission to edit the poker package was given, we tried to make minimal c
 
 ### Special Features
 - Support multiple human and computer players
-- Defined computer player personalities
 - Graphical representation in the text UI
   - Only current player's cards will be printed out
 
@@ -47,13 +43,8 @@ Since permission to edit the poker package was given, we tried to make minimal c
 ### Instructions to run
 1. Run jar package
 2. Select option 4
-3. Enter name when prompted
-4. Enter number of players to play with, with 1 being minimum and 9 being the maximum
-5. Follow prompts to play game
-
-### Note
-1. Blank tile is represented by **^**.
-2. For Texas Scramble: TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
+3. Enter details as prompted
+4Follow prompts to play game
 
 ### Special Features
 - Able to select what game to play
@@ -67,3 +58,7 @@ Since permission to edit the poker package was given, we tried to make minimal c
 - Show best word human player can make with his hand for word learning
 - Graphical representation in the text UI
   - Only current player's cards will be printed out
+
+### Note
+1. Blank tile is represented by **^**.
+2. For Texas Scramble: TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
