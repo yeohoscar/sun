@@ -133,11 +133,11 @@ public abstract class RoundOfTexas {
 
 
     public void play() {
-        //TODO: if there are more than one unfolded players in the game, they have to showdown to determine the winner.
+        //if there are more than one unfolded players in the game, they have to showdown to determine the winner.
         roundCounter(1);
-        //TODO decided who win
+        //decided who win
         showDown();
-        //TODO remove player who all-in and loss or has less than big blind chips
+        //remove player who all-in and loss or has less than big blind chips
         removePlayer();
     }
 
@@ -220,13 +220,14 @@ public abstract class RoundOfTexas {
                 activePlayer++;
             }
         }
-        roundPlayers.get(currentIndex).setDeck((DeckOfCards) deck);
+        roundPlayers.get(currentIndex).setDeck(deck);
         //loop until every one called or folded
         while (!onePlayerLeft() && !ActionClosed()) {
             TexasPlayer currentPlayer = roundPlayers.get(currentIndex);
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.setOnTurn(true);
+                System.out.println("\n>> " + currentPlayer.getName() + "'s turn!\n");
                 printGame.table(currentRound);
                 currentPlayer.nextAction(getActivePot());
                 currentPlayer.setOnTurn(false);
@@ -298,9 +299,7 @@ public abstract class RoundOfTexas {
         for (TexasPlayer player : roundPlayers) {
             if (player.hasFolded()) {
                 foldCounter++;
-            }
-            //TODO: should player.getStake()==pot.getCurrentStake() ?
-            else if (player.getStake() == getActivePot().getCurrentStake() || player.isAllIn()) {
+            } else if (player.getStake() == getActivePot().getCurrentStake() || player.isAllIn()) {
                 callCounter++;
             }
         }
