@@ -135,8 +135,11 @@ public class ScrambleController extends TexasController {
             while (!(numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2)) {
                 if (numHumanPlayers == 0) {
                     System.out.print("\nHow many computer players do you wish to play with? (Between 2 and 10 inclusive)  ");
-                } else {
+                } else if(numHumanPlayers==1){
                     System.out.print("\nHow many computer players do you wish to play with? (Between 1 and " + (10 - numHumanPlayers) + " inclusive)  ");
+                }else {
+                    System.out.print("\nHow many computer players do you wish to play with? (Between 0 and " + (10 - numHumanPlayers) + " inclusive)  ");
+
                 }
                 try {
                     numComputerPlayers = scanner.nextInt();
