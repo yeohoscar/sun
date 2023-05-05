@@ -6,6 +6,7 @@ import texas.scramble.player.ScrambleComputerPlayer;
 import texas.scramble.player.ScrambleHumanPlayer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScrambleController extends TexasController {
     protected DeckOfTiles deck;
@@ -141,7 +142,7 @@ public class ScrambleController extends TexasController {
                     numComputerPlayers = scanner.nextInt();
 
                     if (numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2) {
-                        playerNames = Arrays.copyOfRange(names, 0, numComputerPlayers + numHumanPlayers);
+                        playerNames = getRandomComputerPlayers(numHumanPlayers, numComputerPlayers, names);
                     } else {
                         throw new IllegalArgumentException();
                     }
@@ -158,5 +159,24 @@ public class ScrambleController extends TexasController {
         ScrambleController game = new ScrambleController();
         game.setUp(playerNames, startingBank, numHumanPlayers);
         game.play();
+    }
+
+    // Picks random computer player names and adds to name list
+
+    private static String[] getRandomComputerPlayers(int numHumanPlayers, int numComputerPlayers, String[] names) {
+        String[] computerNames = {"Tom", "Dick", "Harry", "Jim", "Dave", "Paul", "Bob", "John", "Bill"};
+
+        Set<Integer> set = new Random().ints(0, 9)
+                .distinct()
+                .limit(numComputerPlayers)
+                .boxed()
+                .collect(Collectors.toSet());
+
+        int currIndex = numHumanPlayers;
+        for (int index : set) {
+            names[currIndex++] = computerNames[index];
+        }
+
+        return Arrays.copyOfRange(names, 0, numComputerPlayers + numHumanPlayers);
     }
 }

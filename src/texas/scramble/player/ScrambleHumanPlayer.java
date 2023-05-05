@@ -16,21 +16,21 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     private Tile[] newHand;
     boolean answerFinished;
-    boolean notice;
+
     public ScrambleHumanPlayer(String name, int money, int id) {
         super(name, money, id);
     }
 
     public int submitWord(List<Tile> communityTiles) {
+        System.out.println("Notice: If you used all the letters for multiple words you get 50 bonus points\n        If you make a 7-letter word you get 100 bonus points");
         int finalValue=0;
         answerFinished=false;
-        notice=true;
         this.words=new ArrayList<>();
         combineTiles(communityTiles);
         Tile[] copyOfHand = Arrays.copyOf(newHand, newHand.length);
         String bestWord = bestWord(newHand);
         //ask user to enter a word
-        words.add(askQuestion(notice));
+        words.add(askQuestion());
         while(newHand.length > 0&&!answerFinished) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Available Tiles: ");
@@ -42,7 +42,7 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
             System.out.println("Do you want to enter another word with rest of the Tiles? Y/N");
             String answer = scanner.nextLine();
             if (answer.equals("y")||answer.equals("Y")) {
-                words.add(askQuestion(notice));
+                words.add(askQuestion());
             }else {
                 break;
             }
@@ -115,23 +115,13 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     }
 
-    private String askQuestion(boolean notice){
+    private String askQuestion(){
         Scanner input = new Scanner(System.in);
-        if(notice){
-            System.out.println("\n>> " + getName() + "'s final submitting turn!\n");
-            System.out.print("> Switch to " + getName() + " then press any key to continue.  ");
-            Scanner scanner = new Scanner(System.in);
-            scanner.nextLine();
-        }
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
             System.out.print(tile + " ");
         }
         System.out.println();
-        if(notice){
-            System.out.println("Notice: If you used all the letters for multiple words you get 50 bonus points\n        If you make a 7-length word you get 100 bonus points");
-            this.notice=false;
-        }
         System.out.println("Please enter your word (maximum "+newHand.length+" letters): ");
         String word = input.nextLine().trim().toUpperCase();
         //keep asking questions until user give an existed word or type g to give up

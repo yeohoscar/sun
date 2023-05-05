@@ -55,19 +55,20 @@ public class RoundOfScramble extends RoundOfTexas {
             for (int i = 0; i < roundPlayers.size(); i++) {
                 TexasPlayer player = roundPlayers.get(i);
                 if (!player.hasFolded()) {
+                    promptPlayerToContinue(player);
                     //get words and final score from human player
-                    if (player instanceof ScrambleHumanPlayer) {
-                        valueRank.put(i, ((ScrambleHumanPlayer) player).submitWord(communityTiles));
-                        newWords.addAll(((ScrambleHumanPlayer) player).getWords());
-                        System.out.println("--------"+player.getName()+" says: My total Score is "+valueRank.get(i)+"\n");
+                    if (player instanceof ScrambleHumanPlayer p) {
+                        valueRank.put(i, p.submitWord(communityTiles));
+                        newWords.addAll(p.getWords());
+                        System.out.println("--------"+p.getName()+" says: My total Score is "+valueRank.get(i)+"\n");
                     //get words and final score from computer player
-                    }else if(player instanceof ScrambleComputerPlayer) {
-                        String[] playerHand = combineToString(communityTiles, (Tile[]) player.getHand().getHand());
-                        HashMap<String, Integer> CPUWords = ((ScrambleComputerPlayer) player).submitWords(playerHand);
+                    }else if(player instanceof ScrambleComputerPlayer p) {
+                        String[] playerHand = combineToString(communityTiles, (Tile[]) p.getHand().getHand());
+                        HashMap<String, Integer> CPUWords = p.submitWords(playerHand);
                         int handValue = 0;
                         int letterCount=0;
                         for (Map.Entry<String, Integer> entry : CPUWords.entrySet()) {
-                            System.out.println(player.getName()+" submitted word \"" + entry.getKey() + "\" Value = " + entry.getValue());
+                            System.out.println(p.getName()+" submitted word \"" + entry.getKey() + "\" Value = " + entry.getValue());
                             newWords.add(entry.getKey());
                             handValue+=entry.getValue();
                             letterCount+=entry.getKey().length();
@@ -78,7 +79,7 @@ public class RoundOfScramble extends RoundOfTexas {
                         }
                         // print final score
                         valueRank.put(i, handValue);
-                        System.out.println("--------"+player.getName()+" says: My total Score is "+handValue+"\n");
+                        System.out.println("--------"+p.getName()+" says: My total Score is "+handValue+"\n");
                     }
                 }
             }
@@ -157,18 +158,17 @@ public class RoundOfScramble extends RoundOfTexas {
     // Takes all the words submitted by users as input and adds into each computer players dictionary if it is not in theirs
     private void updatePlayerDictionary(List<String> newWords) {
         HashMap<String,List<String>> learnWords = new HashMap<>();
-        for (int i = 0; i < roundPlayers.size(); i++) {
-            if(roundPlayers.get(0) instanceof ScrambleComputerPlayer){
-                ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
+        for (TexasPlayer roundPlayer : roundPlayers) {
+            if (roundPlayer instanceof ScrambleComputerPlayer csp) {
                 for (String word : newWords) {
-                    if (!csp.knowsWord(word)&&!word.equals("")){
+                    if (!csp.knowsWord(word) && !word.equals("")) {
                         csp.learnWord(word);
                         List<String> str = new ArrayList<>();
-                        if(learnWords.containsKey(csp.getName())){
+                        if (learnWords.containsKey(csp.getName())) {
                             str = learnWords.get(csp.getName());
                         }
                         str.add(word);
-                        learnWords.put(csp.getName(),str);
+                        learnWords.put(csp.getName(), str);
                     }
                 }
             }
