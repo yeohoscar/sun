@@ -243,7 +243,7 @@ public class RoundOfPoker {
 				
 				if (numActive == 1) {
 					// this must be the last player
-				
+					currentPlayer.getHand().categorize();
 					currentPlayer.takePot(pot);
 					return;
 				}
