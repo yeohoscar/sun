@@ -24,7 +24,11 @@ public class High extends PokerHand {
 	//--------------------------------------------------------------------//
 	
 	public int getRiskWorthiness() {
-		return 100 - PokerHand.HIGHCARD_RISK + getValue(); 
+		if (getCard(4).getRank() == 1) {
+			return 100 - PokerHand.HIGHCARD_RISK + 14;
+		} else {
+			return 100 - PokerHand.HIGHCARD_RISK + getCard(0).getValue();
+		}
 	}
 
 	//--------------------------------------------------------------------//

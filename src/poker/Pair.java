@@ -24,7 +24,7 @@ public class Pair extends PokerHand {
 	//--------------------------------------------------------------------//
 	
 	public int getRiskWorthiness() {
-		return 40; 
+		return 100 - PokerHand.PAIR_RISK;
 	}
 
 	//--------------------------------------------------------------------//

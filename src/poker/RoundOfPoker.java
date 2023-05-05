@@ -108,7 +108,7 @@ public class RoundOfPoker {
 				
 			if (currentPlayer == null || currentPlayer.hasFolded())
 				continue;
-			currentPlayer.getHand().categorize();
+
 			score = currentPlayer.getHand().getValue();
 				
 			if (score > bestHandScore) {
@@ -243,7 +243,6 @@ public class RoundOfPoker {
 				
 				if (numActive == 1) {
 					// this must be the last player
-					currentPlayer.getHand().categorize();
 					currentPlayer.takePot(pot);
 					return;
 				}
