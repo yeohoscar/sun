@@ -101,12 +101,16 @@ public class GameOfBlackJack {
         }
         while (true) {
             try {
-                numHumanPlayers = scanner.nextInt();
-
-                if (numHumanPlayers >= 0 && numHumanPlayers <= 10) {
-                    break;
+                if (scanner.hasNextInt()) {
+                    numHumanPlayers = scanner.nextInt();
+                    if(numHumanPlayers >= 0 && numHumanPlayers <= 10){
+                        break;
+                    }else {
+                        System.out.println("Invalid number of human players");
+                    }
                 } else {
                     System.out.println("Invalid number of human players");
+                    scanner.next();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
