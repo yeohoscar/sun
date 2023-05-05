@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.lang.Character.isAlphabetic;
+
 
 // Dictionary of valid words in Trie format
 
@@ -26,7 +28,17 @@ public class DictionaryTrie {
 
     private void createDictionary(String pathToDictionary) {
         try (Stream<String> stream = Files.lines(Paths.get(pathToDictionary))) {
-            stream.forEach(this::add);
+            stream.forEach(word -> {
+                word = word.trim();
+                char[] letters = word.toCharArray();
+
+                for (int i = 0; i < letters.length; i++) {
+                    if (!isAlphabetic(letters[i])) {
+                        break;
+                    }
+                    if (i == letters.length - 1) this.add(word);
+                }
+            });
         } catch (IOException ex) {
             ex.printStackTrace();
         }
