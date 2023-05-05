@@ -50,7 +50,9 @@ public class GameOfBlackJack {
                     if ((char)input[i] == 'q' || (char)input[i] == 'Q')
                         return;
             }
-            catch (Exception e) {};
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("GAME OVER!");
     }

@@ -124,6 +124,8 @@ abstract class Player {
     private void delay(int numMilliseconds) {
         try {
             Thread.sleep(numMilliseconds);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,7 +27,9 @@ public class HumanPlayer extends Player {
                     input.next();
                     System.out.println("Invalid input! Please enter a valid number.");
                 }
-            }catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         hands.get(FIRST_HAND).setStake(bet);
