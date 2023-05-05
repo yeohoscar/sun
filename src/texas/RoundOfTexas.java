@@ -1,6 +1,8 @@
 package texas;
 
 import poker.*;
+import texas.hold_em.HoldEmComputerPlayer;
+import texas.hold_em.HoldEmHumanPlayer;
 //import texas_scramble.*;
 
 import java.util.*;
@@ -227,7 +229,7 @@ public abstract class RoundOfTexas {
             if (!currentPlayer.hasFolded() && !currentPlayer.isAllIn()) {
                 delay(DELAY_BETWEEN_ACTIONS);
                 currentPlayer.setOnTurn(true);
-                System.out.println("\n>> " + currentPlayer.getName() + "'s turn!\n");
+                promptPlayerToContinue(currentPlayer);
                 printGame.table(currentRound);
                 currentPlayer.nextAction(getActivePot());
                 currentPlayer.setOnTurn(false);
@@ -241,7 +243,15 @@ public abstract class RoundOfTexas {
         }
         onePlayerLeft();
         createSidePot(activePlayer);
+    }
 
+    private void promptPlayerToContinue(TexasPlayer currentPlayer) {
+        System.out.println("\n>> " + currentPlayer.getName() + "'s turn!\n");
+        if (currentPlayer instanceof HoldEmHumanPlayer) {
+            System.out.print("> Switch to " + currentPlayer.getName() + " then press any key to continue.  ");
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+        }
     }
 
 
