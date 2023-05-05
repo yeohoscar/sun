@@ -32,7 +32,7 @@ public class GameOfBlackJack {
     }
 
     /*--------------------Game starts to play, game ends until all players have no money in bank---------------------*/
-    public void play(){
+    public void play() {
         while (getNumSolventPlayers() > 1) {
             deck.reset();//before each round starts, shuffle the deck
             RoundOfBlackJack round = new RoundOfBlackJack(deck, players);//create a new round

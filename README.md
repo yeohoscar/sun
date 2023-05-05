@@ -44,7 +44,7 @@ Since permission to edit the poker package was given, we tried to make minimal c
 1. Run jar package
 2. Select option 4
 3. Enter details as prompted
-4Follow prompts to play game
+4. Follow prompts to play game
 
 ### Special Features
 - Able to select what game to play
