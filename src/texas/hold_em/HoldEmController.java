@@ -37,7 +37,10 @@ public class HoldEmController extends TexasController {
 
         Scanner scanner = new Scanner(System.in);
         int numHumanPlayers = 0;
-
+        while (!scanner.hasNextInt()) {
+            System.out.println("Please enter the number of human players (must be an integer, max 10): ");
+            scanner.next();
+        }
         while (true) {
             try {
                 numHumanPlayers = scanner.nextInt();
