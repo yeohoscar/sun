@@ -117,6 +117,12 @@ public class ScrambleHumanPlayer extends HoldEmHumanPlayer {
 
     private String askQuestion(boolean notice){
         Scanner input = new Scanner(System.in);
+        if(notice){
+            System.out.println("\n>> " + getName() + "'s final submitting turn!\n");
+            System.out.print("> Switch to " + getName() + " then press any key to continue.  ");
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+        }
         System.out.print("Available Tiles: ");
         for(Tile tile : newHand){
             System.out.print(tile + " ");

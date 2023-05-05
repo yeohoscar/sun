@@ -6,6 +6,7 @@ import texas.Rounds;
 import texas.TexasComputerPlayer;
 import texas.TexasPlayer;
 import texas.hold_em.HoldEmComputerPlayer;
+import texas.hold_em.HoldEmHumanPlayer;
 import texas.scramble.deck.*;
 import texas.scramble.player.ScrambleComputerPlayer;
 import texas.scramble.player.ScrambleHumanPlayer;
@@ -136,6 +137,7 @@ public class RoundOfScramble extends RoundOfTexas {
                 currentPlayer.setOnTurn(true);
                 if (currentPlayer instanceof TexasComputerPlayer)
                     ((TexasComputerPlayer) currentPlayer).setCommunityElements(communityTiles);
+                promptPlayerToContinue(currentPlayer);
                 printGame.table(currentRound);
                 currentPlayer.nextAction(getActivePot());
                 currentPlayer.setOnTurn(false);
@@ -155,19 +157,22 @@ public class RoundOfScramble extends RoundOfTexas {
     // Takes all the words submitted by users as input and adds into each computer players dictionary if it is not in theirs
     private void updatePlayerDictionary(List<String> newWords) {
         HashMap<String,List<String>> learnWords = new HashMap<>();
-        for (int i = 1; i < roundPlayers.size(); i++) {
-            ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
-            for (String word : newWords) {
-                if (!csp.knowsWord(word)&&!word.equals("")){
-                    csp.learnWord(word);
-                    List<String> str = new ArrayList<>();
-                    if(learnWords.containsKey(csp.getName())){
-                        str = learnWords.get(csp.getName());
+        for (int i = 0; i < roundPlayers.size(); i++) {
+            if(roundPlayers.get(0) instanceof ScrambleComputerPlayer){
+                ScrambleComputerPlayer csp = (ScrambleComputerPlayer) roundPlayers.get(i);
+                for (String word : newWords) {
+                    if (!csp.knowsWord(word)&&!word.equals("")){
+                        csp.learnWord(word);
+                        List<String> str = new ArrayList<>();
+                        if(learnWords.containsKey(csp.getName())){
+                            str = learnWords.get(csp.getName());
+                        }
+                        str.add(word);
+                        learnWords.put(csp.getName(),str);
                     }
-                    str.add(word);
-                    learnWords.put(csp.getName(),str);
                 }
             }
+
         }
             // print who learn what words
             for(Map.Entry<String,List<String>> entry:learnWords.entrySet()){

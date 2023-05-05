@@ -247,7 +247,7 @@ public abstract class RoundOfTexas {
 
     // If player is human, prompts them to press key to continue to prevent last player from seeing next player's hand.
 
-    private void promptPlayerToContinue(TexasPlayer currentPlayer) {
+    public void promptPlayerToContinue(TexasPlayer currentPlayer) {
         System.out.println("\n>> " + currentPlayer.getName() + "'s turn!\n");
         if (currentPlayer instanceof HoldEmHumanPlayer) {
             System.out.print("> Switch to " + currentPlayer.getName() + " then press any key to continue.  ");
