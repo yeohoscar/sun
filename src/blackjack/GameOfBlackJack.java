@@ -91,30 +91,21 @@ public class GameOfBlackJack {
 
         System.out.println("\nWelcome to the Automated Blackjack Machine ...\n\n");
 
-        System.out.print("\nHow many human players are there? (max 10)  ");
-
         Scanner scanner = new Scanner(System.in);
         int numHumanPlayers = 0;
-        while (!scanner.hasNextInt()) {
-            System.out.println("Please enter the number of human players (must be an integer, max 10): ");
-            scanner.next();
-        }
         while (true) {
+            System.out.print("\nHow many human players are there? (max 10)  ");
             try {
-                if (scanner.hasNextInt()) {
-                    numHumanPlayers = scanner.nextInt();
-                    if(numHumanPlayers >= 0 && numHumanPlayers <= 10){
-                        break;
-                    }else {
-                        System.out.println("Invalid number of human players");
-                    }
+                numHumanPlayers = scanner.nextInt();
+                if (numHumanPlayers >= 0 && numHumanPlayers <= 10) {
+                    break;
                 } else {
-                    System.out.println("Invalid number of human players");
-                    scanner.next();
+                    throw new IllegalArgumentException();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("\nInvalid input.");
             }
+            scanner.nextLine();
         }
         String userInput;
         for (int i = 0; i < numHumanPlayers; i++) {

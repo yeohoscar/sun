@@ -98,29 +98,22 @@ public class ScrambleController extends TexasController {
 
         System.out.println("\nWelcome to the Automated Texas Scramble Machine ...\n\n");
 
-
-        //get number of human players
-        System.out.print("\nHow many human players are there? (max 10)  ");
-
         Scanner scanner = new Scanner(System.in);
         int numHumanPlayers = 0;
 
         while (true) {
+            System.out.print("\nHow many human players are there? (max 10)  ");
             try {
-                if (scanner.hasNextInt()) {
-                    numHumanPlayers = scanner.nextInt();
-                    if(numHumanPlayers >= 0 && numHumanPlayers <= 10){
-                        break;
-                    }else {
-                        System.out.println("Invalid number of human players");
-                    }
+                numHumanPlayers = scanner.nextInt();
+                if (numHumanPlayers >= 0 && numHumanPlayers <= 10) {
+                    break;
                 } else {
-                    System.out.println("Invalid number of human players");
-                    scanner.next();
+                    throw new IllegalArgumentException();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("\nInvalid input.");
             }
+            scanner.nextLine();
         }
         //get names of human players
         String userInput;
@@ -153,9 +146,9 @@ public class ScrambleController extends TexasController {
             while (!(numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2)) {
                 if (numHumanPlayers == 0) {
                     System.out.print("\nHow many computer players do you wish to play with? (Between 2 and 10 inclusive)  ");
-                } else if(numHumanPlayers==1){
+                } else if (numHumanPlayers==1) {
                     System.out.print("\nHow many computer players do you wish to play with? (Between 1 and " + (10 - numHumanPlayers) + " inclusive)  ");
-                }else {
+                } else {
                     System.out.print("\nHow many computer players do you wish to play with? (Between 0 and " + (10 - numHumanPlayers) + " inclusive)  ");
 
                 }
