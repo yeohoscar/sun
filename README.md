@@ -38,8 +38,8 @@ Since permission to edit the poker package was given, we tried to make minimal c
 5. Follow prompts to play game
 
 ### Note
-Blank tile is represented by **^**.
-TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
+1. Blank tile is represented by **^**.
+2. TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
 
 ### Special Features
 - Able to select what game to play
