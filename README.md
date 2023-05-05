@@ -7,8 +7,6 @@ Yanhao Sun 19205434
 ## Poker
 Created by lecturer.  
 Is available to play.
-### Special Features
-- Support multiple human and computer players
 
 ## Blackjack
 ### Instructions to Run
