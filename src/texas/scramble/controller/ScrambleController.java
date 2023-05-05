@@ -11,12 +11,12 @@ public class ScrambleController extends TexasController {
     protected DeckOfTiles deck;
     //set up the game with ScramblePlayer and Tiles for deck
     @Override
-    public void setUp(String[] names, int bank) {
+    public void setUp(String[] names, int bank, int numHumanPlayers) {
         texasPlayers = new ArrayList<>();
         numPlayers = names.length;
 
         for (int i = 0; i < numPlayers; i++) {
-            if (i == 0) {
+            if (i < numHumanPlayers) {
                 texasPlayers.add(new ScrambleHumanPlayer(names[i].trim(), bank, i));
             } else {
                 texasPlayers.add(getPresetComputerPlayer(names[i].trim(), bank, i));
@@ -137,7 +137,7 @@ public class ScrambleController extends TexasController {
 
         System.out.println("\nLet's play Texas Scramble ...\n\n");
         ScrambleController game = new ScrambleController();
-        game.setUp(playerNames, startingBank);
+        game.setUp(playerNames, startingBank, 2);
         game.play();
     }
 }

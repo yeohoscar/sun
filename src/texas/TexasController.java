@@ -14,13 +14,13 @@ public abstract class TexasController {
 
     protected int numPlayers;
 
-    public void setUp(String[] names, int bank) {
+    public void setUp(String[] names, int bank, int numHumanPlayers) {
         texasPlayers = new ArrayList<>();
         numPlayers = names.length;
 
 
         for (int i = 0; i < numPlayers; i++)
-            if (i == 0)
+            if (i < numHumanPlayers)
                 texasPlayers.add(new HoldEmHumanPlayer(names[i].trim(), bank,i));
             else
                 texasPlayers.add(new HoldEmComputerPlayer(names[i].trim(), bank,i));

@@ -84,7 +84,7 @@ public class GameOfBlackJack {
 
         System.out.println("\nWelcome to the Automated Blackjack Machine ...\n\n");
 
-        System.out.println("\nHow many human players are there? (max 10)  ");
+        System.out.print("\nHow many human players are there? (max 10)  ");
 
         Scanner scanner = new Scanner(System.in);
         int numHumanPlayers = 0;
@@ -134,7 +134,7 @@ public class GameOfBlackJack {
                     numComputerPlayers = scanner.nextInt();
 
                     if (numComputerPlayers + numHumanPlayers <= 10 && numComputerPlayers + numHumanPlayers >= 2) {
-                        playerNames = Arrays.copyOfRange(names, 0, numComputerPlayers + 1 + numHumanPlayers);
+                        playerNames = Arrays.copyOfRange(names, 0, numComputerPlayers + numHumanPlayers);
                     } else {
                         throw new IllegalArgumentException();
                     }
