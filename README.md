@@ -39,7 +39,7 @@ Since permission to edit the poker package was given, we tried to make minimal c
 
 ### Note
 1. Blank tile is represented by **^**.
-2. TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
+2. For Texas Scramble: TestCanFormString is trying to reproduce the bug TA meets, the input cases TA provided are replicated in the test, code works good and no bug is found.
 
 ### Special Features
 - Able to select what game to play
